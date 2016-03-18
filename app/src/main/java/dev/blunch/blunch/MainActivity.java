@@ -5,10 +5,13 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.firebase.client.DataSnapshot;
@@ -19,6 +22,7 @@ import com.firebase.client.ValueEventListener;
 public class MainActivity extends AppCompatActivity {
 
     private Firebase mRef;
+    private int count;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,17 +47,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        mRef = new Firebase("https://blunch.firebaseio.com/textTest");
+        mRef = new Firebase("https://blunch.firebaseio.com/chat");
+        mRef.setValue("New chat");
+        count = 0;
 
-        Button hello = (Button) findViewById(R.id.helloButton);
-        Button goodbye = (Button) findViewById(R.id.goodbyeButton);
+        Button send = (Button) findViewById(R.id.send);
         final TextView text = (TextView) findViewById(R.id.textView);
+        final EditText editText = (EditText) findViewById(R.id.editText);
 
         mRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String newText = (String) dataSnapshot.getValue();
-                text.setText(newText);
+                //String newText = (String) dataSnapshot.getValue();
+                //text.setText(newText);
             }
 
             @Override
@@ -62,19 +68,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        hello.setOnClickListener(new View.OnClickListener() {
+        send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mRef.setValue("HELLO");
+                String s = editText.getText().toString();
+                if (s.equals("DROP")) {
+                    mRef.setValue("New chat");
+                    editText.setText("");
+                    count = 0;
+                    return;
+                }
+                mRef.child(count + "").setValue(s);
+                if (s.toLowerCase().contains("biene")) {
+                    ++count;
+                    mRef.child(count + "").setValue("BIENE");
+                }
+                editText.setText("");
+                ++count;
             }
         });
 
-        goodbye.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mRef.setValue("GOODBYE");
-            }
-        });
 
     }
 
