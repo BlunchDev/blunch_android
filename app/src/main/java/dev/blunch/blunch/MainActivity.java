@@ -8,8 +8,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.TextView;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,7 +43,39 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        mRef = new Firebase("https://blunch.firebaseio.com/");
+        mRef = new Firebase("https://blunch.firebaseio.com/textTest");
+
+        Button hello = (Button) findViewById(R.id.helloButton);
+        Button goodbye = (Button) findViewById(R.id.goodbyeButton);
+        final TextView text = (TextView) findViewById(R.id.textView);
+
+        mRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String newText = (String) dataSnapshot.getValue();
+                text.setText(newText);
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
+        hello.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mRef.setValue("HELLO");
+            }
+        });
+
+        goodbye.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mRef.setValue("GOODBYE");
+            }
+        });
+
     }
 
     @Override
