@@ -19,6 +19,8 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
     private Firebase mRef;
@@ -58,8 +60,14 @@ public class MainActivity extends AppCompatActivity {
         mRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                //String newText = (String) dataSnapshot.getValue();
-                //text.setText(newText);
+                Iterable<DataSnapshot> it = dataSnapshot.getChildren();
+
+                String messages = "";
+                while (it.iterator().hasNext()) {
+                    String s = (String) it.iterator().next().getValue();
+                    messages += s + "\n";
+                }
+                text.setText(messages);
             }
 
             @Override
