@@ -1,8 +1,8 @@
 android: 
   components: 
     - platform-tools
-    - build-tools-18.0.1
-    - android-18
+    - build-tools-23.0.1
+    - android-23
     - extra-android-m2repository
   script: 
     - "./gradlew build connectedCheck"
