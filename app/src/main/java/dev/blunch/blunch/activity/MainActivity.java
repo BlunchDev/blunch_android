@@ -1,4 +1,4 @@
-package dev.blunch.blunch;
+package dev.blunch.blunch.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -16,6 +16,8 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+
+import dev.blunch.blunch.R;
 
 public class MainActivity extends AppCompatActivity {
 
