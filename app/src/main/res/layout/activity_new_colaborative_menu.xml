@@ -33,10 +33,20 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="100dp"/>
+        <EditText
+            android:id="@+id/nomMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MENU"
+            android:textSize="70dp" />
 
-    </ScrollView>
+    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

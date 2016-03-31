@@ -36,6 +36,8 @@ public class NewColaborativeMenuActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+
     }
 
     @Override
