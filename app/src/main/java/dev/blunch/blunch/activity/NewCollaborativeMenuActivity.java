@@ -6,6 +6,13 @@ import android.support.v7.widget.Toolbar;
 
 import com.firebase.client.Firebase;
 
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
+>>>>>>> add newCollaborativeMenuActivity function
+
 import java.util.LinkedList;
 import java.util.List;
 
