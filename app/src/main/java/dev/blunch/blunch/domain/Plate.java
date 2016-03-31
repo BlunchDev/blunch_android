@@ -5,13 +5,19 @@ package dev.blunch.blunch.domain;
  */
 public class Plate {
 
-    private String id;
     private String name;
-    private String price;
+    private double price;
 
-    public Plate(String id, String name, String price) {
-        this.id = id;
+    public Plate(String name, double price) {
         this.name = name;
         this.price = price;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getPrice() {
+        return price;
     }
 }
