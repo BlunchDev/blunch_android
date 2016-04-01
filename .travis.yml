@@ -8,6 +8,18 @@ env:
     # wait up to 10 minutes for adb to connect to emulator
     - ADB_INSTALL_TIMEOUT=10
 
+android:
+  components:
+  - platform-tools
+  - tools
+  - build-tools-23.0.2
+  - android-23
+
+  # Additional components
+  - extra-google-m2repository
+  - extra-android-m2repository
+  - extra-android-support
+
 addons:
   apt-packages:
     - pandoc
@@ -21,8 +33,7 @@ cache:
     - $HOME/.gradle/wrapper
 
 script:
-  - ./gradlew check -PdisablePreDex --continue --stacktrace
-  - ./gradlew test --continue
+  - ./gradlew test -- continue
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
