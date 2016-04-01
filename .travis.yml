@@ -14,15 +14,12 @@ cache:
     - $HOME/.gradle/native
     - $HOME/.gradle/wrapper
 
-before_install:
-  - pip install codecov
-
 script:
   - ./gradlew check -PdisablePreDex --continue --stacktrace
   - ./gradlew test --continue
 
 after_success:
-  - codecov
+  - bash <(curl -s https://codecov.io/bash)
 
 after_failure:
   - pandoc app/build/reports/tests/debug/index.html -t plain | sed -n '/^Failed tests/,/default-package/p'
