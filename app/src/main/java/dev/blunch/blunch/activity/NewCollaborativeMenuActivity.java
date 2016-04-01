@@ -1,24 +1,15 @@
 package dev.blunch.blunch.activity;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.View;
 
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 
 import java.util.LinkedList;
 import java.util.List;
 
 import dev.blunch.blunch.R;
-import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.domain.Plate;
 
 public class NewCollaborativeMenuActivity extends AppCompatActivity {
@@ -28,10 +19,9 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
     public static final String ADDRESS_TAG = "address";
     public static final String PLATE_TAG = "plates";
     public static final String PRICE_TAG = "price";
-    public static final String COLLABORATIVE_MENU_TAG = "collaborative_menus/";
+    public static final String COLLABORATIVE_MENU_URI = "collaborative_menus/";
+    public static final String PLATES_URI = "plates/";
     public static final String FIREBASE_URI = "https://blunch.firebaseio.com/";
-
-    private Firebase mRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +35,6 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        mRef = new Firebase(FIREBASE_URI);
 
         // TEST
         List<Plate> plates = new LinkedList<>();
@@ -56,18 +45,24 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
     }
 
     private void addCollaborativeMenu(String name, String description, String address, List<Plate> plates) {
-        String addCollaborativeMenuURI = FIREBASE_URI + COLLABORATIVE_MENU_TAG;
-        mRef = new Firebase(addCollaborativeMenuURI);
+        Firebase menuRef = new Firebase(FIREBASE_URI + COLLABORATIVE_MENU_URI);
+        Firebase platesRef = new Firebase(FIREBASE_URI + PLATES_URI);
 
-        mRef = mRef.push();
-        mRef.child(NAME_TAG).setValue(name);
-        mRef.child(DESCRIPTION_TAG).setValue(description);
-        mRef.child(ADDRESS_TAG).setValue(address);
-        mRef = mRef.child(PLATE_TAG);
+        menuRef = menuRef.push();
+
         for (Plate plate : plates) {
-            Firebase mRefPlate = mRef.push();
-            mRefPlate.child(NAME_TAG).setValue(plate.getName());
-            mRefPlate.child(PRICE_TAG).setValue(plate.getPrice());
+            Firebase platesRefInd = platesRef.push();
+            plate.setId(platesRefInd.getKey());
+            platesRefInd.child(NAME_TAG).setValue(plate.getName());
+            platesRefInd.child(PRICE_TAG).setValue(plate.getPrice());
+            platesRefInd.child(COLLABORATIVE_MENU_URI.substring(0, COLLABORATIVE_MENU_URI.length()-1)).
+                                                                child(menuRef.getKey()).setValue(true);
         }
+
+        menuRef.child(NAME_TAG).setValue(name);
+        menuRef.child(DESCRIPTION_TAG).setValue(description);
+        menuRef.child(ADDRESS_TAG).setValue(address);
+        menuRef = menuRef.child(PLATES_URI.substring(0, PLATES_URI.length()-1));
+        for (Plate plate : plates) menuRef.child(plate.getId()).setValue(true);
     }
 }
