@@ -1,26 +1,21 @@
-package dev.blunch.blunch.domain;
+package dev.blunch.blunch.domain.dishes;
 
 /**
- * Created by albert on 30/03/16.
+ * Dish super class
+ * @author albert
  */
-public class Plate {
+public class Dish {
 
     private String id;
     private String name;
-    private double price;
 
-    public Plate(String name, double price) {
+    public Dish(String name) {
         this.id = "";
         this.name = name;
-        this.price = price;
     }
 
     public String getName() {
         return name;
-    }
-
-    public double getPrice() {
-        return price;
     }
 
     public String getId() {

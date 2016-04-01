@@ -10,17 +10,18 @@ import java.util.LinkedList;
 import java.util.List;
 
 import dev.blunch.blunch.R;
-import dev.blunch.blunch.domain.Plate;
+import dev.blunch.blunch.domain.Menu;
+import dev.blunch.blunch.domain.dishes.CollaborativeDish;
+import dev.blunch.blunch.domain.dishes.Dish;
 
 public class NewCollaborativeMenuActivity extends AppCompatActivity {
 
     public static final String NAME_TAG = "name";
     public static final String DESCRIPTION_TAG = "description";
     public static final String ADDRESS_TAG = "address";
-    public static final String PLATE_TAG = "plates";
-    public static final String PRICE_TAG = "price";
-    public static final String COLLABORATIVE_MENU_URI = "collaborative_menus/";
-    public static final String PLATES_URI = "plates/";
+    public static final String SUGGESTED_TAG = "suggested";
+    public static final String COLLABORATIVE_MENU_TAG = "collaborative_menus";
+    public static final String COLLABORATIVE_DISHES_TAG = "collaborative_dishes";
     public static final String FIREBASE_URI = "https://blunch.firebaseio.com/";
 
     @Override
@@ -37,32 +38,33 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         super.onStart();
 
         // TEST
-        List<Plate> plates = new LinkedList<>();
-        plates.add(new Plate("Fish", 2.0));
-        plates.add(new Plate("Salad", 1.0));
-        plates.add(new Plate("Fruit", 0.5));
-        addCollaborativeMenu("Wakiki lunch", "Muy bueno", "C/Numancia", plates);
+        List<Dish> dishs = new LinkedList<>();
+        dishs.add(new CollaborativeDish("Fish", false));
+        dishs.add(new CollaborativeDish("Salad", true));
+        dishs.add(new CollaborativeDish("Fruit", true));
+        addCollaborativeMenu(new Menu("Wakiki lunch", "Muy bueno", "C/Numancia", dishs));
     }
 
-    private void addCollaborativeMenu(String name, String description, String address, List<Plate> plates) {
-        Firebase menuRef = new Firebase(FIREBASE_URI + COLLABORATIVE_MENU_URI);
-        Firebase platesRef = new Firebase(FIREBASE_URI + PLATES_URI);
+    private void addCollaborativeMenu(Menu menu) {
+        Firebase menuRef = new Firebase(FIREBASE_URI).child(COLLABORATIVE_MENU_TAG);
+        Firebase dishesRef = new Firebase(FIREBASE_URI).child(COLLABORATIVE_DISHES_TAG);
 
         menuRef = menuRef.push();
+        menu.setId(menuRef.getKey());
 
-        for (Plate plate : plates) {
-            Firebase platesRefInd = platesRef.push();
-            plate.setId(platesRefInd.getKey());
-            platesRefInd.child(NAME_TAG).setValue(plate.getName());
-            platesRefInd.child(PRICE_TAG).setValue(plate.getPrice());
-            platesRefInd.child(COLLABORATIVE_MENU_URI.substring(0, COLLABORATIVE_MENU_URI.length()-1)).
-                                                                child(menuRef.getKey()).setValue(true);
+        for (Dish dish : menu.getDishs()) {
+            CollaborativeDish cDish = (CollaborativeDish) dish;
+            Firebase dishesRefInd = dishesRef.push();
+            dish.setId(dishesRefInd.getKey());
+            dishesRefInd.child(NAME_TAG).setValue(cDish.getName());
+            dishesRefInd.child(SUGGESTED_TAG).setValue(cDish.isSuggested());
+            dishesRefInd.child(COLLABORATIVE_MENU_TAG).child(menu.getId()).setValue(true);
         }
 
-        menuRef.child(NAME_TAG).setValue(name);
-        menuRef.child(DESCRIPTION_TAG).setValue(description);
-        menuRef.child(ADDRESS_TAG).setValue(address);
-        menuRef = menuRef.child(PLATES_URI.substring(0, PLATES_URI.length()-1));
-        for (Plate plate : plates) menuRef.child(plate.getId()).setValue(true);
+        menuRef.child(NAME_TAG).setValue(menu.getName());
+        menuRef.child(DESCRIPTION_TAG).setValue(menu.getDescription());
+        menuRef.child(ADDRESS_TAG).setValue(menu.getAddress());
+        menuRef = menuRef.child(COLLABORATIVE_DISHES_TAG);
+        for (Dish dish : menu.getDishs()) menuRef.child(dish.getId()).setValue(true);
     }
 }
