@@ -34,18 +34,127 @@
     </android.support.design.widget.AppBarLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical">
         <Space
             android:layout_width="match_parent"
-            android:layout_height="100dp"/>
+            android:layout_height="90dp"/>
         <EditText
             android:id="@+id/nomMenu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="MENU"
-            android:textSize="70dp" />
+            android:text="MENÚ"
+            android:textSize="70dp"
+            android:layout_gravity="center"/>
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Space
+                android:layout_width="80dp"
+                android:layout_height="match_parent"/>
+            <EditText
+                android:id="@+id/dish1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Plato 1"
+                android:textSize="30dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="right">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yo"/>
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="match_parent"/>
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/switch1"
+                android:background="#CD5C5C" />
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="match_parent"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sugerencia"/>
+
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="match_parent"/>
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Space
+                android:layout_width="100dp"
+                android:layout_height="match_parent"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New Button"
+                android:id="@+id/moreDishes"
+                android:src="@drawable/sign"
+                android:background="null">
+            </ImageButton>
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="100dp"
+            android:layout_height="20px" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Space
+                android:layout_width="100dp"
+                android:layout_height="20px" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/clock"
+                android:id="@+id/timetablebutton"
+                android:background="null"
+                android:layout_gravity="center_vertical" />
+            <Space
+                android:layout_width="40dp"
+                android:layout_height="20px" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:00 h - 00:00h"
+                android:layout_gravity="center_vertical" />
+        </LinearLayout>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Localización"
+            android:id="@+id/button" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="PUBLICA"
+            android:layout_gravity="bottom" />
 
     </LinearLayout>
 
