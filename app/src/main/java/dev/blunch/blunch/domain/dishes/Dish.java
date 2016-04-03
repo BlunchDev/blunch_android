@@ -1,13 +1,19 @@
 package dev.blunch.blunch.domain.dishes;
 
+import dev.blunch.blunch.utils.Entity;
+
 /**
  * Dish super class
  * @author albert
  */
-public class Dish {
+public class Dish implements Entity {
 
     private String id;
     private String name;
+
+    public Dish() {
+
+    }
 
     public Dish(String name) {
         this.id = "";
@@ -16,6 +22,10 @@ public class Dish {
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getId() {

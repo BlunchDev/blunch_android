@@ -111,8 +111,7 @@
                 android:layout_height="wrap_content"
                 android:text="New Button"
                 android:id="@+id/moreDishes"
-                android:src="@drawable/sign"
-                android:background="null">
+                android:src="@drawable/sign">
             </ImageButton>
 
         </LinearLayout>
@@ -133,7 +132,6 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/clock"
                 android:id="@+id/timetablebutton"
-                android:background="null"
                 android:layout_gravity="center_vertical" />
             <Space
                 android:layout_width="40dp"

@@ -8,6 +8,10 @@ public class CollaborativeDish extends Dish {
 
     private boolean suggested;
 
+    public CollaborativeDish() {
+
+    }
+
     public CollaborativeDish(String name, boolean suggested) {
         super(name);
         this.suggested = suggested;
@@ -15,5 +19,9 @@ public class CollaborativeDish extends Dish {
 
     public boolean isSuggested() {
         return suggested;
+    }
+
+    public void setSuggested(boolean suggested) {
+        this.suggested = suggested;
     }
 }

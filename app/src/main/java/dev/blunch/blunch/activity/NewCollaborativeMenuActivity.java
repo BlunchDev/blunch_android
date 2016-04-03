@@ -25,6 +25,7 @@ import dev.blunch.blunch.R;
 import dev.blunch.blunch.domain.Menu;
 import dev.blunch.blunch.domain.dishes.CollaborativeDish;
 import dev.blunch.blunch.domain.dishes.Dish;
+import dev.blunch.blunch.repository.CollaborativeDishesRepository;
 
 public class NewCollaborativeMenuActivity extends AppCompatActivity {
 
@@ -36,7 +37,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
     public static final String COLLABORATIVE_DISHES_TAG = "collaborative_dishes";
     public static final String FIREBASE_URI = "https://blunch.firebaseio.com/";
 
-    Firebase mRef;
+    private CollaborativeDishesRepository collaborativeDishesRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +47,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         Firebase.setAndroidContext(this);
 
-
+        collaborativeDishesRepository = new CollaborativeDishesRepository();
 
         TextView menuName = (TextView) findViewById(R.id.nomMenu);
         ImageButton moreDishes = (ImageButton) findViewById(R.id.moreDishes);
@@ -73,14 +74,15 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        mRef = new Firebase(FIREBASE_URI);
+
+        List<CollaborativeDish> list = collaborativeDishesRepository.list();
 
         // TEST
-        List<Dish> dishs = new LinkedList<>();
+        /*List<Dish> dishs = new LinkedList<>();
         dishs.add(new CollaborativeDish("Fish", false));
         dishs.add(new CollaborativeDish("Salad", true));
         dishs.add(new CollaborativeDish("Fruit", true));
-        addCollaborativeMenu(new Menu("Wakiki lunch", "Muy bueno", "C/Numancia", dishs));
+        addCollaborativeMenu(new Menu("Wakiki lunch", "Muy bueno", "C/Numancia", dishs));*/
     }
 
     private void addCollaborativeMenu(Menu menu) {
