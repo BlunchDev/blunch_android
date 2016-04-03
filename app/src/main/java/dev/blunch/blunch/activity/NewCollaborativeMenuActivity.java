@@ -20,6 +20,7 @@ import com.firebase.client.ValueEventListener;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import dev.blunch.blunch.R;
 import dev.blunch.blunch.domain.Menu;
@@ -46,9 +47,24 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Firebase.setAndroidContext(this);
-
         collaborativeDishesRepository = new CollaborativeDishesRepository();
+        initialize();
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        collaborativeDishesRepository.insert(new CollaborativeDish("Fish", false));
+
+        /*List<Dish> dishs = new LinkedList<>();
+        dishs.add(new CollaborativeDish("Fish", false));
+        dishs.add(new CollaborativeDish("Salad", true));
+        dishs.add(new CollaborativeDish("Fruit", true));
+        addCollaborativeMenu(new Menu("Wakiki lunch", "Muy bueno", "C/Numancia", dishs));*/
+    }
+
+    private void initialize() {
         TextView menuName = (TextView) findViewById(R.id.nomMenu);
         ImageButton moreDishes = (ImageButton) findViewById(R.id.moreDishes);
         moreDishes.setOnClickListener(new View.OnClickListener() {
@@ -69,20 +85,6 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
             }
         });
 
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        List<CollaborativeDish> list = collaborativeDishesRepository.list();
-
-        // TEST
-        /*List<Dish> dishs = new LinkedList<>();
-        dishs.add(new CollaborativeDish("Fish", false));
-        dishs.add(new CollaborativeDish("Salad", true));
-        dishs.add(new CollaborativeDish("Fruit", true));
-        addCollaborativeMenu(new Menu("Wakiki lunch", "Muy bueno", "C/Numancia", dishs));*/
     }
 
     private void addCollaborativeMenu(Menu menu) {

@@ -16,7 +16,6 @@ public class Dish implements Entity {
     }
 
     public Dish(String name) {
-        this.id = "";
         this.name = name;
     }
 

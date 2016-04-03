@@ -1,9 +1,6 @@
 package dev.blunch.blunch.repository;
 
-import android.util.Log;
-
-import java.util.Map;
-
+import com.firebase.client.DataSnapshot;
 import dev.blunch.blunch.domain.dishes.CollaborativeDish;
 import dev.blunch.blunch.utils.Repository;
 
@@ -13,20 +10,26 @@ import dev.blunch.blunch.utils.Repository;
  */
 public class CollaborativeDishesRepository extends Repository<CollaborativeDish> {
 
+    public CollaborativeDishesRepository() {
+        super();
+    }
+
     @Override
-    public CollaborativeDish convert(Object o) {
-        Long jaja = (Long) o;
-        Log.d("JAJAJAJ", String.valueOf(jaja));
-        /*Map<String, Object> map = (Map<String, Object>) o;
-        CollaborativeDish dish = new CollaborativeDish();
-        String id = (String) "1";
-        dish.setId(id);
-        String name = (String) map.get("name");
-        dish.setName(name);
-        Boolean suggested = (Boolean) map.get("suggested");
-        dish.setSuggested(suggested);
-        return dish;*/
-        return null;
+    public CollaborativeDish convert(DataSnapshot data) {
+        CollaborativeDish collaborativeDish = new CollaborativeDish();
+
+        collaborativeDish.setId(data.getKey());
+        for (DataSnapshot d : data.getChildren()) {
+
+            if (d.getKey().equals("name")) {
+                collaborativeDish.setName(d.getValue().toString());
+            }
+            else if (d.getKey().equals("suggested")) {
+                collaborativeDish.setSuggested((Boolean) d.getValue());
+            }
+        }
+
+        return collaborativeDish;
     }
 
     @Override
