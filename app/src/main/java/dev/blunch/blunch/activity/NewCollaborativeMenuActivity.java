@@ -54,14 +54,6 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
-        collaborativeDishesRepository.insert(new CollaborativeDish("Fish", false));
-
-        /*List<Dish> dishs = new LinkedList<>();
-        dishs.add(new CollaborativeDish("Fish", false));
-        dishs.add(new CollaborativeDish("Salad", true));
-        dishs.add(new CollaborativeDish("Fruit", true));
-        addCollaborativeMenu(new Menu("Wakiki lunch", "Muy bueno", "C/Numancia", dishs));*/
     }
 
     private void initialize() {
@@ -81,32 +73,12 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Dialog amb time picker-> en tornar del dialog l'horari queda escrit a hora inici i hora fi
-
             }
         });
 
     }
 
     private void addCollaborativeMenu(Menu menu) {
-        Firebase menuRef = new Firebase(FIREBASE_URI).child(COLLABORATIVE_MENU_TAG);
-        Firebase dishesRef = new Firebase(FIREBASE_URI).child(COLLABORATIVE_DISHES_TAG);
 
-        menuRef = menuRef.push();
-        menu.setId(menuRef.getKey());
-
-        for (Dish dish : menu.getDishs()) {
-            CollaborativeDish cDish = (CollaborativeDish) dish;
-            Firebase dishesRefInd = dishesRef.push();
-            dish.setId(dishesRefInd.getKey());
-            dishesRefInd.child(NAME_TAG).setValue(cDish.getName());
-            dishesRefInd.child(SUGGESTED_TAG).setValue(cDish.isSuggested());
-            dishesRefInd.child(COLLABORATIVE_MENU_TAG).child(menu.getId()).setValue(true);
-        }
-
-        menuRef.child(NAME_TAG).setValue(menu.getName());
-        menuRef.child(DESCRIPTION_TAG).setValue(menu.getDescription());
-        menuRef.child(ADDRESS_TAG).setValue(menu.getAddress());
-        menuRef = menuRef.child(COLLABORATIVE_DISHES_TAG);
-        for (Dish dish : menu.getDishs()) menuRef.child(dish.getId()).setValue(true);
     }
 }
