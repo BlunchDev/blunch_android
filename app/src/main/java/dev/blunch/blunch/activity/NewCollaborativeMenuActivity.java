@@ -1,31 +1,15 @@
 package dev.blunch.blunch.activity;
 
-import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
 import com.firebase.client.Firebase;
-
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
-
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-
 import dev.blunch.blunch.R;
-import dev.blunch.blunch.domain.Menu;
-import dev.blunch.blunch.domain.dishes.CollaborativeDish;
-import dev.blunch.blunch.domain.dishes.Dish;
+import dev.blunch.blunch.domain.menus.Menu;
 import dev.blunch.blunch.repository.CollaborativeDishesRepository;
 
 public class NewCollaborativeMenuActivity extends AppCompatActivity {

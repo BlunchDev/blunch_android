@@ -3,10 +3,10 @@ package dev.blunch.blunch.domain.dishes;
 import dev.blunch.blunch.utils.Entity;
 
 /**
- * Dish super class
+ * Dish abstract class
  * @author albert
  */
-public class Dish implements Entity {
+public abstract class Dish implements Entity {
 
     private String id;
     private String name;
@@ -34,4 +34,7 @@ public class Dish implements Entity {
     public void setId(String id) {
         this.id = id;
     }
+
+    @Override
+    public abstract String toString();
 }

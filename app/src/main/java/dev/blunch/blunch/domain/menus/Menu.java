@@ -1,27 +1,26 @@
-package dev.blunch.blunch.domain;
+package dev.blunch.blunch.domain.menus;
 
-import java.util.List;
-
-import dev.blunch.blunch.domain.dishes.Dish;
+import dev.blunch.blunch.utils.Entity;
 
 /**
- * Menu class
+ * Menu abstract class
  * @author albert
  */
-public class Menu {
+public abstract class Menu implements Entity {
 
     private String id;
     private String name;
     private String description;
     private String address;
-    private List<Dish> dishs;
 
-    public Menu(String name, String description, String address, List<Dish> dishs) {
-        this.id = "";
+    public Menu() {
+
+    }
+
+    public Menu(String name, String description, String address) {
         this.name = name;
         this.description = description;
         this.address = address;
-        this.dishs = dishs;
     }
 
     public String getId() {
@@ -44,7 +43,18 @@ public class Menu {
         return address;
     }
 
-    public List<Dish> getDishs() {
-        return dishs;
+    @Override
+    public abstract String toString();
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

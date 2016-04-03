@@ -1,6 +1,10 @@
 package dev.blunch.blunch.repository;
 
 import com.firebase.client.DataSnapshot;
+
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 import dev.blunch.blunch.domain.dishes.CollaborativeDish;
 import dev.blunch.blunch.utils.Repository;
 
@@ -27,6 +31,14 @@ public class CollaborativeDishesRepository extends Repository<CollaborativeDish>
             else if (d.getKey().equals("suggested")) {
                 collaborativeDish.setSuggested((Boolean) d.getValue());
             }
+
+            else {
+                Set<String> keys = new LinkedHashSet<>();
+                for (DataSnapshot dd : d.getChildren()) {
+                    keys.add(dd.getKey());
+                }
+                collaborativeDish.setCollaborativeMenus(keys);
+            }
         }
 
         return collaborativeDish;
@@ -34,6 +46,6 @@ public class CollaborativeDishesRepository extends Repository<CollaborativeDish>
 
     @Override
     public String getObjectReference() {
-        return "collaborative_dishes";
+        return "collaborativeDishes";
     }
 }
