@@ -1,28 +1,14 @@
 package dev.blunch.blunch;
 
 import com.firebase.client.DataSnapshot;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
-
-import java.lang.Boolean;
-import java.lang.Exception;
-import java.lang.Object;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
-
-import dev.blunch.blunch.utils.Entity;
-import dev.blunch.blunch.utils.Repository;
-import dev.blunch.blunch.utils.Utils;
-
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
+import java.lang.*;
+import java.util.*;
+import dev.blunch.blunch.utils.*;
+import static org.junit.Assert.*;
 
 /**
  * To work on unit tests, switch the Test Artifact in the Build Variants view.
@@ -34,7 +20,7 @@ public class UtilsPackageTest {
     private PersonRepository personRepository = new PersonRepository();
 
     @Test
-    public void generate_differents_keys() throws Exception {
+    public void generate_different_keys() throws Exception {
         String key1 = Utils.generateId();
         String key2 = Utils.generateId();
         assertFalse(key1.equals(key2));
@@ -54,6 +40,7 @@ public class UtilsPackageTest {
         for (String s : keys) {
             assertTrue(personToFind.getSons().containsKey(s));
         }
+        personRepository.delete(personToAdd.getId());
     }
 
 }
