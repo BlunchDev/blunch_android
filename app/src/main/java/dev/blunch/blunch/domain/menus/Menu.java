@@ -27,10 +27,6 @@ public abstract class Menu implements Entity {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
     }
@@ -43,8 +39,9 @@ public abstract class Menu implements Entity {
         return address;
     }
 
-    @Override
-    public abstract String toString();
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public void setName(String name) {
         this.name = name;
@@ -57,4 +54,8 @@ public abstract class Menu implements Entity {
     public void setAddress(String address) {
         this.address = address;
     }
+
+    @Override
+    public abstract String toString();
+
 }

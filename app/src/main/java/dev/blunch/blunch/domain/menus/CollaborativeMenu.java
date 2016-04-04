@@ -27,15 +27,19 @@ public class CollaborativeMenu extends Menu {
         return collaborativeDishes;
     }
 
-    @Override
-    public String toString() {
-        return  "[id : " + getId() + "] [name : " + getName() + "] [description : " + getDescription() + "] " +
-                "[address : " + getAddress() + "]\n[collaborativeDishes keys: " + collaborativeDishes.keySet().toString();
+    public void setCollaborativeDishes(Map<String, Object> collaborativeDishes) {
+        this.collaborativeDishes = collaborativeDishes;
     }
 
     public void setCollaborativeDishes(Set<String> collaborativeDishesKeys) {
         for (String key : collaborativeDishesKeys) {
             collaborativeDishes.put(key, true);
         }
+    }
+
+    @Override
+    public String toString() {
+        return  "[id : " + getId() + "] [name : " + getName() + "] [description : " + getDescription() + "] " +
+                "[address : " + getAddress() + "]\n[collaborativeDishes keys: " + collaborativeDishes.keySet().toString();
     }
 }
