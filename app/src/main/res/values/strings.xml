@@ -1,5 +1,11 @@
 <resources>
     <string name="app_name">Blunch</string>
     <string name="action_settings">Settings</string>
+    <!-- Activity Collaborative menu Answer Strings-->
     <string name="title_activity_collaborative_menu_answer">CollaborativeMenuAnswer</string>
+    <string name="collaborative_menu_answer_host_suggest">The host suggestions are:</string>
+    <string name="collaborative_menu_answer_guest_suggest">Want to suggest something different?</string>
+    <string name="collaborative_menu_answer_Et_hint">Insert suggestion here</string>
+    <string name="collaborative_menu_answer_Btn_add">Add</string>
+    <string name="collaborative_menu_answer_Btn_close">Make Proposal</string>
 </resources>
