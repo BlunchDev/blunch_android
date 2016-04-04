@@ -44,6 +44,3 @@ tasks.withType(Test) {
         exceptionFormat = 'full'
     }
 }
-dependencies {
-    compile 'junit:junit:4.12'
-}
