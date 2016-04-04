@@ -1,6 +1,7 @@
 package dev.blunch.blunch;
 
 import java.sql.Date;
+import java.util.Locale;
 
 /**
  * Created by Daniela Santos on 01-04-2016.
@@ -17,7 +18,8 @@ public class Menu {
         this.nameAuth = nameAuth;
         this.nameMenu = nameMenu;
         this.type = type;
-        this.createDate = createDate;
+        //if date of
+            this.createDate = createDate;
         this.local = local;
     }
 
@@ -60,4 +62,15 @@ public class Menu {
     public void setLocal(String local) {
         this.local = local;
     }
+
+    boolean VerifiyType(String type){
+        return (type == "pay" || type == "colaborative");
+    }
+
+    /*Menu ShowMenuByType(String type){
+        if(type == "pay")
+            return showAllPaysMenus();
+        else if(type == "colaborative")
+            return showAllcolaborativeMenus();
+    }*/
 }

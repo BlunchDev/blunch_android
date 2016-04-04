@@ -18,7 +18,7 @@ public class payMenu  extends Menu{
     }
 
     private boolean checkPrice(float dishPrice){
-        return (dishPrice <= 0); //se el precio no es valido retuno false
+        return (dishPrice <= 0); //se el precio no es valido retun false
     }
 
     private float totalPrice(Dish[] listDishs){
@@ -27,5 +27,16 @@ public class payMenu  extends Menu{
             sum += listDishs[i].getPrice();
         }
         return sum;
+    }
+
+    /*public String showPrice(){
+        return "The total price is" + totalPrice();
+    }*/
+
+    public payMenu[] showAllPaysMenus(){
+        payMenu AllPayMenus[];
+        for(int i = 0; i < ; i++)
+            AllPayMenus[i] = ;
+        return AllPayMenus;
     }
 }
