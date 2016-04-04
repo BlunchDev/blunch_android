@@ -1,14 +1,27 @@
 package dev.blunch.blunch.activity;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.text.format.DateFormat;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.TimePicker;
+
 import com.firebase.client.Firebase;
 import java.util.ArrayList;
 import dev.blunch.blunch.R;
+import dev.blunch.blunch.domain.dishes.CollaborativeDish;
+import dev.blunch.blunch.domain.dishes.Dish;
+import dev.blunch.blunch.domain.menus.CollaborativeMenu;
 import dev.blunch.blunch.domain.menus.Menu;
 import dev.blunch.blunch.repository.CollaborativeDishesRepository;
 
@@ -23,6 +36,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
     public static final String FIREBASE_URI = "https://blunch.firebaseio.com/";
 
     private CollaborativeDishesRepository collaborativeDishesRepository;
+    private int iHour, iMinut, fHour, fMinut;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +44,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_colaborative_menu);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         Firebase.setAndroidContext(this);
         collaborativeDishesRepository = new CollaborativeDishesRepository();
         initialize();
@@ -41,7 +56,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
     }
 
     private void initialize() {
-        TextView menuName = (TextView) findViewById(R.id.nomMenu);
+        final EditText menuName = (EditText) findViewById(R.id.nomMenu);
         ImageButton moreDishes = (ImageButton) findViewById(R.id.moreDishes);
         moreDishes.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,12 +72,78 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Dialog amb time picker-> en tornar del dialog l'horari queda escrit a hora inici i hora fi
+                showDialogTime();
             }
         });
 
+        iHour= iMinut=fHour= fMinut= 0;
+
+        Button publish = (Button) findViewById(R.id.publish);
+        publish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createColaborativeMenu();
+            }
+        });
+
+
+    }
+
+    private void updateTime(int iHour, int iMinut, int fHour, int fMinut) {
+        TextView mDateDisplay = (TextView) findViewById(R.id.timeText);
+        mDateDisplay.setText(iHour + ":" + iMinut + " - " + fHour + ":" + fMinut);
+    }
+
+    private TimePickerDialog.OnTimeSetListener initialTimeSetListener =
+            new TimePickerDialog.OnTimeSetListener() {
+
+                @Override
+                public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                    iHour = hourOfDay;
+                    iMinut = minute;
+                }
+            };
+
+    private TimePickerDialog.OnTimeSetListener finalTimeSetListener =
+            new TimePickerDialog.OnTimeSetListener() {
+
+                @Override
+                public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                    fHour = hourOfDay;
+                    fMinut = minute;
+                }
+            };
+
+    private void showDialogTime() {
+        showDialogInitialTime();
+        showDialogFinalTime();
+        updateTime(iHour,iMinut,fHour,fMinut);
+
+    }
+
+    private TimePickerDialog showDialogInitialTime() {
+        return new TimePickerDialog(this, initialTimeSetListener, iHour, iMinut, false);
+    }
+
+    private TimePickerDialog showDialogFinalTime() {
+        return new TimePickerDialog(this, finalTimeSetListener, fHour, fMinut, false);
     }
 
     private void addCollaborativeMenu(Menu menu) {
+
+    }
+
+    private void createColaborativeMenu() { //parlar amb albert sobre: menu unic?
+        //create new menu
+        EditText nameMenu = (EditText) findViewById(R.id.nomMenu);
+        EditText adress = (EditText) findViewById(R.id.adress);
+        EditText city = (EditText) findViewById(R.id.city);
+        //Llegir tants plats com hi hagi!
+        EditText dish1 = (EditText) findViewById(R.id.dish1);
+        Switch who1 = (Switch) findViewById(R.id.switch1);
+
+        //CollaborativeDish d1 = new CollaborativeDish(dish1.getText().toString());
+
 
     }
 }
