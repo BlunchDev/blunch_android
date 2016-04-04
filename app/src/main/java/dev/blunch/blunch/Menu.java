@@ -67,10 +67,10 @@ public class Menu {
         return (type == "pay" || type == "colaborative");
     }
 
-    /*Menu ShowMenuByType(String type){
+    Menu ShowMenuByType(String type){
         if(type == "pay")
             return showAllPaysMenus();
         else if(type == "colaborative")
             return showAllcolaborativeMenus();
-    }*/
+    }
 }
