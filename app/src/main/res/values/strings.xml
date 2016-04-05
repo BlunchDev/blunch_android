@@ -5,7 +5,7 @@
     <string name="title_activity_collaborative_menu_answer">CollaborativeMenuAnswer</string>
     <string name="collaborative_menu_answer_host_suggest">El huesped sugiere:</string>
     <string name="collaborative_menu_answer_guest_suggest">Quieres sugerir una cosa diferente?</string>
-    <string name="collaborative_menu_answer_Et_hint">Inserta tu porpuesta aquí</string>
+    <string name="collaborative_menu_answer_Et_hint">Inserta tu propuesta aquí</string>
     <string name="collaborative_menu_answer_Btn_add">Añadir</string>
     <string name="collaborative_menu_answer_Btn_close">Hacer propuesta</string>
 </resources>

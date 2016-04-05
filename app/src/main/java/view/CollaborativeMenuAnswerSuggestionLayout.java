@@ -16,38 +16,25 @@ public class CollaborativeMenuAnswerSuggestionLayout extends LinearLayout {
     public CollaborativeMenuAnswerSuggestionLayout(Context context, String suggestion){
         super(context);
 
-        //Horizontal linear layout
+        //layout Parameters
         setOrientation(HORIZONTAL);
-        setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
-        //Suggestion TextView
-        TextView suggest = new TextView(context);
-        suggest.setText(suggestion);
-        suggest.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-        LinearLayout.LayoutParams layoutParamsOfTextView = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        this.addView(suggest, layoutParamsOfTextView);
+        TextView valueTV = new TextView(context);
+        valueTV.setText("hola cocacola como estas");
+        valueTV.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
-        /*
-        suggest.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        addView(suggest);
-
-        //Suggestion delete
-        ImageButton delete = new ImageButton(context);
-        //delete.setImageBitmap();
-        delete.setOnClickListener(new OnClickListener() {
+        ImageButton button = new ImageButton(context);
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                removeView(v);
+                ViewGroup parent = (ViewGroup) v.getParent();
+                parent.removeAllViews();
             }
         });
-        delete.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        button.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
-
-        setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-*/
-
-
-        /*LayoutInflater.from(getContext()).inflate(
-                R.layout.card, this);*/
+        addView(valueTV);
+        addView(button);
     }
 }
