@@ -46,64 +46,77 @@
                 android:orientation="vertical">
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="90dp"/>
+                    android:layout_height="60dp"/>
                 <EditText
                     android:id="@+id/nomMenu"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="MENÚ"
-                    android:textSize="70dp"
+                    android:textSize="40dp"
                     android:layout_gravity="center"
                     android:textColor="#bfbdbd" />
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="20dp"/>
+                    android:layout_height="10dp"/>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <Space
-                        android:layout_width="80dp"
-                        android:layout_height="match_parent"/>
-                    <EditText
-                        android:id="@+id/dish1"
-                        android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:id="@+id/dishesLayout">
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Plato 1"
-                        android:textSize="30dp"
-                        android:textColor="#bfbdbd" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_gravity="right">
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Yo"/>
-                    <Space
-                        android:layout_width="20dp"
-                        android:layout_height="match_parent"/>
-                    <Switch
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/switch1"
-                        android:background="#CD5C5C"
-                        android:checked="false" />
-                    <Space
-                        android:layout_width="20dp"
-                        android:layout_height="match_parent"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Sugerencia"/>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <Space
+                                android:layout_width="80dp"
+                                android:layout_height="match_parent"/>
+                            <EditText
+                                android:id="@+id/dish1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Plato 1"
+                                android:textSize="30dp"
+                                android:textColor="#bfbdbd" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_gravity="right">
 
-                    <Space
-                        android:layout_width="20dp"
-                        android:layout_height="match_parent"
-                        android:background="#dfb5b5" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Yo"/>
+                            <Space
+                                android:layout_width="20dp"
+                                android:layout_height="match_parent"/>
+                            <Switch
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/switch1"
+                                android:background="#CD5C5C"
+                                android:checked="false" />
+                            <Space
+                                android:layout_width="20dp"
+                                android:layout_height="match_parent"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Sugerencia"/>
+
+                            <Space
+                                android:layout_width="20dp"
+                                android:layout_height="match_parent"
+                                android:background="#dfb5b5" />
+                        </LinearLayout>
+                    </LinearLayout>
                 </LinearLayout>
 
                 <Space
@@ -143,10 +156,10 @@
         </ScrollView>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="fill_parent"
             android:orientation="vertical"
-            android:layout_gravity="bottom"
-            android:background="#dfb5b5">
+            android:background="#dfb5b5"
+            android:layout_gravity="bottom">
 
             <Space
                 android:layout_width="20px"
@@ -231,7 +244,6 @@
                 android:layout_height="match_parent"
                 android:text="PUBLICA"
                 android:gravity="center"
-                android:layout_gravity="bottom"
                 android:background="#CD5C5C"
                 android:textSize="24dp"
                 android:id="@+id/publish" />

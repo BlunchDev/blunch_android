@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -24,6 +25,7 @@ import dev.blunch.blunch.domain.dishes.Dish;
 import dev.blunch.blunch.domain.menus.CollaborativeMenu;
 import dev.blunch.blunch.domain.menus.Menu;
 import dev.blunch.blunch.repository.CollaborativeDishesRepository;
+import dev.blunch.blunch.view.CollaborativeDishLayout;
 
 public class NewCollaborativeMenuActivity extends AppCompatActivity {
 
@@ -37,6 +39,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
 
     private CollaborativeDishesRepository collaborativeDishesRepository;
     private int iHour, iMinut, fHour, fMinut;
+    private int numDish;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,11 +59,14 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
     }
 
     private void initialize() {
-        final EditText menuName = (EditText) findViewById(R.id.nomMenu);
+        numDish=1;
+        EditText menuName = (EditText) findViewById(R.id.nomMenu);
         ImageButton moreDishes = (ImageButton) findViewById(R.id.moreDishes);
+        final LinearLayout moreDishesLayout = (LinearLayout) findViewById(R.id.dishesLayout);
         moreDishes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                moreDishesLayout.addView(new CollaborativeDishLayout(NewCollaborativeMenuActivity.this, ++numDish));
 
             }
         });
@@ -75,6 +81,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
                 showDialogTime();
             }
         });
+
 
         iHour= iMinut=fHour= fMinut= 0;
 
