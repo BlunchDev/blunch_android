@@ -21,7 +21,11 @@ public abstract class Menu implements Entity {
 
     public Menu(String name, String author, String description, String localization,
                 Date dateStart, Date dateEnd) {
-        this.name = name;
+        if(name != null)
+            this.name = name;
+        else
+            throw new IllegalArgumentException("Falta el nombre del menu");
+
         this.author = author;
         this.description = description;
         this.localization = localization;
@@ -85,5 +89,4 @@ public abstract class Menu implements Entity {
     public void setId(String id) {
         this.id = id;
     }
-
 }
