@@ -59,9 +59,11 @@ public class CollaborativeDishLayout extends LinearLayout{
         switch1.setBackgroundColor(getResources().getColor(R.color.colorAccent));
         switch1.setChecked(false);
         LinearLayout.LayoutParams switchLayout = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        h2.addView(switch1,switchLayout);
+        h2.addView(switch1, switchLayout);
 
-        h2.addView(space2,space2Layout);
+        Space space3 = new Space(context);
+        LinearLayout.LayoutParams space3Layout = new LinearLayout.LayoutParams(20, ViewGroup.LayoutParams.MATCH_PARENT);
+        h2.addView(space3, space3Layout);
 
         TextView sug = new TextView(context);
         sug.setText("Sugerencia");
