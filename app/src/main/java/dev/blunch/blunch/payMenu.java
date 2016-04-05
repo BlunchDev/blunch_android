@@ -1,5 +1,7 @@
 package dev.blunch.blunch;
 
+import com.firebase.client.Firebase;
+
 import java.sql.Date;
 
 /**
@@ -9,26 +11,29 @@ public class payMenu  extends Menu{
 
     private float dishPrice;
     private Dish[] listDishs;
+    private Firebase bd;
 
     public payMenu(String nameAuth, String nameMenu, String type, Date createDate, String local) {
         super(nameAuth, nameMenu, type, createDate, local);
-        if(checkPrice(dishPrice)){
+        if(checkPrice(dishPrice))
             this.dishPrice = dishPrice;
-        }
-    }
 
+        if(type != "pay")
+            throw new IllegalArgumentException("Este menu tiene que ser del tipo pago");
+    }
     private boolean checkPrice(float dishPrice){
-        return (dishPrice <= 0); //se el precio no es valido retun false
+        return (dishPrice > 0);
     }
 
     private float totalPrice(Dish[] listDishs) {
-
         if(listDishs == null)
             throw new IllegalArgumentException("Debe existir por lo menos un plato");
 
         int sum = 0;
-        for (int i = 0; i < listDishs.length; i++)
-            sum += listDishs[i].getPrice();
+        for (int i = 0; i < listDishs.length; i++) {
+            if (checkPrice(listDishs[i].getPrice()))
+                sum += listDishs[i].getPrice();
+        }
         return sum;
     }
 

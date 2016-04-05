@@ -15,17 +15,27 @@ public class Menu {
     private String nameAuth;
     private String type;
     private Date createDate;
-    private String local;
+    private String adress;
     private String nameMenu;
 
-    public Menu(String nameAuth, String nameMenu, String type, Date createDate, String local) {
-        this.nameAuth = nameAuth;
-        this.nameMenu = nameMenu;
-        this.type = type;
+    public Menu(String nameAuth, String nameMenu, String type, Date createDate, String adress) {
+        //if() el autor existe sino throw
+            this.nameAuth = nameAuth;
+
+        if(nameMenu != null)
+            this.nameMenu = nameMenu;
+        else
+            throw new IllegalArgumentException("Falta el nombre del menu");
+
+        if(VerifyType(type))
+            this.type = type;
+        else
+            throw new IllegalArgumentException("tipo tiene que ser del tipo de pago o colaborativo");
 
         //if date of
             this.createDate = createDate;
-        this.local = local;
+
+        this.adress = adress;
     }
 
     public String getNameAuth() {
@@ -52,8 +62,8 @@ public class Menu {
         this.createDate = createDate;
     }
 
-    public String getLocal() {
-        return local;
+    public String getAdress() {
+        return adress;
     }
 
     public String getNameMenu() {
@@ -64,11 +74,11 @@ public class Menu {
         this.nameMenu = nameMenu;
     }
 
-    public void setLocal(String local) {
-        this.local = local;
+    public void setAdress(String adress) {
+        this.adress = adress;
     }
 
-    boolean VerifiyType(String type){
+    public boolean VerifyType(String type){
         return (type == "pay" || type == "colaborative");
     }
 
