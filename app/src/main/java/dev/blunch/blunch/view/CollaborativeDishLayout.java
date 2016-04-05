@@ -2,6 +2,7 @@ package dev.blunch.blunch.view;
 
 import android.content.Context;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -44,7 +45,7 @@ public class CollaborativeDishLayout extends LinearLayout{
         //H2
         LinearLayout h2 = new LinearLayout(context);
         h2.setOrientation(HORIZONTAL);
-        h2.setHorizontalGravity(FOCUS_RIGHT);
+
 
         TextView me = new TextView(context);
         me.setText("Yo");
@@ -69,7 +70,7 @@ public class CollaborativeDishLayout extends LinearLayout{
         sug.setText("Sugerencia");
         h2.addView(sug, meLayout);
 
-        LinearLayout.LayoutParams h2Layout = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams h2Layout = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.RIGHT);
         this.addView(h2, h2Layout);
 
     }
