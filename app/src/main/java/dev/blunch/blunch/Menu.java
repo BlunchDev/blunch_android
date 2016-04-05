@@ -1,7 +1,11 @@
 package dev.blunch.blunch;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.Locale;
+import java.util.Calendar;
+//import java.util.Date;
+
 
 /**
  * Created by Daniela Santos on 01-04-2016.
@@ -18,6 +22,7 @@ public class Menu {
         this.nameAuth = nameAuth;
         this.nameMenu = nameMenu;
         this.type = type;
+
         //if date of
             this.createDate = createDate;
         this.local = local;
@@ -92,4 +97,10 @@ public class Menu {
     public void ChangeDataMenu(String data){
 
     }
+
+    /*public static boolean isToday(Date date) {
+        if( date == null)
+            throw new IllegalArgumentException("la Data no puede ser null");
+        return date.equals(Calendar.getInstance().getTime());
+    }*/
 }

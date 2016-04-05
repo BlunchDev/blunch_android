@@ -21,11 +21,14 @@ public class payMenu  extends Menu{
         return (dishPrice <= 0); //se el precio no es valido retun false
     }
 
-    private float totalPrice(Dish[] listDishs){
+    private float totalPrice(Dish[] listDishs) {
+
+        if(listDishs == null)
+            throw new IllegalArgumentException("Debe existir por lo menos un plato");
+
         int sum = 0;
-        for(int i = 0; i < listDishs.length; i++ ){
+        for (int i = 0; i < listDishs.length; i++)
             sum += listDishs[i].getPrice();
-        }
         return sum;
     }
 
@@ -33,10 +36,22 @@ public class payMenu  extends Menu{
         return "The total price is" + totalPrice();
     }*/
 
-    public payMenu[] showAllPaysMenus(){
-        payMenu AllPayMenus[];
-        for(int i = 0; i < ; i++)
-            AllPayMenus[i] = ;
+   //Lista todos los menus de pago falta verificar se la lista esta vazia
+    public Menu[] showAllPaysMenus(Menu[] listMenus){
+        if(listMenus == null)
+            throw new IllegalArgumentException("Debe existir por lo menos un menu");
+
+        Menu AllPayMenus[] = null;
+        int j = 0;
+        for(int i = 0; i < listMenus.length; i++) {
+            if (listMenus[i].getType() == "pay"){
+                AllPayMenus[j] = listMenus[i];
+                j++;
+            }
+        }
+        if(AllPayMenus == null)
+            throw new IllegalArgumentException("Debe existir por lo menos un menu de pago");
+
         return AllPayMenus;
-    }
+   }
 }

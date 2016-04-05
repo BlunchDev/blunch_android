@@ -9,6 +9,8 @@ public class Dish {
 
     public Dish(String name, float price) {
         this.name = name;
+        if(price < 0)
+            throw new IllegalArgumentException("El precio tiene que ser positivo");
         this.price = price;
     }
 
