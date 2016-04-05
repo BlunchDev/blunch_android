@@ -12,8 +12,6 @@ import android.widget.TextView;
 
 import java.util.Vector;
 
-import view.CollaborativeMenuAnswerSuggestionLayout;
-
 public class CollaborativeMenuAnswer extends AppCompatActivity {
 
     @Override
