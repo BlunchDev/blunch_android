@@ -12,7 +12,7 @@ import com.firebase.client.ValueEventListener;
  * @param <T> repository type
  * @author albert
  */
-public abstract class FirebaseRepository<T extends Entity> implements Repository <T>{
+public abstract class FirebaseRepository<T extends Entity> implements Repository <T> {
 
     protected final String FIREBASE_URI = "https://blunch.firebaseio.com/";
     private static final String TAG = FirebaseRepository.class.getSimpleName();
@@ -23,7 +23,6 @@ public abstract class FirebaseRepository<T extends Entity> implements Repository
      */
     public FirebaseRepository(Context context) {
         Firebase.setAndroidContext(context);
-
         firebase = new Firebase(FIREBASE_URI);
     }
 
@@ -37,7 +36,6 @@ public abstract class FirebaseRepository<T extends Entity> implements Repository
 
     /**
      * Insert some object in specific repository with random id.
-     *
      * @param item Object that you want to insert.
      */
     @Override
@@ -50,7 +48,6 @@ public abstract class FirebaseRepository<T extends Entity> implements Repository
 
     /**
      * Insert some object in specific repository with specific id.
-     *
      * @param t   Object that you want to insert.
      * @param key Key that new object will have.
      */
@@ -60,7 +57,6 @@ public abstract class FirebaseRepository<T extends Entity> implements Repository
 
     /**
      * Delete some object of this repository by id.
-     *
      * @param id Object key that you want to delete.
      */
     public void delete(String id) {
@@ -70,7 +66,6 @@ public abstract class FirebaseRepository<T extends Entity> implements Repository
 
     /**
      * Delete a relation of an object of this repository.
-     *
      * @param idParent   Key of parent node.
      * @param reference  Reference of the relation.
      * @param idToDelete Key of node that you want to delete.
@@ -82,7 +77,6 @@ public abstract class FirebaseRepository<T extends Entity> implements Repository
 
     /**
      * Convert a Firebase attribute to Domain attribute.
-     *
      * @param data Firebase instance.
      * @return Domain instance.
      */
@@ -90,7 +84,6 @@ public abstract class FirebaseRepository<T extends Entity> implements Repository
 
     /**
      * Get object reference URI in Firebase.
-     *
      * @return Respective reference URI of object.
      */
     public abstract String getObjectReference();

@@ -32,8 +32,6 @@ public class FirebaseRepositoryTest {
         personRepository.close();
     }
 
-
-
     @Test
     public void add_correctly_some_object_in_repository(){
         Person personToAdd = new Person("Albert", 20);
