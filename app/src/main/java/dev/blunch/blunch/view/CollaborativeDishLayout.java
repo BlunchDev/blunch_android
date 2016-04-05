@@ -10,8 +10,6 @@ import android.widget.Space;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import dev.blunch.blunch.R;
 
 /**

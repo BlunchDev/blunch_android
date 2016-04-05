@@ -122,8 +122,8 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
             };
 
     private void showDialogTime() {
-        showDialogInitialTime();
-        showDialogFinalTime();
+        showDialogInitialTime().show();
+        showDialogFinalTime().show();
         updateTime(iHour,iMinut,fHour,fMinut);
 
     }
