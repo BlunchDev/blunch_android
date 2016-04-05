@@ -2,11 +2,15 @@ package dev.blunch.blunch;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.util.Vector;
+
+import view.CollaborativeMenuAnswerSuggestionLayout;
 
 public class CollaborativeMenuAnswer extends AppCompatActivity {
 
@@ -14,9 +18,6 @@ public class CollaborativeMenuAnswer extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_collaborative_menu_answer);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
         fillHostSuggestions();
     }
 
@@ -33,6 +34,13 @@ public class CollaborativeMenuAnswer extends AppCompatActivity {
             linearLayout.addView(checkBox);
         }
 
+    }
+
+    public void addSuggestion(View view){
+        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.CollaborativeMenuAnswerGuestSuggestions);
+        EditText editText = (EditText) findViewById(R.id.CollaborativeMenuAnswerEt);
+        CollaborativeMenuAnswerSuggestionLayout suggestion = new CollaborativeMenuAnswerSuggestionLayout(getApplicationContext(), editText.getText().toString());
+        linearLayout.addView(suggestion);
     }
 
 }
