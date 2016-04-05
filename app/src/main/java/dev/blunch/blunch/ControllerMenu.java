@@ -26,4 +26,30 @@ public class ControllerMenu extends AppCompatActivity {
         });
     }
 
+    /*Menu ShowMenuByType(String type){
+        if(type == "pay")
+            return showAllPaysMenus();
+        else if(type == "colaborative")
+            return showAllcolaborativeMenus();
+    }*/
+
+    //permite borrar un menu
+    public void deleteMenu(){
+      /*  if(){
+
+        }else
+            //hace un excepcion
+        */
+
+    }
+
+    //permite add nuevos platos al menu
+    public void AddDish(Dish dish){
+
+    }
+    //permite cambiar datos del menu como el local por ej
+    public void ChangeDataMenu(String data){
+
+    }
+
 }
