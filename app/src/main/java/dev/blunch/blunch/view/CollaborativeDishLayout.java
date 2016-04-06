@@ -19,7 +19,8 @@ import android.widget.TextView;
 import dev.blunch.blunch.R;
 
 /**
- * Created by pere on 4/5/16.
+ * Collaborative Dish Layout Class
+ * @author pere
  */
 public class CollaborativeDishLayout extends LinearLayout{
 
@@ -63,8 +64,7 @@ public class CollaborativeDishLayout extends LinearLayout{
         close.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                //h1.removeAllViewsInLayout();
-                //removeLayout();
+                CollaborativeDishLayout.this.setVisibility(GONE);
             }
         });
         h1.addView(close, closeLayout);
@@ -117,20 +117,15 @@ public class CollaborativeDishLayout extends LinearLayout{
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public String getSuggerencia(){
-        if(switch1.getShowText()){
+    public String getSuggerencia() {
+        if (switch1.getShowText()) {
             return "Sugerencia";
         }
         else return "Yo";
     }
 
-    public int getClose(){
+    public int getClose() {
         return close.getId();
     }
-
-    private void removeLayout() {
-        this.removeLayout();
-    }
-
 
 }

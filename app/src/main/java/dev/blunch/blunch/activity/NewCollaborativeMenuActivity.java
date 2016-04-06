@@ -12,41 +12,20 @@ import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
-
 import com.firebase.client.Firebase;
-
-import org.w3c.dom.Text;
-
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
 import dev.blunch.blunch.R;
-import dev.blunch.blunch.domain.dishes.CollaborativeDish;
-import dev.blunch.blunch.domain.dishes.Dish;
-import dev.blunch.blunch.domain.menus.CollaborativeMenu;
-import dev.blunch.blunch.domain.menus.Menu;
-import dev.blunch.blunch.repository.CollaborativeDishesRepository;
 import dev.blunch.blunch.view.CollaborativeDishLayout;
 
 public class NewCollaborativeMenuActivity extends AppCompatActivity {
 
-    public static final String NAME_TAG = "name";
-    public static final String DESCRIPTION_TAG = "description";
-    public static final String ADDRESS_TAG = "address";
-    public static final String SUGGESTED_TAG = "suggested";
-    public static final String COLLABORATIVE_MENU_TAG = "collaborative_menus";
-    public static final String COLLABORATIVE_DISHES_TAG = "collaborative_dishes";
-    public static final String FIREBASE_URI = "https://blunch.firebaseio.com/";
-
-    private CollaborativeDishesRepository collaborativeDishesRepository;
     private int iHour, iMinut, fHour, fMinut;
     private int numDish;
     private Date start, finish;
     private ArrayList<CollaborativeDishLayout> myDishes = new ArrayList<>();
-    //private ArrayList<CollaborativeDishLayout> suggDishes = new ArrayList<>();
     private List<ImageButton> idClose = new ArrayList<>();
 
     @Override
@@ -57,7 +36,6 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         Firebase.setAndroidContext(this);
-        collaborativeDishesRepository = new CollaborativeDishesRepository(getApplicationContext());
         initialize();
     }
 
@@ -67,8 +45,8 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
     }
 
     private void initialize() {
-        iHour= iMinut=fHour= fMinut= 0;
-        numDish=1;
+        iHour = iMinut = fHour = fMinut = 0;
+        numDish = 1;
 
         final EditText menuName = (EditText) findViewById(R.id.nomMenu);
         menuName.setOnClickListener(new View.OnClickListener() {
@@ -100,6 +78,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
 
             }
         });
+
         ArrayList<TextView> dishes = new ArrayList<>();
         dishes.add((TextView) findViewById(R.id.dish1));
 
@@ -112,9 +91,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
             }
         });
 
-
-        iHour= iMinut=fHour= fMinut= 0;
-
+        iHour = iMinut = fHour = fMinut = 0;
 
         Button publish = (Button) findViewById(R.id.publish);
         publish.setOnClickListener(new View.OnClickListener() {
@@ -156,16 +133,16 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
     }
 
     private void isGlutenFree() {
-        //el menu es glutenfree
+        // TODO El menu es glutenfree
     }
 
     private void isVegetarian() {
-        //el menu es vegetaria
+        // TODO El menu es vegetaria
     }
 
     private void updateTime(int iHour, int iMinut, int fHour, int fMinut) {
         TextView mDateDisplay = (TextView) findViewById(R.id.timeText);
-        if(iHour%10>=1) {
+        if(iHour % 10 >= 1) {
             mDateDisplay.setText(iHour + ":" + iMinut + "h - " + fHour + ":" + fMinut+"h");
         }
         else{
@@ -188,9 +165,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
 
                 @Override
                 public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-
-                    iHour = hourOfDay;
-                    iMinut = minute;
+                    iHour = hourOfDay; iMinut = minute;
                 }
             };
 
@@ -199,8 +174,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
 
                 @Override
                 public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                    fHour = hourOfDay;
-                    fMinut = minute;
+                    fHour = hourOfDay; fMinut = minute;
                     updateTime(iHour, iMinut, fHour, fMinut);
                 }
             };
@@ -231,21 +205,17 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         return a;
     }
 
-    private void addCollaborativeMenu(Menu menu) {
-
-    }
-
     private void createColaborativeMenu() {
-        //create new menu
+
         EditText nameMenu = (EditText) findViewById(R.id.nomMenu);
         EditText adress = (EditText) findViewById(R.id.adress);
         EditText city = (EditText) findViewById(R.id.city);
 
-        //Llegir tants plats com hi hagi!
         EditText dish1 = (EditText) findViewById(R.id.dish1);
         Switch who1 = (Switch) findViewById(R.id.switch1);
 
-        for(CollaborativeDishLayout d: myDishes){ //llegir plats del Layout
+        for (CollaborativeDishLayout d : myDishes) {
+            // TODO Llegir plats del Layout
             System.out.println("nom plat: "+ d.getNomPlat());
         }
 
