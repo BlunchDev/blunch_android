@@ -89,4 +89,13 @@ public abstract class Menu implements Entity {
     public void setId(String id) {
         this.id = id;
     }
+
+    public Object[] showMenusByType(Object listMenus[]){
+        Object[] allPayMenys = null;
+        for (Object menu: listMenus) {
+            if( menu instanceof PaymentMenu)
+                allPayMenys += menu;
+        }
+        return null;
+    }
 }

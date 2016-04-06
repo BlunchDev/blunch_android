@@ -85,9 +85,4 @@ public class PaymentMenu extends Menu {
         return sum;
     }
 
-    ////////
-    /*private boolean checkDate( Date dateStart, Date dateEnd){
-        return (dateEnd > dateStar );
-
-    }*/
 }
