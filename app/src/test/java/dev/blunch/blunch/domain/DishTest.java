@@ -11,9 +11,9 @@ import static org.junit.Assert.assertNull;
  */
 public class DishTest {
 
-    final String ID = "id";
-    final String NAME = "Pescado";
-    final Double PRICE = 10.0;
+    private static final String ID = "id";
+    private static final String NAME = "Pescado";
+    private static final Double PRICE = 10.0;
 
     Dish dish;
 
