@@ -47,7 +47,9 @@ public class DishTest {
     @Test
     public void create_correctly_an_empty_dish() throws Exception {
         Dish emptyDish = new Dish();
-        assertNull(emptyDish);
+        assertNull(emptyDish.getId());
+        assertNull(emptyDish.getName());
+        assertNull(emptyDish.getPrice());
     }
 
 }
