@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'jacoco-android'
 
 android {
     compileSdkVersion 23
@@ -25,22 +24,11 @@ android {
     }
 }
 
-repositories {
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
-}
-
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'org.robolectric:robolectric:3.1-SNAPSHOT'
-    compile 'com.android.support:appcompat-v7:23.2.1'
-    compile 'com.android.support:design:23.2.1'
-    compile 'com.firebase:firebase-client-android:2.2.3+'
-    compile 'org.jetbrains:annotations:13.0'
-}
-
-tasks.withType(Test) {
-    testLogging {
-        events "started", "passed", "skipped", "failed"
-        exceptionFormat = 'full'
-    }
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.robolectric:robolectric:3.0'
+    compile 'com.android.support:appcompat-v7:24.0.0-alpha1'
+    compile 'com.android.support:design:24.0.0-alpha1'
+    compile 'com.firebase:firebase-client-android:2.3.1'
 }

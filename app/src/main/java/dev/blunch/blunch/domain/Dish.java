@@ -21,6 +21,8 @@ public class Dish implements Entity {
 
     public Dish (String name, Double price) {
         this.name = name;
+        if(price < 0)
+            throw new IllegalArgumentException("El precio tiene que ser positivo");
         this.price = price;
     }
 

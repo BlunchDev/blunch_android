@@ -8,14 +8,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import dev.blunch.blunch.repositories.DishRepository;
+
 /**
- * Payment Menu Class
- * @author jmotger
+ * Created by jmotger on 5/04/16.
  */
 public class PaymentMenu extends Menu {
 
-    private Map<String, Object>     dishes = new LinkedHashMap<>();
-
+    private Map<String, Object> dishes = new LinkedHashMap<>();
+    private DishRepository dr;
     public PaymentMenu() {}
 
     public PaymentMenu(String name, String author, String description, String localization,
@@ -25,7 +26,6 @@ public class PaymentMenu extends Menu {
         for (String dish : dishes) {
             this.dishes.put(dish, true);
         }
-
     }
 
     public Map<String, Object> getDishes() {
@@ -54,4 +54,13 @@ public class PaymentMenu extends Menu {
         return this.dishes.containsKey(dish);
     }
 
+    private float totalPrice(Set<String> dishes ) {
+        if(dishes == null)
+            throw new IllegalArgumentException("Debe existir por lo menos un plato");
+        float sum = 0;
+        while (dishes.iterator().hasNext()) {
+            sum += dr.get(dishes.iterator().next()).getPrice();
+        }
+        return sum;
+    }
 }
