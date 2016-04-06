@@ -5,7 +5,8 @@ import java.util.Date;
 import dev.blunch.blunch.utils.Entity;
 
 /**
- * Created by jmotger on 5/04/16.
+ * Menu class
+ * @author jmotger
  */
 public abstract class Menu implements Entity {
 
