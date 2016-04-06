@@ -81,10 +81,4 @@ public class Menu {
     public boolean VerifyType(String type){
         return (type == "pay" || type == "colaborative");
     }
-
-    /*public static boolean isToday(Date date) {
-        if( date == null)
-            throw new IllegalArgumentException("la Data no puede ser null");
-        return date.equals(Calendar.getInstance().getTime());
-    }*/
 }

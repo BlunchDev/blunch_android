@@ -15,6 +15,7 @@ public class PaymentMenu extends Menu {
     //A list of the dishes and the respective prices
     //private List<Pair<Dish, Double>> dishes;
     private List<Dish> dishes;
+    private Date dateStart, dateEnd;
 
     public PaymentMenu() {}
 
@@ -22,9 +23,15 @@ public class PaymentMenu extends Menu {
                              Date dateStart, Date dateEnd, List<Dish> dishes) {
         super(name, author, description, localization, dateStart, dateEnd);
 
-        if(dishes ==null)
+        if(dishes == null)
             throw new IllegalArgumentException("El menu tiene que tener por lo menos un plato");
         this.dishes = dishes;
+
+        if(dateEnd.before(dateStart))
+            throw new IllegalArgumentException("The date its invalid");
+        this.dateStart = dateStart;
+        this.dateEnd = dateEnd;
+
 
     }
 
@@ -45,13 +52,13 @@ public class PaymentMenu extends Menu {
         }else
             this.dishes.add(dish);
     }
-
+    //verfica se el precio es valido es decir se no es negativo o 0.
     private boolean checkPrice(double dishPrice){
         return (dishPrice > 0);
     }
 
     //Lista todos los menus de pago falta verificar se la lista esta vazia
-    public Menu[] showAllPaysMenus(Menu[] listMenus){
+   /* public Menu[] showAllPaysMenus(Menu[] listMenus){
         if(listMenus == null)
             throw new IllegalArgumentException("Debe existir por lo menos un menu");
 
@@ -67,18 +74,20 @@ public class PaymentMenu extends Menu {
             throw new IllegalArgumentException("Debe existir por lo menos un menu de pago");
 
         return AllPayMenus;
-    }
-//CAMBIAR AQUI!!!!!!!!
-    private float totalPrice(List<Dish> dishes) {
+    }*/
+
+//Hice un cambio aqui
+    private double totalPrice(List<Dish> dishes) {
         if(dishes.isEmpty())
             throw new IllegalArgumentException("Debe existir por lo menos un plato");
-
-        int sum = 0;
-        for (int i = 0; i < listDishs.length; i++) {
-            if (checkPrice(listDishs[i].getPrice()))
-                sum += listDishs[i].getPrice();
-        }
+        double sum = 0;
+        sum  += dishes.listIterator().next().getPrice();
         return sum;
     }
 
+    ////////
+    /*private boolean checkDate( Date dateStart, Date dateEnd){
+        return (dateEnd > dateStar );
+
+    }*/
 }
