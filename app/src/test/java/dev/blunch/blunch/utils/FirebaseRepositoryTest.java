@@ -50,11 +50,89 @@ public class FirebaseRepositoryTest {
         }, new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
-                return personRepository.all().size()==1;
+                return personRepository.all().size() == 1;
             }
         });
     }
 
+    @Test
+    public void add_correctly_some_object_in_repository_with_him_attributes() throws InterruptedException {
+        final Person personToAdd = new Person("Albert", 20);
+
+        runAndWaitUntil(personRepository, new Runnable() {
+            @Override
+            public void run() {
+                personRepository.insert(personToAdd);
+            }
+        }, new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                return  personRepository.all().size()==1 &&
+                        personRepository.get(personToAdd.getId()).getId().equals(personToAdd.getId()) &&
+                        personRepository.get(personToAdd.getId()).getName().equals(personToAdd.getName()) &&
+                        personRepository.get(personToAdd.getId()).getAge().equals(personToAdd.getAge());
+            }
+        });
+    }
+
+    @Test
+    public void delete_correctly() throws InterruptedException {
+        final Person personToAdd = new Person("Albert", 20);
+
+        runAndWaitUntil(personRepository, new Runnable() {
+            @Override
+            public void run() {
+                personRepository.insert(personToAdd);
+                personRepository.delete(personToAdd.getId());
+            }
+        }, new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                return  personRepository.all().size()==0;
+            }
+        });
+    }
+
+    @Test
+    public void insert_with_defined_id_correctly() throws InterruptedException {
+        final String TEST_KEY = "TEST_KEY";
+        final Person personToAdd = new Person("Albert", 20);
+
+        runAndWaitUntil(personRepository, new Runnable() {
+            @Override
+            public void run() {
+                personRepository.insertWithId(personToAdd, TEST_KEY);
+            }
+        }, new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                return  personRepository.all().size()==1 &&
+                        personRepository.get(TEST_KEY).getId().equals(TEST_KEY);
+            }
+        });
+    }
+
+    @Test
+    public void update_correctly() throws InterruptedException {
+        final Person personToAdd = new Person("Albert", 20);
+        final String newName = "Gerard";
+
+        runAndWaitUntil(personRepository, new Runnable() {
+            @Override
+            public void run() {
+
+                personRepository.insert(personToAdd);
+                personToAdd.setName(newName);
+                personRepository.update(personToAdd);
+            }
+        }, new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                return  personRepository.all().size()==1 &&
+                        personRepository.get(personToAdd.getId()).getName().equals(newName);
+            }
+        });
+    }
 
     public static void runAndWaitUntil(FirebaseRepository<Person> ref, Runnable task, Callable<Boolean> done) throws InterruptedException {
         final java.util.concurrent.Semaphore semaphore = new java.util.concurrent.Semaphore(1);
@@ -74,9 +152,9 @@ public class FirebaseRepositoryTest {
         boolean isDone = false;
         boolean adquired = false;
         long startedAt = System.currentTimeMillis();
-        while (!adquired && System.currentTimeMillis()-startedAt<5000) {
+        while (!adquired && System.currentTimeMillis()-startedAt<2000) {
             ShadowApplication.getInstance().getBackgroundThreadScheduler().runOneTask();
-            adquired = semaphore.tryAcquire(3, TimeUnit.SECONDS);
+            adquired = semaphore.tryAcquire(1, TimeUnit.SECONDS);
             try {
                 isDone = done.call();
             } catch (Exception e) {
