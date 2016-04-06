@@ -1,21 +1,23 @@
 package dev.blunch.blunch.repository;
 
+import android.content.Context;
+
 import com.firebase.client.DataSnapshot;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 import dev.blunch.blunch.domain.dishes.CollaborativeDish;
-import dev.blunch.blunch.utils.Repository;
+import dev.blunch.blunch.utils.FirebaseRepository;
 
 /**
  * Collaborative Dishes Repository Class
  * @author albert
  */
-public class CollaborativeDishesRepository extends Repository<CollaborativeDish> {
+public class CollaborativeDishesRepository extends FirebaseRepository<CollaborativeDish> {
 
-    public CollaborativeDishesRepository() {
-        super();
+    public CollaborativeDishesRepository(Context context) {
+        super(context);
     }
 
     @Override

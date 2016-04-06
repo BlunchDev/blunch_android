@@ -1,18 +1,29 @@
 package dev.blunch.blunch.repository;
 
+import android.content.Context;
+
 import com.firebase.client.DataSnapshot;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 import dev.blunch.blunch.domain.menus.CollaborativeMenu;
-import dev.blunch.blunch.utils.Repository;
+import dev.blunch.blunch.utils.FirebaseRepository;
 
 /**
  * Collaborative Menus Repository Class
  * @author albert 
  */
-public class CollaborativeMenusRepository extends Repository<CollaborativeMenu> {
+public class CollaborativeMenusRepository extends FirebaseRepository<CollaborativeMenu> {
+
+    /**
+     * Constructor class
+     *
+     * @param context
+     */
+    public CollaborativeMenusRepository(Context context) {
+        super(context);
+    }
 
     @Override
     public CollaborativeMenu convert(DataSnapshot data) {

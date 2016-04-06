@@ -1,13 +1,9 @@
 package dev.blunch.blunch.activity;
 
-import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,11 +14,10 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.firebase.client.Firebase;
+
 import java.util.ArrayList;
+
 import dev.blunch.blunch.R;
-import dev.blunch.blunch.domain.dishes.CollaborativeDish;
-import dev.blunch.blunch.domain.dishes.Dish;
-import dev.blunch.blunch.domain.menus.CollaborativeMenu;
 import dev.blunch.blunch.domain.menus.Menu;
 import dev.blunch.blunch.repository.CollaborativeDishesRepository;
 import dev.blunch.blunch.view.CollaborativeDishLayout;
@@ -49,7 +44,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         Firebase.setAndroidContext(this);
-        collaborativeDishesRepository = new CollaborativeDishesRepository();
+        collaborativeDishesRepository = new CollaborativeDishesRepository(getApplicationContext());
         initialize();
     }
 
