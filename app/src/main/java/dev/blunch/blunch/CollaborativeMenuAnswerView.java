@@ -81,7 +81,7 @@ public class CollaborativeMenuAnswerView extends AppCompatActivity {
                 //Creating text view containig proposal
                 TextView textView = new TextView(this);
                 textView.setText(suggestion);
-                textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT,(float)0.8));
 
                 //Creating image button to remove layout with proposal
                 ImageButton button = new ImageButton(getApplicationContext());
