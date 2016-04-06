@@ -1,7 +1,7 @@
 package dev.blunch.blunch.domain;
 
 import java.util.Date;
-
+import java.util.List;
 import dev.blunch.blunch.utils.Entity;
 
 /**
@@ -90,12 +90,16 @@ public abstract class Menu implements Entity {
         this.id = id;
     }
 
-    public Object[] showMenusByType(Object listMenus[]){
-        Object[] allPayMenys = null;
-        for (Object menu: listMenus) {
-            if( menu instanceof PaymentMenu)
-                allPayMenys += menu;
-        }
-        return null;
+    //
+    public List<Object> showMenusByType(List<Object> listMenus){
+        List<Object> allMenus = null;
+
+        if( listMenus.listIterator().next()instanceof PaymentMenu)
+            allMenus.add(listMenus.listIterator().next());
+
+        else if( listMenus.listIterator().next()instanceof CollaborativeMenu)
+            allMenus.add(listMenus.listIterator().next());
+
+        return allMenus;
     }
 }

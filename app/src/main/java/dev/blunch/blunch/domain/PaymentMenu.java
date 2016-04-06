@@ -31,8 +31,6 @@ public class PaymentMenu extends Menu {
             throw new IllegalArgumentException("The date its invalid");
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
-
-
     }
 
     public List<Dish> getDishes() {
@@ -56,25 +54,6 @@ public class PaymentMenu extends Menu {
     private boolean checkPrice(double dishPrice){
         return (dishPrice > 0);
     }
-
-    //Lista todos los menus de pago falta verificar se la lista esta vazia
-   /* public Menu[] showAllPaysMenus(Menu[] listMenus){
-        if(listMenus == null)
-            throw new IllegalArgumentException("Debe existir por lo menos un menu");
-
-        Menu AllPayMenus[] = null;
-        int j = 0;
-        for(int i = 0; i < listMenus.length; i++) {
-            if (listMenus[i].getType() == "pay"){
-                AllPayMenus[j] = listMenus[i];
-                j++;
-            }
-        }
-        if(AllPayMenus == null)
-            throw new IllegalArgumentException("Debe existir por lo menos un menu de pago");
-
-        return AllPayMenus;
-    }*/
 
 //Hice un cambio aqui
     private double totalPrice(List<Dish> dishes) {
