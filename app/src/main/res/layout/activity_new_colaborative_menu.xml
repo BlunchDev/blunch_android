@@ -36,217 +36,277 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:gravity="bottom"
+        android:weightSum="1"
+        android:background="#eae1e1">
+
         <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"/>
-                <EditText
-                    android:id="@+id/nomMenu"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="MENÚ"
-                    android:textSize="40dp"
-                    android:layout_gravity="center"
-                    android:textColor="#bfbdbd" />
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp"/>
+                android:layout_height="460dp"
+                android:paddingTop="?attr/actionBarSize"
+            android:layout_weight="1.03">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:id="@+id/dishesLayout">
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/nomMenu"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="MENÚ"
+                        android:textSize="40dp"
+                        android:layout_gravity="center"
+                        android:textColor="#bfbdbd" />
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp"/>
+                    <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="112dp">
+                        <EditText
+                            android:layout_width="336dp"
+                            android:layout_height="73dp"
+                            android:id="@+id/description"
+                            android:text="Descripción"
+                            android:maxLength="140"
+                            android:gravity="top"
+                            android:textColor="@color/colorEdit"
+                            android:layout_gravity="center" />
+                    </ScrollView>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:id="@+id/dishesLayout">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:weightSum="1">
+                                <Space
+                                    android:layout_width="40dp"
+                                    android:layout_height="match_parent"/>
+                                <EditText
+                                    android:id="@+id/dish1"
+                                    android:layout_width="200dp"
+                                    android:layout_height="wrap_content"
+                                    android:text="Plato 1"
+                                    android:textSize="30dp"
+                                    android:textColor="#bfbdbd" />
+                                <Space
+                                    android:layout_width="80dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="0.64" />
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_gravity="right">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Yo"/>
+                                <Space
+                                    android:layout_width="20dp"
+                                    android:layout_height="match_parent"/>
+                                <Switch
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/switch1"
+                                    android:background="#CD5C5C"
+                                    android:checked="false" />
+                                <Space
+                                    android:layout_width="20dp"
+                                    android:layout_height="match_parent"/>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Sugerencia"/>
+
+                                <Space
+                                    android:layout_width="20dp"
+                                    android:layout_height="match_parent"
+                                    android:background="#dfb5b5" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="20dp"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_alignParentBottom="true">
+                        <Space
+                            android:layout_width="50dp"
+                            android:layout_height="match_parent"/>
+
+                        <ImageButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="New Button"
+                            android:id="@+id/moreDishes"
+                            android:src="@drawable/sign"
+                            android:background="#eae1e1">
+                        </ImageButton>
+
+                    </LinearLayout>
+
+                    <Space
+                        android:layout_width="100dp"
+                        android:layout_height="20px" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <Space
+                            android:layout_width="100dp"
+                            android:layout_height="20px" />
+                    </LinearLayout>
+
+                    <Space
+                        android:layout_width="20px"
+                        android:layout_height="0px" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:weightSum="1"
+                        android:layout_gravity="bottom"
+                        android:gravity="bottom"
+                        android:baselineAligned="true"
+                        android:visibility="visible">
+
+                        <Space
+                            android:layout_width="20px"
+                            android:layout_height="20px" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-                            <Space
-                                android:layout_width="80dp"
-                                android:layout_height="match_parent"/>
-                            <EditText
-                                android:id="@+id/dish1"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Plato 1"
-                                android:textSize="30dp"
-                                android:textColor="#bfbdbd" />
-                        </LinearLayout>
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:layout_gravity="right">
+                            android:layout_gravity="left">
 
+                            <Space
+                                android:layout_width="40px"
+                                android:layout_height="20px" />
+
+                            <ImageButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/clock"
+                                android:id="@+id/timetablebutton"/>
+                            <Space
+                                android:layout_width="40dp"
+                                android:layout_height="20px" />
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Yo"/>
-                            <Space
-                                android:layout_width="20dp"
-                                android:layout_height="match_parent"/>
-                            <Switch
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:id="@+id/switch1"
-                                android:background="#CD5C5C"
-                                android:checked="false" />
-                            <Space
-                                android:layout_width="20dp"
-                                android:layout_height="match_parent"/>
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Sugerencia"/>
+                                android:text="00:00 h - 00:00h"
+                                android:layout_gravity="center_vertical"
+                                android:id="@+id/timeText" />
 
                             <Space
-                                android:layout_width="20dp"
-                                android:layout_height="match_parent"
-                                android:background="#dfb5b5" />
+                                android:layout_width="40px"
+                                android:layout_height="20px" />
+
+                            <ImageButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/vegetarian"
+                                android:id="@+id/vegetarian"
+                                android:background="#eae1e1" />
+                            <Space
+                                android:layout_width="40px"
+                                android:layout_height="20px" />
+                            <ImageButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/glutenfree"
+                                android:id="@+id/glutenfree" />
+
                         </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <Space
+                                    android:layout_width="40px"
+                                    android:layout_height="20px" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Dirección"/>
+                                <EditText
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Tu dirección"
+                                    android:id="@+id/adress" />
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <Space
+                                    android:layout_width="40px"
+                                    android:layout_height="20px" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Ciudad"/>
+                                <EditText
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Tu ciudad"
+                                    android:id="@+id/city" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+
                     </LinearLayout>
                 </LinearLayout>
 
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp"/>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <Space
-                        android:layout_width="100dp"
-                        android:layout_height="match_parent"/>
-
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="New Button"
-                        android:id="@+id/moreDishes"
-                        android:src="@drawable/sign"
-                        android:background="#ffffff">
-                    </ImageButton>
-
-                </LinearLayout>
-
-                <Space
-                    android:layout_width="100dp"
-                    android:layout_height="20px" />
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <Space
-                        android:layout_width="100dp"
-                        android:layout_height="20px" />
-                </LinearLayout>
-            </LinearLayout>
-        </ScrollView>
+            </ScrollView>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:orientation="vertical"
-            android:background="#dfb5b5"
-            android:layout_gravity="bottom">
-
-            <Space
-                android:layout_width="20px"
-                android:layout_height="20px" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:background="#dfb5b5">
-
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/clock"
-                    android:id="@+id/timetablebutton"
-                    android:layout_gravity="center_vertical"
-                    android:background="#dfb5b5" />
-                <Space
-                    android:layout_width="40dp"
-                    android:layout_height="20px" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="00:00 h - 00:00h"
-                    android:layout_gravity="center_vertical"
-                    android:id="@+id/timeText" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="#dfb5b5">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <Space
-                        android:layout_width="40px"
-                        android:layout_height="20px" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Dirección"/>
-                    <EditText
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Tu dirección"
-                        android:id="@+id/adress" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <Space
-                        android:layout_width="40px"
-                        android:layout_height="20px" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Ciudad"/>
-                    <EditText
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Tu ciudad"
-                        android:id="@+id/city" />
-                </LinearLayout>
-
-            </LinearLayout>
-
+            android:layout_height="wrap_content">
             <Button
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:text="PUBLICA"
                 android:gravity="center"
                 android:background="#CD5C5C"
                 android:textSize="24dp"
-                android:id="@+id/publish" />
+                android:id="@+id/publish"
+                android:layout_weight="0.15"
+                android:layout_gravity="bottom" />
         </LinearLayout>
     </LinearLayout>
 
