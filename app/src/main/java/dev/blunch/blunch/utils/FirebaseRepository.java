@@ -66,6 +66,7 @@ public abstract class FirebaseRepository<T extends Entity> implements Repository
      * @param key Key that new object will have.
      */
     public void insertWithId(T t, String key) {
+        t.setId(key);
         firebase.child(getObjectReference()).child(key).setValue(t);
         map.put(key, t);
     }
@@ -78,19 +79,16 @@ public abstract class FirebaseRepository<T extends Entity> implements Repository
     public void delete(String id) {
         Firebase mRef = firebase.child(getObjectReference());
         mRef.child(id).removeValue();
+        map.remove(id);
     }
 
     /**
-     * Delete a relation of an object of this repository.
-     *
-     * @param idParent   Key of parent node.
-     * @param reference  Reference of the relation.
-     * @param idToDelete Key of node that you want to delete.
+     * Update specific item of repository
+     * @param item item that you want to update
      */
-    public void delete(String idParent, String reference, String idToDelete) {
-        Firebase mRef = firebase.child(getObjectReference());
-        mRef.child(idParent).child(reference).child(idToDelete).removeValue();
-
+    public void update(T item) {
+        delete(item.getId());
+        insertWithId(item, item.getId());
     }
 
     /**
@@ -108,44 +106,76 @@ public abstract class FirebaseRepository<T extends Entity> implements Repository
      */
     public abstract String getObjectReference();
 
+    /**
+     * Get specific item of this repository
+     * @param id key that identifies the item
+     * @return Item that you want to get
+     */
     public T get(String id) {
         return map.get(id);
     }
 
+    /**
+     * Get all repository
+     * @return a list that contains all values of this repository
+     */
     public List<T> all() {
         return new ArrayList<>(map.values());
     }
 
-
+    /**
+     * Listener that controls when a child is added
+     * @param dataSnapshot data
+     */
     @Override
     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
         map.put(dataSnapshot.getKey(), convert(dataSnapshot));
         listener.onChanged(OnChangedListener.EventType.Added);
     }
 
+    /**
+     * Listener that controls when a child is changed
+     * @param dataSnapshot data
+     */
     @Override
     public void onChildChanged(DataSnapshot dataSnapshot, String s) {
         map.put(dataSnapshot.getKey(), convert(dataSnapshot));
         listener.onChanged(OnChangedListener.EventType.Changed);
     }
 
+    /**
+     * Listener that controls when a child is removed
+     * @param dataSnapshot data
+     */
     @Override
     public void onChildRemoved(DataSnapshot dataSnapshot) {
         map.remove(dataSnapshot.getKey());
         listener.onChanged(OnChangedListener.EventType.Removed);
     }
 
+    /**
+     * Listener that controls when a child is moved
+     * @param dataSnapshot data
+     */
     @Override
     public void onChildMoved(DataSnapshot dataSnapshot, String s) {
         map.put(dataSnapshot.getKey(), convert(dataSnapshot));
         listener.onChanged(OnChangedListener.EventType.Moved);
     }
 
+    /**
+     * Listener that controls when it is occurred an error
+     * @param firebaseError error
+     */
     @Override
     public void onCancelled(FirebaseError firebaseError) {
         Log.e(TAG, firebaseError.getMessage(), firebaseError.toException());
     }
 
+    /**
+     * Set Listener of Firebase reference
+     * @param listener new listener to set
+     */
     public void setOnChangedListener(OnChangedListener listener) {
         this.listener = listener;
     }
