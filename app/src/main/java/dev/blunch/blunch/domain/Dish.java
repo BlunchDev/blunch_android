@@ -3,13 +3,14 @@ package dev.blunch.blunch.domain;
 import dev.blunch.blunch.utils.Entity;
 
 /**
- * Created by jmotger on 5/04/16.
+ * Dish Class
+ * @author jmotger
  */
 public class Dish implements Entity {
 
-    private String id;
-    private String name;
-    private Double price;
+    private String  id;
+    private String  name;
+    private Double  price;
 
     public Dish() {}
 
