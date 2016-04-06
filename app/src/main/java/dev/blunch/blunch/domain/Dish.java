@@ -14,6 +14,11 @@ public class Dish implements Entity {
 
     public Dish() {}
 
+    public Dish (String name) {
+        this.name = name;
+        this.price = 0.;
+    }
+
     public Dish (String name, Double price) {
         this.name = name;
         if(price < 0)
