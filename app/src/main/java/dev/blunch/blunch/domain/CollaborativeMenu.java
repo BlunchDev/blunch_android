@@ -21,12 +21,15 @@ public class CollaborativeMenu extends Menu {
                              Set<String> offeredDishes, Set<String> suggestedDishes) {
 
         super(name, author, description, localization, dateStart, dateEnd);
-
-        for (String dishKey : offeredDishes) {
-            this.offeredDishes.put(dishKey, true);
+        if(offeredDishes!=null) {
+            for (String dishKey : offeredDishes) {
+                this.offeredDishes.put(dishKey, true);
+            }
         }
-        for (String dishKey : suggestedDishes) {
-            this.suggestedDishes.put(dishKey, true);
+        if(suggestedDishes!=null) {
+            for (String dishKey : suggestedDishes) {
+                this.suggestedDishes.put(dishKey, true);
+            }
         }
     }
 

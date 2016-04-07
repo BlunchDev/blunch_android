@@ -56,8 +56,4 @@ public class CollaborativeMenuRepository extends FirebaseRepository<Collaborativ
     public String getObjectReference() {
         return "collaborativeMenu";
     }
-
-    public void close() {
-        firebase.child(getObjectReference()).removeValue();
-    }
 }

@@ -1,5 +1,7 @@
 package dev.blunch.blunch.utils;
 
+import java.util.List;
+
 /**
  * Created by casassg on 07/04/16.
  *
@@ -24,6 +26,18 @@ public abstract class Service<T extends Entity> {
 
     public void delete(String key){
         repository.delete(key);
+    }
+
+    public int getAmount(){
+        return repository.all().size();
+    }
+
+    public List<T> getAll() {
+        return repository.all();
+    }
+
+    public void setOnChangedListener(Repository.OnChangedListener listener){
+        repository.setOnChangedListener(listener);
     }
 
 }

@@ -1,10 +1,7 @@
 package dev.blunch.blunch.domain;
 
-import android.util.Pair;
-
 import java.util.Date;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -22,8 +19,10 @@ public class PaymentMenu extends Menu {
                              Date dateStart, Date dateEnd, Set<String> dishes) {
         super(name, author, description, localization, dateStart, dateEnd);
 
-        for (String dish : dishes) {
-            this.dishes.put(dish, true);
+        if(dishes!=null) {
+            for (String dish : dishes) {
+                this.dishes.put(dish, true);
+            }
         }
 
     }
