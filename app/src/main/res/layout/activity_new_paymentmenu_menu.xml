@@ -94,7 +94,7 @@
                             android:orientation="horizontal"
                             android:weightSum="1">
                             <Space
-                                android:layout_width="40dp"
+                                android:layout_width="31dp"
                                 android:layout_height="match_parent"/>
                             <EditText
                                 android:id="@+id/dish1"
@@ -103,10 +103,15 @@
                                 android:text="Plato 1"
                                 android:textSize="30dp"
                                 android:textColor="#bfbdbd" />
-                            <Space
-                                android:layout_width="80dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="0.64" />
+
+                            <EditText
+                                android:id="@+id/precio"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Precio"
+                                android:textSize="30dp"
+                                android:textColor="#bfbdbd"
+                                android:layout_weight="1" />
 
                         </LinearLayout>
                         <LinearLayout
@@ -115,31 +120,6 @@
                             android:orientation="horizontal"
                             android:layout_gravity="right">
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Yo"/>
-                            <Space
-                                android:layout_width="20dp"
-                                android:layout_height="match_parent"/>
-                            <Switch
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:id="@+id/switch1"
-                                android:background="#CD5C5C"
-                                android:checked="false" />
-                            <Space
-                                android:layout_width="20dp"
-                                android:layout_height="match_parent"/>
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Sugerencia"/>
-
-                            <Space
-                                android:layout_width="20dp"
-                                android:layout_height="match_parent"
-                                android:background="#dfb5b5" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>

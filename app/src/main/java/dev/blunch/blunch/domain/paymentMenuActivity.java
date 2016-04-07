@@ -273,6 +273,6 @@ public class paymentMenuActivity extends AppCompatActivity {
                     finish,
                     offeredDishKeys,
                     suggestedDishKeys);
-            collaborativeMenuRepository.insert(collaborativeMenu);
+            MenuRepository.insert(collaborativeMenu);
         }
     }
