@@ -6,17 +6,16 @@ package dev.blunch.blunch.utils;
  * @author casassg
  */
 public abstract class Service<T extends Entity> {
+
     protected final Repository<T> repository;
 
     public Service (Repository<T> repository){
         this.repository = repository;
     }
 
-    public T save(T item){
-        if(repository.exists(item.getId())){
-            return repository.update(item);
-        }
-         return repository.insert(item);
+    public T save(T item) {
+        if (repository.exists(item.getId())) return repository.update(item);
+        return repository.insert(item);
     }
 
     public T get(String key) {
