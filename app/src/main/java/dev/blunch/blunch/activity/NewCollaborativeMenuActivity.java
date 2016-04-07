@@ -45,6 +45,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_colaborative_menu);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         dishRepository = new DishRepository(getApplicationContext());
         collaborativeMenuRepository = new CollaborativeMenuRepository(getApplicationContext());
         initialize();
