@@ -93,7 +93,7 @@ public class CollaborativeDishLayout extends LinearLayout{
         h2.addView(me, meLayout);
 
         Space space2 = new Space(context);
-        LinearLayout.LayoutParams space2Layout = new LinearLayout.LayoutParams(20, ViewGroup.LayoutParams.MATCH_PARENT);
+        LinearLayout.LayoutParams space2Layout = new LinearLayout.LayoutParams(40, ViewGroup.LayoutParams.MATCH_PARENT);
         h2.addView(space2, space2Layout);
 
         switch1 = new Switch(context);
@@ -103,7 +103,7 @@ public class CollaborativeDishLayout extends LinearLayout{
         h2.addView(switch1, switchLayout);
 
         Space space3 = new Space(context);
-        LinearLayout.LayoutParams space3Layout = new LinearLayout.LayoutParams(20, ViewGroup.LayoutParams.MATCH_PARENT);
+        LinearLayout.LayoutParams space3Layout = new LinearLayout.LayoutParams(40, ViewGroup.LayoutParams.MATCH_PARENT);
         h2.addView(space3, space3Layout);
 
         TextView sug = new TextView(context);

@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -63,6 +64,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
     private void initialize() {
         iHour = iMinut = fHour = fMinut = 0;
         numDish = 1;
+        updateTime(0,0,0,0);
 
         menuName = (EditText) findViewById(R.id.nomMenu);
         menuName.setOnClickListener(new View.OnClickListener() {
@@ -89,7 +91,6 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
                 moreDishesLayout.addView(a);
                 ImageButton close = (ImageButton) findViewById(a.getId());
                 idClose.add(close);
-
             }
         });
 
@@ -104,13 +105,11 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
             }
         });
 
-        iHour = iMinut = fHour = fMinut = 0;
-
         Button publish = (Button) findViewById(R.id.publish);
         publish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // createCollaborativeMenu();
+                createCollaborativeMenu();
             }
         });
 
@@ -155,13 +154,80 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
 
     private void updateTime(int iHour, int iMinut, int fHour, int fMinut) {
         TextView mDateDisplay = (TextView) findViewById(R.id.timeText);
-        if(iHour % 10 >= 1) {
-            mDateDisplay.setText(iHour + ":" + iMinut + "h - " + fHour + ":" + fMinut+"h");
+        mDateDisplay.setText(iHour + ":" + iMinut + "h - " + fHour + ":" + fMinut+"h");
+        /*if(iHour % 10 >= 1) {
+            if(iMinut % 10 >=1){
+                if(fHour % 10 >= 1){
+                    if(fMinut % 10 >= 1){
+                        mDateDisplay.setText(iHour + ":" + iMinut + "h - " + fHour + ":" + fMinut+"h");
+                    }
+                    else{
+                        mDateDisplay.setText(iHour + ":" + iMinut + "h - " + fHour + ":0" + fMinut+"h");
+                    }
+                }
+                else{
+                    if(fMinut % 10 >= 1){
+                        mDateDisplay.setText(iHour + ":" + iMinut + "h - 0" + fHour + ":" + fMinut+"h");
+                    }
+                    else{
+                        mDateDisplay.setText(iHour + ":" + iMinut + "h - 0" + fHour + ":0" + fMinut+"h");
+                    }
+                }
+            }
+            else {
+                if (fHour % 10 >= 1) {
+                    if (fMinut % 10 >= 1) {
+                        mDateDisplay.setText(iHour + ":0" + iMinut + "h - " + fHour + ":" + fMinut+"h");
+                    }
+                    else {
+                        mDateDisplay.setText(iHour + ":0" + iMinut + "h - " + fHour + ":0" + fMinut+"h");
+                    }
+                } else {
+                    if (fMinut % 10 >= 1) {
+                        mDateDisplay.setText(iHour + ":0" + iMinut + "h - 0" + fHour + ":" + fMinut+"h");
+
+                    } else {
+                        mDateDisplay.setText(iHour + ":0" + iMinut + "h - 0" + fHour + ":0" + fMinut+"h");
+
+                    }
+                }
+            }
         }
         else{
-            mDateDisplay.setText("0"+iHour + ":" + iMinut + "h - " + fHour + ":" + fMinut+"h");
-
-        }
+            if(iMinut % 10 >=1){
+                if(fHour % 10 >= 1){
+                    if(fMinut % 10 >= 1){
+                        mDateDisplay.setText("0"+iHour + ":" + iMinut + "h - " + fHour + ":" + fMinut+"h");
+                    }
+                    else{
+                        mDateDisplay.setText("0"+iHour + ":" + iMinut + "h - " + fHour + ":0" + fMinut+"h");
+                    }
+                }
+                else{
+                    if(fMinut % 10 >= 1){
+                        mDateDisplay.setText("0"+iHour + ":" + iMinut + "h - 0" + fHour + ":" + fMinut+"h");
+                    }
+                    else{
+                        mDateDisplay.setText("0"+iHour + ":" + iMinut + "h - 0" + fHour + ":0" + fMinut+"h");
+                    }
+                }
+            }
+            else {
+                if (fHour % 10 >= 1) {
+                    if (fMinut % 10 >= 1) {
+                        mDateDisplay.setText("0"+iHour + ":0" + iMinut + "h - " + fHour + ":" + fMinut+"h");
+                    } else {
+                        mDateDisplay.setText("0"+iHour + ":0" + iMinut + "h - " + fHour + ":0" + fMinut+"h");
+                    }
+                } else {
+                    if (fMinut % 10 >= 1) {
+                        mDateDisplay.setText("0"+iHour + ":0" + iMinut + "h - 0" + fHour + ":" + fMinut+"h");
+                    } else {
+                        mDateDisplay.setText("0"+iHour + ":0" + iMinut + "h - 0" + fHour + ":0" + fMinut+"h");
+                    }
+                }
+            }
+        }*/
         Calendar cStart = Calendar.getInstance();
         cStart.set(Calendar.HOUR_OF_DAY,iHour);
         cStart.set(Calendar.MINUTE, iMinut);
@@ -222,7 +288,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
     private void createCollaborativeMenu() {
 
         final String author = "Admin";
-        EditText nameMenu = (EditText) findViewById(R.id.nomMenu);
+        //EditText nameMenu = (EditText) findViewById(R.id.nomMenu);
 
         EditText address = (EditText) findViewById(R.id.adress);
         EditText city = (EditText) findViewById(R.id.city);
@@ -230,44 +296,60 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
 
         EditText description = (EditText) findViewById(R.id.description);
 
+
+
         Set<String> offeredDishKeys = new LinkedHashSet<>();
         Set<String> suggestedDishKeys = new LinkedHashSet<>();
 
         EditText dish1 = (EditText) findViewById(R.id.dish1);
         Switch who1 = (Switch) findViewById(R.id.switch1);
 
-        Dish firstDish = new Dish(dish1.getText().toString(), 0.0);
-        dishRepository.insert(firstDish);
-        if(!who1.getShowText()) {
-            offeredDishKeys.add(firstDish.getId());
-        }
-        else{
-            suggestedDishKeys.add(firstDish.getId());
-        }
+        if(menuName.getText().toString().equals("") || address.getText().toString().equals("")
+                || address.getText().toString().equals("") || address.getText().toString().equals("Tu dirección")
+                || city.getText().toString().equals("") || city.getText().toString().equals("Tu ciudad")
+                || description.getText().toString().equals("") || description.getText().equals("descripción")
+                || dish1.getText().toString().equals("") || dish1.getText().toString().equals("Plato 1")){
 
-        int n = 2;
-        for (CollaborativeDishLayout d : myDishes) {
-            if(!d.getMenuName().equals("Plato "+n)) {
-                Dish dish = new Dish(d.getMenuName(), 0.0);
-                dishRepository.insert(dish);
-                if(!d.getSuggerencia().toString().equals("Sugerencia")) {
-                    offeredDishKeys.add(dish.getId());
-                }
-                else{
-                    suggestedDishKeys.add(dish.getId());
-                }
+            Toast.makeText(this, "Campos incompletos",
+                    Toast.LENGTH_LONG).show();
+        }
+        else if(start.getTime()>=finish.getTime()){
+            Toast.makeText(this, "Hora de inicio más pequeña o igual que hora final",
+                    Toast.LENGTH_LONG).show();
+        }
+        else {
+
+            Dish firstDish = new Dish(dish1.getText().toString(), 0.0);
+            dishRepository.insert(firstDish);
+            if (!who1.getShowText()) {
+                offeredDishKeys.add(firstDish.getId());
+            } else {
+                suggestedDishKeys.add(firstDish.getId());
             }
-            n++;
-        }
 
-        CollaborativeMenu collaborativeMenu = new CollaborativeMenu(    nameMenu.getText().toString(),
-                                                                        author,
-                                                                        description.getText().toString(),
-                                                                        localization,
-                                                                        start,
-                                                                        finish,
-                                                                        offeredDishKeys,
-                                                                        suggestedDishKeys);
-        collaborativeMenuRepository.insert(collaborativeMenu);
+            int n = 2;
+            for (CollaborativeDishLayout d : myDishes) {
+                if (!d.getMenuName().equals("Plato " + n)) {
+                    Dish dish = new Dish(d.getMenuName(), 0.0);
+                    dishRepository.insert(dish);
+                    if (!d.getSuggerencia().toString().equals("Sugerencia")) {
+                        offeredDishKeys.add(dish.getId());
+                    } else {
+                        suggestedDishKeys.add(dish.getId());
+                    }
+                }
+                n++;
+            }
+
+            CollaborativeMenu collaborativeMenu = new CollaborativeMenu(menuName.getText().toString(),
+                    author,
+                    description.getText().toString(),
+                    localization,
+                    start,
+                    finish,
+                    offeredDishKeys,
+                    suggestedDishKeys);
+            collaborativeMenuRepository.insert(collaborativeMenu);
+        }
     }
 }
