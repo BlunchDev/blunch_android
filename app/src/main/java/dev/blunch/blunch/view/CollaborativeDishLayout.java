@@ -2,7 +2,6 @@ package dev.blunch.blunch.view;
 
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.media.Image;
 import android.os.Build;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -24,7 +23,7 @@ import dev.blunch.blunch.R;
  */
 public class CollaborativeDishLayout extends LinearLayout{
 
-    private EditText nomPlat;
+    private EditText menuName;
     private Switch switch1;
     private ImageButton close;
 
@@ -41,12 +40,22 @@ public class CollaborativeDishLayout extends LinearLayout{
         LinearLayout.LayoutParams spaceLayout = new LinearLayout.LayoutParams(80, ViewGroup.LayoutParams.MATCH_PARENT);
         h1.addView(space1, spaceLayout);
 
-        nomPlat = new EditText(context);
-        nomPlat.setText("Plato " + num);
-        nomPlat.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
-        nomPlat.setTextColor(getResources().getColor(R.color.colorEdit));
+        menuName = new EditText(context);
+        menuName.setText("Plato " + num);
+        menuName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
+        menuName.setTextColor(getResources().getColor(R.color.colorEdit));
         LinearLayout.LayoutParams nomPlatLayout = new LinearLayout.LayoutParams(400, ViewGroup.LayoutParams.WRAP_CONTENT);
-        h1.addView(nomPlat, nomPlatLayout);
+        menuName.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (menuName.getText().toString().equals("MENÚ")) {
+                    menuName.setText("");
+                    menuName.setTextColor(getResources().getColor(R.color.black));
+                }
+            }
+        });
+
+        h1.addView(menuName, nomPlatLayout);
 
         Space space5 = new Space(context);
         LinearLayout.LayoutParams space5Layout = new LinearLayout.LayoutParams(100, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -58,7 +67,6 @@ public class CollaborativeDishLayout extends LinearLayout{
         close.setScaleType(ImageView.ScaleType.FIT_XY);
         close.setScaleX(0.5f);
         close.setScaleY(0.5f);
-
 
         LinearLayout.LayoutParams closeLayout = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         close.setOnClickListener(new OnClickListener() {
@@ -112,8 +120,8 @@ public class CollaborativeDishLayout extends LinearLayout{
 
     }
 
-    public String getNomPlat(){
-        return nomPlat.getText().toString();
+    public String getMenuName(){
+        return menuName.getText().toString();
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)

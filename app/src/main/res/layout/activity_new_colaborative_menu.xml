@@ -54,12 +54,13 @@
 
                     <EditText
                         android:id="@+id/nomMenu"
-                        android:layout_width="wrap_content"
+                        android:layout_width="200dp"
                         android:layout_height="wrap_content"
                         android:text="MENÚ"
                         android:textSize="40dp"
                         android:layout_gravity="center"
-                        android:textColor="#bfbdbd" />
+                        android:textColor="#bfbdbd"
+                        android:gravity="center" />
                     <Space
                         android:layout_width="match_parent"
                         android:layout_height="10dp"/>

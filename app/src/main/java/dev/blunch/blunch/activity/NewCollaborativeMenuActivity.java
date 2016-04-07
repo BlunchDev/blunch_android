@@ -1,10 +1,13 @@
 package dev.blunch.blunch.activity;
 
+import android.annotation.TargetApi;
 import android.app.TimePickerDialog;
-import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,7 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import com.firebase.client.Firebase;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -35,6 +38,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
     private Date start, finish;
     private ArrayList<CollaborativeDishLayout> myDishes = new ArrayList<>();
     private List<ImageButton> idClose = new ArrayList<>();
+    private EditText menuName;
 
     private DishRepository dishRepository;
     private CollaborativeMenuRepository collaborativeMenuRepository;
@@ -60,12 +64,17 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         iHour = iMinut = fHour = fMinut = 0;
         numDish = 1;
 
-        final EditText menuName = (EditText) findViewById(R.id.nomMenu);
+        menuName = (EditText) findViewById(R.id.nomMenu);
         menuName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (menuName.getText().equals("MENÚ")) {
+                if (menuName.getText().toString().equals("MENÚ")) {
                     menuName.setText("");
+                    menuName.setTextColor(getResources().getColor(R.color.black));
+                }
+                else if(menuName.getText().toString().equals("")){
+                    menuName.setText("MENÚ");
+                    menuName.setTextColor(getResources().getColor(R.color.colorEdit));
                 }
             }
         });
@@ -80,13 +89,6 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
                 moreDishesLayout.addView(a);
                 ImageButton close = (ImageButton) findViewById(a.getId());
                 idClose.add(close);
-                /*close.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        moreDishesLayout.removeView(a);
-                    }
-                });*/
-
 
             }
         });
@@ -98,7 +100,6 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         timeTable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Dialog amb time picker-> en tornar del dialog l'horari queda escrit a hora inici i hora fi
                 showDialogTime();
             }
         });
@@ -109,7 +110,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         publish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createCollaborativeMenu();
+               // createCollaborativeMenu();
             }
         });
 
@@ -217,6 +218,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         return a;
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void createCollaborativeMenu() {
 
         final String author = "Admin";
@@ -228,35 +230,47 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
 
         EditText description = (EditText) findViewById(R.id.description);
 
-        // TODO Hacer una funcion que convierta a Date las fechas.
-        Date startDate = new Date();
-        Date endDate = new Date();
-
-        Set<String> dishKeys = new LinkedHashSet<>();
+        Set<String> offeredDishKeys = new LinkedHashSet<>();
+        Set<String> suggestedDishKeys = new LinkedHashSet<>();
 
         EditText dish1 = (EditText) findViewById(R.id.dish1);
         Switch who1 = (Switch) findViewById(R.id.switch1);
 
         // TODO Pillar el resultado de cada switch y separar por offered and suggested.
+        // ho  he començat a fer pero m'inserta els plats als dos llocs!!
 
         Dish firstDish = new Dish(dish1.getText().toString(), 0.0);
         dishRepository.insert(firstDish);
-        dishKeys.add(firstDish.getId());
+        if(!who1.getShowText()) {
+            offeredDishKeys.add(firstDish.getId());
+        }
+        else{
+            suggestedDishKeys.add(firstDish.getId());
+        }
 
+        int n = 2;
         for (CollaborativeDishLayout d : myDishes) {
-            Dish dish = new Dish(d.getNomPlat(), 0.0);
-            dishRepository.insert(dish);
-            dishKeys.add(dish.getId());
+            if(!d.getMenuName().equals("Plato "+n)) {
+                Dish dish = new Dish(d.getMenuName(), 0.0);
+                dishRepository.insert(dish);
+                if(!d.getSuggerencia().toString().equals("Sugerencia")) {
+                    offeredDishKeys.add(dish.getId());
+                }
+                else{
+                    suggestedDishKeys.add(dish.getId());
+                }
+            }
+            n++;
         }
 
         CollaborativeMenu collaborativeMenu = new CollaborativeMenu(    nameMenu.getText().toString(),
                                                                         author,
                                                                         description.getText().toString(),
                                                                         localization,
-                                                                        startDate,
-                                                                        endDate,
-                                                                        dishKeys,
-                                                                        dishKeys);
+                                                                        start,
+                                                                        finish,
+                                                                        offeredDishKeys,
+                                                                        offeredDishKeys);
         collaborativeMenuRepository.insert(collaborativeMenu);
     }
 }
