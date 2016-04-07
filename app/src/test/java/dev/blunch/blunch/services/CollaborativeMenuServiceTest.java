@@ -101,13 +101,13 @@ public class CollaborativeMenuServiceTest {
     @Test
     public void onSaveExisting() {
         assertEquals("Victor", oldMenu.getAuthor());
-        String newName = "Manuel";
-        oldMenu.setName(newName);
+        String newAuthor = "Manuel";
+        oldMenu.setAuthor(newAuthor);
         String oldID = oldMenu.getId();
         service.save(oldMenu);
         assertEquals(oldID, oldMenu.getId());
         assertEquals(oldID,service.get(oldMenu.getId()).getId());
-        assertEquals(newName,service.get(oldMenu.getId()).getName());
+        assertEquals(newAuthor,service.get(oldMenu.getId()).getAuthor());
 
     }
 
@@ -134,12 +134,12 @@ public class CollaborativeMenuServiceTest {
         assertEquals(null, lastChangedType);
         assertEquals(1,service.getAmount());
         assertEquals("Victor", oldMenu.getAuthor());
-        String newName = "Manuel";
-        oldMenu.setName(newName);
+        String newAuthor = "Manuel";
+        oldMenu.setAuthor(newAuthor);
         repository.simulateExternalChange(oldMenu);
         assertEquals(1, service.getAmount());
         assertEquals(Repository.OnChangedListener.EventType.Changed,lastChangedType);
-        assertEquals(newName,service.get(oldMenu.getId()).getName());
+        assertEquals(newAuthor,service.get(oldMenu.getId()).getAuthor());
     }
 
     @Test
