@@ -16,7 +16,7 @@ import dev.blunch.blunch.repositories.DishRepository;
 public class PaymentMenu extends Menu {
 
     private Map<String, Object> dishes = new LinkedHashMap<>();
-    private DishRepository dr;
+    //private DishRepository dr;
     public PaymentMenu() {}
 
     public PaymentMenu(String name, String author, String description, String localization,
@@ -43,18 +43,21 @@ public class PaymentMenu extends Menu {
     }
 
     public void addDish(String dish) {
+
         this.dishes.put(dish, true);
     }
 
     public void removeDish(String dish) {
+
         this.dishes.remove(dish);
     }
 
     public boolean containsDish(String dish) {
+
         return this.dishes.containsKey(dish);
     }
 
-    private float totalPrice(Set<String> dishes ) {
+   /* private float totalPrice(Set<String> dishes ) {
         if(dishes == null)
             throw new IllegalArgumentException("Debe existir por lo menos un plato");
         float sum = 0;
@@ -62,5 +65,5 @@ public class PaymentMenu extends Menu {
             sum += dr.get(dishes.iterator().next()).getPrice();
         }
         return sum;
-    }
+    }*/
 }
