@@ -12,6 +12,7 @@ import java.util.List;
 
 import dev.blunch.blunch.BuildConfig;
 import dev.blunch.blunch.domain.CollaborativeMenu;
+import dev.blunch.blunch.domain.PaymentMenu;
 import dev.blunch.blunch.utils.MockRepository;
 import dev.blunch.blunch.utils.Repository;
 
@@ -24,27 +25,27 @@ import static org.junit.Assert.assertEquals;
  */
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class)
-public class CollaborativeMenuServiceTest {
+public class PaymentMenuServiceTest {
 
-    private CollaborativeMenuService service;
-    private MockRepository<CollaborativeMenu> repository;
-    private CollaborativeMenu newMenu;
-    private CollaborativeMenu oldMenu;
+    private PaymentMenuService service;
+    private MockRepository<PaymentMenu> repository;
+    private PaymentMenu newMenu;
+    private PaymentMenu oldMenu;
     private Repository.OnChangedListener.EventType lastChangedType;
 
     @Before
     public void setUp() {
-        repository = new MockRepository<CollaborativeMenu>();
-        service = new CollaborativeMenuService(repository);
-        newMenu = new CollaborativeMenu(
+        repository = new MockRepository<PaymentMenu>();
+        service = new PaymentMenuService(repository);
+        newMenu = new PaymentMenu(
                 "Menu de micro de la FIB",
                 "Encarna", "És un menu de micro de la FIB",
-                "DA FIB", new Date(10), new Date(), null, null
+                "DA FIB", new Date(10), new Date(), null
         );
-        oldMenu = new CollaborativeMenu(
+        oldMenu = new PaymentMenu(
                 "Menu del vertex",
                 "Victor", "Tinc micros tambe",
-                "Vertex", new Date(1231), new Date(), null,null
+                "Vertex", new Date(1231), new Date(), null
         );
         repository.insert(oldMenu);
         lastChangedType = null;
