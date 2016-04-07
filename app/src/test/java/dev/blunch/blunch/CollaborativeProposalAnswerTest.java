@@ -67,7 +67,7 @@ public class CollaborativeProposalAnswerTest {
         suggestedDishes = new HashSet<>();
 
         repositoryDish.insert(dish1);
-        repositoryDish.insert(dish2;)
+        repositoryDish.insert(dish2);
 
         offeredDishes.add(dish1.getId());
         suggestedDishes.add(dish2.getId());
