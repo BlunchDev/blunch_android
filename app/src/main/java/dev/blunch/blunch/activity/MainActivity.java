@@ -35,9 +35,6 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         Firebase.setAndroidContext(this);
-
-
-
     }
 
     @Override

@@ -16,8 +16,15 @@ import com.firebase.client.Firebase;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
+
 import dev.blunch.blunch.R;
+import dev.blunch.blunch.domain.CollaborativeMenu;
+import dev.blunch.blunch.domain.Dish;
+import dev.blunch.blunch.repositories.CollaborativeMenuRepository;
+import dev.blunch.blunch.repositories.DishRepository;
 import dev.blunch.blunch.view.CollaborativeDishLayout;
 
 public class NewCollaborativeMenuActivity extends AppCompatActivity {
@@ -27,6 +34,9 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
     private Date start, finish;
     private ArrayList<CollaborativeDishLayout> myDishes = new ArrayList<>();
     private List<ImageButton> idClose = new ArrayList<>();
+
+    private final DishRepository dishRepository = new DishRepository(this);
+    private final CollaborativeMenuRepository collaborativeMenuRepository = new CollaborativeMenuRepository(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +107,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         publish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createColaborativeMenu();
+                createCollaborativeMenu();
             }
         });
 
@@ -205,31 +215,46 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         return a;
     }
 
-    private void createColaborativeMenu() {
+    private void createCollaborativeMenu() {
 
+        final String author = "Admin";
         EditText nameMenu = (EditText) findViewById(R.id.nomMenu);
-        EditText adress = (EditText) findViewById(R.id.adress);
+
+        EditText address = (EditText) findViewById(R.id.adress);
         EditText city = (EditText) findViewById(R.id.city);
+        final String localization = address.getText().toString() + ", " + city.getText().toString();
+
+        EditText description = (EditText) findViewById(R.id.description);
+
+        // TODO Hacer una funcion que convierta a Date las fechas.
+        Date startDate = new Date();
+        Date endDate = new Date();
+
+        Set<String> dishKeys = new LinkedHashSet<>();
 
         EditText dish1 = (EditText) findViewById(R.id.dish1);
         Switch who1 = (Switch) findViewById(R.id.switch1);
 
+        // TODO Pillar el resultado de cada switch y separar por offered and suggested.
+
+        Dish firstDish = new Dish(dish1.getText().toString(), 0.0);
+        dishRepository.insert(firstDish);
+        dishKeys.add(firstDish.getId());
+
         for (CollaborativeDishLayout d : myDishes) {
-            // TODO Llegir plats del Layout
-            System.out.println("nom plat: "+ d.getNomPlat());
+            Dish dish = new Dish(d.getNomPlat(), 0.0);
+            dishRepository.insert(dish);
+            dishKeys.add(dish.getId());
         }
 
-        /*CollaborativeDish d1 = new CollaborativeDish(); //canviar plat
-        d1.setName(dish1.getText().toString());
-        d1.setSuggested(!who1.getShowText());
-
-
-        CollaborativeMenu m = new CollaborativeMenu();
-        m.setName(nameMenu.getText().toString());
-        m.setAddress(adress.getText().toString()+", "+city.getText().toString());
-        //falta descripcio
-*/
-
-
+        CollaborativeMenu collaborativeMenu = new CollaborativeMenu(    nameMenu.getText().toString(),
+                                                                        author,
+                                                                        description.getText().toString(),
+                                                                        localization,
+                                                                        startDate,
+                                                                        endDate,
+                                                                        dishKeys,
+                                                                        dishKeys);
+        collaborativeMenuRepository.insert(collaborativeMenu);
     }
 }
