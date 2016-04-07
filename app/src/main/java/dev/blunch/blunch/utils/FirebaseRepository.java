@@ -130,7 +130,7 @@ public abstract class FirebaseRepository<T extends Entity> implements Repository
     @Override
     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
         map.put(dataSnapshot.getKey(), convert(dataSnapshot));
-        listener.onChanged(OnChangedListener.EventType.Added);
+        notifyChange(OnChangedListener.EventType.Added);
     }
 
     /**
@@ -140,7 +140,7 @@ public abstract class FirebaseRepository<T extends Entity> implements Repository
     @Override
     public void onChildChanged(DataSnapshot dataSnapshot, String s) {
         map.put(dataSnapshot.getKey(), convert(dataSnapshot));
-        listener.onChanged(OnChangedListener.EventType.Changed);
+        notifyChange(OnChangedListener.EventType.Changed);
     }
 
     /**
@@ -150,7 +150,7 @@ public abstract class FirebaseRepository<T extends Entity> implements Repository
     @Override
     public void onChildRemoved(DataSnapshot dataSnapshot) {
         map.remove(dataSnapshot.getKey());
-        listener.onChanged(OnChangedListener.EventType.Removed);
+        notifyChange(OnChangedListener.EventType.Removed);
     }
 
     /**
@@ -160,7 +160,13 @@ public abstract class FirebaseRepository<T extends Entity> implements Repository
     @Override
     public void onChildMoved(DataSnapshot dataSnapshot, String s) {
         map.put(dataSnapshot.getKey(), convert(dataSnapshot));
-        listener.onChanged(OnChangedListener.EventType.Moved);
+        notifyChange(OnChangedListener.EventType.Moved);
+    }
+
+    private void notifyChange(OnChangedListener.EventType moved) {
+        if (listener!=null){
+            listener.onChanged(moved);
+        }
     }
 
     /**
