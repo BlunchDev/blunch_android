@@ -52,8 +52,4 @@ public class PaymentMenuRepository extends FirebaseRepository<PaymentMenu> {
     public String getObjectReference() {
         return "paymentMenu";
     }
-
-    public void close() {
-        firebase.child(getObjectReference()).removeValue();
-    }
 }

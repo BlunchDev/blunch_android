@@ -3,8 +3,6 @@ package dev.blunch.blunch.utils;
 import android.content.Context;
 import android.util.Log;
 
-import com.firebase.client.ChildEventListener;
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 
@@ -19,15 +17,9 @@ import java.util.List;
  * @param <T> repository type
  * @author albert
  */
-public abstract class FirebaseRepository<T extends Entity> implements Repository<T>, ChildEventListener {
+public abstract class FirebaseRepository<T extends Entity> extends Repository<T> {
 
     private OnChangedListener listener;
-
-    public interface OnChangedListener {
-        enum EventType {Added, Changed, Removed, Moved}
-
-        void onChanged(EventType type);
-    }
 
     protected final String FIREBASE_URI = "https://blunch.firebaseio.com/";
     private static final String TAG = FirebaseRepository.class.getSimpleName();
@@ -65,10 +57,11 @@ public abstract class FirebaseRepository<T extends Entity> implements Repository
      * @param t   Object that you want to insert.
      * @param key Key that new object will have.
      */
-    public void insertWithId(T t, String key) {
+    private T insertWithId(T t, String key) {
         t.setId(key);
         firebase.child(getObjectReference()).child(key).setValue(t);
         map.put(key, t);
+        return t;
     }
 
     /**
@@ -86,18 +79,10 @@ public abstract class FirebaseRepository<T extends Entity> implements Repository
      * Update specific item of repository
      * @param item item that you want to update
      */
-    public void update(T item) {
+    public T update(T item) {
         delete(item.getId());
-        insertWithId(item, item.getId());
+        return insertWithId(item, item.getId());
     }
-
-    /**
-     * Convert a Firebase attribute to Domain attribute.
-     *
-     * @param data Firebase instance.
-     * @return Domain instance.
-     */
-    public abstract T convert(DataSnapshot data);
 
     /**
      * Get object reference URI in Firebase.
@@ -116,6 +101,15 @@ public abstract class FirebaseRepository<T extends Entity> implements Repository
     }
 
     /**
+     * Get if an specific item exists
+     * @param id key that identifies the item
+     * @return Item that you want to get
+     */
+    public boolean exists(String id){
+        return map.keySet().contains(id);
+    }
+
+    /**
      * Get all repository
      * @return a list that contains all values of this repository
      */
@@ -123,51 +117,6 @@ public abstract class FirebaseRepository<T extends Entity> implements Repository
         return new ArrayList<>(map.values());
     }
 
-    /**
-     * Listener that controls when a child is added
-     * @param dataSnapshot data
-     */
-    @Override
-    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-        map.put(dataSnapshot.getKey(), convert(dataSnapshot));
-        notifyChange(OnChangedListener.EventType.Added);
-    }
-
-    /**
-     * Listener that controls when a child is changed
-     * @param dataSnapshot data
-     */
-    @Override
-    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-        map.put(dataSnapshot.getKey(), convert(dataSnapshot));
-        notifyChange(OnChangedListener.EventType.Changed);
-    }
-
-    /**
-     * Listener that controls when a child is removed
-     * @param dataSnapshot data
-     */
-    @Override
-    public void onChildRemoved(DataSnapshot dataSnapshot) {
-        map.remove(dataSnapshot.getKey());
-        notifyChange(OnChangedListener.EventType.Removed);
-    }
-
-    /**
-     * Listener that controls when a child is moved
-     * @param dataSnapshot data
-     */
-    @Override
-    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-        map.put(dataSnapshot.getKey(), convert(dataSnapshot));
-        notifyChange(OnChangedListener.EventType.Moved);
-    }
-
-    private void notifyChange(OnChangedListener.EventType moved) {
-        if (listener!=null){
-            listener.onChanged(moved);
-        }
-    }
 
     /**
      * Listener that controls when it is occurred an error
@@ -178,11 +127,5 @@ public abstract class FirebaseRepository<T extends Entity> implements Repository
         Log.e(TAG, firebaseError.getMessage(), firebaseError.toException());
     }
 
-    /**
-     * Set Listener of Firebase reference
-     * @param listener new listener to set
-     */
-    public void setOnChangedListener(OnChangedListener listener) {
-        this.listener = listener;
-    }
+
 }

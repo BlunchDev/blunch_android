@@ -34,8 +34,4 @@ public class DishRepository extends FirebaseRepository<Dish> {
     public String getObjectReference() {
         return "dish";
     }
-
-    public void close() {
-        firebase.child(getObjectReference()).removeValue();
-    }
 }
