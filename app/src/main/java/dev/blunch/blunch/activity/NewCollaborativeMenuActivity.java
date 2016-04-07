@@ -336,7 +336,8 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
                 n++;
             }
 
-            CollaborativeMenu collaborativeMenu = new CollaborativeMenu(menuName.getText().toString(),
+            CollaborativeMenu collaborativeMenu = new CollaborativeMenu(
+                    menuName.getText().toString(),
                     author,
                     description.getText().toString(),
                     localization,
