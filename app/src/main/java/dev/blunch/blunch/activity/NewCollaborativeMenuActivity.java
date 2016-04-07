@@ -30,6 +30,8 @@ import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.repositories.CollaborativeMenuRepository;
 import dev.blunch.blunch.repositories.DishRepository;
+import dev.blunch.blunch.services.CollaborativeMenuService;
+import dev.blunch.blunch.services.DishService;
 import dev.blunch.blunch.view.CollaborativeDishLayout;
 
 public class NewCollaborativeMenuActivity extends AppCompatActivity {
@@ -41,8 +43,8 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
     private List<ImageButton> idClose = new ArrayList<>();
     private EditText menuName;
 
-    private DishRepository dishRepository;
-    private CollaborativeMenuRepository collaborativeMenuRepository;
+    private DishService dishService;
+    private CollaborativeMenuService collaborativeMenuService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +53,8 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        dishRepository = new DishRepository(getApplicationContext());
-        collaborativeMenuRepository = new CollaborativeMenuRepository(getApplicationContext());
+        dishService = new DishService(new DishRepository(getApplicationContext()));
+        collaborativeMenuService = new CollaborativeMenuService(new CollaborativeMenuRepository(getApplicationContext()));
         initialize();
     }
 
@@ -155,7 +157,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
     private void updateTime(int iHour, int iMinut, int fHour, int fMinut) {
         TextView mDateDisplay = (TextView) findViewById(R.id.timeText);
         mDateDisplay.setText(iHour + ":" + iMinut + "h - " + fHour + ":" + fMinut+"h");
-        /*if(iHour % 10 >= 1) {
+        /**if(iHour % 10 >= 1) {
             if(iMinut % 10 >=1){
                 if(fHour % 10 >= 1){
                     if(fMinut % 10 >= 1){
@@ -288,15 +290,10 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
     private void createCollaborativeMenu() {
 
         final String author = "Admin";
-        //EditText nameMenu = (EditText) findViewById(R.id.nomMenu);
-
         EditText address = (EditText) findViewById(R.id.adress);
         EditText city = (EditText) findViewById(R.id.city);
         final String localization = address.getText().toString() + ", " + city.getText().toString();
-
         EditText description = (EditText) findViewById(R.id.description);
-
-
 
         Set<String> offeredDishKeys = new LinkedHashSet<>();
         Set<String> suggestedDishKeys = new LinkedHashSet<>();
@@ -307,7 +304,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         if(menuName.getText().toString().equals("") || address.getText().toString().equals("")
                 || address.getText().toString().equals("") || address.getText().toString().equals("Tu dirección")
                 || city.getText().toString().equals("") || city.getText().toString().equals("Tu ciudad")
-                || description.getText().toString().equals("") || description.getText().equals("descripción")
+                || description.getText().toString().equals("") || description.getText().toString().equals("descripción")
                 || dish1.getText().toString().equals("") || dish1.getText().toString().equals("Plato 1")){
 
             Toast.makeText(this, "Campos incompletos",
@@ -320,7 +317,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         else {
 
             Dish firstDish = new Dish(dish1.getText().toString(), 0.0);
-            dishRepository.insert(firstDish);
+            dishService.save(firstDish);
             if (!who1.getShowText()) {
                 offeredDishKeys.add(firstDish.getId());
             } else {
@@ -330,8 +327,8 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
             int n = 2;
             for (CollaborativeDishLayout d : myDishes) {
                 if (!d.getMenuName().equals("Plato " + n)) {
-                    Dish dish = new Dish(d.getMenuName(), 0.0);
-                    dishRepository.insert(dish);
+                    Dish dish = new Dish(d.getMenuName());
+                    dishService.save(dish);
                     if (!d.getSuggerencia().toString().equals("Sugerencia")) {
                         offeredDishKeys.add(dish.getId());
                     } else {
@@ -349,7 +346,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
                     finish,
                     offeredDishKeys,
                     suggestedDishKeys);
-            collaborativeMenuRepository.insert(collaborativeMenu);
+            collaborativeMenuService.save(collaborativeMenu);
         }
     }
 }
