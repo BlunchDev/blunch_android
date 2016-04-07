@@ -1,6 +1,7 @@
 package dev.blunch.blunch.activity;
 
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -35,8 +36,8 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
     private ArrayList<CollaborativeDishLayout> myDishes = new ArrayList<>();
     private List<ImageButton> idClose = new ArrayList<>();
 
-    private final DishRepository dishRepository = new DishRepository(this);
-    private final CollaborativeMenuRepository collaborativeMenuRepository = new CollaborativeMenuRepository(this);
+    private DishRepository dishRepository;
+    private CollaborativeMenuRepository collaborativeMenuRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +45,8 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_colaborative_menu);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        Firebase.setAndroidContext(this);
+        dishRepository = new DishRepository(getApplicationContext());
+        collaborativeMenuRepository = new CollaborativeMenuRepository(getApplicationContext());
         initialize();
     }
 
