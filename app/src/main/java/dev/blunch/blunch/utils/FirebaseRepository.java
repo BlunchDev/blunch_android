@@ -3,6 +3,7 @@ package dev.blunch.blunch.utils;
 import android.content.Context;
 import android.util.Log;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 
@@ -127,5 +128,24 @@ public abstract class FirebaseRepository<T extends Entity> extends Repository<T>
         Log.e(TAG, firebaseError.getMessage(), firebaseError.toException());
     }
 
+    @Override
+    public T insertInternal(T item) {
+        map.put(item.getId(),item);
+        return item;
+    }
 
+    @Override
+    public T updateInternal(T item) {
+        return insertInternal(item);
+    }
+
+    @Override
+    public void deleteInternal(String id) {
+        map.remove(id);
+    }
+
+    @Override
+    public T convert(DataSnapshot data) {
+        return null;
+    }
 }

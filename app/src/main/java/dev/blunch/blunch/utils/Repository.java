@@ -29,9 +29,15 @@ public abstract class Repository<T extends Entity> implements ChildEventListener
 
     public abstract T insert(T item);
 
+    public abstract T insertInternal(T item);
+
     public abstract T update(T item);
 
+    public abstract T updateInternal(T item);
+
     public abstract void delete(String id);
+
+    public abstract void deleteInternal(String id);
 
     public abstract boolean exists(String id);
 
@@ -49,25 +55,25 @@ public abstract class Repository<T extends Entity> implements ChildEventListener
 
     @Override
     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-        insert(convert(dataSnapshot));
+        insertInternal(convert(dataSnapshot));
         notifyChange(OnChangedListener.EventType.Added);
     }
 
     @Override
     public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-        update(convert(dataSnapshot));
+        updateInternal(convert(dataSnapshot));
         notifyChange(OnChangedListener.EventType.Changed);
     }
 
     @Override
     public void onChildRemoved(DataSnapshot dataSnapshot) {
-        delete(convert(dataSnapshot).getId());
+        deleteInternal(convert(dataSnapshot).getId());
         notifyChange(OnChangedListener.EventType.Removed);
     }
 
     @Override
     public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-        update(convert(dataSnapshot));
+        updateInternal(convert(dataSnapshot));
         notifyChange(OnChangedListener.EventType.Moved);
     }
 

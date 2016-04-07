@@ -37,6 +37,11 @@ public class MockRepository<T extends Entity> extends Repository<T> {
     }
 
     @Override
+    public T insertInternal(T item) {
+        return insert(item);
+    }
+
+    @Override
     public T update(T item) {
         String id = item.getId();
         map.put(id, item);
@@ -44,8 +49,18 @@ public class MockRepository<T extends Entity> extends Repository<T> {
     }
 
     @Override
+    public T updateInternal(T item) {
+        return update(item);
+    }
+
+    @Override
     public void delete(String id) {
         map.remove(id);
+    }
+
+    @Override
+    public void deleteInternal(String id) {
+        delete(id);
     }
 
     @Override
