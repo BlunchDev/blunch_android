@@ -24,7 +24,10 @@ import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.repositories.CollaborativeMenuAnswerRepository;
 import dev.blunch.blunch.repositories.CollaborativeMenuRepository;
 import dev.blunch.blunch.repositories.DishRepository;
+import dev.blunch.blunch.services.CollaborativeMenuService;
+import dev.blunch.blunch.services.DishService;
 import dev.blunch.blunch.utils.FirebaseRepository;
+import dev.blunch.blunch.utils.MockRepository;
 
 /**
  * Created by jmotger on 6/04/16.
@@ -33,9 +36,11 @@ import dev.blunch.blunch.utils.FirebaseRepository;
 @Config(constants = BuildConfig.class)
 public class CollaborativeProposalAnswerTest {
 
-    private CollaborativeMenuRepository collaborativeMenuRepository;
-    private DishRepository dishRepository;
-    private CollaborativeMenuAnswerRepository collaborativeMenuAnswerRepository;
+    private MockRepository<Dish> repositoryDish;
+    private MockRepository<CollaborativeMenu> repositoryMenu;
+    private MockRepository<CollaborativeMenuAnswer> repositoryMenuAnswer;
+    private DishService dishService;
+    private CollaborativeMenuService collaborativeMenuService;
 
     private final String name = "Comida mexicana";
     private final String author = "Donald Trump";
@@ -51,9 +56,9 @@ public class CollaborativeProposalAnswerTest {
 
     @Before
     public void before() {
-        collaborativeMenuRepository = new CollaborativeMenuRepository(RuntimeEnvironment.application);
-        dishRepository = new DishRepository(RuntimeEnvironment.application);
-        collaborativeMenuAnswerRepository = new CollaborativeMenuAnswerRepository(RuntimeEnvironment.application);
+        repositoryDish = new MockRepository<Dish>();
+        dishService= new DishService(repositoryDish);
+
 
         final Dish dish1 = new Dish(dishName1);
         final Dish dish2 = new Dish(dishName2);
@@ -61,8 +66,8 @@ public class CollaborativeProposalAnswerTest {
         offeredDishes = new HashSet<>();
         suggestedDishes = new HashSet<>();
 
-        dishRepository.insert(dish1);
-        dishRepository.insert(dish2);
+        repositoryDish.insert(dish1);
+        repositoryDish.insert(dish2;)
 
         offeredDishes.add(dish1.getId());
         suggestedDishes.add(dish2.getId());
@@ -73,8 +78,8 @@ public class CollaborativeProposalAnswerTest {
 
     @After
     public void after() {
-        collaborativeMenuRepository.close();
-        dishRepository.close();
+        //collaborativeMenuRepository.close();
+        //dishRepository.close();
     }
 
     @Test void answer_to_collaborativeMenu() {
