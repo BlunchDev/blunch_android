@@ -236,9 +236,6 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         EditText dish1 = (EditText) findViewById(R.id.dish1);
         Switch who1 = (Switch) findViewById(R.id.switch1);
 
-        // TODO Pillar el resultado de cada switch y separar por offered and suggested.
-        // ho  he començat a fer pero m'inserta els plats als dos llocs!!
-
         Dish firstDish = new Dish(dish1.getText().toString(), 0.0);
         dishRepository.insert(firstDish);
         if(!who1.getShowText()) {
@@ -270,7 +267,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
                                                                         start,
                                                                         finish,
                                                                         offeredDishKeys,
-                                                                        offeredDishKeys);
+                                                                        suggestedDishKeys);
         collaborativeMenuRepository.insert(collaborativeMenu);
     }
 }
