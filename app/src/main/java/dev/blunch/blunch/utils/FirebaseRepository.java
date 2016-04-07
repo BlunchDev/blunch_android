@@ -65,10 +65,11 @@ public abstract class FirebaseRepository<T extends Entity> implements Repository
      * @param t   Object that you want to insert.
      * @param key Key that new object will have.
      */
-    public void insertWithId(T t, String key) {
+    private T insertWithId(T t, String key) {
         t.setId(key);
         firebase.child(getObjectReference()).child(key).setValue(t);
         map.put(key, t);
+        return t;
     }
 
     /**
@@ -86,9 +87,9 @@ public abstract class FirebaseRepository<T extends Entity> implements Repository
      * Update specific item of repository
      * @param item item that you want to update
      */
-    public void update(T item) {
+    public T update(T item) {
         delete(item.getId());
-        insertWithId(item, item.getId());
+        return insertWithId(item, item.getId());
     }
 
     /**
@@ -113,6 +114,15 @@ public abstract class FirebaseRepository<T extends Entity> implements Repository
      */
     public T get(String id) {
         return map.get(id);
+    }
+
+    /**
+     * Get if an specific item exists
+     * @param id key that identifies the item
+     * @return Item that you want to get
+     */
+    public boolean exists(String id){
+        return map.keySet().contains(id);
     }
 
     /**

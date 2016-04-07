@@ -14,7 +14,6 @@ import org.robolectric.shadows.ShadowApplication;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
@@ -111,26 +110,6 @@ public class CollaborativeMenuRepositoryTest {
             @Override
             public Boolean call() throws Exception {
                 return collaborativeMenuRepository.all().size() == 0;
-            }
-        });
-    }
-
-    @Test
-    public void insert_collaborativeMenu_with_defined_id_correctly() throws InterruptedException {
-        final String TEST_KEY = "TEST_KEY";
-        final CollaborativeMenu collaborativeMenu = new CollaborativeMenu(name, author,
-                description, localization, dateStart, dateEnd, offeredDishes, suggestedDishes);
-
-        runAndWaitUntil(collaborativeMenuRepository, new Runnable() {
-            @Override
-            public void run() {
-                collaborativeMenuRepository.insertWithId(collaborativeMenu, TEST_KEY);
-            }
-        }, new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                return collaborativeMenuRepository.all().size() == 1 &&
-                        collaborativeMenuRepository.get(TEST_KEY).getId().equals(TEST_KEY);
             }
         });
     }

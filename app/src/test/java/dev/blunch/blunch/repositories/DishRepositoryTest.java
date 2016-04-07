@@ -75,25 +75,6 @@ public class DishRepositoryTest {
     }
 
     @Test
-    public void insert_dish_with_defined_id_correctly() throws InterruptedException {
-        final String TEST_KEY = "TEST_KEY";
-        final Dish dish = new Dish("Macarrones a la putanesca", 5.0);
-
-        runAndWaitUntil(dishRepository, new Runnable() {
-            @Override
-            public void run() {
-                dishRepository.insertWithId(dish, TEST_KEY);
-            }
-        }, new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                return  dishRepository.all().size()==1 &&
-                        dishRepository.get(TEST_KEY).getId().equals(TEST_KEY);
-            }
-        });
-    }
-
-    @Test
     public void update_dish_correctly() throws InterruptedException {
         final Dish dish = new Dish("Macarrones a la putanesca", 5.0);
         final String newName = "Gerard";

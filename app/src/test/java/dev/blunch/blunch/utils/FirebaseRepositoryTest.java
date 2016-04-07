@@ -94,25 +94,6 @@ public class FirebaseRepositoryTest {
     }
 
     @Test
-    public void insert_with_defined_id_correctly() throws InterruptedException {
-        final String TEST_KEY = "TEST_KEY";
-        final Person personToAdd = new Person("Albert", 20);
-
-        runAndWaitUntil(personRepository, new Runnable() {
-            @Override
-            public void run() {
-                personRepository.insertWithId(personToAdd, TEST_KEY);
-            }
-        }, new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                return  personRepository.all().size()==1 &&
-                        personRepository.get(TEST_KEY).getId().equals(TEST_KEY);
-            }
-        });
-    }
-
-    @Test
     public void update_correctly() throws InterruptedException {
         final Person personToAdd = new Person("Albert", 20);
         final String newName = "Gerard";

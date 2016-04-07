@@ -112,26 +112,6 @@ public class PaymentMenuRepositoryTest {
     }
 
     @Test
-    public void insert_paymentMenu_with_defined_id_correctly() throws InterruptedException {
-        final String TEST_KEY = "TEST_KEY";
-        final PaymentMenu paymentMenu = new PaymentMenu(name, author,
-                description, localization, dateStart, dateEnd, dishes);
-
-        runAndWaitUntil(paymentMenuRepository, new Runnable() {
-            @Override
-            public void run() {
-                paymentMenuRepository.insertWithId(paymentMenu, TEST_KEY);
-            }
-        }, new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                return paymentMenuRepository.all().size() == 1 &&
-                        paymentMenuRepository.get(TEST_KEY).getId().equals(TEST_KEY);
-            }
-        });
-    }
-
-    @Test
     public void update_paymentMenu_correctly() throws InterruptedException {
         final PaymentMenu paymentMenu = new PaymentMenu(name, author,
                 description, localization, dateStart, dateEnd, dishes);
