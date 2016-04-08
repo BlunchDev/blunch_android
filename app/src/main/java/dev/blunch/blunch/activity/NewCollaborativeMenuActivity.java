@@ -2,6 +2,7 @@ package dev.blunch.blunch.activity;
 
 import android.annotation.TargetApi;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -50,6 +51,9 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_colaborative_menu);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        Intent intent = new Intent(getApplicationContext(), NewCollaborativeMenuActivity.class);
+        startActivity(intent);
 
         dishService = new DishService(new DishRepository(getApplicationContext()));
         collaborativeMenuService = new CollaborativeMenuService(new CollaborativeMenuRepository(getApplicationContext()));
@@ -166,79 +170,6 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
     private void updateTime(int iHour, int iMinut, int fHour, int fMinut) {
         TextView mDateDisplay = (TextView) findViewById(R.id.timeText);
         mDateDisplay.setText(iHour + ":" + iMinut + "h - " + fHour + ":" + fMinut+"h");
-        /**if(iHour % 10 >= 1) {
-            if(iMinute % 10 >=1){
-                if(fHour % 10 >= 1){
-                    if(fMinute % 10 >= 1){
-                        mDateDisplay.setText(iHour + ":" + iMinute + "h - " + fHour + ":" + fMinute+"h");
-                    }
-                    else{
-                        mDateDisplay.setText(iHour + ":" + iMinute + "h - " + fHour + ":0" + fMinute+"h");
-                    }
-                }
-                else{
-                    if(fMinute % 10 >= 1){
-                        mDateDisplay.setText(iHour + ":" + iMinute + "h - 0" + fHour + ":" + fMinute+"h");
-                    }
-                    else{
-                        mDateDisplay.setText(iHour + ":" + iMinute + "h - 0" + fHour + ":0" + fMinute+"h");
-                    }
-                }
-            }
-            else {
-                if (fHour % 10 >= 1) {
-                    if (fMinute % 10 >= 1) {
-                        mDateDisplay.setText(iHour + ":0" + iMinute + "h - " + fHour + ":" + fMinute+"h");
-                    }
-                    else {
-                        mDateDisplay.setText(iHour + ":0" + iMinute + "h - " + fHour + ":0" + fMinute+"h");
-                    }
-                } else {
-                    if (fMinute % 10 >= 1) {
-                        mDateDisplay.setText(iHour + ":0" + iMinute + "h - 0" + fHour + ":" + fMinute+"h");
-
-                    } else {
-                        mDateDisplay.setText(iHour + ":0" + iMinute + "h - 0" + fHour + ":0" + fMinute+"h");
-
-                    }
-                }
-            }
-        }
-        else{
-            if(iMinute % 10 >=1){
-                if(fHour % 10 >= 1){
-                    if(fMinute % 10 >= 1){
-                        mDateDisplay.setText("0"+iHour + ":" + iMinute + "h - " + fHour + ":" + fMinute+"h");
-                    }
-                    else{
-                        mDateDisplay.setText("0"+iHour + ":" + iMinute + "h - " + fHour + ":0" + fMinute+"h");
-                    }
-                }
-                else{
-                    if(fMinute % 10 >= 1){
-                        mDateDisplay.setText("0"+iHour + ":" + iMinute + "h - 0" + fHour + ":" + fMinute+"h");
-                    }
-                    else{
-                        mDateDisplay.setText("0"+iHour + ":" + iMinute + "h - 0" + fHour + ":0" + fMinute+"h");
-                    }
-                }
-            }
-            else {
-                if (fHour % 10 >= 1) {
-                    if (fMinute % 10 >= 1) {
-                        mDateDisplay.setText("0"+iHour + ":0" + iMinute + "h - " + fHour + ":" + fMinute+"h");
-                    } else {
-                        mDateDisplay.setText("0"+iHour + ":0" + iMinute + "h - " + fHour + ":0" + fMinute+"h");
-                    }
-                } else {
-                    if (fMinute % 10 >= 1) {
-                        mDateDisplay.setText("0"+iHour + ":0" + iMinute + "h - 0" + fHour + ":" + fMinute+"h");
-                    } else {
-                        mDateDisplay.setText("0"+iHour + ":0" + iMinute + "h - 0" + fHour + ":0" + fMinute+"h");
-                    }
-                }
-            }
-        }*/
         Calendar cStart = Calendar.getInstance();
         cStart.set(Calendar.HOUR_OF_DAY,iHour);
         cStart.set(Calendar.MINUTE, iMinut);
