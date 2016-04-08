@@ -22,6 +22,7 @@ import dev.blunch.blunch.utils.Repository;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * New Collaborative Menu Activity Test
@@ -85,6 +86,7 @@ public class NewCollaborativeMenuActivityTest {
         assertNotNull(moreDishes);
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Test
     public void complete_form() throws Exception {
         final String menuName = "Nice lunch";
@@ -98,6 +100,15 @@ public class NewCollaborativeMenuActivityTest {
         this.dish.setText(dish);
         this.address.setText(address);
         this.city.setText(city);
+        this.who.setShowText(true);
+
+        assertEquals(this.menuText.getText().toString(), menuName);
+        assertEquals(this.description.getText().toString(), description);
+        assertEquals(this.dish.getText().toString(), dish);
+        assertEquals(this.address.getText().toString(), address);
+        assertEquals(this.city.getText().toString(), city);
+        assertTrue(this.who.getShowText());
+
         //this.publish.performClick();
     }
 
