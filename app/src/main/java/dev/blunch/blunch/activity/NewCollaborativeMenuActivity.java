@@ -2,7 +2,6 @@ package dev.blunch.blunch.activity;
 
 import android.annotation.TargetApi;
 import android.app.TimePickerDialog;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -281,11 +280,8 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
                 if (!d.getDishName().equals("Plato " + n)) {
                     Dish dish = new Dish(d.getDishName());
                     dishService.save(dish);
-                    if (!d.getSuggerenciaName().toString().equals("Sugerencia")) {
-                        offeredDishKeys.add(dish.getId());
-                    } else {
-                        suggestedDishKeys.add(dish.getId());
-                    }
+                    if (!d.isSuggest()) offeredDishKeys.add(dish.getId());
+                    else suggestedDishKeys.add(dish.getId());
                 }
                 n++;
             }

@@ -20,6 +20,7 @@ import dev.blunch.blunch.utils.MockRepository;
 import dev.blunch.blunch.utils.Repository;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -109,6 +110,9 @@ public class NewCollaborativeMenuActivityTest {
         assertEquals(this.city.getText().toString(), city);
         assertTrue(this.who.getShowText());
 
+        this.who.setShowText(false);
+        assertFalse(this.who.getShowText());
+
         //this.publish.performClick();
     }
 
@@ -126,9 +130,9 @@ public class NewCollaborativeMenuActivityTest {
         assertEquals(activity.myDishes.size(), 1);
         assertEquals(activity.myDishes.get(COUNT - 2).getDishName(), DISH + COUNT);
 
-        assertEquals(activity.myDishes.get(COUNT - 2).getSuggerenciaName(), YO);
-        activity.myDishes.get(COUNT - 2).getSuggerenciaSwitch().setShowText(true);
-        assertEquals(activity.myDishes.get(COUNT - 2).getSuggerenciaName(), SUGGEST);
+        assertFalse(activity.myDishes.get(COUNT - 2).isSuggest());
+        activity.myDishes.get(COUNT - 2).getSuggerenciaSwitch().setChecked(true);
+        assertTrue(activity.myDishes.get(COUNT - 2).isSuggest());
 
         this.moreDishes.performClick();
         ++COUNT;

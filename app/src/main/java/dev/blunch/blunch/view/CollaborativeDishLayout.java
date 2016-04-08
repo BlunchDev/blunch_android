@@ -126,11 +126,8 @@ public class CollaborativeDishLayout extends LinearLayout{
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public String getSuggerenciaName() {
-        if (switch1.getShowText()) {
-            return "Sugerencia";
-        }
-        else return "Yo";
+    public Boolean isSuggest() {
+        return switch1.isChecked();
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
