@@ -21,8 +21,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ControllerMenu"
-            android:label="@string/title_activity_controller_menu"
+            android:name=".domain.paymentMenuActivity"
+            android:label="domain.paymentMenuActivity"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
     </application>
