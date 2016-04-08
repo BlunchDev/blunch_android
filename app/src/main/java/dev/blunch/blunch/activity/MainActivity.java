@@ -1,4 +1,4 @@
-package dev.blunch.blunch;
+package dev.blunch.blunch.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,12 +11,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+
+import java.util.ArrayList;
+
+import dev.blunch.blunch.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,16 +42,10 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Firebase.setAndroidContext(this);
+        Intent intent = new Intent(getApplicationContext(), NewCollaborativeMenuActivity.class);
+        startActivity(intent);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        Firebase.setAndroidContext(this);
     }
 
     @Override
