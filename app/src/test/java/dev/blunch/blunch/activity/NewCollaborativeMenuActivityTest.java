@@ -87,7 +87,6 @@ public class NewCollaborativeMenuActivityTest {
         assertNotNull(moreDishes);
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Test
     public void complete_form() throws Exception {
         final String menuName = "Nice lunch";
@@ -101,27 +100,23 @@ public class NewCollaborativeMenuActivityTest {
         this.dish.setText(dish);
         this.address.setText(address);
         this.city.setText(city);
-        this.who.setShowText(true);
+        this.who.setChecked(true);
 
         assertEquals(this.menuText.getText().toString(), menuName);
         assertEquals(this.description.getText().toString(), description);
         assertEquals(this.dish.getText().toString(), dish);
         assertEquals(this.address.getText().toString(), address);
         assertEquals(this.city.getText().toString(), city);
-        assertTrue(this.who.getShowText());
+        assertTrue(this.who.isChecked());
 
-        this.who.setShowText(false);
-        assertFalse(this.who.getShowText());
+        this.who.setChecked(false);
+        assertFalse(this.who.isChecked());
 
-        //this.publish.performClick();
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Test
     public void more_dishes_button_works_correctly() throws Exception {
         final String DISH = "Plato ";
-        final String YO = "Yo";
-        final String SUGGEST = "Sugerencia";
         Integer COUNT = 1;
         ImageButton closeDish;
 

@@ -232,7 +232,6 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         return a;
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void createCollaborativeMenu() {
 
         final String author = "Admin";
@@ -269,11 +268,8 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
 
             Dish firstDish = new Dish(dish1.getText().toString(), 0.0);
             dishService.save(firstDish);
-            if (!who1.getShowText()) {
-                offeredDishKeys.add(firstDish.getId());
-            } else {
-                suggestedDishKeys.add(firstDish.getId());
-            }
+            if (!who1.isChecked()) offeredDishKeys.add(firstDish.getId());
+            else suggestedDishKeys.add(firstDish.getId());
 
             int n = 2;
             for (CollaborativeDishLayout d : myDishes) {
