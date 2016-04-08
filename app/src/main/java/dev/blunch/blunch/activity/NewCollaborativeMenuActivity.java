@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 
 import dev.blunch.blunch.R;
@@ -32,13 +31,14 @@ import dev.blunch.blunch.services.CollaborativeMenuService;
 import dev.blunch.blunch.services.DishService;
 import dev.blunch.blunch.view.CollaborativeDishLayout;
 
+import static junit.framework.Assert.assertNotNull;
+
 public class NewCollaborativeMenuActivity extends AppCompatActivity {
 
     private int iHour, iMinute, fHour, fMinute;
     private int numDish;
     private Date start, finish;
-    private ArrayList<CollaborativeDishLayout> myDishes = new ArrayList<>();
-    private List<ImageButton> idClose = new ArrayList<>();
+    protected ArrayList<CollaborativeDishLayout> myDishes = new ArrayList<>();
     private EditText menuName;
 
     private DishService dishService;
@@ -83,14 +83,22 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
 
         final ImageButton moreDishes = (ImageButton) findViewById(R.id.moreDishes);
         final LinearLayout moreDishesLayout = (LinearLayout) findViewById(R.id.dishesLayout);
+        assertNotNull(moreDishes);
+        assertNotNull(moreDishesLayout);
         moreDishes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final CollaborativeDishLayout a = new CollaborativeDishLayout(NewCollaborativeMenuActivity.this, ++numDish);
                 myDishes.add(a);
                 moreDishesLayout.addView(a);
-                ImageButton close = (ImageButton) findViewById(a.getId());
-                idClose.add(close);
+                ImageButton close = a.getClose();
+                close.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        moreDishesLayout.removeView(a);
+                        myDishes.remove(a);
+                    }
+                });
             }
         });
 
@@ -98,6 +106,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         dishes.add((TextView) findViewById(R.id.dish1));
 
         ImageButton timeTable = (ImageButton) findViewById(R.id.timetablebutton);
+        assertNotNull(timeTable);
         timeTable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,6 +115,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         });
 
         Button publish = (Button) findViewById(R.id.publish);
+        assertNotNull(publish);
         publish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,6 +124,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         });
 
         final ImageButton vegetarian = (ImageButton) findViewById(R.id.vegetarian);
+        assertNotNull(vegetarian);
         vegetarian.setColorFilter(R.color.black);
         vegetarian.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,28 +139,28 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
             }
         });
 
-        final ImageButton glutenfree = (ImageButton) findViewById(R.id.glutenfree);
-        glutenfree.setColorFilter(R.color.black);
-        glutenfree.setOnClickListener(new View.OnClickListener() {
+        final ImageButton glutenFree = (ImageButton) findViewById(R.id.glutenfree);
+        assertNotNull(glutenFree);
+        glutenFree.setColorFilter(R.color.black);
+        glutenFree.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 isGlutenFree();
-                if(glutenfree.getColorFilter().equals(R.color.green)){
-                    glutenfree.setColorFilter(R.color.colorAccent);
-                }
-                else{
-                    glutenfree.setColorFilter(R.color.green);
+                if (glutenFree.getColorFilter().equals(R.color.green)) {
+                    glutenFree.setColorFilter(R.color.colorAccent);
+                } else {
+                    glutenFree.setColorFilter(R.color.green);
                 }
             }
         });
     }
 
     private void isGlutenFree() {
-        // TODO El menu es glutenfree
+        // TODO El menu es glutenFree
     }
 
     private void isVegetarian() {
-        // TODO El menu es vegetaria
+        // TODO El menu es vegetarian
     }
 
     private void updateTime(int iHour, int iMinut, int fHour, int fMinut) {
@@ -290,14 +301,19 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         final String author = "Admin";
         EditText address = (EditText) findViewById(R.id.adress);
         EditText city = (EditText) findViewById(R.id.city);
+        assertNotNull(address);
+        assertNotNull(city);
         final String localization = address.getText().toString() + ", " + city.getText().toString();
         EditText description = (EditText) findViewById(R.id.description);
+        assertNotNull(description);
 
         Set<String> offeredDishKeys = new LinkedHashSet<>();
         Set<String> suggestedDishKeys = new LinkedHashSet<>();
 
         EditText dish1 = (EditText) findViewById(R.id.dish1);
+        assertNotNull(dish1);
         Switch who1 = (Switch) findViewById(R.id.switch1);
+        assertNotNull(who1);
 
         if(menuName.getText().toString().equals("") || address.getText().toString().equals("")
                 || address.getText().toString().equals("") || address.getText().toString().equals("Tu dirección")
@@ -324,10 +340,10 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
 
             int n = 2;
             for (CollaborativeDishLayout d : myDishes) {
-                if (!d.getMenuName().equals("Plato " + n)) {
-                    Dish dish = new Dish(d.getMenuName());
+                if (!d.getDishName().equals("Plato " + n)) {
+                    Dish dish = new Dish(d.getDishName());
                     dishService.save(dish);
-                    if (!d.getSuggerencia().toString().equals("Sugerencia")) {
+                    if (!d.getSuggerenciaName().toString().equals("Sugerencia")) {
                         offeredDishKeys.add(dish.getId());
                     } else {
                         suggestedDishKeys.add(dish.getId());

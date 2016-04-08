@@ -1,5 +1,6 @@
 package dev.blunch.blunch.activity;
 
+import android.annotation.TargetApi;
 import android.os.Build;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,7 +18,10 @@ import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.services.CollaborativeMenuService;
 import dev.blunch.blunch.utils.MockRepository;
 import dev.blunch.blunch.utils.Repository;
+
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 /**
  * New Collaborative Menu Activity Test
@@ -37,6 +41,7 @@ public class NewCollaborativeMenuActivityTest {
     private Switch          who;
     private Button          publish;
     private ImageButton     dateButton;
+    private ImageButton     moreDishes;
 
     private CollaborativeMenuService service;
     private MockRepository<CollaborativeMenu> repository;
@@ -54,6 +59,7 @@ public class NewCollaborativeMenuActivityTest {
         who = (Switch) activity.findViewById(R.id.switch1);
         publish = (Button) activity.findViewById(R.id.publish);
         dateButton = (ImageButton) activity.findViewById(R.id.timetablebutton);
+        moreDishes = (ImageButton) activity.findViewById(R.id.moreDishes);
 
         repository = new MockRepository<>();
         service = new CollaborativeMenuService(repository);
@@ -76,6 +82,7 @@ public class NewCollaborativeMenuActivityTest {
         assertNotNull(who);
         assertNotNull(publish);
         assertNotNull(dateButton);
+        assertNotNull(moreDishes);
     }
 
     @Test
@@ -91,7 +98,41 @@ public class NewCollaborativeMenuActivityTest {
         this.dish.setText(dish);
         this.address.setText(address);
         this.city.setText(city);
-        this.publish.performClick();
+        //this.publish.performClick();
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @Test
+    public void more_dishes_button_works_correctly() throws Exception {
+        final String DISH = "Plato ";
+        final String YO = "Yo";
+        final String SUGGEST = "Sugerencia";
+        Integer COUNT = 1;
+        ImageButton closeDish;
+
+        this.moreDishes.performClick();
+        ++COUNT;
+        assertEquals(activity.myDishes.size(), 1);
+        assertEquals(activity.myDishes.get(COUNT - 2).getDishName(), DISH + COUNT);
+
+        assertEquals(activity.myDishes.get(COUNT - 2).getSuggerenciaName(), YO);
+        activity.myDishes.get(COUNT - 2).getSuggerenciaSwitch().setShowText(true);
+        assertEquals(activity.myDishes.get(COUNT - 2).getSuggerenciaName(), SUGGEST);
+
+        this.moreDishes.performClick();
+        ++COUNT;
+        assertEquals(activity.myDishes.size(), 2);
+        assertEquals(activity.myDishes.get(COUNT - 2).getDishName(), DISH + COUNT);
+
+        closeDish = (ImageButton) activity.findViewById(activity.myDishes.get(activity.myDishes.size() - 1).getClose().getId());
+        assertNotNull(closeDish);
+        closeDish.performClick();
+        assertEquals(activity.myDishes.size(), 1);
+
+        closeDish = (ImageButton) activity.findViewById(activity.myDishes.get(activity.myDishes.size() - 1).getClose().getId());
+        assertNotNull(closeDish);
+        closeDish.performClick();
+        assertEquals(activity.myDishes.size(), 0);
     }
 
 

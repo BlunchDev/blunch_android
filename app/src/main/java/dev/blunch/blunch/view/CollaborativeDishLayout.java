@@ -23,7 +23,7 @@ import dev.blunch.blunch.R;
  */
 public class CollaborativeDishLayout extends LinearLayout{
 
-    private EditText menuName;
+    private EditText dishName;
     private Switch switch1;
     private ImageButton close;
 
@@ -40,22 +40,22 @@ public class CollaborativeDishLayout extends LinearLayout{
         LinearLayout.LayoutParams spaceLayout = new LinearLayout.LayoutParams(80, ViewGroup.LayoutParams.MATCH_PARENT);
         h1.addView(space1, spaceLayout);
 
-        menuName = new EditText(context);
-        menuName.setText("Plato " + num);
-        menuName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
-        menuName.setTextColor(getResources().getColor(R.color.colorEdit));
+        dishName = new EditText(context);
+        dishName.setText("Plato " + num);
+        dishName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
+        dishName.setTextColor(getResources().getColor(R.color.colorEdit));
         LinearLayout.LayoutParams nomPlatLayout = new LinearLayout.LayoutParams(400, ViewGroup.LayoutParams.WRAP_CONTENT);
-        menuName.setOnClickListener(new OnClickListener() {
+        dishName.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (menuName.getText().toString().equals("MENÚ")) {
-                    menuName.setText("");
-                    menuName.setTextColor(getResources().getColor(R.color.black));
+                if (dishName.getText().toString().equals("MENÚ")) {
+                    dishName.setText("");
+                    dishName.setTextColor(getResources().getColor(R.color.black));
                 }
             }
         });
 
-        h1.addView(menuName, nomPlatLayout);
+        h1.addView(dishName, nomPlatLayout);
 
         Space space5 = new Space(context);
         LinearLayout.LayoutParams space5Layout = new LinearLayout.LayoutParams(100, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -67,6 +67,7 @@ public class CollaborativeDishLayout extends LinearLayout{
         close.setScaleType(ImageView.ScaleType.FIT_XY);
         close.setScaleX(0.5f);
         close.setScaleY(0.5f);
+        close.setId((int) Math.random());
 
         LinearLayout.LayoutParams closeLayout = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         close.setOnClickListener(new OnClickListener() {
@@ -120,20 +121,25 @@ public class CollaborativeDishLayout extends LinearLayout{
 
     }
 
-    public String getMenuName(){
-        return menuName.getText().toString();
+    public String getDishName(){
+        return dishName.getText().toString();
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public String getSuggerencia() {
+    public String getSuggerenciaName() {
         if (switch1.getShowText()) {
             return "Sugerencia";
         }
         else return "Yo";
     }
 
-    public int getClose() {
-        return close.getId();
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public Switch getSuggerenciaSwitch() {
+        return switch1;
+    }
+
+    public ImageButton getClose() {
+        return close;
     }
 
 }
