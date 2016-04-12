@@ -17,7 +17,7 @@ public class CollaborativeMenuAnswer implements Entity {
     private String menuId;
     private String guest;
     private Date date;
-    private Map<String, Object> offeredDishes;
+    private Map<String, Object> offeredDishes = new LinkedHashMap<>();
 
     public CollaborativeMenuAnswer() {}
 
