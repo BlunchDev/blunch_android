@@ -6,6 +6,9 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -28,6 +31,8 @@ public class GetMenuCollaborativeActivity extends AppCompatActivity {
     private List<Dish> offeredDishes;
     private final String KEY = "-KEp5bPBm_LaZCxF5oFA";
     private final String COMA = ",";
+    private TextView userName, localization, city, menuName, hostDishes, suggestions;
+    private Button contact, join;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +60,37 @@ public class GetMenuCollaborativeActivity extends AppCompatActivity {
     }
 
     private void initialize() {
+        userName = (TextView) findViewById(R.id.hostName);
+        localization = (TextView) findViewById(R.id.hostLocalization);
+        city = (TextView) findViewById(R.id.hostCity);
+        menuName = (TextView) findViewById(R.id.menuName);
+        hostDishes = (TextView) findViewById(R.id.hostDishes);
+        suggestions = (TextView) findViewById(R.id.suggestions);
+
+        contact = (Button) findViewById(R.id.contact);
+        join = (Button) findViewById(R.id.join);
+
+        //userName.setText();
+
+        //localization.setText(obtainAddress());
+        //city.setText(obtainCity());
+        //menuName.setText(obtainTitle());
+        //hostDishes.setText(obtainOfferedDishSingleString());
+        //suggestions.setText(obtainSuggestedDishSingleString());
+
+        contact.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(v.getContext(), "Aun no va pesaos",Toast.LENGTH_LONG).show();
+            }
+        });
+
+        join.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(v.getContext(), "que he dicho que no!",Toast.LENGTH_LONG).show();
+            }
+        });
 
     }
 
@@ -84,12 +120,28 @@ public class GetMenuCollaborativeActivity extends AppCompatActivity {
         return list;
     }
 
+    private String obtainSuggestedDishSingleString(){
+        String sd="";
+        for(String s:obtainSuggestedDishNames()){
+            sd = sd + "\n" + s;
+        }
+        return sd;
+    }
+
     private List<String> obtainOfferedDishNames() {
         List<String> list = new LinkedList<>();
         for (Dish dish : offeredDishes) {
             list.add(dish.getName());
         }
         return list;
+    }
+
+    private String obtainOfferedDishSingleString(){
+        String od="";
+        for(String s:obtainOfferedDishNames()){
+            od = od + "\n" + s;
+        }
+        return od;
     }
 
 }
