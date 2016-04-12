@@ -116,7 +116,7 @@ public class CollaborativeMenuServiceTest {
     @Test
     public void onAddExternal() {
         assertEquals(null, lastChangedType);
-        assertEquals(1,service.getAmount());
+        assertEquals(1, service.getAmount());
         repository.simulateExternalAddition(newMenu);
         assertEquals(2, service.getAmount());
         assertEquals(Repository.OnChangedListener.EventType.Added,lastChangedType);
@@ -147,10 +147,40 @@ public class CollaborativeMenuServiceTest {
     @Test
     public void onDeleteExternal() {
         assertEquals(null, lastChangedType);
-        assertEquals(1,service.getAmount());
+        assertEquals(1, service.getAmount());
         repository.simulateExternalDelete(oldMenu);
         assertEquals(0, service.getAmount());
         assertEquals(Repository.OnChangedListener.EventType.Removed,lastChangedType);
     }
+
+    @Test
+    public void getActiveProposals(){
+        /*
+        Definir CollaborativeMenuProposal (#task 2.3) hacer insert.
+        Hacer get y assert.
+         */
+
+    }
+
+    @Test
+    public void deleteProposalOnDecline(){
+        /*
+        A partir de CollaborativeMenuProposal insertada, llamar a accion
+        decline q la debe borrar y hacer assert comparando si todavia existe en el sistema
+         */
+
+    }
+
+    @Test
+    public void modifyCollaborativeMenuOnAccept(){
+        /*
+        A partir de CollaborativeProposalAnswer insertada, llamar acción "accept"
+        debe modificar el menú collaborativo referenciado por la proposal para que
+        incluya la propueusta hecha y debe borrar la propuesta del sistema.
+        Hacer assert verificando que se ha borrado del sistema y assert sobre el
+        CollaborativeMenu referenciado para ver que incluye los platos de la propuesta.
+         */
+    }
+
 
 }
