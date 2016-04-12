@@ -1,7 +1,5 @@
 package dev.blunch.blunch.activity;
 
-import android.annotation.TargetApi;
-import android.os.Build;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -14,22 +12,16 @@ import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 import dev.blunch.blunch.BuildConfig;
 import dev.blunch.blunch.R;
-import dev.blunch.blunch.domain.CollaborativeMenu;
-import dev.blunch.blunch.services.CollaborativeMenuService;
-import dev.blunch.blunch.utils.MockRepository;
-import dev.blunch.blunch.utils.Repository;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 /**
  * New Collaborative Menu Activity Test
  * @author albert on 7/04/16.
  */
-@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
+@Config(constants = BuildConfig.class)
 @RunWith(RobolectricGradleTestRunner.class)
 public class NewCollaborativeMenuActivityTest {
 
@@ -45,10 +37,6 @@ public class NewCollaborativeMenuActivityTest {
     private ImageButton     dateButton;
     private ImageButton     moreDishes;
 
-    private CollaborativeMenuService service;
-    private MockRepository<CollaborativeMenu> repository;
-    private Repository.OnChangedListener.EventType lastChangedType;
-
     @Before
     public void setup() {
         activity = Robolectric.setupActivity(NewCollaborativeMenuActivity.class);
@@ -63,15 +51,6 @@ public class NewCollaborativeMenuActivityTest {
         dateButton = (ImageButton) activity.findViewById(R.id.timetablebutton);
         moreDishes = (ImageButton) activity.findViewById(R.id.moreDishes);
 
-        repository = new MockRepository<>();
-        service = new CollaborativeMenuService(repository);
-        lastChangedType = null;
-        service.setOnChangedListener(new Repository.OnChangedListener() {
-            @Override
-            public void onChanged(EventType type) {
-                lastChangedType = type;
-            }
-        });
     }
 
     @Test
