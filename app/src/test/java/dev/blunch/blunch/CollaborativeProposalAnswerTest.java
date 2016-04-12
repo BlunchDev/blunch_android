@@ -82,11 +82,13 @@ public class CollaborativeProposalAnswerTest {
         //dishRepository.close();
     }
 
-    @Test void answer_to_collaborativeMenu() {
+    @Test
+    public void answer_to_collaborativeMenu() {
 
     }
 
-    @Test void error_if_collaborativeMenu_does_not_exist() {
+    @Test
+    public void error_if_collaborativeMenu_does_not_exist() {
 
     }
 
