@@ -12,13 +12,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-
 import dev.blunch.blunch.R;
 import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.domain.Dish;
@@ -237,7 +235,6 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         EditText cityEditText = (EditText) findViewById(R.id.city);
         EditText adressEditText = (EditText) findViewById(R.id.adress);
         EditText descriptionEditText = (EditText) findViewById(R.id.description);
-//        Switch who1 = (Switch) findViewById(R.id.switch1);
         EditText menuNameEditText = (EditText) findViewById(R.id.nomMenu);
 
         final String author = "Admin";
@@ -278,10 +275,10 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
                     description,
                     localization,
                     start,
-                    finish,
-                    offeredDish,
-                    suggestedDish);
-            collaborativeMenuService.save(collaborativeMenu,offeredDish,suggestedDish);
+                    finish);
+            collaborativeMenuService.save(collaborativeMenu, offeredDish, suggestedDish);
+            Toast.makeText(this, "Añadido correctamente",
+                    Toast.LENGTH_LONG).show();
         }
     }
 

@@ -2,7 +2,6 @@ package dev.blunch.blunch.services;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.utils.Repository;
@@ -32,17 +31,18 @@ public class CollaborativeMenuService extends Service<CollaborativeMenu> {
     }
 
     public CollaborativeMenu save(CollaborativeMenu item, List<Dish> offeredDishes, List<Dish> suggestedDishes) {
-        if (dishesRepository==null){
+        if (dishesRepository == null){
             throw new UnsupportedOperationException("Service needs to be created with the DishRepository to function");
         }
         for(Dish dish : offeredDishes) {
             dishesRepository.insert(dish);
+            item.addOfferedDish(dish.getId());
         }
         for (Dish dish : suggestedDishes) {
             dishesRepository.insert(dish);
+            item.addSuggestedDish(dish.getId());
         }
-        repository.insert(item);
-        return item;
+        return repository.insert(item);
     }
 
     public List<Dish> getSuggestedDishes(String key) {

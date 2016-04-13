@@ -18,18 +18,26 @@ public class CollaborativeMenu extends Menu {
     public CollaborativeMenu() {}
 
     public CollaborativeMenu(String name, String author, String description,
+                             String localization, Date dateStart, Date dateEnd) {
+
+        super(name, author, description, localization, dateStart, dateEnd);
+
+    }
+
+    public CollaborativeMenu(String name, String author, String description,
                              String localization, Date dateStart, Date dateEnd,
                              List<Dish> offeredDishes, List<Dish> suggestedDishes) {
 
         super(name, author, description, localization, dateStart, dateEnd);
-        if(offeredDishes!=null) {
+
+        if (offeredDishes != null) {
             for (Dish dish : offeredDishes) {
                 this.offeredDishes.put(dish.getId(), true);
             }
         }
-        if(suggestedDishes!=null) {
-            for (Dish dishKey : suggestedDishes) {
-                this.suggestedDishes.put(dishKey.getId(), true);
+        if (suggestedDishes != null) {
+            for (Dish dish : suggestedDishes) {
+                this.suggestedDishes.put(dish.getId(), true);
             }
         }
     }
