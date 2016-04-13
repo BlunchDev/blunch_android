@@ -12,6 +12,7 @@ import java.util.List;
 
 import dev.blunch.blunch.BuildConfig;
 import dev.blunch.blunch.domain.CollaborativeMenu;
+import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.utils.MockRepository;
 import dev.blunch.blunch.utils.Repository;
 
@@ -34,8 +35,8 @@ public class CollaborativeMenuServiceTest {
 
     @Before
     public void setUp() {
-        repository = new MockRepository<CollaborativeMenu>();
-        service = new CollaborativeMenuService(repository);
+        repository = new MockRepository<>();
+        service = new CollaborativeMenuService(repository, new MockRepository<Dish>());
         newMenu = new CollaborativeMenu(
                 "Menu de micro de la FIB",
                 "Encarna", "És un menu de micro de la FIB",
@@ -180,5 +181,8 @@ public class CollaborativeMenuServiceTest {
          */
     }
 
+
+//    @Test
+//    public void onSave
 
 }

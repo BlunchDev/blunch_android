@@ -3,12 +3,12 @@ package dev.blunch.blunch.domain;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -20,16 +20,16 @@ import static org.junit.Assert.assertTrue;
  */
 public class CollaborativeMenuTest {
 
-    private static final String ID = "1234";
-    private static final String NAME = "Wakiki Lunch";
-    private static final String AUTHOR = "Pepe Botella";
-    private static final String DESCRIPTION = "Salsa, tequila, corason";
-    private static final String LOCALIZATION = "C/Aribau 34, Barcelona";
-    private static final Set<String> SUGGESTED_DISHES = new LinkedHashSet<>();
-    private static final Set<String> OFFERED_DISHES = new LinkedHashSet<>();
-    private static Date DATE_START, DATE_END;
+    private final String ID = "1234";
+    private final String NAME = "Wakiki Lunch";
+    private final String AUTHOR = "Pepe Botella";
+    private final String DESCRIPTION = "Salsa, tequila, corason";
+    private final String LOCALIZATION = "C/Aribau 34, Barcelona";
+    private final List<Dish> SUGGESTED_DISHES = new ArrayList<>();
+    private final List<Dish> OFFERED_DISHES = new ArrayList<>();
+    private Date DATE_START, DATE_END;
 
-    private static CollaborativeMenu collaborativeMenu;
+    private CollaborativeMenu collaborativeMenu;
 
 
     @Before
@@ -112,10 +112,14 @@ public class CollaborativeMenuTest {
         String SUGGESTED_DISH_KEY_1 = "1234";
         String SUGGESTED_DISH_KEY_2 = "4321";
         String SUGGESTED_DISH_KEY_3 = "0000";
-        SUGGESTED_DISHES.add(SUGGESTED_DISH_KEY_1);
-        SUGGESTED_DISHES.add(SUGGESTED_DISH_KEY_2);
+        Dish dish1 = new Dish(SUGGESTED_DISH_KEY_1);
+        dish1.setId(SUGGESTED_DISH_KEY_1);
+        Dish dish2 = new Dish(SUGGESTED_DISH_KEY_2);
+        dish2.setId(SUGGESTED_DISH_KEY_2);
+        SUGGESTED_DISHES.add(dish1);
+        SUGGESTED_DISHES.add(dish2);
         collaborativeMenu.setSuggestedDishes(SUGGESTED_DISHES);
-        assertTrue(collaborativeMenu.getSuggestedDishes().keySet().size() == 2);
+        assertEquals(2, collaborativeMenu.getSuggestedDishes().keySet().size());
         assertTrue(collaborativeMenu.containsSuggestedDish(SUGGESTED_DISH_KEY_1));
         assertTrue(collaborativeMenu.containsSuggestedDish(SUGGESTED_DISH_KEY_2));
 
@@ -137,10 +141,15 @@ public class CollaborativeMenuTest {
         String OFFERED_DISH_KEY_1 = "1234";
         String OFFERED_DISH_KEY_2 = "4321";
         String OFFERED_DISH_KEY_3 = "0000";
-        OFFERED_DISHES.add(OFFERED_DISH_KEY_1);
-        OFFERED_DISHES.add(OFFERED_DISH_KEY_2);
+        Dish dish1 = new Dish(OFFERED_DISH_KEY_1);
+        Dish dish2 = new Dish(OFFERED_DISH_KEY_2);
+        dish1.setId(OFFERED_DISH_KEY_1);
+        dish2.setId(OFFERED_DISH_KEY_2);
+        OFFERED_DISHES.add(dish1);
+        OFFERED_DISHES.add(dish2);
+        assertEquals(2,OFFERED_DISHES.size());
         collaborativeMenu.setOfferedDishes(OFFERED_DISHES);
-        assertTrue(collaborativeMenu.getOfferedDishes().keySet().size() == 2);
+        assertEquals(collaborativeMenu.getOfferedDishes().keySet().size(), 2);
         assertTrue(collaborativeMenu.containsOfferedDish(OFFERED_DISH_KEY_1));
         assertTrue(collaborativeMenu.containsOfferedDish(OFFERED_DISH_KEY_2));
 
