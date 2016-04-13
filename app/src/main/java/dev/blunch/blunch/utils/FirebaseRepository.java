@@ -35,7 +35,7 @@ public abstract class FirebaseRepository<T extends Entity> extends Repository<T>
         firebase = new Firebase(FIREBASE_URI);
         map = new LinkedHashMap<>();
 
-        firebase.addChildEventListener(this);
+        firebase.orderByKey().addChildEventListener(this);
     }
 
     /**
