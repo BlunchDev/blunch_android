@@ -11,9 +11,11 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowApplication;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
@@ -48,8 +50,8 @@ public class CollaborativeProposalAnswerTest {
     private final String localization = "local_test";
     private final Date dateStart = Calendar.getInstance().getTime();
     private final Date dateEnd = Calendar.getInstance().getTime();
-    private Set<String> offeredDishes;
-    private Set<String> suggestedDishes;
+    private List<Dish> offeredDishes;
+    private List<Dish> suggestedDishes;
 
     private final String dishName1 = "Burritos";
     private final String dishName2 = "Nachos";
@@ -63,14 +65,14 @@ public class CollaborativeProposalAnswerTest {
         final Dish dish1 = new Dish(dishName1);
         final Dish dish2 = new Dish(dishName2);
 
-        offeredDishes = new HashSet<>();
-        suggestedDishes = new HashSet<>();
+        offeredDishes = new ArrayList<>();
+        suggestedDishes = new ArrayList<>();
 
         repositoryDish.insert(dish1);
         repositoryDish.insert(dish2);
 
-        offeredDishes.add(dish1.getId());
-        suggestedDishes.add(dish2.getId());
+        offeredDishes.add(dish1);
+        suggestedDishes.add(dish2);
 
         final CollaborativeMenu collaborativeMenu = new CollaborativeMenu(name, author, description,
                 localization, dateStart, dateEnd, offeredDishes, suggestedDishes);
