@@ -1,8 +1,6 @@
 package dev.blunch.blunch.activity;
 
-import android.annotation.TargetApi;
 import android.app.TimePickerDialog;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -11,7 +9,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -19,8 +16,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.LinkedList;
+import java.util.List;
 
 import dev.blunch.blunch.R;
 import dev.blunch.blunch.domain.CollaborativeMenu;
@@ -28,7 +25,6 @@ import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.repositories.CollaborativeMenuRepository;
 import dev.blunch.blunch.repositories.DishRepository;
 import dev.blunch.blunch.services.CollaborativeMenuService;
-import dev.blunch.blunch.services.DishService;
 import dev.blunch.blunch.view.CollaborativeDishLayout;
 
 import static junit.framework.Assert.assertNotNull;
@@ -36,12 +32,10 @@ import static junit.framework.Assert.assertNotNull;
 public class NewCollaborativeMenuActivity extends AppCompatActivity {
 
     private int iHour, iMinute, fHour, fMinute;
-    private int numDish;
+    int numDish;
     private Date start, finish;
     protected ArrayList<CollaborativeDishLayout> myDishes = new ArrayList<>();
-    private EditText menuName;
 
-    private DishService dishService;
     private CollaborativeMenuService collaborativeMenuService;
 
     @Override
@@ -51,8 +45,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        dishService = new DishService(new DishRepository(getApplicationContext()));
-        collaborativeMenuService = new CollaborativeMenuService(new CollaborativeMenuRepository(getApplicationContext()));
+        collaborativeMenuService = new CollaborativeMenuService(new CollaborativeMenuRepository(getApplicationContext()), new DishRepository(getApplicationContext()));
         initialize();
     }
 
@@ -61,20 +54,20 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         super.onStart();
     }
 
+    @SuppressWarnings("all")
     private void initialize() {
         iHour = iMinute = fHour = fMinute = 0;
-        numDish = 1;
-        updateTime(0,0,0,0);
+        numDish = 0;
+        updateTime(0, 0, 0, 0);
 
-        menuName = (EditText) findViewById(R.id.nomMenu);
+        final EditText menuName = (EditText) findViewById(R.id.nomMenu);
         menuName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (menuName.getText().toString().equals("MENÚ")) {
                     menuName.setText("");
                     menuName.setTextColor(getResources().getColor(R.color.black));
-                }
-                else if(menuName.getText().toString().equals("")){
+                } else if (menuName.getText().toString().equals("")) {
                     menuName.setText("MENÚ");
                     menuName.setTextColor(getResources().getColor(R.color.colorEdit));
                 }
@@ -85,6 +78,18 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         final LinearLayout moreDishesLayout = (LinearLayout) findViewById(R.id.dishesLayout);
         assertNotNull(moreDishes);
         assertNotNull(moreDishesLayout);
+        final CollaborativeDishLayout menu = new CollaborativeDishLayout(getApplicationContext(), numDish);
+        myDishes.add(menu);
+        moreDishesLayout.addView(menu);
+        ++numDish;
+        menu.getClose().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                moreDishesLayout.removeView(menu);
+                myDishes.remove(menu);
+            }
+        });
+
         moreDishes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,11 +107,8 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
             }
         });
 
-        ArrayList<TextView> dishes = new ArrayList<>();
-        dishes.add((TextView) findViewById(R.id.dish1));
 
         ImageButton timeTable = (ImageButton) findViewById(R.id.timetablebutton);
-        assertNotNull(timeTable);
         timeTable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,7 +117,6 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         });
 
         Button publish = (Button) findViewById(R.id.publish);
-        assertNotNull(publish);
         publish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,7 +125,6 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         });
 
         final ImageButton vegetarian = (ImageButton) findViewById(R.id.vegetarian);
-        assertNotNull(vegetarian);
         vegetarian.setColorFilter(R.color.black);
         vegetarian.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,7 +140,6 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         });
 
         final ImageButton glutenFree = (ImageButton) findViewById(R.id.glutenfree);
-        assertNotNull(glutenFree);
         glutenFree.setColorFilter(R.color.black);
         glutenFree.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -232,31 +231,25 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         return a;
     }
 
+    @SuppressWarnings("all")
     private void createCollaborativeMenu() {
 
+        EditText cityEditText = (EditText) findViewById(R.id.city);
+        EditText adressEditText = (EditText) findViewById(R.id.adress);
+        EditText descriptionEditText = (EditText) findViewById(R.id.description);
+//        Switch who1 = (Switch) findViewById(R.id.switch1);
+        EditText menuNameEditText = (EditText) findViewById(R.id.nomMenu);
+
         final String author = "Admin";
-        EditText address = (EditText) findViewById(R.id.adress);
-        EditText city = (EditText) findViewById(R.id.city);
-        assertNotNull(address);
-        assertNotNull(city);
-        final String localization = address.getText().toString() + ", " + city.getText().toString();
-        EditText description = (EditText) findViewById(R.id.description);
-        assertNotNull(description);
+        String address = adressEditText.getText().toString();
+        String city = cityEditText.getText().toString();
+        final String localization = address + ", " + city;
 
-        Set<String> offeredDishKeys = new LinkedHashSet<>();
-        Set<String> suggestedDishKeys = new LinkedHashSet<>();
 
-        EditText dish1 = (EditText) findViewById(R.id.dish1);
-        assertNotNull(dish1);
-        Switch who1 = (Switch) findViewById(R.id.switch1);
-        assertNotNull(who1);
+        String menuNameString = menuNameEditText.getText().toString();
+        String description = descriptionEditText.getText().toString();
 
-        if(menuName.getText().toString().equals("") || address.getText().toString().equals("")
-                || address.getText().toString().equals("") || address.getText().toString().equals("Tu dirección")
-                || city.getText().toString().equals("") || city.getText().toString().equals("Tu ciudad")
-                || description.getText().toString().equals("") || description.getText().toString().equals("descripción")
-                || dish1.getText().toString().equals("") || dish1.getText().toString().equals("Plato 1")){
-
+        if(isIncomplete(address, city, menuNameString, description)){
             Toast.makeText(this, "Campos incompletos",
                     Toast.LENGTH_LONG).show();
         }
@@ -266,32 +259,36 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         }
         else {
 
-            Dish firstDish = new Dish(dish1.getText().toString(), 0.0);
-            dishService.save(firstDish);
-            if (!who1.isChecked()) offeredDishKeys.add(firstDish.getId());
-            else suggestedDishKeys.add(firstDish.getId());
+            List<Dish> offeredDish = new LinkedList<>();
+            List<Dish> suggestedDish = new LinkedList<>();
 
-            int n = 2;
-            for (CollaborativeDishLayout d : myDishes) {
-                if (!d.getDishName().equals("Plato " + n)) {
-                    Dish dish = new Dish(d.getDishName());
-                    dishService.save(dish);
-                    if (!d.isSuggest()) offeredDishKeys.add(dish.getId());
-                    else suggestedDishKeys.add(dish.getId());
+            int n = 1;
+            for (CollaborativeDishLayout dishLayout : myDishes) {
+                if (!dishLayout.getDishName().equals("Plato " + n)) {
+                    Dish dish = new Dish(dishLayout.getDishName());
+                    if (!dishLayout.isSuggest()) offeredDish.add(dish);
+                    else suggestedDish.add(dish);
                 }
                 n++;
             }
 
             CollaborativeMenu collaborativeMenu = new CollaborativeMenu(
-                    menuName.getText().toString(),
+                    menuNameString,
                     author,
-                    description.getText().toString(),
+                    description,
                     localization,
                     start,
                     finish,
-                    offeredDishKeys,
-                    suggestedDishKeys);
-            collaborativeMenuService.save(collaborativeMenu);
+                    offeredDish,
+                    suggestedDish);
+            collaborativeMenuService.save(collaborativeMenu,offeredDish,suggestedDish);
         }
+    }
+
+    private boolean isIncomplete(String address, String city, String menuNameString, String description) {
+        return menuNameString.equals("") || address.equals("")
+                || address.equals("") || address.equals("Tu dirección")
+                || city.equals("") || city.equals("Tu ciudad")
+                || description.equals("") || description.equals("descripción");
     }
 }
