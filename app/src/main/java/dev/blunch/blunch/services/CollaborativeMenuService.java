@@ -1,5 +1,6 @@
 package dev.blunch.blunch.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import dev.blunch.blunch.domain.CollaborativeMenu;
@@ -25,7 +26,6 @@ public class CollaborativeMenuService extends Service<CollaborativeMenu> {
         dishesRepository = null;
     }
 
-
     @Override
     public CollaborativeMenu save(CollaborativeMenu item) {
         return super.save(item);
@@ -44,4 +44,23 @@ public class CollaborativeMenuService extends Service<CollaborativeMenu> {
         repository.insert(item);
         return item;
     }
+
+    public List<Dish> getSuggestedDishes(String key) {
+        List<Dish> list = new ArrayList<>();
+        CollaborativeMenu collaborativeMenu = get(key);
+        for (String k : collaborativeMenu.getSuggestedDishes().keySet()) {
+            list.add(dishesRepository.get(k));
+        }
+        return list;
+    }
+
+    public List<Dish> getOfferedDishes(String key) {
+        List<Dish> list = new ArrayList<>();
+        CollaborativeMenu collaborativeMenu = get(key);
+        for (String k : collaborativeMenu.getOfferedDishes().keySet()) {
+            list.add(dishesRepository.get(k));
+        }
+        return list;
+    }
+
 }

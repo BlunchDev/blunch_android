@@ -5,6 +5,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -18,6 +19,7 @@ import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.repositories.CollaborativeMenuRepository;
 import dev.blunch.blunch.services.CollaborativeMenuService;
+import dev.blunch.blunch.utils.Repository;
 
 /**
  * GetMenuCollaborative Activity
@@ -29,7 +31,6 @@ public class GetMenuCollaborativeActivity extends AppCompatActivity {
     private CollaborativeMenu collaborativeMenu;
     private List<Dish> suggestedDishes;
     private List<Dish> offeredDishes;
-    private final String KEY = "-KEp5bPBm_LaZCxF5oFA";
     private final String COMA = ",";
     private TextView userName, localization, city, menuName, hostDishes, suggestions;
     private Button contact, join;
@@ -41,24 +42,24 @@ public class GetMenuCollaborativeActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        assert fab != null;
-        fab.setOnClickListener(new View.OnClickListener() {
+        collaborativeMenuService = new CollaborativeMenuService(new CollaborativeMenuRepository(getApplicationContext()));
+        collaborativeMenuService.setOnChangedListener(new Repository.OnChangedListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onChanged(EventType type) {
+                List<CollaborativeMenu> list = collaborativeMenuService.getAll();
+                collaborativeMenu = list.get(0);
+                if (collaborativeMenu.getLocalization() == null) Log.d("el aliento de mi gato", String.valueOf(list.size()));
+                else {
+                    suggestedDishes = collaborativeMenuService.getSuggestedDishes(collaborativeMenu.getId());
+                    offeredDishes = collaborativeMenuService.getOfferedDishes(collaborativeMenu.getId());
+                    initialize();
+                }
+
             }
         });
-
-        collaborativeMenuService = new CollaborativeMenuService(new CollaborativeMenuRepository(getApplicationContext()));
-        collaborativeMenu = collaborativeMenuService.get(KEY);
-
-        // TODO Get suggestedDishes and offeredDishes of Menu with id KEY
-
-        initialize();
     }
 
+    @SuppressWarnings("all")
     private void initialize() {
         userName = (TextView) findViewById(R.id.hostName);
         localization = (TextView) findViewById(R.id.hostLocalization);
@@ -70,13 +71,21 @@ public class GetMenuCollaborativeActivity extends AppCompatActivity {
         contact = (Button) findViewById(R.id.contact);
         join = (Button) findViewById(R.id.join);
 
-        //userName.setText();
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
 
-        //localization.setText(obtainAddress());
-        //city.setText(obtainCity());
-        //menuName.setText(obtainTitle());
-        //hostDishes.setText(obtainOfferedDishSingleString());
-        //suggestions.setText(obtainSuggestedDishSingleString());
+        userName.setText(obtainUserName());
+        localization.setText(obtainAddress());
+        city.setText(obtainCity());
+        menuName.setText(obtainTitle());
+        hostDishes.setText(obtainOfferedDishSingleString());
+        suggestions.setText(obtainSuggestedDishSingleString());
 
         contact.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,6 +101,10 @@ public class GetMenuCollaborativeActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private String obtainUserName() {
+        return collaborativeMenu.getAuthor();
     }
 
     private String obtainTitle() {
@@ -121,8 +134,8 @@ public class GetMenuCollaborativeActivity extends AppCompatActivity {
     }
 
     private String obtainSuggestedDishSingleString(){
-        String sd="";
-        for(String s:obtainSuggestedDishNames()){
+        String sd = "";
+        for (String s : obtainSuggestedDishNames()){
             sd = sd + "\n" + s;
         }
         return sd;
@@ -137,8 +150,8 @@ public class GetMenuCollaborativeActivity extends AppCompatActivity {
     }
 
     private String obtainOfferedDishSingleString(){
-        String od="";
-        for(String s:obtainOfferedDishNames()){
+        String od= "";
+        for (String s : obtainOfferedDishNames()){
             od = od + "\n" + s;
         }
         return od;
