@@ -2,6 +2,7 @@ package dev.blunch.blunch.domain;
 
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -18,17 +19,17 @@ public class CollaborativeMenu extends Menu {
 
     public CollaborativeMenu(String name, String author, String description,
                              String localization, Date dateStart, Date dateEnd,
-                             Set<String> offeredDishes, Set<String> suggestedDishes) {
+                             List<Dish> offeredDishes, List<Dish> suggestedDishes) {
 
         super(name, author, description, localization, dateStart, dateEnd);
         if(offeredDishes!=null) {
-            for (String dishKey : offeredDishes) {
-                this.offeredDishes.put(dishKey, true);
+            for (Dish dish : offeredDishes) {
+                this.offeredDishes.put(dish.getId(), true);
             }
         }
         if(suggestedDishes!=null) {
-            for (String dishKey : suggestedDishes) {
-                this.suggestedDishes.put(dishKey, true);
+            for (Dish dishKey : suggestedDishes) {
+                this.suggestedDishes.put(dishKey.getId(), true);
             }
         }
     }
@@ -49,17 +50,32 @@ public class CollaborativeMenu extends Menu {
         this.suggestedDishes = suggestedDishes;
     }
 
-    public void setOfferedDishes(Set<String> offeredDishes) {
-        this.offeredDishes = new LinkedHashMap<>();
-        for (String dishKey : offeredDishes) {
-            this.offeredDishes.put(dishKey, true);
+
+    public void setOfferedDishes(Set<String> inOfferedDishes) {
+        offeredDishes = new LinkedHashMap<>();
+        for (String dishKey : inOfferedDishes) {
+            offeredDishes.put(dishKey,true);
         }
     }
 
-    public void setSuggestedDishes(Set<String> suggestedDishes) {
+    public void setOfferedDishes(List<Dish> offeredDishes) {
+        this.offeredDishes = new LinkedHashMap<>();
+        for (Dish dish : offeredDishes) {
+            this.offeredDishes.put(dish.getId(), true);
+        }
+    }
+
+    public void setSuggestedDishes(Set<String> inSuggestedDishes) {
+        suggestedDishes = new LinkedHashMap<>();
+        for (String dishKey : inSuggestedDishes){
+            suggestedDishes.put(dishKey,true);
+        }
+    }
+
+    public void setSuggestedDishes(List<Dish> suggestedDishes) {
         this.suggestedDishes = new LinkedHashMap<>();
-        for (String dishKey : suggestedDishes) {
-            this.suggestedDishes.put(dishKey, true);
+        for (Dish dish : suggestedDishes) {
+            this.suggestedDishes.put(dish.getId(), true);
         }    }
 
     public void addSuggestedDish(String dish) {
