@@ -66,10 +66,24 @@ public class CollaborativeMenu extends Menu {
         }
     }
 
+    public void setOfferedDishesList(List<String> inOfferedDishes) {
+        offeredDishes = new LinkedHashMap<>();
+        for (String dishKey : inOfferedDishes) {
+            offeredDishes.put(dishKey,true);
+        }
+    }
+
     public void setOfferedDishes(List<Dish> offeredDishes) {
         this.offeredDishes = new LinkedHashMap<>();
         for (Dish dish : offeredDishes) {
             this.offeredDishes.put(dish.getId(), true);
+        }
+    }
+
+    public void setSuggestedDishesList(List<String> inSuggestedDishes) {
+        suggestedDishes = new LinkedHashMap<>();
+        for (String dishKey : inSuggestedDishes){
+            suggestedDishes.put(dishKey,true);
         }
     }
 

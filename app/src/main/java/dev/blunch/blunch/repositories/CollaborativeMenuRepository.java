@@ -4,8 +4,10 @@ import android.content.Context;
 
 import com.firebase.client.DataSnapshot;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import dev.blunch.blunch.domain.CollaborativeMenu;
@@ -24,29 +26,29 @@ public class CollaborativeMenuRepository extends FirebaseRepository<Collaborativ
         collaborativeMenu.setId(data.getKey());
         for (DataSnapshot d : data.getChildren()) {
             if (d.getKey().equals("name")) {
-                collaborativeMenu.setName(d.getValue().toString());
+                collaborativeMenu.setName(d.getValue(String.class));
             } else if (d.getKey().equals("author")) {
-                collaborativeMenu.setAuthor(d.getValue().toString());
+                collaborativeMenu.setAuthor(d.getValue(String.class));
             } else if (d.getKey().equals("description")) {
-                collaborativeMenu.setDescription(d.getValue().toString());
+                collaborativeMenu.setDescription(d.getValue(String.class));
             } else if (d.getKey().equals("localization")) {
-                collaborativeMenu.setLocalization(d.getValue().toString());
+                collaborativeMenu.setLocalization(d.getValue(String.class));
             } else if (d.getKey().equals("dateStart")) {
-                collaborativeMenu.setDateStart(new Date(Long.parseLong(d.getValue().toString())));
+                collaborativeMenu.setDateStart(d.getValue(Date.class));
             } else if (d.getKey().equals("dateEnd")) {
-                collaborativeMenu.setDateEnd(new Date(Long.parseLong(d.getValue().toString())));
+                collaborativeMenu.setDateEnd(d.getValue(Date.class));
             } else if (d.getKey().equals("offeredDishes")) {
-                Set<String> dishes = new HashSet<>();
+                List<String> dishes = new ArrayList<>();
                 for (DataSnapshot dish : d.getChildren()) {
-                    dishes.add(dish.getValue().toString());
+                    dishes.add(dish.getKey());
                 }
-                collaborativeMenu.setOfferedDishes(dishes);
+                collaborativeMenu.setOfferedDishesList(dishes);
             } else if (d.getKey().equals("suggestedDishes")) {
-                Set<String> dishes = new HashSet<>();
+                List<String> dishes = new ArrayList<>();
                 for (DataSnapshot dish : d.getChildren()) {
-                    dishes.add(dish.getValue().toString());
+                    dishes.add(dish.getKey());
                 }
-                collaborativeMenu.setSuggestedDishes(dishes);
+                collaborativeMenu.setSuggestedDishesList(dishes);
             }
         }
         return collaborativeMenu;

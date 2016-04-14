@@ -18,6 +18,7 @@ import dev.blunch.blunch.R;
 import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.repositories.CollaborativeMenuRepository;
+import dev.blunch.blunch.repositories.DishRepository;
 import dev.blunch.blunch.services.CollaborativeMenuService;
 import dev.blunch.blunch.utils.Repository;
 
@@ -42,13 +43,13 @@ public class GetMenuCollaborativeActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        collaborativeMenuService = new CollaborativeMenuService(new CollaborativeMenuRepository(getApplicationContext()));
+        collaborativeMenuService = new CollaborativeMenuService(new CollaborativeMenuRepository(getApplicationContext()), new DishRepository(getApplicationContext()));
         collaborativeMenuService.setOnChangedListener(new Repository.OnChangedListener() {
             @Override
             public void onChanged(EventType type) {
                 List<CollaborativeMenu> list = collaborativeMenuService.getAll();
                 collaborativeMenu = list.get(0);
-                if (collaborativeMenu.getLocalization() == null) Log.d("el aliento de mi gato", String.valueOf(list.size()));
+                if (collaborativeMenu.getLocalization() == null) Log.d("el aliento de mi gato", collaborativeMenu.getId());
                 else {
                     suggestedDishes = collaborativeMenuService.getSuggestedDishes(collaborativeMenu.getId());
                     offeredDishes = collaborativeMenuService.getOfferedDishes(collaborativeMenu.getId());
