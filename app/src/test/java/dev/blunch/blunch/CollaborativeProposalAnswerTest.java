@@ -1,5 +1,7 @@
 package dev.blunch.blunch;
 
+import android.util.Log;
+
 import junit.framework.AssertionFailedError;
 
 import org.junit.After;
@@ -31,6 +33,8 @@ import dev.blunch.blunch.services.DishService;
 import dev.blunch.blunch.utils.FirebaseRepository;
 import dev.blunch.blunch.utils.MockRepository;
 
+import static org.junit.Assert.assertEquals;
+
 /**
  * Created by jmotger on 6/04/16.
  */
@@ -43,17 +47,22 @@ public class CollaborativeProposalAnswerTest {
     private MockRepository<Dish> repositoryDish;
     private CollaborativeMenuService collaborativeMenuService;
 
+    private String menuId;
     private final String name = "Comida mexicana";
     private final String author = "Donald Trump";
     private final String description = "Ricos tacos y burritos de este hermoso país";
     private final String localization = "local_test";
     private final Date dateStart = Calendar.getInstance().getTime();
     private final Date dateEnd = Calendar.getInstance().getTime();
+    private final Date date = Calendar.getInstance().getTime();
     private List<Dish> offeredDishes;
     private List<Dish> suggestedDishes;
 
     private final String dishName1 = "Burritos";
     private final String dishName2 = "Nachos";
+
+    private final String guest = "Pablo Iglesias";
+
 
     @Before
     public void before() {
@@ -73,26 +82,29 @@ public class CollaborativeProposalAnswerTest {
         offeredDishes.add(dish1);
         suggestedDishes.add(dish2);
 
-        final CollaborativeMenu collaborativeMenu = new CollaborativeMenu(name, author, description,
-                localization, dateStart, dateEnd, offeredDishes, suggestedDishes);
+        final CollaborativeMenu collaborativeMenu = collaborativeMenuService.save(new CollaborativeMenu(name, author, description,
+                localization, dateStart, dateEnd), offeredDishes, suggestedDishes);
 
-        collaborativeMenuService.save(collaborativeMenu, offeredDishes, suggestedDishes);
+        menuId = collaborativeMenu.getId();
     }
 
     @After
     public void after() {
-        //collaborativeMenuRepository.close();
-        //dishRepository.close();
     }
 
     @Test
-    public void answer_to_collaborativeMenu() {
-
-    }
-
-    @Test
-    public void error_if_collaborativeMenu_does_not_exist() {
-
+    public void answer_to_collaborativeMenu() throws Exception {
+        CollaborativeMenuAnswer collaborativeMenuAnswer = collaborativeMenuService.
+                createCollaborativeMenuAnswer(new CollaborativeMenuAnswer(guest, menuId,
+                        date, suggestedDishes));
+        assertEquals(guest, collaborativeMenuAnswer.getGuest());
+        assertEquals(menuId, collaborativeMenuAnswer.getMenuId());
+        assertEquals(date, collaborativeMenuAnswer.getDate());
+        int i = 0;
+        for (String s : collaborativeMenuAnswer.getOfferedDishes().keySet()) {
+            assertEquals(suggestedDishes.get(i).getId(), s);
+            ++i;
+        }
     }
 
     @Test

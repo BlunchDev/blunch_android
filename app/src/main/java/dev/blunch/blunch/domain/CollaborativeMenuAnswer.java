@@ -21,14 +21,14 @@ public class CollaborativeMenuAnswer implements Entity {
 
     public CollaborativeMenuAnswer() {}
 
-    public CollaborativeMenuAnswer(String guest, String menuId, Date date, List<String> offeredDishes) {
+    public CollaborativeMenuAnswer(String guest, String menuId, Date date, List<Dish> offeredDishes) {
         this.guest = guest;
         this.date = date;
         this.menuId = menuId;
 
         if(offeredDishes!=null) {
-            for (String dishKey : offeredDishes) {
-                this.offeredDishes.put(dishKey, true);
+            for (Dish dish : offeredDishes) {
+                this.offeredDishes.put(dish.getId(), true);
             }
         }
     }
@@ -67,6 +67,12 @@ public class CollaborativeMenuAnswer implements Entity {
         this.offeredDishes = new LinkedHashMap<>();
         for (String dishKey : suggestedDishes) {
             this.offeredDishes.put(dishKey, true);
+        }    }
+
+    public void setOfferedDishesList(List<Dish> suggestedDishes) {
+        this.offeredDishes = new LinkedHashMap<>();
+        for (Dish dish : suggestedDishes) {
+            this.offeredDishes.put(dish.getId(), true);
         }    }
 
     @Override
