@@ -29,13 +29,13 @@ public class CollaborativeMenuAnswerRepository extends FirebaseRepository<Collab
 
         for (DataSnapshot d : data.getChildren()) {
             if (d.getKey().equals("guest")) {
-                collaborativeMenuAnswer.setGuest(d.getValue().toString());
+                collaborativeMenuAnswer.setGuest(d.getValue(String.class));
             } else if (d.getKey().equals("date")) {
-                collaborativeMenuAnswer.setDate(new Date(Long.parseLong(d.getValue().toString())));
+                collaborativeMenuAnswer.setDate(d.getValue(Date.class));
             } else if (d.getKey().equals("offeredDishes")) {
                 List<String> dishes = new ArrayList<>();
                 for (DataSnapshot dish : d.getChildren()) {
-                    dishes.add(dish.getValue().toString());
+                    dishes.add(dish.getKey());
                 }
                 collaborativeMenuAnswer.setOfferedDishes(dishes);
             }
