@@ -32,10 +32,10 @@ public abstract class FirebaseRepository<T extends Entity> extends Repository<T>
      */
     public FirebaseRepository(Context context) {
         Firebase.setAndroidContext(context);
-        firebase = new Firebase(FIREBASE_URI);
+        firebase = new Firebase(FIREBASE_URI).child(getObjectReference());
         map = new LinkedHashMap<>();
 
-        firebase.addChildEventListener(this);
+        firebase.orderByKey().addChildEventListener(this);
     }
 
     /**
@@ -45,7 +45,7 @@ public abstract class FirebaseRepository<T extends Entity> extends Repository<T>
      */
     @Override
     public T insert(T item) {
-        Firebase ref = firebase.child(getObjectReference()).push();
+        Firebase ref = firebase.push();
         ref.setValue(item);
         item.setId(ref.getKey());
         map.put(ref.getKey(), item);
@@ -60,7 +60,7 @@ public abstract class FirebaseRepository<T extends Entity> extends Repository<T>
      */
     private T insertWithId(T t, String key) {
         t.setId(key);
-        firebase.child(getObjectReference()).child(key).setValue(t);
+        firebase.child(key).setValue(t);
         map.put(key, t);
         return t;
     }
@@ -71,8 +71,7 @@ public abstract class FirebaseRepository<T extends Entity> extends Repository<T>
      * @param id Object key that you want to delete.
      */
     public void delete(String id) {
-        Firebase mRef = firebase.child(getObjectReference());
-        mRef.child(id).removeValue();
+        firebase.child(id).removeValue();
         map.remove(id);
     }
 
