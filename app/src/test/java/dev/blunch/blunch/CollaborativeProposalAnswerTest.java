@@ -38,10 +38,9 @@ import dev.blunch.blunch.utils.MockRepository;
 @Config(constants = BuildConfig.class)
 public class CollaborativeProposalAnswerTest {
 
-    private MockRepository<Dish> repositoryDish;
     private MockRepository<CollaborativeMenu> repositoryMenu;
     private MockRepository<CollaborativeMenuAnswer> repositoryMenuAnswer;
-    private DishService dishService;
+    private MockRepository<Dish> repositoryDish;
     private CollaborativeMenuService collaborativeMenuService;
 
     private final String name = "Comida mexicana";
@@ -58,9 +57,12 @@ public class CollaborativeProposalAnswerTest {
 
     @Before
     public void before() {
-        repositoryDish = new MockRepository<Dish>();
-        dishService= new DishService(repositoryDish);
 
+        repositoryMenu = new MockRepository<>();
+        repositoryDish = new MockRepository<>();
+        repositoryMenuAnswer = new MockRepository<>();
+
+        collaborativeMenuService = new CollaborativeMenuService(repositoryMenu, repositoryDish, repositoryMenuAnswer);
 
         final Dish dish1 = new Dish(dishName1);
         final Dish dish2 = new Dish(dishName2);
@@ -68,14 +70,13 @@ public class CollaborativeProposalAnswerTest {
         offeredDishes = new ArrayList<>();
         suggestedDishes = new ArrayList<>();
 
-        repositoryDish.insert(dish1);
-        repositoryDish.insert(dish2);
-
         offeredDishes.add(dish1);
         suggestedDishes.add(dish2);
 
         final CollaborativeMenu collaborativeMenu = new CollaborativeMenu(name, author, description,
                 localization, dateStart, dateEnd, offeredDishes, suggestedDishes);
+
+        collaborativeMenuService.save(collaborativeMenu, offeredDishes, suggestedDishes);
     }
 
     @After
