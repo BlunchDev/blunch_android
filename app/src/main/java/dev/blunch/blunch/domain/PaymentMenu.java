@@ -2,6 +2,7 @@ package dev.blunch.blunch.domain;
 
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -36,6 +37,12 @@ public class PaymentMenu extends Menu {
     }
 
     public void setDishes(Set<String> dishes) {
+        for (String dish : dishes) {
+            this.dishes.put(dish, true);
+        }
+    }
+
+    public void setDishes(List<String> dishes) {
         for (String dish : dishes) {
             this.dishes.put(dish, true);
         }
