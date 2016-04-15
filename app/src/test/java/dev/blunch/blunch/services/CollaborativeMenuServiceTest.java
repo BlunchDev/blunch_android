@@ -12,11 +12,15 @@ import java.util.List;
 
 import dev.blunch.blunch.BuildConfig;
 import dev.blunch.blunch.domain.CollaborativeMenu;
+import dev.blunch.blunch.domain.CollaborativeMenuAnswer;
 import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.utils.MockRepository;
 import dev.blunch.blunch.utils.Repository;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by casassg on 07/04/16.
@@ -158,6 +162,17 @@ public class CollaborativeMenuServiceTest {
         Definir CollaborativeMenuProposal (#task 2.3) hacer insert.
         Hacer get y assert.
          */
+        //CollaborativeMenuAnswer answer = service.get...
+        //assertNotNull(answer);
+        //assertEquals(answer.getId(),id..);
+        //assertEquals(answer.getMenuId,menId..);
+        //assertEquals(answer.getHost,hostId..);
+        //assertEquals(answer.getDate,date..);
+        //int i = 0;
+        //for (String s : answer.getOfferedDishes().keySet()) {
+        //    assertEquals(blablablaaaaaaa.get(i).getId(), s);
+        //   ++i;
+        //}
 
     }
 
@@ -167,6 +182,10 @@ public class CollaborativeMenuServiceTest {
         A partir de CollaborativeMenuProposal insertada, llamar a accion
         decline q la debe borrar y hacer assert comparando si todavia existe en el sistema
          */
+
+        //service.decline(insertada);
+        //CollaborativeMenuAnswer answer = service.get....;
+        //assertNull(answer);
 
     }
 
@@ -179,6 +198,13 @@ public class CollaborativeMenuServiceTest {
         Hacer assert verificando que se ha borrado del sistema y assert sobre el
         CollaborativeMenu referenciado para ver que incluye los platos de la propuesta.
          */
+
+        //service.accept(insertada);
+        //CollaborativeMenuAnswer answer = service.get..;
+        //assertNull(answer);
+        //for (String s: insertada.getOfferedDishes().keySet()){
+        //    assertTrue(CollaborativeMenureferenciat.contains(s));
+        //}
     }
 
 
