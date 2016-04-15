@@ -36,6 +36,7 @@ public class CollaborativeMenuServiceTest {
     @Before
     public void setUp() {
         repository = new MockRepository<>();
+        service = new CollaborativeMenuService(repository);
         service = new CollaborativeMenuService(repository, new MockRepository<Dish>());
         newMenu = new CollaborativeMenu(
                 "Menu de micro de la FIB",
@@ -151,8 +152,5 @@ public class CollaborativeMenuServiceTest {
         assertEquals(0, service.getAmount());
         assertEquals(Repository.OnChangedListener.EventType.Removed,lastChangedType);
     }
-
-//    @Test
-//    public void onSave
 
 }

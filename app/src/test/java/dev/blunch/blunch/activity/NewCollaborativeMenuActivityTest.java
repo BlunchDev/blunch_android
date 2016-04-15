@@ -4,22 +4,14 @@ import android.os.Build;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
-
 import dev.blunch.blunch.BuildConfig;
 import dev.blunch.blunch.R;
-import dev.blunch.blunch.domain.CollaborativeMenu;
-import dev.blunch.blunch.domain.Dish;
-import dev.blunch.blunch.services.CollaborativeMenuService;
-import dev.blunch.blunch.utils.MockRepository;
-import dev.blunch.blunch.utils.Repository;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -43,10 +35,6 @@ public class NewCollaborativeMenuActivityTest {
     private ImageButton     dateButton;
     private ImageButton     moreDishes;
 
-    private CollaborativeMenuService service;
-    private MockRepository<CollaborativeMenu> repository;
-    private Repository.OnChangedListener.EventType lastChangedType;
-
     @Before
     public void setup() {
         activity = Robolectric.setupActivity(NewCollaborativeMenuActivity.class);
@@ -58,16 +46,6 @@ public class NewCollaborativeMenuActivityTest {
         publish = (Button) activity.findViewById(R.id.publish);
         dateButton = (ImageButton) activity.findViewById(R.id.timetablebutton);
         moreDishes = (ImageButton) activity.findViewById(R.id.moreDishes);
-
-        repository = new MockRepository<>();
-        service = new CollaborativeMenuService(repository, new MockRepository<Dish>());
-        lastChangedType = null;
-        service.setOnChangedListener(new Repository.OnChangedListener() {
-            @Override
-            public void onChanged(EventType type) {
-                lastChangedType = type;
-            }
-        });
     }
 
     @Test

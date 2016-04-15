@@ -6,9 +6,7 @@ import com.firebase.client.DataSnapshot;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.utils.FirebaseRepository;
@@ -42,13 +40,13 @@ public class CollaborativeMenuRepository extends FirebaseRepository<Collaborativ
                 for (DataSnapshot dish : d.getChildren()) {
                     dishes.add(dish.getKey());
                 }
-                collaborativeMenu.setOfferedDishesList(dishes);
+                collaborativeMenu.setOfferedDishesListKeys(dishes);
             } else if (d.getKey().equals("suggestedDishes")) {
                 List<String> dishes = new ArrayList<>();
                 for (DataSnapshot dish : d.getChildren()) {
                     dishes.add(dish.getKey());
                 }
-                collaborativeMenu.setSuggestedDishesList(dishes);
+                collaborativeMenu.setSuggestedDishesKeys(dishes);
             }
         }
         return collaborativeMenu;

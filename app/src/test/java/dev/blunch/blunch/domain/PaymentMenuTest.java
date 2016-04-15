@@ -3,10 +3,12 @@ package dev.blunch.blunch.domain;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -25,7 +27,8 @@ public class PaymentMenuTest {
     private static final String AUTHOR = "Pepe Botella";
     private static final String DESCRIPTION = "Salsa, tequila, corason";
     private static final String LOCALIZATION = "C/Aribau 34, Barcelona";
-    private static final Set<String> DISHES = new LinkedHashSet<>();
+    private static final Set<String> DISHES_SET = new LinkedHashSet<>();
+    private static final List<String> DISHES_LIST = new ArrayList<>();
     private static Date DATE_START, DATE_END;
 
 
@@ -43,7 +46,7 @@ public class PaymentMenuTest {
         DATE_END = endCalendar.getTime();
 
         paymentMenu = new PaymentMenu(  NAME, AUTHOR, DESCRIPTION, LOCALIZATION,
-                                        DATE_START, DATE_END, DISHES);
+                                        DATE_START, DATE_END, DISHES_SET);
         paymentMenu.setId(ID);
     }
 
@@ -109,9 +112,16 @@ public class PaymentMenuTest {
         String DISH_KEY_1 = "1234";
         String DISH_KEY_2 = "4321";
         String DISH_KEY_3 = "0000";
-        DISHES.add(DISH_KEY_1);
-        DISHES.add(DISH_KEY_2);
-        paymentMenu.setDishes(DISHES);
+
+        DISHES_LIST.add(DISH_KEY_1);
+        paymentMenu.setDishes(DISHES_LIST);
+        assertTrue(paymentMenu.getDishes().keySet().size() == 1);
+        paymentMenu.removeDish(DISH_KEY_1);
+        assertTrue(paymentMenu.getDishes().keySet().size() == 0);
+
+        DISHES_SET.add(DISH_KEY_1);
+        DISHES_SET.add(DISH_KEY_2);
+        paymentMenu.setDishes(DISHES_SET);
         assertTrue(paymentMenu.getDishes().keySet().size() == 2);
         assertTrue(paymentMenu.containsDish(DISH_KEY_1));
         assertTrue(paymentMenu.containsDish(DISH_KEY_2));
