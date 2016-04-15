@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -95,7 +97,7 @@ public class GetMenuCollaborativeActivity extends AppCompatActivity {
             }
         });
 
-        getSupportActionBar().setTitle(obtainTitle());
+        getSupportActionBar().setWindowTitle(obtainTitle());
 
     }
 
@@ -132,7 +134,7 @@ public class GetMenuCollaborativeActivity extends AppCompatActivity {
     private String obtainSuggestedDishSingleString(){
         String sd = "";
         for (String s : obtainSuggestedDishNames()){
-            sd = sd + "\n" + s;
+            sd += s + "\n";
         }
         return sd;
     }
@@ -148,19 +150,36 @@ public class GetMenuCollaborativeActivity extends AppCompatActivity {
     private String obtainOfferedDishSingleString(){
         String od= "";
         for (String s : obtainOfferedDishNames()){
-            od = od + "\n" + s;
+            od += s + "\n";
         }
         return od;
     }
 
-    private String obtainDescription(){
-
-        return "";
+    private String obtainDescription() {
+        return collaborativeMenu.getDescription();
     }
 
-    private String obtainHour(){
-
-        return "";
+    private String obtainHour() {
+        String result = "";
+        Integer hour, minute;
+        Calendar calendar = Calendar.getInstance();
+        Date dateStart = collaborativeMenu.getDateStart();
+        Date dateEnd = collaborativeMenu.getDateEnd();
+        calendar.setTime(dateStart);
+        hour = calendar.get(Calendar.HOUR_OF_DAY);
+        minute = calendar.get(Calendar.MINUTE);
+        if (hour < 10) result += "0";
+        result += hour + ":";
+        if (minute < 10) result += "0";
+        result += minute + " - ";
+        calendar.setTime(dateEnd);
+        hour = calendar.get(Calendar.HOUR_OF_DAY);
+        minute = calendar.get(Calendar.MINUTE);
+        if (hour < 10) result += "0";
+        result += hour + ":";
+        if (minute < 10) result += "0";
+        result += minute;
+        return result;
     }
 
 }
