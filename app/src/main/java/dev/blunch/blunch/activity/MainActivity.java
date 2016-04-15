@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Intent i = new Intent( MainActivity.this, CollaborativeMenuAnswerView.class);
+        Intent i = new Intent( MainActivity.this, CollaborativeMenuAnswerActivity.class);
 
         startActivity(i);
 

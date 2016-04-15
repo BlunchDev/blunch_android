@@ -56,7 +56,7 @@ public class CollaborativeMenuService extends Service<CollaborativeMenu> {
         return repository.insert(item);
     }
 
-    public CollaborativeMenuAnswer createCollaborativeMenuAnswer(CollaborativeMenuAnswer collaborativeMenuAnswer) throws Exception {
+    public CollaborativeMenuAnswer reply(CollaborativeMenuAnswer collaborativeMenuAnswer) throws Exception {
         List<CollaborativeMenu> collaborativeMenus = repository.all();
         boolean exists = false;
         for (CollaborativeMenu menu : collaborativeMenus) {

@@ -1,6 +1,13 @@
-package dev.blunch.blunch;
+package dev.blunch.blunch.activity;
 
-import android.util.Log;
+import android.os.Build;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import junit.framework.AssertionFailedError;
 
@@ -8,28 +15,24 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.Robolectric;
 import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowApplication;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
+import dev.blunch.blunch.BuildConfig;
+import dev.blunch.blunch.R;
 import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.domain.CollaborativeMenuAnswer;
 import dev.blunch.blunch.domain.Dish;
-import dev.blunch.blunch.repositories.CollaborativeMenuAnswerRepository;
-import dev.blunch.blunch.repositories.CollaborativeMenuRepository;
-import dev.blunch.blunch.repositories.DishRepository;
 import dev.blunch.blunch.services.CollaborativeMenuService;
-import dev.blunch.blunch.services.DishService;
 import dev.blunch.blunch.utils.FirebaseRepository;
 import dev.blunch.blunch.utils.MockRepository;
 
@@ -39,8 +42,8 @@ import static org.junit.Assert.assertEquals;
  * Created by jmotger on 6/04/16.
  */
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class)
-public class CollaborativeProposalAnswerTest {
+@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
+public class CollaborativeProposalAnswerActivityTest {
 
     private MockRepository<CollaborativeMenu> repositoryMenu;
     private MockRepository<CollaborativeMenuAnswer> repositoryMenuAnswer;
@@ -63,6 +66,12 @@ public class CollaborativeProposalAnswerTest {
 
     private final String guest = "Pablo Iglesias";
 
+    private CollaborativeMenuAnswerActivity activity;
+
+    private EditText newSuggestionEditText;
+    private Button newSuggestionButton;
+    private LinearLayout suggestionsHostLayout;
+    private LinearLayout suggestionsGuestLayout;
 
     @Before
     public void before() {
@@ -93,18 +102,70 @@ public class CollaborativeProposalAnswerTest {
     }
 
     @Test
-    public void answer_to_collaborativeMenu() throws Exception {
-        CollaborativeMenuAnswer collaborativeMenuAnswer = collaborativeMenuService.
-                createCollaborativeMenuAnswer(new CollaborativeMenuAnswer(guest, menuId,
-                        date, suggestedDishes));
-        assertEquals(guest, collaborativeMenuAnswer.getGuest());
-        assertEquals(menuId, collaborativeMenuAnswer.getMenuId());
-        assertEquals(date, collaborativeMenuAnswer.getDate());
-        int i = 0;
-        for (String s : collaborativeMenuAnswer.getOfferedDishes().keySet()) {
-            assertEquals(suggestedDishes.get(i).getId(), s);
-            ++i;
+    public void answer_to_collaborativeMenu_domain() {
+        try {
+            CollaborativeMenuAnswer collaborativeMenuAnswer = null;
+            collaborativeMenuAnswer = collaborativeMenuService.
+                    reply(new CollaborativeMenuAnswer(guest, menuId,
+                            date, suggestedDishes));
+            assertEquals(guest, collaborativeMenuAnswer.getGuest());
+            assertEquals(menuId, collaborativeMenuAnswer.getMenuId());
+            assertEquals(date, collaborativeMenuAnswer.getDate());
+            int i = 0;
+            for (String s : collaborativeMenuAnswer.getOfferedDishes().keySet()) {
+                assertEquals(suggestedDishes.get(i).getId(), s);
+                ++i;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+    }
+
+    @Test
+    public void answer_to_collaborativeMenu_activity() throws Exception {
+        activity = Robolectric.setupActivity(CollaborativeMenuAnswerActivity.class);
+
+        suggestionsHostLayout = (LinearLayout) activity.findViewById(R.id.CollaborativeMenuAnswerHostSuggestions);
+        newSuggestionEditText = (EditText) activity.findViewById(R.id.CollaborativeMenuAnswerEt);
+        newSuggestionButton = (Button) activity.findViewById(R.id.CollaborativeMenuAnswerBtn);
+        suggestionsGuestLayout = (LinearLayout) activity.findViewById(R.id.CollaborativeMenuAnswerGuestSuggestions);
+
+        activity.fillHostSuggestions(suggestedDishes);
+
+        for (int i = 0; i < suggestionsHostLayout.getChildCount(); ++i) {
+            CheckBox checkBox = (CheckBox) suggestionsHostLayout.getChildAt(i);
+            assertEquals(checkBox.getText(), suggestedDishes.get(i).getName());
+            assertEquals(checkBox.isChecked(), false);
+        }
+
+        CheckBox checkBox = (CheckBox) suggestionsHostLayout.getChildAt(0);
+        checkBox.performClick();
+        assertEquals(checkBox.isChecked(), true);
+
+        ArrayList<String> dishes = new ArrayList<>();
+        dishes.add("Quesadillas de jamón");
+        dishes.add("Tequila");
+
+        newSuggestionEditText.setText(dishes.get(0));
+        newSuggestionButton.performClick();
+
+        newSuggestionEditText.setText(dishes.get(1));
+        newSuggestionButton.performClick();
+
+        for (int i = 0; i < suggestionsGuestLayout.getChildCount(); ++i) {
+            TextView textView = (TextView) ((LinearLayout) suggestionsGuestLayout.getChildAt(i)).getChildAt(0);
+            assertEquals(textView.getText(), dishes.get(i));
+        }
+
+        ImageButton removeSuggestion = (ImageButton) ((LinearLayout)suggestionsGuestLayout.getChildAt(1)).getChildAt(1);
+        removeSuggestion.performClick();
+        dishes.remove(1);
+
+        for (int i = 0; i < suggestionsGuestLayout.getChildCount(); ++i) {
+            TextView textView = (TextView) ((LinearLayout) suggestionsGuestLayout.getChildAt(i)).getChildAt(0);
+            assertEquals(textView.getText(), dishes.get(i));
+        }
+
     }
 
     public static void runAndWaitUntil(FirebaseRepository<CollaborativeMenuAnswer> ref, Runnable task, Callable<Boolean> done) throws InterruptedException {

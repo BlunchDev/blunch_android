@@ -58,7 +58,6 @@ public class CollaborativeMenu extends Menu {
         this.suggestedDishes = suggestedDishes;
     }
 
-
     public void setOfferedDishes(Set<String> inOfferedDishes) {
         offeredDishes = new LinkedHashMap<>();
         for (String dishKey : inOfferedDishes) {

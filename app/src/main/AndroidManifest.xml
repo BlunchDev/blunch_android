@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.CollaborativeMenuAnswerView"
+            android:name=".activity.CollaborativeMenuAnswerActivity"
             android:label="@string/title_activity_collaborative_menu_answer"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
