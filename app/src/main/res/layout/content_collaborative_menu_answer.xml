@@ -9,7 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".CollaborativeMenuAnswerView"
+    tools:context=".activity.CollaborativeMenuAnswerView"
     tools:showIn="@layout/activity_collaborative_menu_answer">
 
 </RelativeLayout>

@@ -107,16 +107,6 @@ public class CollaborativeProposalAnswerTest {
         }
     }
 
-    @Test
-    public void answer_to_collaborativeMenuAnswer_with_suggested_dishes() {
-
-    }
-
-    @Test
-    public void answer_to_collaborativeMenuAnswer_with_new_dishes() {
-
-    }
-
     public static void runAndWaitUntil(FirebaseRepository<CollaborativeMenuAnswer> ref, Runnable task, Callable<Boolean> done) throws InterruptedException {
         final java.util.concurrent.Semaphore semaphore = new java.util.concurrent.Semaphore(1);
         semaphore.acquire();
