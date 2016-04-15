@@ -49,14 +49,10 @@ public class GetMenuCollaborativeActivity extends AppCompatActivity {
             public void onChanged(EventType type) {
                 List<CollaborativeMenu> list = collaborativeMenuService.getAll();
                 collaborativeMenu = list.get(0);
-                if (collaborativeMenu.getLocalization() == null) Log.d("el aliento de mi gato", collaborativeMenu.getId());
-                else {
                     suggestedDishes = collaborativeMenuService.getSuggestedDishes(collaborativeMenu.getId());
                     offeredDishes = collaborativeMenuService.getOfferedDishes(collaborativeMenu.getId());
                     initialize();
                 }
-
-            }
         });
     }
 

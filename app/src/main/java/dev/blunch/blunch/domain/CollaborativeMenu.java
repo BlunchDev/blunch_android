@@ -59,14 +59,7 @@ public class CollaborativeMenu extends Menu {
     }
 
 
-    public void setOfferedDishes(Set<String> inOfferedDishes) {
-        offeredDishes = new LinkedHashMap<>();
-        for (String dishKey : inOfferedDishes) {
-            offeredDishes.put(dishKey,true);
-        }
-    }
-
-    public void setOfferedDishesList(List<String> inOfferedDishes) {
+    public void setOfferedDishesListKeys(List<String> inOfferedDishes) {
         offeredDishes = new LinkedHashMap<>();
         for (String dishKey : inOfferedDishes) {
             offeredDishes.put(dishKey,true);
@@ -80,14 +73,7 @@ public class CollaborativeMenu extends Menu {
         }
     }
 
-    public void setSuggestedDishesList(List<String> inSuggestedDishes) {
-        suggestedDishes = new LinkedHashMap<>();
-        for (String dishKey : inSuggestedDishes){
-            suggestedDishes.put(dishKey,true);
-        }
-    }
-
-    public void setSuggestedDishes(Set<String> inSuggestedDishes) {
+    public void setSuggestedDishesKeys(List<String> inSuggestedDishes) {
         suggestedDishes = new LinkedHashMap<>();
         for (String dishKey : inSuggestedDishes){
             suggestedDishes.put(dishKey,true);
