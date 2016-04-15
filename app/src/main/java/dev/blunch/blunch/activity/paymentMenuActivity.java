@@ -233,14 +233,16 @@ public class paymentMenuActivity extends AppCompatActivity {
     private void createPaymentMenu() {
         final String author = "Admin";
         Set<String> DishKeys = new LinkedHashSet<>();
-        EditText nameMenu = (EditText) findViewById(R.id.nomMenu);
         EditText dish1 = (EditText) findViewById(R.id.dish1);
         EditText address = (EditText) findViewById(R.id.adress);
         EditText city = (EditText) findViewById(R.id.city);
+        assertNotNull(address);
+        assertNotNull(city);
         EditText price = (EditText) findViewById(R.id.precio);
         final String localization = address.getText().toString() + ", " + city.getText().toString();
         EditText description = (EditText) findViewById(R.id.description);
-        if(nameMenu.getText().toString().equals("")
+        assertNotNull(description);
+        if(menuName.getText().toString().equals("")
                 || price.getText().toString().equals("") || price.getText().toString().equals("Precio")
                 || address.getText().toString().equals("") || address.getText().toString().equals("Tu dirección")
                 || city.getText().toString().equals("") || city.getText().toString().equals("Tu ciudad")
@@ -268,7 +270,7 @@ public class paymentMenuActivity extends AppCompatActivity {
                 n++;
             }
 
-            PaymentMenu PaymentMenu = new PaymentMenu(    nameMenu.getText().toString(),
+            PaymentMenu PaymentMenu = new PaymentMenu(    menuName.getText().toString(),
                     author,
                     description.getText().toString(),
                     localization,

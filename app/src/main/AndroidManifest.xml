@@ -24,6 +24,11 @@
             android:label="@string/title_activity_new_colaborative_menu"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+        <activity
+            android:name=".activity.paymentMenuActivity"
+            android:label=".activity.paymentMenuActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>

@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Intent intent = new Intent(getApplicationContext(), NewCollaborativeMenuActivity.class);
+        Intent intent = new Intent(getApplicationContext(), paymentMenuActivity.class);
         startActivity(intent);
 
         Firebase.setAndroidContext(this);
