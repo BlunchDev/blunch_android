@@ -30,7 +30,8 @@ import dev.blunch.blunch.repositories.PaymentMenuRepository;
 public class paymentMenuActivity extends AppCompatActivity {
 
 
-    private int iHour, iMinut, fHour, fMinut;
+    private int iHour, iMinut, fHour;
+    private int fMinut;
     private int numDish;
     private Date start, finish;
     private List<ImageButton> idClose = new ArrayList<>();
