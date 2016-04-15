@@ -30,7 +30,6 @@ public class GetMenuCollaborativeActivityTest {
     private TextView    userName,
                         localization,
                         city,
-                        menuName,
                         hostDishes,
                         suggestions,
                         description,
@@ -45,7 +44,6 @@ public class GetMenuCollaborativeActivityTest {
         userName = (TextView) activity.findViewById(R.id.hostName);
         localization = (TextView) activity.findViewById(R.id.hostLocalization);
         city = (TextView) activity.findViewById(R.id.hostCity);
-        menuName = (TextView) activity.findViewById(R.id.menuName);
         hostDishes = (TextView) activity.findViewById(R.id.hostDishes);
         suggestions = (TextView) activity.findViewById(R.id.suggestions);
         description = (TextView) activity.findViewById(R.id.description);
@@ -61,7 +59,6 @@ public class GetMenuCollaborativeActivityTest {
         assertNotNull(userName);
         assertNotNull(localization);
         assertNotNull(city);
-        assertNotNull(menuName);
         assertNotNull(hostDishes);
         assertNotNull(suggestions);
         assertNotNull(description);

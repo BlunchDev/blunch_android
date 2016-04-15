@@ -35,7 +35,7 @@ public class GetMenuCollaborativeActivity extends AppCompatActivity {
     private List<Dish> suggestedDishes;
     private List<Dish> offeredDishes;
     private final String COMA = ",";
-    private TextView userName, localization, city, menuName, hostDishes, suggestions, description, hour;
+    private TextView userName, localization, city, hostDishes, suggestions, description, hour;
     private Button join;
     private Toolbar toolbar;
 
@@ -44,7 +44,6 @@ public class GetMenuCollaborativeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_get_collaborative_menu);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         collaborativeMenuService = new CollaborativeMenuService(new CollaborativeMenuRepository(getApplicationContext()), new DishRepository(getApplicationContext()));
         collaborativeMenuService.setOnChangedListener(new Repository.OnChangedListener() {
@@ -64,14 +63,11 @@ public class GetMenuCollaborativeActivity extends AppCompatActivity {
         userName = (TextView) findViewById(R.id.hostName);
         localization = (TextView) findViewById(R.id.hostLocalization);
         city = (TextView) findViewById(R.id.hostCity);
-        menuName = (TextView) findViewById(R.id.menuName);
         hostDishes = (TextView) findViewById(R.id.hostDishes);
         suggestions = (TextView) findViewById(R.id.suggestions);
         description = (TextView) findViewById(R.id.description);
         hour = (TextView) findViewById(R.id.hour);
-
         join = (Button) findViewById(R.id.join);
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,16 +76,13 @@ public class GetMenuCollaborativeActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-
         userName.setText(obtainUserName());
         localization.setText(obtainAddress());
         city.setText(obtainCity());
-        menuName.setText(obtainTitle());
         hostDishes.setText(obtainOfferedDishSingleString());
         suggestions.setText(obtainSuggestedDishSingleString());
         description.setText(obtainDescription());
         hour.setText(obtainHour());
-
         join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,8 +90,9 @@ public class GetMenuCollaborativeActivity extends AppCompatActivity {
             }
         });
 
-        getSupportActionBar().setWindowTitle(obtainTitle());
-
+        toolbar.setTitle(obtainTitle());
+        // TODO Set user image: toolbar.setLogo();
+        setSupportActionBar(toolbar);
     }
 
     private String obtainUserName() {
