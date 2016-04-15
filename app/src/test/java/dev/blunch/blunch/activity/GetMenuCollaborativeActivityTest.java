@@ -58,19 +58,6 @@ public class GetMenuCollaborativeActivityTest {
     }
 
     @Test
-    public void shouldNotBeNull() throws Exception {
-        assertNotNull(userName);
-        assertNotNull(localization);
-        assertNotNull(city);
-        assertNotNull(hostDishes);
-        assertNotNull(suggestions);
-        assertNotNull(description);
-        assertNotNull(hour);
-        assertNotNull(join);
-        assertNotNull(toolbar);
-    }
-
-    @Test
     public void textViewCorrect() throws Exception {
         final String ID = "1234";
         final String AUTHOR = "Manolo Lama";
