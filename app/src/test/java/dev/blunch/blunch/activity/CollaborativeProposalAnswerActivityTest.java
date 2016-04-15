@@ -130,8 +130,6 @@ public class CollaborativeProposalAnswerActivityTest {
         newSuggestionButton = (Button) activity.findViewById(R.id.CollaborativeMenuAnswerBtn);
         suggestionsGuestLayout = (LinearLayout) activity.findViewById(R.id.CollaborativeMenuAnswerGuestSuggestions);
 
-        activity.fillHostSuggestions(suggestedDishes);
-
         for (int i = 0; i < suggestionsHostLayout.getChildCount(); ++i) {
             CheckBox checkBox = (CheckBox) suggestionsHostLayout.getChildAt(i);
             assertEquals(checkBox.getText(), suggestedDishes.get(i).getName());
@@ -139,8 +137,10 @@ public class CollaborativeProposalAnswerActivityTest {
         }
 
         CheckBox checkBox = (CheckBox) suggestionsHostLayout.getChildAt(0);
-        checkBox.performClick();
-        assertEquals(checkBox.isChecked(), true);
+        if (checkBox != null) {
+            checkBox.performClick();
+            assertEquals(checkBox.isChecked(), true);
+        }
 
         ArrayList<String> dishes = new ArrayList<>();
         dishes.add("Quesadillas de jamón");

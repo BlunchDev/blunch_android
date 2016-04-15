@@ -24,10 +24,15 @@ import dev.blunch.blunch.repositories.CollaborativeMenuRepository;
 import dev.blunch.blunch.repositories.DishRepository;
 import dev.blunch.blunch.services.CollaborativeMenuService;
 import dev.blunch.blunch.utils.Entity;
+import dev.blunch.blunch.utils.Repository;
 
 public class CollaborativeMenuAnswerActivity extends AppCompatActivity {
 
     private CollaborativeMenuService collaborativeMenuService;
+
+    private List<Dish> hostSuggestions;
+
+    private String menuID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +43,17 @@ public class CollaborativeMenuAnswerActivity extends AppCompatActivity {
                 new DishRepository(getApplicationContext()),
                 new CollaborativeMenuAnswerRepository(getApplicationContext()));
 
-        //we add the onClick function to the button add
-        makeProposalCreation();
+        collaborativeMenuService.setOnChangedListener(new Repository.OnChangedListener() {
+            @Override
+            public void onChanged(EventType type) {
+                List<CollaborativeMenu> list = collaborativeMenuService.getAll();
+                CollaborativeMenu collaborativeMenu = list.get(0);
+                menuID = collaborativeMenu.getId();
+                hostSuggestions = collaborativeMenuService.getSuggestedDishes(collaborativeMenu.getId());
+                fillHostSuggestions();
+                makeProposalCreation();
+            }
+        });
     }
 
     private void makeProposalCreation() {
@@ -48,6 +62,7 @@ public class CollaborativeMenuAnswerActivity extends AppCompatActivity {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    //TODO add dishes to repository & create menu answer
                     String s = "";
                     LinearLayout linearLayout = (LinearLayout) findViewById(R.id.CollaborativeMenuAnswerGuestSuggestions);
                     if (linearLayout != null) {
@@ -67,22 +82,17 @@ public class CollaborativeMenuAnswerActivity extends AppCompatActivity {
         }
     }
 
-    public void fillHostSuggestions(List<Dish> dishes){
-        List<String> hostSuggestions = new ArrayList<>();
-        for (Dish d : dishes) {
-            hostSuggestions.add(d.getName());
-        }
+    private void fillHostSuggestions(){
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.CollaborativeMenuAnswerHostSuggestions);
         if(linearLayout != null) {
             for (int i = 0; i < hostSuggestions.size(); ++i) {
                 CheckBox checkBox = new CheckBox(getApplicationContext());
-                checkBox.setText(hostSuggestions.get(i));
+                checkBox.setText(hostSuggestions.get(i).getName());
                 checkBox.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
                 linearLayout.addView(checkBox);
             }
         }
-
     }
 
     public void addSuggestion(View view){
