@@ -95,13 +95,6 @@ public class GetMenuCollaborativeActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
     }
 
-    public void setPredefinedMenu(CollaborativeMenu collaborativeMenu, List<Dish> suggestedDishes, List<Dish> offeredDishes) {
-        this.collaborativeMenu = collaborativeMenu;
-        this.suggestedDishes = suggestedDishes;
-        this.offeredDishes = offeredDishes;
-        initialize();
-    }
-
     private String obtainUserName() {
         return collaborativeMenu.getAuthor();
     }
