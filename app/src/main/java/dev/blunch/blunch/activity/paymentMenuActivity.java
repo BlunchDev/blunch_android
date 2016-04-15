@@ -11,8 +11,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -25,7 +27,12 @@ import dev.blunch.blunch.R;
 import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.domain.PaymentMenu;
 import dev.blunch.blunch.repositories.DishRepository;
+import dev.blunch.blunch.services.DishService;
 import dev.blunch.blunch.repositories.PaymentMenuRepository;
+import dev.blunch.blunch.services.PaymentMenuService;
+import dev.blunch.blunch.view.PaymentDishLayout;
+
+import static junit.framework.Assert.assertNotNull;
 
 public class paymentMenuActivity extends AppCompatActivity {
 
@@ -36,9 +43,10 @@ public class paymentMenuActivity extends AppCompatActivity {
     private Date start, finish;
     private List<ImageButton> idClose = new ArrayList<>();
     private EditText menuName;
+    private DishService dishService;
+    private PaymentMenuService paymentMenuService;
 
-    private DishRepository dishRepository;
-    private PaymentMenuRepository paymentMenuRepository;
+    protected ArrayList<PaymentDishLayout> myDishes = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +55,8 @@ public class paymentMenuActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        dishRepository = new DishRepository(getApplicationContext());
-        paymentMenuRepository = new PaymentMenuRepository(getApplicationContext());
+        dishService = new DishService(new DishRepository(getApplicationContext()));
+        paymentMenuService = new PaymentMenuService(new PaymentMenuRepository(getApplicationContext()));
         initialize();
     }
 
@@ -73,6 +81,27 @@ public class paymentMenuActivity extends AppCompatActivity {
                     menuName.setText("MENÚ");
                     menuName.setTextColor(getResources().getColor(R.color.colorEdit));
                 }
+            }
+        });
+
+        final ImageButton moreDishes = (ImageButton) findViewById(R.id.moreDishes);
+        final LinearLayout moreDishesLayout = (LinearLayout) findViewById(R.id.dishesLayout);
+        assertNotNull(moreDishes);
+        assertNotNull(moreDishesLayout);
+        moreDishes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final PaymentDishLayout a = new PaymentDishLayout(paymentMenuActivity.this, ++numDish);
+                myDishes.add(a);
+                moreDishesLayout.addView(a);
+                ImageButton close = a.getClose();
+                close.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        moreDishesLayout.removeView(a);
+                        myDishes.remove(a);
+                    }
+                });
             }
         });
 
@@ -204,44 +233,51 @@ public class paymentMenuActivity extends AppCompatActivity {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void createPaymentMenu() {
         final String author = "Admin";
+        Set<String> DishKeys = new LinkedHashSet<>();
         EditText nameMenu = (EditText) findViewById(R.id.nomMenu);
+        EditText dish1 = (EditText) findViewById(R.id.dish1);
         EditText address = (EditText) findViewById(R.id.adress);
         EditText city = (EditText) findViewById(R.id.city);
         final String localization = address.getText().toString() + ", " + city.getText().toString();
         EditText description = (EditText) findViewById(R.id.description);
-        Set<String> DishKeys = new LinkedHashSet<>();
-        EditText dish1 = (EditText) findViewById(R.id.dish1);
-        EditText dish2 = (EditText) findViewById(R.id.dish2);
-        EditText dish3 = (EditText) findViewById(R.id.dish3);
-        EditText price1 = (EditText) findViewById(R.id.precio);
-        price1.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        EditText price2 = (EditText) findViewById(R.id.precio2);
-        price2.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        EditText price3 = (EditText) findViewById(R.id.precio3);
-        price3.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        String p1 =  price1.getText().toString();
-        String p2 =  price2.getText().toString();
-        String p3 =  price3.getText().toString();
+        if(nameMenu.getText().toString().equals("")
+                || address.getText().toString().equals("") || address.getText().toString().equals("Tu dirección")
+                || city.getText().toString().equals("") || city.getText().toString().equals("Tu ciudad")
+                || description.getText().toString().equals("") || description.getText().toString().equals("descripción")
+                || dish1.getText().toString().equals("") || dish1.getText().toString().equals("Plato 1")){
 
-        Dish firstDish = new Dish(dish1.getText().toString(), Double.parseDouble(p1));
-        Dish secondDish = new Dish(dish2.getText().toString(), Double.parseDouble(p2));
-        Dish thirdDish = new Dish(dish3.getText().toString(), Double.parseDouble(p3));
+            Toast.makeText(this, "Campos incompletos",
+                    Toast.LENGTH_LONG).show();
+        }
+        else if(start.getTime()>=finish.getTime()){
+            Toast.makeText(this, "Hora de inicio más pequeña o igual que hora final",
+                    Toast.LENGTH_LONG).show();
+        }
+        else {
 
-        dishRepository.insert(firstDish);
-        dishRepository.insert(secondDish);
-        dishRepository.insert(thirdDish);
+            Dish firstDish = new Dish(dish1.getText().toString(), 0.0);
+            dishService.save(firstDish);
+            //if (!who1.isChecked()) offeredDishKeys.add(firstDish.getId());
+            //else suggestedDishKeys.add(firstDish.getId());
 
-        DishKeys.add(firstDish.getId());
-        DishKeys.add(secondDish.getId());
-        DishKeys.add(thirdDish.getId());
+            int n = 2;
+            for (PaymentDishLayout d : myDishes) {
+                if (!d.getDishName().equals("Plato " + n)) {
+                    Dish dish = new Dish(d.getDishName());
+                    dishService.save(dish);
+                    DishKeys.add(dish.getId());
+                }
+                n++;
+            }
 
-        PaymentMenu PaymentMenu = new PaymentMenu(    nameMenu.getText().toString(),
-                author,
-                description.getText().toString(),
-                localization,
-                start,
-                finish,
-                DishKeys);
-        paymentMenuRepository.insert(PaymentMenu);
+            PaymentMenu PaymentMenu = new PaymentMenu(    nameMenu.getText().toString(),
+                    author,
+                    description.getText().toString(),
+                    localization,
+                    start,
+                    finish,
+                    DishKeys);
+            paymentMenuService.save(PaymentMenu);
+        }
     }
 }
