@@ -6,7 +6,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -238,9 +237,11 @@ public class paymentMenuActivity extends AppCompatActivity {
         EditText dish1 = (EditText) findViewById(R.id.dish1);
         EditText address = (EditText) findViewById(R.id.adress);
         EditText city = (EditText) findViewById(R.id.city);
+        EditText price = (EditText) findViewById(R.id.precio);
         final String localization = address.getText().toString() + ", " + city.getText().toString();
         EditText description = (EditText) findViewById(R.id.description);
         if(nameMenu.getText().toString().equals("")
+                || price.getText().toString().equals("") || price.getText().toString().equals("Precio")
                 || address.getText().toString().equals("") || address.getText().toString().equals("Tu dirección")
                 || city.getText().toString().equals("") || city.getText().toString().equals("Tu ciudad")
                 || description.getText().toString().equals("") || description.getText().toString().equals("descripción")
@@ -254,12 +255,9 @@ public class paymentMenuActivity extends AppCompatActivity {
                     Toast.LENGTH_LONG).show();
         }
         else {
-
-            Dish firstDish = new Dish(dish1.getText().toString(), 0.0);
+            double firstPrice = Double.parseDouble(price.getText().toString());
+            Dish firstDish = new Dish(dish1.getText().toString(), firstPrice);
             dishService.save(firstDish);
-            //if (!who1.isChecked()) offeredDishKeys.add(firstDish.getId());
-            //else suggestedDishKeys.add(firstDish.getId());
-
             int n = 2;
             for (PaymentDishLayout d : myDishes) {
                 if (!d.getDishName().equals("Plato " + n)) {

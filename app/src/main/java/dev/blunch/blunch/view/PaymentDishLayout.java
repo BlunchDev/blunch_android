@@ -24,6 +24,7 @@ import dev.blunch.blunch.R;
 public class PaymentDishLayout extends LinearLayout{
 
     private EditText dishName;
+    private EditText priceDish;
     private ImageButton close;
 
     public PaymentDishLayout(Context context, int num) {
@@ -44,6 +45,8 @@ public class PaymentDishLayout extends LinearLayout{
         dishName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
         dishName.setTextColor(getResources().getColor(R.color.colorEdit));
         LinearLayout.LayoutParams nomPlatLayout = new LinearLayout.LayoutParams(400, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        h1.addView(dishName, nomPlatLayout);
         /*dishName.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,8 +56,13 @@ public class PaymentDishLayout extends LinearLayout{
                 }
             }
         });*/
+        priceDish = new EditText(context);
+        priceDish.setText("Precio");
+        priceDish.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
+        priceDish.setTextColor(getResources().getColor(R.color.colorEdit));
+        LinearLayout.LayoutParams priceDishLayout = new LinearLayout.LayoutParams(400, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-        h1.addView(dishName, nomPlatLayout);
+        h1.addView(dishName, priceDishLayout);
 
         Space space5 = new Space(context);
         LinearLayout.LayoutParams space5Layout = new LinearLayout.LayoutParams(100, ViewGroup.LayoutParams.MATCH_PARENT);
