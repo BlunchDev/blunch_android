@@ -33,14 +33,15 @@ public class GetMenuCollaborativeActivity extends AppCompatActivity {
     private List<Dish> suggestedDishes;
     private List<Dish> offeredDishes;
     private final String COMA = ",";
-    private TextView userName, localization, city, menuName, hostDishes, suggestions;
-    private Button contact, join;
+    private TextView userName, localization, city, menuName, hostDishes, suggestions, description, hour;
+    private Button join;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_get_collaborative_menu);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         collaborativeMenuService = new CollaborativeMenuService(new CollaborativeMenuRepository(getApplicationContext()), new DishRepository(getApplicationContext()));
@@ -64,15 +65,16 @@ public class GetMenuCollaborativeActivity extends AppCompatActivity {
         menuName = (TextView) findViewById(R.id.menuName);
         hostDishes = (TextView) findViewById(R.id.hostDishes);
         suggestions = (TextView) findViewById(R.id.suggestions);
+        description = (TextView) findViewById(R.id.description);
+        hour = (TextView) findViewById(R.id.hour);
 
-        contact = (Button) findViewById(R.id.contact);
         join = (Button) findViewById(R.id.join);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "NO VAAAA", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
@@ -83,20 +85,17 @@ public class GetMenuCollaborativeActivity extends AppCompatActivity {
         menuName.setText(obtainTitle());
         hostDishes.setText(obtainOfferedDishSingleString());
         suggestions.setText(obtainSuggestedDishSingleString());
-
-        contact.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(v.getContext(), "Aun no va pesaos",Toast.LENGTH_LONG).show();
-            }
-        });
+        description.setText(obtainDescription());
+        hour.setText(obtainHour());
 
         join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), "que he dicho que no!",Toast.LENGTH_LONG).show();
+                Toast.makeText(v.getContext(), "NO VAAAA!", Toast.LENGTH_LONG).show();
             }
         });
+
+        getSupportActionBar().setTitle(obtainTitle());
 
     }
 
@@ -152,6 +151,16 @@ public class GetMenuCollaborativeActivity extends AppCompatActivity {
             od = od + "\n" + s;
         }
         return od;
+    }
+
+    private String obtainDescription(){
+
+        return "";
+    }
+
+    private String obtainHour(){
+
+        return "";
     }
 
 }
