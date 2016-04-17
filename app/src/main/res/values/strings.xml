@@ -94,4 +94,8 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="getMenuCollaborativeActivity_name">getMenuCollaborativeActivity_name</string>
+    <string name="title_proposal_list">Proposals</string>
+    <string name="title_proposal_detail">Proposal Detail</string>
+    <string name="check_descript">Accept proposal</string>
+    <string name="close_descript">Reject proposal</string>
 </resources>
