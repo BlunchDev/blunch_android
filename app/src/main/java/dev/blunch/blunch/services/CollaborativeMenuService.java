@@ -3,6 +3,7 @@ package dev.blunch.blunch.services;
 import java.util.ArrayList;
 import java.util.List;
 import dev.blunch.blunch.domain.CollaborativeMenu;
+import dev.blunch.blunch.domain.CollaborativeMenuAnswer;
 import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.utils.Repository;
 import dev.blunch.blunch.utils.Service;
@@ -61,6 +62,21 @@ public class CollaborativeMenuService extends Service<CollaborativeMenu> {
             list.add(dishesRepository.get(k));
         }
         return list;
+    }
+
+    public List<CollaborativeMenuAnswer> getProposal(String key) {
+        List<CollaborativeMenuAnswer> list = new ArrayList<>();
+        //get all collaborative proposals to collaborative menu with key as id
+        return list;
+    }
+
+    public void acceptProposal(String key){
+        //get proposal answer with key as id;
+        //remove it from system and add dishes to collaborataive menu as offered
+    }
+
+    public void declineProposal(String key){
+        //get proposal answer with key as id and remove it form system
     }
 
 }
