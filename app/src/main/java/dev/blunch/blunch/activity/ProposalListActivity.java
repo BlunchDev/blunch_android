@@ -1,9 +1,8 @@
 package dev.blunch.blunch.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -13,49 +12,79 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import dev.blunch.blunch.R;
-import dev.blunch.blunch.activity.dummy.DummyContent;
+import dev.blunch.blunch.domain.CollaborativeMenu;
+import dev.blunch.blunch.domain.CollaborativeMenuAnswer;
+import dev.blunch.blunch.services.CollaborativeMenuService;
+import dev.blunch.blunch.services.ServiceFactory;
+import dev.blunch.blunch.utils.Repository;
 
 public class ProposalListActivity extends AppCompatActivity {
 
 
+    public static final String ID_COLLABORATIVE_MENU_KEY = "collaborative_menu_key";
+    private String idMenu;
+    private CollaborativeMenuService service;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_proposal_list);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        View recyclerView = findViewById(R.id.proposal_list);
+        assert recyclerView != null;
+        ((RecyclerView) recyclerView).setAdapter(
+                new SimpleItemRecyclerViewAdapter(new ArrayList<CollaborativeMenuAnswer>())
+        );
+
+
+        Intent intent = getIntent();
+
+        if (intent.hasExtra(ID_COLLABORATIVE_MENU_KEY)) {
+            idMenu = intent.getStringExtra(ID_COLLABORATIVE_MENU_KEY);
+        }
+
+        service = ServiceFactory.getCollaborativeMenuService(getApplicationContext());
+        service.setOnChangedListener(new Repository.OnChangedListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onChanged(EventType type) {
+                //TODO: posar aixo be quan es tinguin les ids dels menus via intent
+//                CollaborativeMenu menu = service.get(idMenu);
+                CollaborativeMenu menu = service.getAll().get(0);
+                if (menu != null) {
+                    toolbar.setTitle("Answers for "+menu.getName());
+                    idMenu = menu.getId();
+                    View recyclerView = findViewById(R.id.proposal_list);
+                    assert recyclerView != null;
+                    setupRecyclerView((RecyclerView) recyclerView);
+                }
             }
         });
 
-        View recyclerView = findViewById(R.id.proposal_list);
-        assert recyclerView != null;
-        setupRecyclerView((RecyclerView) recyclerView);
 
 
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(DummyContent.ITEMS));
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(service.getProposal(idMenu)));
+//        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(DummyContent.ITEMS));
     }
 
     public class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
-        private final List<DummyContent.DummyItem> mValues;
+        private final List<CollaborativeMenuAnswer> mValues;
 
-        public SimpleItemRecyclerViewAdapter(List<DummyContent.DummyItem> items) {
+        public SimpleItemRecyclerViewAdapter(List<CollaborativeMenuAnswer> items) {
             mValues = items;
         }
 
@@ -69,12 +98,17 @@ public class ProposalListActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(final ViewHolder holder, final int position) {
             holder.mItem = mValues.get(position);
-            holder.mContentView.setText(mValues.get(position).content);
+            String result = "";
+            for (  String dish : holder.mItem.getOfferedDishes().keySet()){
+                result += dish+"\n";
+            }
+
+            holder.mContentView.setText(result);
 
             holder.acceptView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //accept proposal here
+//                    service.acceptProposal(holder.mItem.getId());
                     removeItem(position);
                 }
             });
@@ -82,7 +116,7 @@ public class ProposalListActivity extends AppCompatActivity {
             holder.rejectView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // Reject proposal here
+//                    service.declineProposal(holder.mItem.getId());
                     removeItem(position);
                 }
             });
@@ -91,7 +125,7 @@ public class ProposalListActivity extends AppCompatActivity {
         private void removeItem(int position) {
             mValues.remove(position);
             notifyItemRemoved(position);
-            notifyItemRangeChanged(position,mValues.size());
+            notifyItemRangeChanged(position, mValues.size());
         }
 
         @Override
@@ -104,7 +138,7 @@ public class ProposalListActivity extends AppCompatActivity {
             public final TextView mContentView;
             public final ImageView acceptView;
             public final ImageView rejectView;
-            public DummyContent.DummyItem mItem;
+            public CollaborativeMenuAnswer mItem;
 
             public ViewHolder(View view) {
                 super(view);
