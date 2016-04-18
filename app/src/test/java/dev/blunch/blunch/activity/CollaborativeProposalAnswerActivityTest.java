@@ -2,6 +2,7 @@ package dev.blunch.blunch.activity;
 
 import android.os.Build;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -37,6 +38,7 @@ import dev.blunch.blunch.utils.FirebaseRepository;
 import dev.blunch.blunch.utils.MockRepository;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by jmotger on 6/04/16.
@@ -44,27 +46,6 @@ import static org.junit.Assert.assertEquals;
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
 public class CollaborativeProposalAnswerActivityTest {
-
-    private MockRepository<CollaborativeMenu> repositoryMenu;
-    private MockRepository<CollaborativeMenuAnswer> repositoryMenuAnswer;
-    private MockRepository<Dish> repositoryDish;
-    private CollaborativeMenuService collaborativeMenuService;
-
-    private String menuId;
-    private final String name = "Comida mexicana";
-    private final String author = "Donald Trump";
-    private final String description = "Ricos tacos y burritos de este hermoso país";
-    private final String localization = "local_test";
-    private final Date dateStart = Calendar.getInstance().getTime();
-    private final Date dateEnd = Calendar.getInstance().getTime();
-    private final Date date = Calendar.getInstance().getTime();
-    private List<Dish> offeredDishes;
-    private List<Dish> suggestedDishes;
-
-    private final String dishName1 = "Burritos";
-    private final String dishName2 = "Nachos";
-
-    private final String guest = "Pablo Iglesias";
 
     private CollaborativeMenuAnswerActivity activity;
 
@@ -75,54 +56,6 @@ public class CollaborativeProposalAnswerActivityTest {
 
     @Before
     public void before() {
-
-        repositoryMenu = new MockRepository<>();
-        repositoryDish = new MockRepository<>();
-        repositoryMenuAnswer = new MockRepository<>();
-
-        collaborativeMenuService = new CollaborativeMenuService(repositoryMenu, repositoryDish, repositoryMenuAnswer);
-
-        final Dish dish1 = new Dish(dishName1);
-        final Dish dish2 = new Dish(dishName2);
-
-        offeredDishes = new ArrayList<>();
-        suggestedDishes = new ArrayList<>();
-
-        offeredDishes.add(dish1);
-        suggestedDishes.add(dish2);
-
-        final CollaborativeMenu collaborativeMenu = collaborativeMenuService.save(new CollaborativeMenu(name, author, description,
-                localization, dateStart, dateEnd), offeredDishes, suggestedDishes);
-
-        menuId = collaborativeMenu.getId();
-    }
-
-    @After
-    public void after() {
-    }
-
-    @Test
-    public void answer_to_collaborativeMenu_domain() {
-        try {
-            CollaborativeMenuAnswer collaborativeMenuAnswer = null;
-            collaborativeMenuAnswer = collaborativeMenuService.
-                    reply(new CollaborativeMenuAnswer(guest, menuId,
-                            date, suggestedDishes));
-            assertEquals(guest, collaborativeMenuAnswer.getGuest());
-            assertEquals(menuId, collaborativeMenuAnswer.getMenuId());
-            assertEquals(date, collaborativeMenuAnswer.getDate());
-            int i = 0;
-            for (String s : collaborativeMenuAnswer.getOfferedDishes().keySet()) {
-                assertEquals(suggestedDishes.get(i).getId(), s);
-                ++i;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Test
-    public void answer_to_collaborativeMenu_activity() throws Exception {
         activity = Robolectric.setupActivity(CollaborativeMenuAnswerActivity.class);
 
         suggestionsHostLayout = (LinearLayout) activity.findViewById(R.id.CollaborativeMenuAnswerHostSuggestions);
@@ -130,76 +63,33 @@ public class CollaborativeProposalAnswerActivityTest {
         newSuggestionButton = (Button) activity.findViewById(R.id.CollaborativeMenuAnswerBtn);
         suggestionsGuestLayout = (LinearLayout) activity.findViewById(R.id.CollaborativeMenuAnswerGuestSuggestions);
 
-        for (int i = 0; i < suggestionsHostLayout.getChildCount(); ++i) {
-            CheckBox checkBox = (CheckBox) suggestionsHostLayout.getChildAt(i);
-            assertEquals(checkBox.getText(), suggestedDishes.get(i).getName());
-            assertEquals(checkBox.isChecked(), false);
-        }
+    }
 
-        CheckBox checkBox = (CheckBox) suggestionsHostLayout.getChildAt(0);
-        if (checkBox != null) {
-            checkBox.performClick();
-            assertEquals(checkBox.isChecked(), true);
-        }
+    @Test
+    public void isNotNull() throws Exception {
 
-        ArrayList<String> dishes = new ArrayList<>();
-        dishes.add("Quesadillas de jamón");
-        dishes.add("Tequila");
-
-        newSuggestionEditText.setText(dishes.get(0));
-        newSuggestionButton.performClick();
-
-        newSuggestionEditText.setText(dishes.get(1));
-        newSuggestionButton.performClick();
-
-        for (int i = 0; i < suggestionsGuestLayout.getChildCount(); ++i) {
-            TextView textView = (TextView) ((LinearLayout) suggestionsGuestLayout.getChildAt(i)).getChildAt(0);
-            assertEquals(textView.getText(), dishes.get(i));
-        }
-
-        ImageButton removeSuggestion = (ImageButton) ((LinearLayout)suggestionsGuestLayout.getChildAt(1)).getChildAt(1);
-        removeSuggestion.performClick();
-        dishes.remove(1);
-
-        for (int i = 0; i < suggestionsGuestLayout.getChildCount(); ++i) {
-            TextView textView = (TextView) ((LinearLayout) suggestionsGuestLayout.getChildAt(i)).getChildAt(0);
-            assertEquals(textView.getText(), dishes.get(i));
-        }
+        assertNotNull(suggestionsHostLayout);
+        assertNotNull(newSuggestionEditText);
+        assertNotNull(newSuggestionButton);
+        assertNotNull(suggestionsGuestLayout);
 
     }
 
-    public static void runAndWaitUntil(FirebaseRepository<CollaborativeMenuAnswer> ref, Runnable task, Callable<Boolean> done) throws InterruptedException {
-        final java.util.concurrent.Semaphore semaphore = new java.util.concurrent.Semaphore(1);
-        semaphore.acquire();
+    @Test
+    public void addSuggestions() throws Exception {
 
+        newSuggestionEditText.setText("Patatas a la riojana");
+        newSuggestionButton.performClick();
 
-        FirebaseRepository.OnChangedListener listener = new FirebaseRepository.OnChangedListener() {
-            @Override
-            public void onChanged(EventType type) {
-                semaphore.release();
-            }
-        };
+        newSuggestionEditText.setText("Sangría (Don Simón)");
+        newSuggestionButton.performClick();
 
+        assertEquals(activity.getGuestNewSuggestions().size(), 2);
 
-        ref.setOnChangedListener(listener);
-        task.run();
-        boolean isDone = false;
-        boolean adquired = false;
-        long startedAt = System.currentTimeMillis();
-        while (!adquired && System.currentTimeMillis()-startedAt<2000) {
-            ShadowApplication.getInstance().getBackgroundThreadScheduler().runOneTask();
-            adquired = semaphore.tryAcquire(1, TimeUnit.SECONDS);
-            try {
-                isDone = done.call();
-            } catch (Exception e) {
-                e.printStackTrace();
-                // and we're not done
-            }
-        }
-        if (!isDone) {
-            throw new AssertionFailedError();
-        }
-        ref.setOnChangedListener(null);
+        ((ImageButton) ((ViewGroup) suggestionsGuestLayout.getChildAt(0)).getChildAt(1)).performClick();
+        assertEquals(activity.getGuestNewSuggestions().size(), 1);
+        assertEquals(activity.getGuestNewSuggestions().get(0), "Sangría (Don Simón)");
+
     }
 
 }

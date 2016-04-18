@@ -93,6 +93,8 @@ public class CollaborativeMenuAnswer implements Entity {
         this.offeredDishes.put(dish, true);
     }
 
+    public void addOfferedDish(Dish dish) { this.offeredDishes.put(dish.getId(), true); }
+
     public void removeOfferedDish(String dish) {
         this.offeredDishes.remove(dish);
     }

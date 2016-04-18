@@ -1,5 +1,6 @@
 package dev.blunch.blunch.activity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,11 +14,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Vector;
 
 import dev.blunch.blunch.R;
 import dev.blunch.blunch.domain.CollaborativeMenu;
+import dev.blunch.blunch.domain.CollaborativeMenuAnswer;
 import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.repositories.CollaborativeMenuAnswerRepository;
 import dev.blunch.blunch.repositories.CollaborativeMenuRepository;
@@ -31,6 +34,10 @@ public class CollaborativeMenuAnswerActivity extends AppCompatActivity {
     private CollaborativeMenuService collaborativeMenuService;
 
     private List<Dish> hostSuggestions;
+    private List<Dish> guestSuggestions;
+    private List<String> guestNewSuggestions;
+
+    final private String FAKE_GUEST = "Friedrich Nietzsche";
 
     private String menuID;
 
@@ -38,6 +45,8 @@ public class CollaborativeMenuAnswerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_collaborative_menu_answer);
+        guestSuggestions = new ArrayList<>();
+        guestNewSuggestions = new ArrayList<>();
         collaborativeMenuService = new CollaborativeMenuService(
                 new CollaborativeMenuRepository(getApplicationContext()),
                 new DishRepository(getApplicationContext()),
@@ -62,21 +71,23 @@ public class CollaborativeMenuAnswerActivity extends AppCompatActivity {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //TODO add dishes to repository & create menu answer
-                    String s = "";
-                    LinearLayout linearLayout = (LinearLayout) findViewById(R.id.CollaborativeMenuAnswerGuestSuggestions);
-                    if (linearLayout != null) {
-                        for(int i = 0; i < linearLayout.getChildCount();++i){
-                            LinearLayout tuple = (LinearLayout) linearLayout.getChildAt(i);
-                            if(tuple != null) {
-                                TextView suggestion = (TextView) tuple.getChildAt(0);
-                                if (suggestion != null) s += " " + suggestion.getText();
-                            }
-                        }
+
+                    try {
+
+                        List<Dish> newSuggestions = new ArrayList<>();
+
+                        for (String s : guestNewSuggestions) newSuggestions.add(new Dish(s, 0.));
+
+                        collaborativeMenuService.reply(new CollaborativeMenuAnswer(FAKE_GUEST, menuID,
+                                Calendar.getInstance().getTime(), guestSuggestions), newSuggestions);
+
+                        Snackbar.make(view, "Created answer menu", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
 
-                    Snackbar.make(view, "This are the suggestions: " + s, Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
                 }
             });
         }
@@ -84,11 +95,30 @@ public class CollaborativeMenuAnswerActivity extends AppCompatActivity {
 
     private void fillHostSuggestions(){
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.CollaborativeMenuAnswerHostSuggestions);
+        linearLayout.removeAllViews();
         if(linearLayout != null) {
             for (int i = 0; i < hostSuggestions.size(); ++i) {
                 CheckBox checkBox = new CheckBox(getApplicationContext());
                 checkBox.setText(hostSuggestions.get(i).getName());
+                checkBox.setTextColor(Color.GRAY);
                 checkBox.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+
+                checkBox.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        CheckBox checkBox = (CheckBox) v;
+                        String s = ((CheckBox) v).getText().toString();
+                        Dish dish = null;
+                        for (Dish d : hostSuggestions) {
+                            if (s == d.getName()) dish = d;
+                        }
+                        if (checkBox.isChecked()) {
+                            guestSuggestions.add(dish);
+                        } else {
+                            guestSuggestions.remove(dish);
+                        }
+                    }
+                });
 
                 linearLayout.addView(checkBox);
             }
@@ -100,7 +130,13 @@ public class CollaborativeMenuAnswerActivity extends AppCompatActivity {
         EditText editText = (EditText) findViewById(R.id.CollaborativeMenuAnswerEt);
         if(editText != null && linearLayout != null){
             String suggestion = editText.getText().toString();
-            if(!suggestion.equals("")) {
+            boolean exists = false;
+            for (Dish d : guestSuggestions) if (suggestion.equals(d.getName())) {exists = true; break;}
+            if (exists || guestNewSuggestions.contains(suggestion)) {
+                Snackbar.make(view, "This dish already exists in this menu", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+            else if(!suggestion.equals("")) {
 
                 //Creating text view containig proposal
                 TextView textView = new TextView(this);
@@ -113,6 +149,11 @@ public class CollaborativeMenuAnswerActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         ViewGroup parent = (ViewGroup) v.getParent();
+
+                        String dish = ((TextView) parent.getChildAt(0)).getText().toString();
+
+                        guestNewSuggestions.remove(dish);
+
                         ViewGroup linearLayout = (ViewGroup) parent.getParent();
                         linearLayout.removeView(parent);
                     }
@@ -128,11 +169,18 @@ public class CollaborativeMenuAnswerActivity extends AppCompatActivity {
                 //Adding the layout created before to the dynamic layout
                 linearLayout.addView(layout_in);
 
+                guestNewSuggestions.add(suggestion);
+
                 //After adding suggestion we clear the editText for new suggestions
                 editText.getText().clear();
             }
         }
     }
 
+
+    //TESTING PURPOSES
+    public List<String> getGuestNewSuggestions() {
+        return guestNewSuggestions;
+    }
 
 }

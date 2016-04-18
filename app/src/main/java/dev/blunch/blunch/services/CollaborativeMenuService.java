@@ -56,15 +56,20 @@ public class CollaborativeMenuService extends Service<CollaborativeMenu> {
         return repository.insert(item);
     }
 
-    public CollaborativeMenuAnswer reply(CollaborativeMenuAnswer collaborativeMenuAnswer) throws Exception {
+    public CollaborativeMenuAnswer reply(CollaborativeMenuAnswer collaborativeMenuAnswer,
+                                         List<Dish> newOfferedDishes) throws Exception {
         List<CollaborativeMenu> collaborativeMenus = repository.all();
         boolean exists = false;
         for (CollaborativeMenu menu : collaborativeMenus) {
             if (menu.getId().equals(collaborativeMenuAnswer.getMenuId())) exists = true;
         }
         if (!exists) throw new Exception("El menu seleccionat no existeix");
-        else if (collaborativeMenuAnswer.getOfferedDishes().size() == 0)
+        else if (collaborativeMenuAnswer.getOfferedDishes().size() == 0 && newOfferedDishes.size() == 0)
             throw new Exception("No s'han afegit plats a l'oferta de participació");
+        for (Dish dish : newOfferedDishes) {
+            Dish d = dishesRepository.insert(dish);
+            collaborativeMenuAnswer.addOfferedDish(d);
+        }
         return collaborativeMenuAnswerRepository.insert(collaborativeMenuAnswer);
     }
 
