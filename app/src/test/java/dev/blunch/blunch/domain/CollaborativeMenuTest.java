@@ -27,6 +27,8 @@ public class CollaborativeMenuTest {
     private final String LOCALIZATION = "C/Aribau 34, Barcelona";
     private final List<Dish> SUGGESTED_DISHES = new ArrayList<>();
     private final List<Dish> OFFERED_DISHES = new ArrayList<>();
+    private final List<String> SUGGESTED_DISHES_KEYS = new ArrayList<>();
+    private final List<String> OFFERED_DISHES_KEYS = new ArrayList<>();
     private Date DATE_START, DATE_END;
 
     private CollaborativeMenu collaborativeMenu;
@@ -47,6 +49,20 @@ public class CollaborativeMenuTest {
                                                     LOCALIZATION, DATE_START, DATE_END,
                                                     SUGGESTED_DISHES, OFFERED_DISHES);
         collaborativeMenu.setId(ID);
+    }
+
+    @Test
+    public void create_correctly_without_dishes() throws Exception {
+        CollaborativeMenu collaborativeMenu = new CollaborativeMenu(NAME, AUTHOR, DESCRIPTION,
+                                                                    LOCALIZATION, DATE_START, DATE_END);
+        assertEquals(collaborativeMenu.getName(), NAME);
+        assertEquals(collaborativeMenu.getAuthor(), AUTHOR);
+        assertEquals(collaborativeMenu.getDescription(), DESCRIPTION);
+        assertEquals(collaborativeMenu.getLocalization(), LOCALIZATION);
+        assertEquals(collaborativeMenu.getDateStart(), DATE_START);
+        assertEquals(collaborativeMenu.getDateEnd(), DATE_END);
+        assertEquals(collaborativeMenu.getSuggestedDishes().size(), 0);
+        assertEquals(collaborativeMenu.getOfferedDishes().size(), 0);
     }
 
     @Test
@@ -112,6 +128,13 @@ public class CollaborativeMenuTest {
         String SUGGESTED_DISH_KEY_1 = "1234";
         String SUGGESTED_DISH_KEY_2 = "4321";
         String SUGGESTED_DISH_KEY_3 = "0000";
+
+        SUGGESTED_DISHES_KEYS.add(SUGGESTED_DISH_KEY_1);
+        collaborativeMenu.setSuggestedDishesKeys(SUGGESTED_DISHES_KEYS);
+        assertEquals(1, collaborativeMenu.getSuggestedDishes().keySet().size());
+        collaborativeMenu.removeSuggestedDish(SUGGESTED_DISH_KEY_1);
+        assertEquals(0, collaborativeMenu.getSuggestedDishes().keySet().size());
+
         Dish dish1 = new Dish(SUGGESTED_DISH_KEY_1);
         dish1.setId(SUGGESTED_DISH_KEY_1);
         Dish dish2 = new Dish(SUGGESTED_DISH_KEY_2);
@@ -141,6 +164,13 @@ public class CollaborativeMenuTest {
         String OFFERED_DISH_KEY_1 = "1234";
         String OFFERED_DISH_KEY_2 = "4321";
         String OFFERED_DISH_KEY_3 = "0000";
+
+        OFFERED_DISHES_KEYS.add(OFFERED_DISH_KEY_1);
+        collaborativeMenu.setOfferedDishesListKeys(OFFERED_DISHES_KEYS);
+        assertEquals(1, collaborativeMenu.getOfferedDishes().keySet().size());
+        collaborativeMenu.removeOfferedDish(OFFERED_DISH_KEY_1);
+        assertEquals(0, collaborativeMenu.getOfferedDishes().keySet().size());
+
         Dish dish1 = new Dish(OFFERED_DISH_KEY_1);
         Dish dish2 = new Dish(OFFERED_DISH_KEY_2);
         dish1.setId(OFFERED_DISH_KEY_1);
