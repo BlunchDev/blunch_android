@@ -2,6 +2,8 @@ package dev.blunch.blunch.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.domain.CollaborativeMenuAnswer;
 import dev.blunch.blunch.domain.Dish;
@@ -15,15 +17,25 @@ import dev.blunch.blunch.utils.Service;
 public class CollaborativeMenuService extends Service<CollaborativeMenu> {
 
     private final Repository<Dish> dishesRepository;
+    private final Repository<CollaborativeMenuAnswer> collaborativeMenuAnswerRepository;
+
+    public CollaborativeMenuService(Repository<CollaborativeMenu> repository, Repository<Dish> repoDishes,
+                                    Repository<CollaborativeMenuAnswer> collaborativeMenuAnswerRepository) {
+        super(repository);
+        this.dishesRepository = repoDishes;
+        this.collaborativeMenuAnswerRepository = collaborativeMenuAnswerRepository;
+    }
 
     public CollaborativeMenuService(Repository<CollaborativeMenu> repository, Repository<Dish> repoDishes) {
         super(repository);
         dishesRepository = repoDishes;
+        this.collaborativeMenuAnswerRepository = null;
     }
 
     public CollaborativeMenuService(Repository<CollaborativeMenu> repository) {
         super(repository);
         dishesRepository = null;
+        this.collaborativeMenuAnswerRepository = null;
     }
 
     @Override
@@ -46,6 +58,23 @@ public class CollaborativeMenuService extends Service<CollaborativeMenu> {
         return repository.insert(item);
     }
 
+    public CollaborativeMenuAnswer reply(CollaborativeMenuAnswer collaborativeMenuAnswer,
+                                         List<Dish> newOfferedDishes) throws Exception {
+        List<CollaborativeMenu> collaborativeMenus = repository.all();
+        boolean exists = false;
+        for (CollaborativeMenu menu : collaborativeMenus) {
+            if (menu.getId().equals(collaborativeMenuAnswer.getMenuId())) exists = true;
+        }
+        if (!exists) throw new Exception("El menu seleccionat no existeix");
+        else if (collaborativeMenuAnswer.getOfferedDishes().size() == 0 && newOfferedDishes.size() == 0)
+            throw new Exception("No s'han afegit plats a l'oferta de participació");
+        for (Dish dish : newOfferedDishes) {
+            Dish d = dishesRepository.insert(dish);
+            collaborativeMenuAnswer.addOfferedDish(d.getName());
+        }
+        return collaborativeMenuAnswerRepository.insert(collaborativeMenuAnswer);
+    }
+
     public List<Dish> getSuggestedDishes(String key) {
         List<Dish> list = new ArrayList<>();
         CollaborativeMenu collaborativeMenu = get(key);
@@ -66,17 +95,23 @@ public class CollaborativeMenuService extends Service<CollaborativeMenu> {
 
     public List<CollaborativeMenuAnswer> getProposal(String key) {
         List<CollaborativeMenuAnswer> list = new ArrayList<>();
-        //get all collaborative proposals to collaborative menu with key as id
+        for (CollaborativeMenuAnswer answer : collaborativeMenuAnswerRepository.all()) {
+            if(answer.getMenuId().equals(key))list.add(answer);
+        }
         return list;
     }
 
     public void acceptProposal(String key){
-        //get proposal answer with key as id;
-        //remove it from system and add dishes to collaborataive menu as offered
+        CollaborativeMenuAnswer answer = collaborativeMenuAnswerRepository.get(key);
+        CollaborativeMenu menuHost = repository.get(answer.getMenuId());
+        for (Map.Entry<String, Object> entry : answer.getOfferedDishes().entrySet()) {
+            menuHost.addOfferedDish(entry.getKey());
+        }
+        collaborativeMenuAnswerRepository.delete(key);
     }
 
     public void declineProposal(String key){
-        //get proposal answer with key as id and remove it form system
+        collaborativeMenuAnswerRepository.delete(key);
     }
 
 }
