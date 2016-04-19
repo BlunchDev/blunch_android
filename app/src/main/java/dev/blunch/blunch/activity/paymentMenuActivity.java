@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -239,11 +240,12 @@ public class paymentMenuActivity extends AppCompatActivity {
         assertNotNull(address);
         assertNotNull(city);
         EditText price = (EditText) findViewById(R.id.precio);
+        price.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         final String localization = address.getText().toString() + ", " + city.getText().toString();
         EditText description = (EditText) findViewById(R.id.description);
         assertNotNull(description);
         if(menuName.getText().toString().equals("")
-                || price.getText().toString().equals("") || price.getText().toString().equals("Precio")
+                || price.getText().toString().equals("")
                 || address.getText().toString().equals("") || address.getText().toString().equals("Tu dirección")
                 || city.getText().toString().equals("") || city.getText().toString().equals("Tu ciudad")
                 || description.getText().toString().equals("") || description.getText().toString().equals("descripción")

@@ -3,6 +3,7 @@ package dev.blunch.blunch.view;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
+import android.text.InputType;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -15,6 +16,8 @@ import android.widget.Space;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import dev.blunch.blunch.R;
 
 public class PaymentDishLayout extends LinearLayout{
@@ -22,7 +25,7 @@ public class PaymentDishLayout extends LinearLayout{
     private EditText dishName;
     private EditText priceDish;
     private ImageButton close;
-    private ImageButton close2;
+    private TextView eur;
 
     public PaymentDishLayout(Context context, int num) {
         super(context);
@@ -33,10 +36,6 @@ public class PaymentDishLayout extends LinearLayout{
 
         final LinearLayout h1 = new LinearLayout(context);
         h1.setOrientation(HORIZONTAL);
-
-        Space space1 = new Space(context);
-        LinearLayout.LayoutParams spaceLayout = new LinearLayout.LayoutParams(100, ViewGroup.LayoutParams.MATCH_PARENT);
-        h1.addView(space1, spaceLayout);
 
         dishName = new EditText(context);
         dishName.setText("Plato " + num);
@@ -56,8 +55,32 @@ public class PaymentDishLayout extends LinearLayout{
         });
 
         Space space5 = new Space(context);
-        LinearLayout.LayoutParams space5Layout = new LinearLayout.LayoutParams(100, ViewGroup.LayoutParams.MATCH_PARENT);
+        LinearLayout.LayoutParams space5Layout = new LinearLayout.LayoutParams(8, ViewGroup.LayoutParams.MATCH_PARENT);
         h1.addView(space5, space5Layout);
+
+        priceDish = new EditText(context);
+        priceDish.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        priceDish.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
+        priceDish.setTextColor(getResources().getColor(R.color.colorEdit));
+        LinearLayout.LayoutParams priceDishLayout = new LinearLayout.LayoutParams(400, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        h1.addView(priceDish, priceDishLayout);
+
+        Space space6 = new Space(context);
+        LinearLayout.LayoutParams space6Layout = new LinearLayout.LayoutParams(2, ViewGroup.LayoutParams.MATCH_PARENT);
+        h1.addView(space6, space6Layout);
+
+        eur = new TextView(context);
+        eur.setText("€");
+        eur.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
+        eur.setTextColor(getResources().getColor(R.color.colorEdit));
+        LinearLayout.LayoutParams eurLayout = new LinearLayout.LayoutParams(100, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        h1.addView(eur, eurLayout);
+
+        Space space7 = new Space(context);
+        LinearLayout.LayoutParams space7Layout = new LinearLayout.LayoutParams(18, ViewGroup.LayoutParams.MATCH_PARENT);
+        h1.addView(space7, space7Layout);
 
         close = new ImageButton(context);
         close.setBackgroundColor(getResources().getColor(R.color.background));
@@ -79,6 +102,7 @@ public class PaymentDishLayout extends LinearLayout{
         LinearLayout.LayoutParams h1Layout = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         this.addView(h1, h1Layout);
 
+        /*
         //H2
         final LinearLayout h2 = new LinearLayout(context);
         h2.setOrientation(HORIZONTAL);
@@ -114,10 +138,14 @@ public class PaymentDishLayout extends LinearLayout{
                 PaymentDishLayout.this.setVisibility(GONE);
             }
         });
+
         h2.addView(close2, closeLayout2);
 
         LinearLayout.LayoutParams h2Layout = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         this.addView(h2, h2Layout);
+        */
+
+
 
         /*
         //H2

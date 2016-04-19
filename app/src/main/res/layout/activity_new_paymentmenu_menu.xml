@@ -94,7 +94,7 @@
                             android:orientation="horizontal"
                             android:weightSum="1">
                             <Space
-                                android:layout_width="31dp"
+                                android:layout_width="1dp"
                                 android:layout_height="match_parent"/>
                             <EditText
                                 android:id="@+id/dish1"
@@ -108,7 +108,15 @@
                                 android:id="@+id/precio"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Precio"
+                                android:textSize="30dp"
+                                android:textColor="#bfbdbd"
+                                android:inputType="numberDecimal"
+                                android:layout_weight="1" />
+                            <TextView
+                                android:id="@+id/euro"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="€"
                                 android:textSize="30dp"
                                 android:textColor="#bfbdbd"
                                 android:layout_weight="1" />
