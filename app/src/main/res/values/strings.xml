@@ -1,6 +1,13 @@
 <resources>
     <string name="app_name">BLUNCH</string>
     <string name="action_settings">Settings</string>
+    <!-- Activity Collaborative menu Answer Strings-->
+    <string name="title_activity_collaborative_menu_answer">CollaborativeMenuAnswerActivity</string>
+    <string name="collaborative_menu_answer_host_suggest">El huesped sugiere:</string>
+    <string name="collaborative_menu_answer_guest_suggest">Quieres sugerir una cosa diferente?</string>
+    <string name="collaborative_menu_answer_Et_hint">Inserta tu propuesta aquí</string>
+    <string name="collaborative_menu_answer_Btn_add">Añadir</string>
+
     <string name="title_activity_new_colaborative_menu">NewColaborativeMenu</string>
     <string name="title_activity_test">TestActivity</string>
     <string name="title_activity_scrolling">ScrollingActivity</string>

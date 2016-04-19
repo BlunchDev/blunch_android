@@ -25,7 +25,7 @@ public class CollaborativeMenuAnswerTest {
     private static final String ID = "5678";
     private static final String MENU_ID = "1234";
     private static final String GUEST = "Donald Trump";
-    private static final List<String> OFFERED_DISHES = new ArrayList<>();
+    private static final List<Dish> OFFERED_DISHES = new ArrayList<>();
     private static Date DATE;
 
     private static CollaborativeMenuAnswer collaborativeMenuAnswer;
@@ -86,9 +86,15 @@ public class CollaborativeMenuAnswerTest {
         String OFFERED_DISH_KEY_1 = "1234";
         String OFFERED_DISH_KEY_2 = "4321";
         String OFFERED_DISH_KEY_3 = "0000";
-        OFFERED_DISHES.add(OFFERED_DISH_KEY_1);
-        OFFERED_DISHES.add(OFFERED_DISH_KEY_2);
-        collaborativeMenuAnswer.setOfferedDishes(OFFERED_DISHES);
+        Dish d1 = new Dish();
+        d1.setId(OFFERED_DISH_KEY_1);
+        Dish d2 = new Dish();
+        d2.setId(OFFERED_DISH_KEY_2);
+        Dish d3 = new Dish();
+        d3.setId(OFFERED_DISH_KEY_3);
+        OFFERED_DISHES.add(d1);
+        OFFERED_DISHES.add(d2);
+        collaborativeMenuAnswer.setOfferedDishesList(OFFERED_DISHES);
         assertTrue(collaborativeMenuAnswer.getOfferedDishes().keySet().size() == 2);
         assertTrue(collaborativeMenuAnswer.containsOfferedDish(OFFERED_DISH_KEY_1));
         assertTrue(collaborativeMenuAnswer.containsOfferedDish(OFFERED_DISH_KEY_2));
