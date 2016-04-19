@@ -13,7 +13,7 @@
     tools:showIn="@layout/activity_list_menus">
 
     <ListView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/listview"
+        android:id="@+id/menu_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
