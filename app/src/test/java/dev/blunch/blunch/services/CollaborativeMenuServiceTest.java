@@ -7,6 +7,7 @@ import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -46,12 +47,16 @@ public class CollaborativeMenuServiceTest {
                 "Encarna", "És un menu de micro de la FIB",
                 "DA FIB", new Date(10), new Date(), null, null
         );
+        List<Dish> dishes = new ArrayList<>();
+        dishes.add(new Dish("Tacos", 0.));
+        List<Dish> offeredDishes = new ArrayList<>();
+        offeredDishes.add(new Dish("Langosta", 0.));
         oldMenu = new CollaborativeMenu(
                 "Menu del vertex",
                 "Victor", "Tinc micros tambe",
-                "Vertex", new Date(1231), new Date(), null,null
+                "Vertex", new Date(1231), new Date(), new ArrayList<Dish>(), new ArrayList<Dish>()
         );
-        repository.insert(oldMenu);
+        service.save(oldMenu, offeredDishes, dishes);
         lastChangedType = null;
         service.setOnChangedListener(new Repository.OnChangedListener() {
             @Override
@@ -154,6 +159,35 @@ public class CollaborativeMenuServiceTest {
         repository.simulateExternalDelete(oldMenu);
         assertEquals(0, service.getAmount());
         assertEquals(Repository.OnChangedListener.EventType.Removed,lastChangedType);
+    }
+
+    @Test
+    public void reply() {
+        try {
+            String id = repository.all().get(0).getId();
+            Date date = Calendar.getInstance().getTime();
+            CollaborativeMenuAnswer collaborativeMenuAnswer = new CollaborativeMenuAnswer("Pedro",
+                    id, date, service.getSuggestedDishes(id));
+            List<Dish> dishes = new ArrayList<>();
+            dishes.add(new Dish("Patatas a la riojana", 0.));
+            CollaborativeMenuAnswer newCollaborativeMenuAnswer = service.reply(collaborativeMenuAnswer, dishes);
+
+            assertEquals("Pedro", newCollaborativeMenuAnswer.getGuest());
+            assertEquals(id, newCollaborativeMenuAnswer.getId());
+            assertEquals(date, newCollaborativeMenuAnswer.getDate());
+            assertEquals(2, newCollaborativeMenuAnswer.getOfferedDishes().size());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void getDishes() {
+        assertEquals(service.getOfferedDishes(repository.all().get(0).getId()).size(), 1);
+        assertEquals(service.getOfferedDishes(repository.all().get(0).getId()).get(0).getName(), "Langosta");
+        assertEquals(service.getSuggestedDishes(repository.all().get(0).getId()).size(), 1);
+        assertEquals(service.getSuggestedDishes(repository.all().get(0).getId()).get(0).getName(), "Tacos");
     }
 
     @Test
