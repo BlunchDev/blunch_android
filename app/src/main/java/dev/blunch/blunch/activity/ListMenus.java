@@ -8,8 +8,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import dev.blunch.blunch.R;
+import dev.blunch.blunch.services.CollaborativeMenuService;
+import dev.blunch.blunch.services.PaymentMenuService;
 
 public class ListMenus extends AppCompatActivity {
+
+    CollaborativeMenuService collaborativeMenuService;
+    PaymentMenuService paymentMenuService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +32,8 @@ public class ListMenus extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+
     }
 
 }
