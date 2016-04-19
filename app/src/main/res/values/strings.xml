@@ -11,6 +11,6 @@
     <string name="title_activity_new_colaborative_menu">NewColaborativeMenu</string>
     <string name="title_activity_test">TestActivity</string>
     <string name="title_activity_scrolling">ScrollingActivity</string>
-    <string name="getMenuCollaborativeActivity_name">getMenuCollaborativeActivity_name</string>
-    <string name="getPaymentMenuActivity_name">getPaymentMenuActivity_name</string>
+    <string name="getMenuCollaborativeActivity_name">GetMenuCollaborativeActivity</string>
+    <string name="getPaymentMenuActivity_name">GetPaymentMenuActivity</string>
 </resources>
