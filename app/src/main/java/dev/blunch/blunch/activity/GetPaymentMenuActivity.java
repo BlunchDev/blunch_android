@@ -8,9 +8,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
@@ -23,6 +25,7 @@ import dev.blunch.blunch.repositories.CollaborativeMenuRepository;
 import dev.blunch.blunch.repositories.DishRepository;
 import dev.blunch.blunch.services.CollaborativeMenuService;
 import dev.blunch.blunch.utils.Repository;
+import dev.blunch.blunch.view.SelectPaymentDishLayout;
 
 public class GetPaymentMenuActivity extends AppCompatActivity {
 
@@ -34,6 +37,8 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
     private TextView userName, localization, city,description, hour;
     private Button join;
     private Toolbar toolbar;
+    private LinearLayout l;
+    private ArrayList<SelectPaymentDishLayout> paymentList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +75,8 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
         description = (TextView) findViewById(R.id.description);
         hour = (TextView) findViewById(R.id.hour);
         join = (Button) findViewById(R.id.join);
+        l = (LinearLayout) findViewById(R.id.checkboxDishesLayout);
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,9 +97,18 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
             }
         });
 
+
         toolbar.setTitle(obtainTitle());
         // TODO Set user image: toolbar.setLogo();
         setSupportActionBar(toolbar);
+
+        paymentList = new ArrayList<>();
+
+        for(Dish d :offeredDishes){
+            SelectPaymentDishLayout n = new SelectPaymentDishLayout(getApplicationContext(), d.getName(), d.getPrice());
+            l.addView(n);
+            paymentList.add(n);
+        }
     }
 
     private String obtainUserName() {

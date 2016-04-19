@@ -18,10 +18,10 @@ public class SelectPaymentDishLayout extends LinearLayout {
     TextView dishPriceText;
 
     @SuppressWarnings("all")
-    public SelectPaymentDishLayout(Context context, String dishName, Integer price) {
+    public SelectPaymentDishLayout(Context context, String dishName, double price) {
         super(context);
 
-        setOrientation(VERTICAL);
+        setOrientation(HORIZONTAL);
         setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         setGravity(Gravity.CENTER);
 
