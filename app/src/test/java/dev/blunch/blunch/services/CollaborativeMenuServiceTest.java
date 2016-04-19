@@ -7,11 +7,13 @@ import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import dev.blunch.blunch.BuildConfig;
 import dev.blunch.blunch.domain.CollaborativeMenu;
+import dev.blunch.blunch.domain.CollaborativeMenuAnswer;
 import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.utils.MockRepository;
 import dev.blunch.blunch.utils.Repository;
@@ -37,18 +39,23 @@ public class CollaborativeMenuServiceTest {
     public void setUp() {
         repository = new MockRepository<>();
         service = new CollaborativeMenuService(repository);
-        service = new CollaborativeMenuService(repository, new MockRepository<Dish>());
+        service = new CollaborativeMenuService(repository, new MockRepository<Dish>(),
+                new MockRepository<CollaborativeMenuAnswer>());
         newMenu = new CollaborativeMenu(
                 "Menu de micro de la FIB",
                 "Encarna", "És un menu de micro de la FIB",
                 "DA FIB", new Date(10), new Date(), null, null
         );
+        List<Dish> dishes = new ArrayList<>();
+        dishes.add(new Dish("Tacos", 0.));
+        List<Dish> offeredDishes = new ArrayList<>();
+        offeredDishes.add(new Dish("Langosta", 0.));
         oldMenu = new CollaborativeMenu(
                 "Menu del vertex",
                 "Victor", "Tinc micros tambe",
-                "Vertex", new Date(1231), new Date(), null,null
+                "Vertex", new Date(1231), new Date(), new ArrayList<Dish>(), new ArrayList<Dish>()
         );
-        repository.insert(oldMenu);
+        service.save(oldMenu, offeredDishes, dishes);
         lastChangedType = null;
         service.setOnChangedListener(new Repository.OnChangedListener() {
             @Override
@@ -116,7 +123,7 @@ public class CollaborativeMenuServiceTest {
     @Test
     public void onAddExternal() {
         assertEquals(null, lastChangedType);
-        assertEquals(1,service.getAmount());
+        assertEquals(1, service.getAmount());
         repository.simulateExternalAddition(newMenu);
         assertEquals(2, service.getAmount());
         assertEquals(Repository.OnChangedListener.EventType.Added,lastChangedType);
@@ -147,10 +154,39 @@ public class CollaborativeMenuServiceTest {
     @Test
     public void onDeleteExternal() {
         assertEquals(null, lastChangedType);
-        assertEquals(1,service.getAmount());
+        assertEquals(1, service.getAmount());
         repository.simulateExternalDelete(oldMenu);
         assertEquals(0, service.getAmount());
         assertEquals(Repository.OnChangedListener.EventType.Removed,lastChangedType);
+    }
+
+    @Test
+    public void reply() {
+        try {
+            String id = repository.all().get(0).getId();
+            Date date = Calendar.getInstance().getTime();
+            CollaborativeMenuAnswer collaborativeMenuAnswer = new CollaborativeMenuAnswer("Pedro",
+                    id, date, service.getSuggestedDishes(id));
+            List<Dish> dishes = new ArrayList<>();
+            dishes.add(new Dish("Patatas a la riojana", 0.));
+            CollaborativeMenuAnswer newCollaborativeMenuAnswer = service.reply(collaborativeMenuAnswer, dishes);
+
+            assertEquals("Pedro", newCollaborativeMenuAnswer.getGuest());
+            assertEquals(id, newCollaborativeMenuAnswer.getId());
+            assertEquals(date, newCollaborativeMenuAnswer.getDate());
+            assertEquals(2, newCollaborativeMenuAnswer.getOfferedDishes().size());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void getDishes() {
+        assertEquals(service.getOfferedDishes(repository.all().get(0).getId()).size(), 1);
+        assertEquals(service.getOfferedDishes(repository.all().get(0).getId()).get(0).getName(), "Langosta");
+        assertEquals(service.getSuggestedDishes(repository.all().get(0).getId()).size(), 1);
+        assertEquals(service.getSuggestedDishes(repository.all().get(0).getId()).get(0).getName(), "Tacos");
     }
 
 }
