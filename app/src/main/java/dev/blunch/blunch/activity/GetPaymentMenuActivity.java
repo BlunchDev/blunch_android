@@ -58,7 +58,7 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
             @Override
             public void onChanged(EventType type) {
                 List<PaymentMenu> list = paymentMenuService.getAll();
-                paymentMenu = list.get(0);
+                paymentMenu = list.get(list.size()-1);
                 dishes = paymentMenuService.getDishes(paymentMenu.getId());
                 initialize();
             }
