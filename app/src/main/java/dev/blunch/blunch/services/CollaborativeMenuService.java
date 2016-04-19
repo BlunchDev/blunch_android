@@ -12,10 +12,12 @@ import dev.blunch.blunch.utils.Service;
 
 /**
  * Created by casassg on 07/04/16.
+ *
  * @author casassg
  */
 public class CollaborativeMenuService extends Service<CollaborativeMenu> {
 
+    private static final String TAG = CollaborativeMenuService.class.getSimpleName();
     private final Repository<Dish> dishesRepository;
     private final Repository<CollaborativeMenuAnswer> collaborativeMenuAnswerRepository;
 
@@ -44,10 +46,10 @@ public class CollaborativeMenuService extends Service<CollaborativeMenu> {
     }
 
     public CollaborativeMenu save(CollaborativeMenu item, List<Dish> offeredDishes, List<Dish> suggestedDishes) {
-        if (dishesRepository == null){
+        if (dishesRepository == null) {
             throw new UnsupportedOperationException("Service needs to be created with the DishRepository to function");
         }
-        for(Dish dish : offeredDishes) {
+        for (Dish dish : offeredDishes) {
             dishesRepository.insert(dish);
             item.addOfferedDish(dish.getId());
         }
@@ -95,23 +97,42 @@ public class CollaborativeMenuService extends Service<CollaborativeMenu> {
 
     public List<CollaborativeMenuAnswer> getProposal(String key) {
         List<CollaborativeMenuAnswer> list = new ArrayList<>();
-        for (CollaborativeMenuAnswer answer : collaborativeMenuAnswerRepository.all()) {
-            if(answer.getMenuId().equals(key))list.add(answer);
+        List<CollaborativeMenuAnswer> all = collaborativeMenuAnswerRepository.all();
+        if (all == null) {
+            return list;
+        }
+
+
+        for (CollaborativeMenuAnswer answer : all) {
+            String menuId = answer.getMenuId();
+            if (key.equals(menuId)) list.add(answer);
         }
         return list;
     }
 
-    public void acceptProposal(String key){
+    public void acceptProposal(String key) {
         CollaborativeMenuAnswer answer = collaborativeMenuAnswerRepository.get(key);
         CollaborativeMenu menuHost = repository.get(answer.getMenuId());
         for (Map.Entry<String, Object> entry : answer.getOfferedDishes().entrySet()) {
             menuHost.addOfferedDish(entry.getKey());
         }
+        repository.update(menuHost);
         collaborativeMenuAnswerRepository.delete(key);
     }
 
-    public void declineProposal(String key){
+    public void declineProposal(String key) {
         collaborativeMenuAnswerRepository.delete(key);
+    }
+
+
+    public void setCollaborativeMenuAnswerListener(Repository.OnChangedListener listener) {
+        if (collaborativeMenuAnswerRepository != null) {
+            collaborativeMenuAnswerRepository.setOnChangedListener(listener);
+        }
+    }
+
+    public Dish getDish(String key) {
+        return dishesRepository.get(key);
     }
 
 }

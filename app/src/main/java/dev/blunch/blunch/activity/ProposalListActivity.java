@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import java.util.List;
 import dev.blunch.blunch.R;
 import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.domain.CollaborativeMenuAnswer;
+import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.services.CollaborativeMenuService;
 import dev.blunch.blunch.services.ServiceFactory;
 import dev.blunch.blunch.utils.Repository;
@@ -26,8 +28,9 @@ public class ProposalListActivity extends AppCompatActivity {
 
 
     public static final String ID_COLLABORATIVE_MENU_KEY = "collaborative_menu_key";
-    private String idMenu;
+    private static final String TAG = ProposalListActivity.class.getSimpleName();
     private CollaborativeMenuService service;
+    private String idMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +52,7 @@ public class ProposalListActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
+        idMenu = "-1";
         if (intent.hasExtra(ID_COLLABORATIVE_MENU_KEY)) {
             idMenu = intent.getStringExtra(ID_COLLABORATIVE_MENU_KEY);
         }
@@ -63,10 +67,16 @@ public class ProposalListActivity extends AppCompatActivity {
                 if (menu != null) {
                     toolbar.setTitle("Answers for "+menu.getName());
                     idMenu = menu.getId();
-                    View recyclerView = findViewById(R.id.proposal_list);
-                    assert recyclerView != null;
-                    setupRecyclerView((RecyclerView) recyclerView);
                 }
+            }
+        });
+
+        service.setCollaborativeMenuAnswerListener(new Repository.OnChangedListener() {
+            @Override
+            public void onChanged(EventType type) {
+                View recyclerView = findViewById(R.id.proposal_list);
+                assert recyclerView != null;
+                setupRecyclerView((RecyclerView) recyclerView, idMenu);
             }
         });
 
@@ -74,8 +84,11 @@ public class ProposalListActivity extends AppCompatActivity {
 
     }
 
-    private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(service.getProposal(idMenu)));
+    private void setupRecyclerView(@NonNull RecyclerView recyclerView, String id) {
+        List<CollaborativeMenuAnswer> proposal = service.getProposal(id);
+        Log.e(TAG,""+proposal.size());
+        Log.e(TAG,""+id);
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(proposal));
 //        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(DummyContent.ITEMS));
     }
 
@@ -99,8 +112,9 @@ public class ProposalListActivity extends AppCompatActivity {
         public void onBindViewHolder(final ViewHolder holder, final int position) {
             holder.mItem = mValues.get(position);
             String result = "";
-            for (  String dish : holder.mItem.getOfferedDishes().keySet()){
-                result += dish+"\n";
+            for (  String dish_key : holder.mItem.getOfferedDishes().keySet()){
+                Dish dish = service.getDish(dish_key);
+                result += dish.getName()+"\n";
             }
 
             holder.mContentView.setText(result);
@@ -108,7 +122,7 @@ public class ProposalListActivity extends AppCompatActivity {
             holder.acceptView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    service.acceptProposal(holder.mItem.getId());
+                    service.acceptProposal(holder.mItem.getId());
                     removeItem(position);
                 }
             });
@@ -116,7 +130,7 @@ public class ProposalListActivity extends AppCompatActivity {
             holder.rejectView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    service.declineProposal(holder.mItem.getId());
+                    service.declineProposal(holder.mItem.getId());
                     removeItem(position);
                 }
             });

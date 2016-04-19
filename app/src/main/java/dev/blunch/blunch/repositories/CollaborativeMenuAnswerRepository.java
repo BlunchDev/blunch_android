@@ -6,9 +6,7 @@ import com.firebase.client.DataSnapshot;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import dev.blunch.blunch.domain.CollaborativeMenuAnswer;
 import dev.blunch.blunch.utils.FirebaseRepository;
@@ -28,16 +26,18 @@ public class CollaborativeMenuAnswerRepository extends FirebaseRepository<Collab
         collaborativeMenuAnswer.setId(data.getKey());
 
         for (DataSnapshot d : data.getChildren()) {
-            if (d.getKey().equals("guest")) {
+            if ("guest".equals(d.getKey())) {
                 collaborativeMenuAnswer.setGuest(d.getValue(String.class));
-            } else if (d.getKey().equals("date")) {
+            } else if ("date".equals(d.getKey())) {
                 collaborativeMenuAnswer.setDate(d.getValue(Date.class));
-            } else if (d.getKey().equals("offeredDishes")) {
+            } else if ("offeredDishes".equals(d.getKey())) {
                 List<String> dishes = new ArrayList<>();
                 for (DataSnapshot dish : d.getChildren()) {
                     dishes.add(dish.getKey());
                 }
                 collaborativeMenuAnswer.setOfferedDishes(dishes);
+            }else if ("menuId".equals(d.getKey())) {
+                collaborativeMenuAnswer.setMenuId(d.getValue(String.class));
             }
         }
         return collaborativeMenuAnswer;
