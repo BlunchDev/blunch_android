@@ -18,7 +18,7 @@ public abstract class Repository<T extends Entity> implements ChildEventListener
     }
 
     public interface OnChangedListener {
-        enum EventType {Added, Changed, Removed, Moved}
+        enum EventType {Added, Changed, Removed, Moved, Full}
 
         void onChanged(EventType type);
     }

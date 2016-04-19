@@ -55,9 +55,9 @@ public class CollaborativeMenuAnswerActivity extends AppCompatActivity {
         collaborativeMenuService.setOnChangedListener(new Repository.OnChangedListener() {
             @Override
             public void onChanged(EventType type) {
-                List<CollaborativeMenu> list = collaborativeMenuService.getAll();
-                CollaborativeMenu collaborativeMenu = list.get(0);
-                if (collaborativeMenu != null) {
+                if (type.equals(EventType.Full)) {
+                    List<CollaborativeMenu> list = collaborativeMenuService.getAll();
+                    CollaborativeMenu collaborativeMenu = list.get(0);
                     menuID = collaborativeMenu.getId();
                     hostSuggestions = collaborativeMenuService.getSuggestedDishes(collaborativeMenu.getId());
                     makeProposalCreation();
