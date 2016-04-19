@@ -263,7 +263,7 @@ public class paymentMenuActivity extends AppCompatActivity {
             int n = 2;
             for (PaymentDishLayout d : myDishes) {
                 if (!d.getDishName().equals("Plato " + n)) {
-                    Dish dish = new Dish(d.getDishName());
+                    Dish dish = new Dish(d.getDishName(), d.getDishPrice());
                     dishService.save(dish);
                     DishKeys.add(dish.getId());
                 }
