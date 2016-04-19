@@ -101,4 +101,6 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="getMenuCollaborativeActivity_name">getMenuCollaborativeActivity_name</string>
+    <string name="title_activity_list_menu">ListMenuActivity</string>
+    <string name="title_activity_list_menus">ListMenus</string>
 </resources>
