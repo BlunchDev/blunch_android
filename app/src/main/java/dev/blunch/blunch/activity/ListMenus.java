@@ -42,7 +42,6 @@ public class ListMenus extends AppCompatActivity {
                 }
             }
         });
-
     }
 
 }
