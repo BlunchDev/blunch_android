@@ -12,4 +12,5 @@
     <string name="title_activity_test">TestActivity</string>
     <string name="title_activity_scrolling">ScrollingActivity</string>
     <string name="getMenuCollaborativeActivity_name">getMenuCollaborativeActivity_name</string>
+    <string name="getPaymentMenuActivity_name">getPaymentMenuActivity_name</string>
 </resources>

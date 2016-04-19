@@ -7,6 +7,8 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import dev.blunch.blunch.R;
+
 /**
  * Select Payment Dish Layout Class
  * @author albert
@@ -26,16 +28,19 @@ public class SelectPaymentDishLayout extends LinearLayout {
         setGravity(Gravity.CENTER);
 
         checkBox = new CheckBox(context);
+        checkBox.setHintTextColor(getResources().getColor(R.color.black));
         LinearLayout.LayoutParams checkLayout = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         addView(checkBox, checkLayout);
 
         dishNameText = new TextView(context);
         dishNameText.setText(dishName);
+        dishNameText.setTextColor(getResources().getColor(R.color.black));
         LinearLayout.LayoutParams dishTextLayout = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         addView(dishNameText, dishTextLayout);
 
         dishPriceText = new TextView(context);
         dishPriceText.setText(price + " €");
+        dishPriceText.setTextColor(getResources().getColor(R.color.black));
         LinearLayout.LayoutParams priceTextLayout = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         addView(dishPriceText, priceTextLayout);
 

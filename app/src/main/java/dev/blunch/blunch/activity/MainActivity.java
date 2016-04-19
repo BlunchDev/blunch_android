@@ -17,6 +17,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 import dev.blunch.blunch.R;
+import dev.blunch.blunch.view.SelectPaymentDishLayout;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,19 +28,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        Intent i = new Intent( MainActivity.this, CollaborativeMenuAnswerActivity.class);
-
+        Intent i = new Intent( MainActivity.this, GetPaymentMenuActivity.class);
         startActivity(i);
-
-
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        Intent intent = new Intent(getApplicationContext(), GetMenuCollaborativeActivity.class);
-        startActivity(intent);
-
         Firebase.setAndroidContext(this);
     }
 
