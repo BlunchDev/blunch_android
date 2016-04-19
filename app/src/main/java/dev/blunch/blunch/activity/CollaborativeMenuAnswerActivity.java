@@ -57,10 +57,12 @@ public class CollaborativeMenuAnswerActivity extends AppCompatActivity {
             public void onChanged(EventType type) {
                 List<CollaborativeMenu> list = collaborativeMenuService.getAll();
                 CollaborativeMenu collaborativeMenu = list.get(0);
-                menuID = collaborativeMenu.getId();
-                hostSuggestions = collaborativeMenuService.getSuggestedDishes(collaborativeMenu.getId());
-                fillHostSuggestions();
-                makeProposalCreation();
+                if (collaborativeMenu != null) {
+                    menuID = collaborativeMenu.getId();
+                    hostSuggestions = collaborativeMenuService.getSuggestedDishes(collaborativeMenu.getId());
+                    makeProposalCreation();
+                    fillHostSuggestions();
+                }
             }
         });
     }
