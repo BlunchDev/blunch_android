@@ -52,7 +52,7 @@ public class ProposalListActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        idMenu = "-1";
+        idMenu = null;
         if (intent.hasExtra(ID_COLLABORATIVE_MENU_KEY)) {
             idMenu = intent.getStringExtra(ID_COLLABORATIVE_MENU_KEY);
         }
@@ -64,7 +64,7 @@ public class ProposalListActivity extends AppCompatActivity {
                 //TODO: posar aixo be quan es tinguin les ids dels menus via intent
 //                CollaborativeMenu menu = service.get(idMenu);
                 CollaborativeMenu menu = service.getAll().get(0);
-                if (menu != null) {
+                if (menu != null && idMenu==null) {
                     toolbar.setTitle("Answers for "+menu.getName());
                     idMenu = menu.getId();
                 }
@@ -89,7 +89,6 @@ public class ProposalListActivity extends AppCompatActivity {
         Log.e(TAG,""+proposal.size());
         Log.e(TAG,""+id);
         recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(proposal));
-//        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(DummyContent.ITEMS));
     }
 
     public class SimpleItemRecyclerViewAdapter
@@ -114,7 +113,9 @@ public class ProposalListActivity extends AppCompatActivity {
             String result = "";
             for (  String dish_key : holder.mItem.getOfferedDishes().keySet()){
                 Dish dish = service.getDish(dish_key);
-                result += dish.getName()+"\n";
+                if (dish!=null) {
+                    result += dish.getName() + "\n";
+                }
             }
 
             holder.mContentView.setText(result);
