@@ -23,6 +23,7 @@ import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.repositories.CollaborativeMenuRepository;
 import dev.blunch.blunch.repositories.DishRepository;
 import dev.blunch.blunch.services.CollaborativeMenuService;
+import dev.blunch.blunch.utils.Repository;
 import dev.blunch.blunch.view.CollaborativeDishLayout;
 
 import static junit.framework.Assert.assertNotNull;
@@ -44,7 +45,14 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         collaborativeMenuService = new CollaborativeMenuService(new CollaborativeMenuRepository(getApplicationContext()), new DishRepository(getApplicationContext()));
-        initialize();
+        collaborativeMenuService.setOnChangedListener(new Repository.OnChangedListener() {
+            @Override
+            public void onChanged(EventType type) {
+                if (type.equals(EventType.Full)) {
+                    initialize();
+                }
+            }
+        });
     }
 
     @Override

@@ -49,12 +49,14 @@ public class GetMenuCollaborativeActivity extends AppCompatActivity {
         collaborativeMenuService.setOnChangedListener(new Repository.OnChangedListener() {
             @Override
             public void onChanged(EventType type) {
-                List<CollaborativeMenu> list = collaborativeMenuService.getAll();
-                collaborativeMenu = list.get(0);
+                if (type.equals(EventType.Full)) {
+                    List<CollaborativeMenu> list = collaborativeMenuService.getAll();
+                    collaborativeMenu = list.get(0);
                     suggestedDishes = collaborativeMenuService.getSuggestedDishes(collaborativeMenu.getId());
                     offeredDishes = collaborativeMenuService.getOfferedDishes(collaborativeMenu.getId());
                     initialize();
                 }
+            }
         });
     }
 
