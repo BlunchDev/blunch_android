@@ -10,6 +10,7 @@ import android.view.View;
 import dev.blunch.blunch.R;
 import dev.blunch.blunch.services.CollaborativeMenuService;
 import dev.blunch.blunch.services.PaymentMenuService;
+import dev.blunch.blunch.utils.Repository;
 
 public class ListMenus extends AppCompatActivity {
 
@@ -33,6 +34,13 @@ public class ListMenus extends AppCompatActivity {
             }
         });
 
+
+        collaborativeMenuService.setOnChangedListener(new Repository.OnChangedListener() {
+            @Override
+            public void onChanged(EventType type) {
+                if (type.equals(EventType.Full))
+            }
+        });
 
     }
 
