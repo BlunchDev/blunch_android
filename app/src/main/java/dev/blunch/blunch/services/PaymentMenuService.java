@@ -24,6 +24,22 @@ public class PaymentMenuService extends Service<PaymentMenu> {
         dishesRepository = null;
     }
 
+    @Override
+    public PaymentMenu save(PaymentMenu item) {
+        return super.save(item);
+    }
+
+    public PaymentMenu save(PaymentMenu item, List<Dish> dishes) {
+        if (dishesRepository == null){
+            throw new UnsupportedOperationException("Service needs to be created with the DishRepository to function");
+        }
+        for (Dish dish : dishes) {
+            dishesRepository.insert(dish);
+            item.addDish(dish.getId());
+        }
+        return repository.insert(item);
+    }
+
     public PaymentMenuService(Repository<PaymentMenu> repository, Repository<Dish> dishRepository) {
         super(repository);
         dishesRepository = dishRepository;
@@ -36,6 +52,15 @@ public class PaymentMenuService extends Service<PaymentMenu> {
             list.add(dishesRepository.get(k));
         }
         return list;
+    }
+
+    public Double getTotalPrice(String key) {
+        List<Dish> dishes = getDishes(key);
+        Double result = 0.0;
+        for (Dish dish : dishes) {
+            result += dish.getPrice();
+        }
+        return result;
     }
 
 }
