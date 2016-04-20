@@ -37,6 +37,6 @@ public class PersonRepository extends FirebaseRepository<Person> {
     }
 
     public void close() {
-        firebase.child(getObjectReference()).removeValue();
+        firebase.removeValue();
     }
 }

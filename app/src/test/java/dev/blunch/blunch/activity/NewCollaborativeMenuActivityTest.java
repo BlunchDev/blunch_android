@@ -1,11 +1,9 @@
 package dev.blunch.blunch.activity;
 
-import android.annotation.TargetApi;
 import android.os.Build;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Switch;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,15 +12,9 @@ import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 import dev.blunch.blunch.BuildConfig;
 import dev.blunch.blunch.R;
-import dev.blunch.blunch.domain.CollaborativeMenu;
-import dev.blunch.blunch.services.CollaborativeMenuService;
-import dev.blunch.blunch.utils.MockRepository;
-import dev.blunch.blunch.utils.Repository;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -39,15 +31,9 @@ public class NewCollaborativeMenuActivityTest {
     private EditText        address;
     private EditText        city;
     private EditText        description;
-    private EditText        dish;
-    private Switch          who;
     private Button          publish;
     private ImageButton     dateButton;
     private ImageButton     moreDishes;
-
-    private CollaborativeMenuService service;
-    private MockRepository<CollaborativeMenu> repository;
-    private Repository.OnChangedListener.EventType lastChangedType;
 
     @Before
     public void setup() {
@@ -57,21 +43,9 @@ public class NewCollaborativeMenuActivityTest {
         address = (EditText) activity.findViewById(R.id.adress);
         city = (EditText) activity.findViewById(R.id.city);
         description = (EditText) activity.findViewById(R.id.description);
-        dish = (EditText) activity.findViewById(R.id.dish1);
-        who = (Switch) activity.findViewById(R.id.switch1);
         publish = (Button) activity.findViewById(R.id.publish);
         dateButton = (ImageButton) activity.findViewById(R.id.timetablebutton);
         moreDishes = (ImageButton) activity.findViewById(R.id.moreDishes);
-
-        repository = new MockRepository<>();
-        service = new CollaborativeMenuService(repository);
-        lastChangedType = null;
-        service.setOnChangedListener(new Repository.OnChangedListener() {
-            @Override
-            public void onChanged(EventType type) {
-                lastChangedType = type;
-            }
-        });
     }
 
     @Test
@@ -80,8 +54,6 @@ public class NewCollaborativeMenuActivityTest {
         assertNotNull(address);
         assertNotNull(city);
         assertNotNull(description);
-        assertNotNull(dish);
-        assertNotNull(who);
         assertNotNull(publish);
         assertNotNull(dateButton);
         assertNotNull(moreDishes);
@@ -97,20 +69,14 @@ public class NewCollaborativeMenuActivityTest {
 
         this.menuText.setText(menuName);
         this.description.setText(description);
-        this.dish.setText(dish);
         this.address.setText(address);
         this.city.setText(city);
-        this.who.setChecked(true);
 
         assertEquals(this.menuText.getText().toString(), menuName);
         assertEquals(this.description.getText().toString(), description);
-        assertEquals(this.dish.getText().toString(), dish);
         assertEquals(this.address.getText().toString(), address);
         assertEquals(this.city.getText().toString(), city);
-        assertTrue(this.who.isChecked());
 
-        this.who.setChecked(false);
-        assertFalse(this.who.isChecked());
 
     }
 
@@ -122,27 +88,27 @@ public class NewCollaborativeMenuActivityTest {
 
         this.moreDishes.performClick();
         ++COUNT;
-        assertEquals(activity.myDishes.size(), 1);
-        assertEquals(activity.myDishes.get(COUNT - 2).getDishName(), DISH + COUNT);
+        assertEquals(activity.numDish, 2);
+        assertEquals(activity.myDishes.get(COUNT-1).getDishName(), DISH + COUNT);
 
-        assertFalse(activity.myDishes.get(COUNT - 2).isSuggest());
-        activity.myDishes.get(COUNT - 2).getSuggerenciaSwitch().setChecked(true);
-        assertTrue(activity.myDishes.get(COUNT - 2).isSuggest());
+        assertFalse(activity.myDishes.get(COUNT-1).isSuggest());
+        activity.myDishes.get(COUNT-1).getSuggerenciaSwitch().setChecked(true);
+        assertTrue(activity.myDishes.get(COUNT-1).isSuggest());
 
         this.moreDishes.performClick();
         ++COUNT;
+        assertEquals(activity.myDishes.size(), 3);
+        assertEquals(activity.myDishes.get(COUNT-1).getDishName(), DISH + COUNT);
+
+        closeDish = (ImageButton) activity.findViewById(activity.myDishes.get(activity.myDishes.size() - 1).getClose().getId());
+        assertNotNull(closeDish);
+        closeDish.performClick();
         assertEquals(activity.myDishes.size(), 2);
-        assertEquals(activity.myDishes.get(COUNT - 2).getDishName(), DISH + COUNT);
 
         closeDish = (ImageButton) activity.findViewById(activity.myDishes.get(activity.myDishes.size() - 1).getClose().getId());
         assertNotNull(closeDish);
         closeDish.performClick();
         assertEquals(activity.myDishes.size(), 1);
-
-        closeDish = (ImageButton) activity.findViewById(activity.myDishes.get(activity.myDishes.size() - 1).getClose().getId());
-        assertNotNull(closeDish);
-        closeDish.performClick();
-        assertEquals(activity.myDishes.size(), 0);
     }
 
 
