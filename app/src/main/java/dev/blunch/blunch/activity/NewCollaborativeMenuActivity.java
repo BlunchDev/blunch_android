@@ -27,11 +27,16 @@ import dev.blunch.blunch.view.CollaborativeDishLayout;
 
 import static junit.framework.Assert.assertNotNull;
 
+@SuppressWarnings("all")
 public class NewCollaborativeMenuActivity extends AppCompatActivity {
 
-    private int iHour, iMinute, fHour, fMinute;
-    int numDish;
-    private Date start, finish;
+    private int     iHour,
+                    iMinute,
+                    fHour,
+                    fMinute,
+                    numDish;
+    private Date    start,
+                    finish;
     protected ArrayList<CollaborativeDishLayout> myDishes = new ArrayList<>();
 
     private CollaborativeMenuService collaborativeMenuService;
@@ -52,7 +57,6 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         super.onStart();
     }
 
-    @SuppressWarnings("all")
     private void initialize() {
         iHour = iMinute = fHour = fMinute = 0;
         numDish = 0;
@@ -74,8 +78,6 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
 
         final ImageButton moreDishes = (ImageButton) findViewById(R.id.moreDishes);
         final LinearLayout moreDishesLayout = (LinearLayout) findViewById(R.id.dishesLayout);
-        assertNotNull(moreDishes);
-        assertNotNull(moreDishesLayout);
         final CollaborativeDishLayout menu = new CollaborativeDishLayout(getApplicationContext(), numDish);
         myDishes.add(menu);
         moreDishesLayout.addView(menu);
@@ -229,7 +231,6 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         return a;
     }
 
-    @SuppressWarnings("all")
     private void createCollaborativeMenu() {
 
         EditText cityEditText = (EditText) findViewById(R.id.city);
@@ -256,8 +257,8 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         }
         else {
 
-            List<Dish> offeredDish = new LinkedList<>();
-            List<Dish> suggestedDish = new LinkedList<>();
+            List<Dish> offeredDish = new ArrayList<>();
+            List<Dish> suggestedDish = new ArrayList<>();
 
             int n = 1;
             for (CollaborativeDishLayout dishLayout : myDishes) {
@@ -269,13 +270,12 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
                 n++;
             }
 
-            CollaborativeMenu collaborativeMenu = new CollaborativeMenu(
-                    menuNameString,
-                    author,
-                    description,
-                    localization,
-                    start,
-                    finish);
+            CollaborativeMenu collaborativeMenu = new CollaborativeMenu(menuNameString,
+                                                                        author,
+                                                                        description,
+                                                                        localization,
+                                                                        start,
+                                                                        finish);
             collaborativeMenuService.save(collaborativeMenu, offeredDish, suggestedDish);
             Toast.makeText(this, "Añadido correctamente",
                     Toast.LENGTH_LONG).show();
