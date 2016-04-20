@@ -34,7 +34,8 @@ import dev.blunch.blunch.view.PaymentDishLayout;
 
 import static junit.framework.Assert.assertNotNull;
 
-public class paymentMenuActivity extends AppCompatActivity {
+@SuppressWarnings("all")
+public class NewPaymentMenuActivity extends AppCompatActivity {
 
 
     private int iHour, iMinut, fHour;
@@ -91,7 +92,7 @@ public class paymentMenuActivity extends AppCompatActivity {
         moreDishes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final PaymentDishLayout a = new PaymentDishLayout(paymentMenuActivity.this, ++numDish);
+                final PaymentDishLayout a = new PaymentDishLayout(NewPaymentMenuActivity.this, ++numDish);
                 myDishes.add(a);
                 moreDishesLayout.addView(a);
                 ImageButton close = a.getClose();

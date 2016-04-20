@@ -21,7 +21,7 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".activity.paymentMenuActivity"
+            android:name=".activity.NewPaymentMenuActivity"
             android:label=".activity.paymentMenuActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
