@@ -168,13 +168,17 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
 
     private void updateTime(int iHour, int iMinut, int fHour, int fMinut) {
         TextView mDateDisplay = (TextView) findViewById(R.id.timeText);
-        if(iHour % 10 >= 1) {
-            mDateDisplay.setText(iHour + ":" + iMinut + "h - " + fHour + ":" + fMinut+"h");
-        }
-        else{
-            mDateDisplay.setText("0"+iHour + ":" + iMinut + "h - " + fHour + ":" + fMinut+"h");
+        String iniH, iniMin, finH, finMin;
+        if(iHour < 10) iniH = "0"+iHour;
+        else iniH = iHour+"";
+        if(iMinut < 10) iniMin = "0"+iMinut;
+        else iniMin = iMinut+"";
+        if(fHour < 10) finH = "0"+fHour;
+        else finH = fHour+"";
+        if(fMinut < 10) finMin = "0"+fMinut;
+        else finMin = fMinut+"";
 
-        }
+        mDateDisplay.setText(iniH + ":" + iniMin + "h - " + finH + ":" + finMin+"h");
         Calendar cStart = Calendar.getInstance();
         cStart.set(Calendar.HOUR_OF_DAY,iHour);
         cStart.set(Calendar.MINUTE, iMinut);
@@ -281,6 +285,8 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
                     finish,
                     DishKeys);
             paymentMenuService.save(PaymentMenu);
+            Toast.makeText(this, "Añadido correctamente",
+                    Toast.LENGTH_LONG).show();
         }
     }
 }
