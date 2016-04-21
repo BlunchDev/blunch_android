@@ -14,7 +14,8 @@ import dev.blunch.blunch.R;
 import dev.blunch.blunch.domain.Menu;
 
 /**
- * Created by jmotger on 19/04/16.
+ * Menu List Adapter Class
+ * @author jmotger on 19/04/16.
  */
 public class MenuListAdapter extends BaseAdapter {
 

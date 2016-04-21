@@ -19,44 +19,37 @@ import java.util.Date;
 import java.util.List;
 
 import dev.blunch.blunch.R;
-import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.domain.Dish;
-import dev.blunch.blunch.repositories.CollaborativeMenuRepository;
+import dev.blunch.blunch.domain.PaymentMenu;
 import dev.blunch.blunch.repositories.DishRepository;
-import dev.blunch.blunch.services.CollaborativeMenuService;
-import dev.blunch.blunch.utils.Repository;
-import dev.blunch.blunch.view.CollaborativeDishLayout;
+import dev.blunch.blunch.repositories.PaymentMenuRepository;
+import dev.blunch.blunch.services.PaymentMenuService;
+import dev.blunch.blunch.view.PaymentDishLayout;
 
 @SuppressWarnings("all")
-public class NewCollaborativeMenuActivity extends AppCompatActivity {
+public class NewPaymentMenuActivity extends AppCompatActivity {
 
-    private int     iHour,
-                    iMinute,
-                    fHour,
-                    fMinute,
-                    numDish;
-    private Date    start,
-                    finish;
-    protected ArrayList<CollaborativeDishLayout> myDishes = new ArrayList<>();
 
-    private CollaborativeMenuService collaborativeMenuService;
+    private int iHour, iMinut, fHour;
+    private int fMinut;
+    private int numDish;
+    private Date start, finish;
+    private List<ImageButton> idClose = new ArrayList<>();
+    private EditText menuName;
+
+    private PaymentMenuService paymentMenuService;
+
+    protected ArrayList<PaymentDishLayout> myDishes = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_colaborative_menu);
+        setContentView(R.layout.activity_new_paymentmenu_menu);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        collaborativeMenuService = new CollaborativeMenuService(new CollaborativeMenuRepository(getApplicationContext()), new DishRepository(getApplicationContext()));
-        collaborativeMenuService.setOnChangedListener(new Repository.OnChangedListener() {
-            @Override
-            public void onChanged(EventType type) {
-                if (type.equals(EventType.Full)) {
-                    initialize();
-                }
-            }
-        });
+        paymentMenuService = new PaymentMenuService(new PaymentMenuRepository(getApplicationContext()), new DishRepository(getApplicationContext()));
+        initialize();
     }
 
     @Override
@@ -65,18 +58,18 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
     }
 
     private void initialize() {
-        iHour = iMinute = fHour = fMinute = 0;
-        numDish = 0;
-        updateTime(0, 0, 0, 0);
+        iHour = iMinut = fHour = fMinut = 0;
+        numDish = 1;
 
-        final EditText menuName = (EditText) findViewById(R.id.nomMenu);
+        menuName = (EditText) findViewById(R.id.nomMenu);
         menuName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (menuName.getText().toString().equals("MENÚ")) {
                     menuName.setText("");
                     menuName.setTextColor(getResources().getColor(R.color.black));
-                } else if (menuName.getText().toString().equals("")) {
+                }
+                else if(menuName.getText().toString().equals("")){
                     menuName.setText("MENÚ");
                     menuName.setTextColor(getResources().getColor(R.color.colorEdit));
                 }
@@ -85,22 +78,22 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
 
         final ImageButton moreDishes = (ImageButton) findViewById(R.id.moreDishes);
         final LinearLayout moreDishesLayout = (LinearLayout) findViewById(R.id.dishesLayout);
-        final CollaborativeDishLayout menu = new CollaborativeDishLayout(getApplicationContext(), numDish);
-        myDishes.add(menu);
-        moreDishesLayout.addView(menu);
+        final PaymentDishLayout paymentDishLayout = new PaymentDishLayout(getApplicationContext(), numDish);
+        myDishes.add(paymentDishLayout);
+        moreDishesLayout.addView(paymentDishLayout);
         ++numDish;
-        menu.getClose().setOnClickListener(new View.OnClickListener() {
+        paymentDishLayout.getClose().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                moreDishesLayout.removeView(menu);
-                myDishes.remove(menu);
+                moreDishesLayout.removeView(paymentDishLayout);
+                myDishes.remove(paymentDishLayout);
             }
         });
 
         moreDishes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final CollaborativeDishLayout a = new CollaborativeDishLayout(NewCollaborativeMenuActivity.this, ++numDish);
+                final PaymentDishLayout a = new PaymentDishLayout(NewPaymentMenuActivity.this, ++numDish);
                 myDishes.add(a);
                 moreDishesLayout.addView(a);
                 ImageButton close = a.getClose();
@@ -114,7 +107,6 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
             }
         });
 
-
         ImageButton timeTable = (ImageButton) findViewById(R.id.timetablebutton);
         timeTable.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,7 +119,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         publish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createCollaborativeMenu();
+                createPaymentMenu();
             }
         });
 
@@ -146,27 +138,28 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
             }
         });
 
-        final ImageButton glutenFree = (ImageButton) findViewById(R.id.glutenfree);
-        glutenFree.setColorFilter(R.color.black);
-        glutenFree.setOnClickListener(new View.OnClickListener() {
+        final ImageButton glutenfree = (ImageButton) findViewById(R.id.glutenfree);
+        glutenfree.setColorFilter(R.color.black);
+        glutenfree.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 isGlutenFree();
-                if (glutenFree.getColorFilter().equals(R.color.green)) {
-                    glutenFree.setColorFilter(R.color.colorAccent);
-                } else {
-                    glutenFree.setColorFilter(R.color.green);
+                if(glutenfree.getColorFilter().equals(R.color.green)){
+                    glutenfree.setColorFilter(R.color.colorAccent);
+                }
+                else{
+                    glutenfree.setColorFilter(R.color.green);
                 }
             }
         });
     }
 
     private void isGlutenFree() {
-        // TODO El menu es glutenFree
+        // TODO El menu es glutenfree
     }
 
     private void isVegetarian() {
-        // TODO El menu es vegetarian
+        // TODO El menu es vegetaria
     }
 
     private void updateTime(int iHour, int iMinut, int fHour, int fMinut) {
@@ -198,7 +191,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
 
                 @Override
                 public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                    iHour = hourOfDay; iMinute = minute;
+                    iHour = hourOfDay; iMinut = minute;
                 }
             };
 
@@ -207,8 +200,8 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
 
                 @Override
                 public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                    fHour = hourOfDay; fMinute = minute;
-                    updateTime(iHour, iMinute, fHour, fMinute);
+                    fHour = hourOfDay; fMinut = minute;
+                    updateTime(iHour, iMinut, fHour, fMinut);
                 }
             };
 
@@ -219,7 +212,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
     }
 
     private TimePickerDialog showDialogInitialTime() {
-        TimePickerDialog a = new TimePickerDialog(this, initialTimeSetListener, iHour, iMinute, false);
+        TimePickerDialog a = new TimePickerDialog(this, initialTimeSetListener, iHour, iMinut, false);
         TextView title = new TextView(this);
         title.setText("Hora Inicio");
         title.setTextSize(20);
@@ -229,7 +222,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
     }
 
     private TimePickerDialog showDialogFinalTime() {
-        TimePickerDialog a = new TimePickerDialog(this, finalTimeSetListener, fHour, fMinute, false);
+        TimePickerDialog a = new TimePickerDialog(this, finalTimeSetListener, fHour, fMinut, false);
         TextView title = new TextView(this);
         title.setText("Hora Fin");
         title.setTextSize(20);
@@ -238,8 +231,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         return a;
     }
 
-    private void createCollaborativeMenu() {
-
+    private void createPaymentMenu() {
         EditText cityEditText = (EditText) findViewById(R.id.city);
         EditText adressEditText = (EditText) findViewById(R.id.adress);
         EditText descriptionEditText = (EditText) findViewById(R.id.description);
@@ -250,11 +242,11 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         String city = cityEditText.getText().toString();
         final String localization = address + ", " + city;
 
-
         String menuNameString = menuNameEditText.getText().toString();
         String description = descriptionEditText.getText().toString();
 
         if(isIncomplete(address, city, menuNameString, description)){
+
             Toast.makeText(this, "Campos incompletos",
                     Toast.LENGTH_LONG).show();
         }
@@ -264,26 +256,24 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         }
         else {
 
-            List<Dish> offeredDish = new ArrayList<>();
-            List<Dish> suggestedDish = new ArrayList<>();
+            List<Dish> dishes = new ArrayList<>();
 
             int n = 1;
-            for (CollaborativeDishLayout dishLayout : myDishes) {
-                if (!dishLayout.getDishName().equals("Plato " + n)) {
-                    Dish dish = new Dish(dishLayout.getDishName());
-                    if (!dishLayout.isSuggest()) offeredDish.add(dish);
-                    else suggestedDish.add(dish);
+            for (PaymentDishLayout d : myDishes) {
+                if (!d.getDishName().equals("Plato " + n)) {
+                    Dish dish = new Dish(d.getDishName(), d.getDishPrice());
+                    dishes.add(dish);
                 }
                 n++;
             }
 
-            CollaborativeMenu collaborativeMenu = new CollaborativeMenu(menuNameString,
-                                                                        author,
-                                                                        description,
-                                                                        localization,
-                                                                        start,
-                                                                        finish);
-            collaborativeMenuService.save(collaborativeMenu, offeredDish, suggestedDish);
+            PaymentMenu paymentMenu = new PaymentMenu(  menuNameString,
+                                                        author,
+                                                        description,
+                                                        localization,
+                                                        start,
+                                                        finish);
+            paymentMenuService.save(paymentMenu, dishes);
             Toast.makeText(this, "Añadido correctamente",
                     Toast.LENGTH_LONG).show();
         }
