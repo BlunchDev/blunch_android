@@ -6,11 +6,14 @@ import android.util.Log;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+
+import dev.blunch.blunch.domain.CollaborativeMenu;
 
 /**
  * Repository abstract class
@@ -36,6 +39,19 @@ public abstract class FirebaseRepository<T extends Entity> extends Repository<T>
         map = new LinkedHashMap<>();
 
         firebase.orderByKey().addChildEventListener(this);
+
+        firebase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot child : dataSnapshot.getChildren())
+                    insertInternal(convert(child));
+                notifyChange(OnChangedListener.EventType.Full);
+            }
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 
     /**
@@ -129,7 +145,7 @@ public abstract class FirebaseRepository<T extends Entity> extends Repository<T>
 
     @Override
     public T insertInternal(T item) {
-        map.put(item.getId(),item);
+        map.put(item.getId(), item);
         return item;
     }
 
@@ -147,4 +163,5 @@ public abstract class FirebaseRepository<T extends Entity> extends Repository<T>
     public T convert(DataSnapshot data) {
         return null;
     }
+
 }
