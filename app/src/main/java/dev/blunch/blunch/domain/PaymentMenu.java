@@ -29,7 +29,6 @@ public class PaymentMenu extends Menu {
     public PaymentMenu(String name, String author, String description, String localization,
                        Date dateStart, Date dateEnd) {
         super(name, author, description, localization, dateStart, dateEnd);
-        dishes = null;
     }
 
     public Map<String, Object> getDishes() {

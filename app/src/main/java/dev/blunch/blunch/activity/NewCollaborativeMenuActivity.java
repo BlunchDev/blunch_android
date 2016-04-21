@@ -12,11 +12,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
+
 import dev.blunch.blunch.R;
 import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.domain.Dish;
@@ -25,8 +26,6 @@ import dev.blunch.blunch.repositories.DishRepository;
 import dev.blunch.blunch.services.CollaborativeMenuService;
 import dev.blunch.blunch.utils.Repository;
 import dev.blunch.blunch.view.CollaborativeDishLayout;
-
-import static junit.framework.Assert.assertNotNull;
 
 @SuppressWarnings("all")
 public class NewCollaborativeMenuActivity extends AppCompatActivity {

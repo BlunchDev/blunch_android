@@ -3,11 +3,8 @@ package dev.blunch.blunch.services;
 import java.util.ArrayList;
 import java.util.List;
 
-import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.domain.PaymentMenu;
-import dev.blunch.blunch.repositories.DishRepository;
-import dev.blunch.blunch.repositories.PaymentMenuRepository;
 import dev.blunch.blunch.utils.Repository;
 import dev.blunch.blunch.utils.Service;
 

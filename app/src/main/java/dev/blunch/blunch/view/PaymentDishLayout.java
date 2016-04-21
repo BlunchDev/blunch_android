@@ -1,11 +1,8 @@
 package dev.blunch.blunch.view;
 
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.os.Build;
 import android.text.InputType;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -13,10 +10,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Space;
-import android.widget.Switch;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import dev.blunch.blunch.R;
 

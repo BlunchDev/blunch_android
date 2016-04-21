@@ -1,13 +1,9 @@
 package dev.blunch.blunch.activity;
 
-import android.annotation.TargetApi;
 import android.app.TimePickerDialog;
-import android.media.Image;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,21 +16,15 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 import dev.blunch.blunch.R;
 import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.domain.PaymentMenu;
 import dev.blunch.blunch.repositories.DishRepository;
-import dev.blunch.blunch.services.DishService;
 import dev.blunch.blunch.repositories.PaymentMenuRepository;
 import dev.blunch.blunch.services.PaymentMenuService;
-import dev.blunch.blunch.view.CollaborativeDishLayout;
 import dev.blunch.blunch.view.PaymentDishLayout;
-
-import static junit.framework.Assert.assertNotNull;
 
 @SuppressWarnings("all")
 public class NewPaymentMenuActivity extends AppCompatActivity {
