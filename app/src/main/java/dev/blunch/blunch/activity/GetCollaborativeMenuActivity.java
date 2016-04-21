@@ -5,7 +5,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -28,7 +27,7 @@ import dev.blunch.blunch.utils.Repository;
  * GetMenuCollaborative Activity
  * @author albert
  */
-public class GetMenuCollaborativeActivity extends AppCompatActivity {
+public class GetCollaborativeMenuActivity extends AppCompatActivity {
 
     private CollaborativeMenuService collaborativeMenuService;
     private CollaborativeMenu collaborativeMenu;
@@ -49,12 +48,14 @@ public class GetMenuCollaborativeActivity extends AppCompatActivity {
         collaborativeMenuService.setOnChangedListener(new Repository.OnChangedListener() {
             @Override
             public void onChanged(EventType type) {
-                List<CollaborativeMenu> list = collaborativeMenuService.getAll();
-                collaborativeMenu = list.get(0);
+                if (type.equals(EventType.Full)) {
+                    List<CollaborativeMenu> list = collaborativeMenuService.getAll();
+                    collaborativeMenu = list.get(0);
                     suggestedDishes = collaborativeMenuService.getSuggestedDishes(collaborativeMenu.getId());
                     offeredDishes = collaborativeMenuService.getOfferedDishes(collaborativeMenu.getId());
                     initialize();
                 }
+            }
         });
     }
 

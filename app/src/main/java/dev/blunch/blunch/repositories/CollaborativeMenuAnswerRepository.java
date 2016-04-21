@@ -6,9 +6,7 @@ import com.firebase.client.DataSnapshot;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import dev.blunch.blunch.domain.CollaborativeMenuAnswer;
 import dev.blunch.blunch.utils.FirebaseRepository;
@@ -23,7 +21,7 @@ public class CollaborativeMenuAnswerRepository extends FirebaseRepository<Collab
     }
 
     @Override
-    public CollaborativeMenuAnswer convert(DataSnapshot data) {
+    protected CollaborativeMenuAnswer convert(DataSnapshot data) {
         CollaborativeMenuAnswer collaborativeMenuAnswer = new CollaborativeMenuAnswer();
         collaborativeMenuAnswer.setId(data.getKey());
 

@@ -17,7 +17,7 @@ public class DishRepository extends FirebaseRepository<Dish> {
     }
 
     @Override
-    public Dish convert(DataSnapshot data) {
+    protected Dish convert(DataSnapshot data) {
         Dish dish = new Dish();
         dish.setId(data.getKey());
         for (DataSnapshot d : data.getChildren()) {

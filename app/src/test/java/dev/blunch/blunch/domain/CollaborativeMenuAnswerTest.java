@@ -7,10 +7,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -86,6 +84,10 @@ public class CollaborativeMenuAnswerTest {
         String OFFERED_DISH_KEY_1 = "1234";
         String OFFERED_DISH_KEY_2 = "4321";
         String OFFERED_DISH_KEY_3 = "0000";
+        List<String> OFFERED_DISH_KEYS = new ArrayList<>();
+        OFFERED_DISH_KEYS.add(OFFERED_DISH_KEY_1);
+        OFFERED_DISH_KEYS.add(OFFERED_DISH_KEY_2);
+        OFFERED_DISH_KEYS.add(OFFERED_DISH_KEY_3);
         Dish d1 = new Dish();
         d1.setId(OFFERED_DISH_KEY_1);
         Dish d2 = new Dish();
@@ -110,6 +112,15 @@ public class CollaborativeMenuAnswerTest {
         assertTrue(collaborativeMenuAnswer.getOfferedDishes().containsKey(OFFERED_DISH_KEY_3));
         assertFalse(collaborativeMenuAnswer.getOfferedDishes().containsKey(OFFERED_DISH_KEY_1));
         assertFalse(collaborativeMenuAnswer.getOfferedDishes().containsKey(OFFERED_DISH_KEY_2));
+
+        Dish dish = new Dish("Pescado", 10.0);
+        dish.setId("895623");
+        collaborativeMenuAnswer.addOfferedDish(dish);
+        assertTrue(collaborativeMenuAnswer.getOfferedDishes().containsKey(dish.getId()));
+
+        before();
+        collaborativeMenuAnswer.setOfferedDishes(OFFERED_DISH_KEYS);
+        assertEquals(collaborativeMenuAnswer.getOfferedDishes().size(), 3);
     }
 
 }

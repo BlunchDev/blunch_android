@@ -16,7 +16,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Vector;
 
 import dev.blunch.blunch.R;
 import dev.blunch.blunch.domain.CollaborativeMenu;
@@ -26,7 +25,6 @@ import dev.blunch.blunch.repositories.CollaborativeMenuAnswerRepository;
 import dev.blunch.blunch.repositories.CollaborativeMenuRepository;
 import dev.blunch.blunch.repositories.DishRepository;
 import dev.blunch.blunch.services.CollaborativeMenuService;
-import dev.blunch.blunch.utils.Entity;
 import dev.blunch.blunch.utils.Repository;
 
 public class CollaborativeMenuAnswerActivity extends AppCompatActivity {
@@ -55,9 +53,9 @@ public class CollaborativeMenuAnswerActivity extends AppCompatActivity {
         collaborativeMenuService.setOnChangedListener(new Repository.OnChangedListener() {
             @Override
             public void onChanged(EventType type) {
-                List<CollaborativeMenu> list = collaborativeMenuService.getAll();
-                CollaborativeMenu collaborativeMenu = list.get(0);
-                if (collaborativeMenu != null) {
+                if (type.equals(EventType.Full)) {
+                    List<CollaborativeMenu> list = collaborativeMenuService.getAll();
+                    CollaborativeMenu collaborativeMenu = list.get(0);
                     menuID = collaborativeMenu.getId();
                     hostSuggestions = collaborativeMenuService.getSuggestedDishes(collaborativeMenu.getId());
                     makeProposalCreation();
