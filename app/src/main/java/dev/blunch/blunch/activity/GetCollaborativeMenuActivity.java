@@ -27,7 +27,7 @@ import dev.blunch.blunch.utils.Repository;
  * GetMenuCollaborative Activity
  * @author albert
  */
-public class GetMenuCollaborativeActivity extends AppCompatActivity {
+public class GetCollaborativeMenuActivity extends AppCompatActivity {
 
     private CollaborativeMenuService collaborativeMenuService;
     private CollaborativeMenu collaborativeMenu;

@@ -19,11 +19,11 @@
             android:label="@string/title_activity_new_colaborative_menu"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".activity.GetMenuCollaborativeActivity"
+            android:name=".activity.GetCollaborativeMenuActivity"
             android:label="@string/getMenuCollaborativeActivity_name"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".activity.ListMenus"
+            android:name=".activity.ListMenusActivity"
             android:label="@string/title_activity_list_menus"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
