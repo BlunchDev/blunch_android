@@ -19,7 +19,7 @@ public class CollaborativeMenuRepository extends FirebaseRepository<Collaborativ
     public CollaborativeMenuRepository(Context context) { super(context);}
 
     @Override
-    public CollaborativeMenu convert(DataSnapshot data) {
+    protected CollaborativeMenu convert(DataSnapshot data) {
         CollaborativeMenu collaborativeMenu = new CollaborativeMenu();
         collaborativeMenu.setId(data.getKey());
         for (DataSnapshot d : data.getChildren()) {

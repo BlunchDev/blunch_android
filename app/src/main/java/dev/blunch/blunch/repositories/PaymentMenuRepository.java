@@ -21,7 +21,7 @@ public class PaymentMenuRepository extends FirebaseRepository<PaymentMenu> {
     }
 
     @Override
-    public PaymentMenu convert(DataSnapshot data) {
+    protected PaymentMenu convert(DataSnapshot data) {
         PaymentMenu paymentMenu = new PaymentMenu();
         paymentMenu.setId(data.getKey());
         for (DataSnapshot d : data.getChildren()) {

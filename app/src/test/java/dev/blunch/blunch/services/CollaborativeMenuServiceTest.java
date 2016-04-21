@@ -39,6 +39,7 @@ public class CollaborativeMenuServiceTest {
     public void setUp() {
         repository = new MockRepository<>();
         service = new CollaborativeMenuService(repository);
+        service = new CollaborativeMenuService(repository, new MockRepository<Dish>());
         service = new CollaborativeMenuService(repository, new MockRepository<Dish>(),
                 new MockRepository<CollaborativeMenuAnswer>());
         newMenu = new CollaborativeMenu(
@@ -85,7 +86,8 @@ public class CollaborativeMenuServiceTest {
     public void resizes(){
         assertEquals(1,service.getAmount());
         repository.insert(newMenu);
-        assertEquals(2,service.getAmount());
+        assertEquals(2, service.getAmount());
+        assertEquals(2, service.getAll().size());
     }
 
     @Test
