@@ -128,10 +128,6 @@ public class CollaborativeDishLayout extends LinearLayout{
         return switch1.isChecked();
     }
 
-    public Switch getSuggerenciaSwitch() {
-        return switch1;
-    }
-
     public ImageButton getClose() {
         return close;
     }
