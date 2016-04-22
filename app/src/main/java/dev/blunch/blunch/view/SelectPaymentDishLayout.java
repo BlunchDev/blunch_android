@@ -31,6 +31,7 @@ public class SelectPaymentDishLayout extends LinearLayout {
         setGravity(Gravity.CENTER);
 
         checkBox = new CheckBox(context);
+        checkBox.setDrawingCacheBackgroundColor(getResources().getColor(R.color.black));
         checkBox.setHintTextColor(getResources().getColor(R.color.black));
         LinearLayout.LayoutParams checkLayout = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         addView(checkBox, checkLayout);

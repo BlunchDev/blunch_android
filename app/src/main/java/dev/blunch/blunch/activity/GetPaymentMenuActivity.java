@@ -42,7 +42,6 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_get_payment_menu);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -65,6 +64,9 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
                 }
             }
         });
+
+
+
     }
 
     private void initialize() {
