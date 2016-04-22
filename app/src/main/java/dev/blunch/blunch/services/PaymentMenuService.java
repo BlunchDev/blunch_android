@@ -5,6 +5,7 @@ import java.util.List;
 
 import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.domain.PaymentMenu;
+import dev.blunch.blunch.domain.PaymentMenuAnswer;
 import dev.blunch.blunch.utils.Repository;
 import dev.blunch.blunch.utils.Service;
 
@@ -15,16 +16,26 @@ import dev.blunch.blunch.utils.Service;
 public class PaymentMenuService extends Service<PaymentMenu> {
 
     private final Repository<Dish> dishesRepository;
+    private final Repository<PaymentMenuAnswer> answerRepository;
 
     public PaymentMenuService(Repository<PaymentMenu> repository) {
         super(repository);
         dishesRepository = null;
+        answerRepository = null;
     }
 
-    @Override
-    public PaymentMenu save(PaymentMenu item) {
-        return super.save(item);
+    public PaymentMenuService(Repository<PaymentMenu> repository,Repository<Dish> dishRepository, Repository<PaymentMenuAnswer> answerRepository) {
+        super(repository);
+        dishesRepository = dishRepository;
+        this.answerRepository = answerRepository;
     }
+
+    public PaymentMenuService(Repository<PaymentMenu> repository, Repository<Dish> dishRepository) {
+        super(repository);
+        dishesRepository = dishRepository;
+        answerRepository = null;
+    }
+
 
     public PaymentMenu save(PaymentMenu item, List<Dish> dishes) {
         if (dishesRepository == null){
@@ -35,11 +46,6 @@ public class PaymentMenuService extends Service<PaymentMenu> {
             item.addDish(dish.getId());
         }
         return repository.insert(item);
-    }
-
-    public PaymentMenuService(Repository<PaymentMenu> repository, Repository<Dish> dishRepository) {
-        super(repository);
-        dishesRepository = dishRepository;
     }
 
     public List<Dish> getDishes(String key) {
@@ -58,6 +64,11 @@ public class PaymentMenuService extends Service<PaymentMenu> {
             result += dish.getPrice();
         }
         return result;
+    }
+
+    public void answer(String menuKey, PaymentMenuAnswer answer) {
+        answer.setIdMenu(menuKey);
+        answerRepository.insert(answer);
     }
 
 }
