@@ -17,4 +17,5 @@
     <string name="close_descript">Reject proposal</string>
     <string name="title_activity_list_menu">ListMenuActivity</string>
     <string name="title_activity_list_menus">ListMenus</string>
+    <string name="getPaymentMenuActivity_name">Menu pagament</string>
 </resources>
