@@ -1,6 +1,7 @@
 package dev.blunch.blunch.view;
 
 import android.content.Context;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -24,7 +25,9 @@ public class SelectPaymentDishLayout extends LinearLayout {
         super(context);
 
         setOrientation(HORIZONTAL);
-        setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        LinearLayout.LayoutParams mainParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        mainParams.setMargins(0, 0, 0, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getResources().getDisplayMetrics()));
+        setLayoutParams(mainParams);
         setGravity(Gravity.CENTER);
 
         checkBox = new CheckBox(context);

@@ -57,10 +57,12 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
         paymentMenuService.setOnChangedListener(new Repository.OnChangedListener() {
             @Override
             public void onChanged(EventType type) {
-                List<PaymentMenu> list = paymentMenuService.getAll();
-                paymentMenu = list.get(list.size()-1);
-                dishes = paymentMenuService.getDishes(paymentMenu.getId());
-                initialize();
+                if (type.equals(EventType.Full)) {
+                    List<PaymentMenu> list = paymentMenuService.getAll();
+                    paymentMenu = list.get(0);
+                    dishes = paymentMenuService.getDishes(paymentMenu.getId());
+                    initialize();
+                }
             }
         });
     }
