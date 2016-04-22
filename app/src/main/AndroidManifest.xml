@@ -41,8 +41,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.GetMenuCollaborativeActivity"
+            android:name=".activity.GetCollaborativeMenuActivity"
             android:label="@string/getMenuCollaborativeActivity_name"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".activity.ListMenusActivity"
+            android:label="@string/title_activity_list_menus"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".activity.NewPaymentMenuActivity"
+            android:label=".activity.paymentMenuActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

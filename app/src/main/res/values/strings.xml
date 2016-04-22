@@ -15,4 +15,6 @@
     <string name="title_proposal_list">Answers menu</string>
     <string name="check_descript">Accept proposal</string>
     <string name="close_descript">Reject proposal</string>
+    <string name="title_activity_list_menu">ListMenuActivity</string>
+    <string name="title_activity_list_menus">ListMenus</string>
 </resources>

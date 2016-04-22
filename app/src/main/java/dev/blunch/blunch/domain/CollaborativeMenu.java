@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Collaborative Menu Class
@@ -57,15 +56,6 @@ public class CollaborativeMenu extends Menu {
     public void setSuggestedDishes(Map<String, Object> suggestedDishes) {
         this.suggestedDishes = suggestedDishes;
     }
-
-
-    public void setOfferedDishes(Set<String> inOfferedDishes) {
-        offeredDishes = new LinkedHashMap<>();
-        for (String dishKey : inOfferedDishes) {
-            offeredDishes.put(dishKey,true);
-        }
-    }
-
 
     public void setOfferedDishesListKeys(List<String> inOfferedDishes) {
         offeredDishes = new LinkedHashMap<>();

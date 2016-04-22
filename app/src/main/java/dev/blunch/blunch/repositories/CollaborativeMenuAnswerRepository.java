@@ -21,7 +21,7 @@ public class CollaborativeMenuAnswerRepository extends FirebaseRepository<Collab
     }
 
     @Override
-    public CollaborativeMenuAnswer convert(DataSnapshot data) {
+    protected CollaborativeMenuAnswer convert(DataSnapshot data) {
         CollaborativeMenuAnswer collaborativeMenuAnswer = new CollaborativeMenuAnswer();
         collaborativeMenuAnswer.setId(data.getKey());
 
