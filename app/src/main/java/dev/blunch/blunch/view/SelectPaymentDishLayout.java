@@ -32,8 +32,6 @@ public class SelectPaymentDishLayout extends LinearLayout {
         setGravity(Gravity.CENTER);
 
         checkBox = new CheckBox(context);
-        //checkBox.setDrawingCacheBackgroundColor(getResources().getColor(R.color.black));
-        //checkBox.setHintTextColor(getResources().getColor(R.color.black));
         int id = Resources.getSystem().getIdentifier("btn_check_holo_light", "drawable", "android");
         checkBox.setButtonDrawable(id);
         LinearLayout.LayoutParams checkLayout = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -55,6 +53,10 @@ public class SelectPaymentDishLayout extends LinearLayout {
 
     public boolean isChecked() {
         return checkBox.isChecked();
+    }
+
+    public CheckBox getCheckBox() {
+        return checkBox;
     }
 
 }

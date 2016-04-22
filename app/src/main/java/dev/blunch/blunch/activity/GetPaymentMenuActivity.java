@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +36,7 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
     private Button join;
     private Toolbar toolbar;
     private LinearLayout dishesLayout;
+    private TextView precio;
     private ArrayList<SelectPaymentDishLayout> paymentDishesLayoutList;
 
     @Override
@@ -74,6 +76,7 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
         hour = (TextView) findViewById(R.id.hour);
         join = (Button) findViewById(R.id.join);
         dishesLayout = (LinearLayout) findViewById(R.id.checkboxDishesLayout);
+        precio = (TextView) findViewById(R.id.precio);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -94,7 +97,7 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
                 Toast.makeText(v.getContext(), "NO VAAAA!", Toast.LENGTH_LONG).show();
             }
         });
-
+        precio.setText("0 €");
 
         toolbar.setTitle(obtainTitle());
         // TODO Set user image: toolbar.setLogo();
@@ -102,10 +105,27 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
 
         paymentDishesLayoutList = new ArrayList<>();
 
-        for (Dish d : dishes){
+        for (final Dish d : dishes){
             SelectPaymentDishLayout n = new SelectPaymentDishLayout(getApplicationContext(), d.getName(), d.getPrice());
             dishesLayout.addView(n);
             paymentDishesLayoutList.add(n);
+            n.getCheckBox().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if(isChecked) {
+                        String price = precio.getText().toString().split(" ")[0];
+                        double a = Double.parseDouble(price);
+                        a += d.getPrice();
+                        precio.setText(String.valueOf(a) + " €");
+                    }
+                    else {
+                        String price = precio.getText().toString().split(" ")[0];
+                        double a = Double.parseDouble(price);
+                        a -= d.getPrice();
+                        precio.setText(String.valueOf(a) + " €");
+                    }
+                }
+            });
         }
     }
 
