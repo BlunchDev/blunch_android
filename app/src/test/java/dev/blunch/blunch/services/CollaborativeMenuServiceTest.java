@@ -192,7 +192,7 @@ public class CollaborativeMenuServiceTest {
 
     @Test
     public void getActiveProposals(){
-        List<String> disheshost = new ArrayList<>();
+        List<Dish> disheshost = new ArrayList<>();
         CollaborativeMenuAnswer answer = new CollaborativeMenuAnswer("Guest",oldMenu.getId(),new Date(10),disheshost);
         List<Dish> dishes = new ArrayList<>();
         dishes.add(new Dish("Pollo"));
@@ -212,7 +212,7 @@ public class CollaborativeMenuServiceTest {
 
     @Test
     public void deleteProposalOnDecline(){
-        List<String> disheshost = new ArrayList<>();
+        List<Dish> disheshost = new ArrayList<>();
         CollaborativeMenuAnswer answer = new CollaborativeMenuAnswer("Guest",oldMenu.getId(),new Date(10),disheshost);
         List<Dish> dishes = new ArrayList<>();
         dishes.add(new Dish("Pollo"));
@@ -228,7 +228,7 @@ public class CollaborativeMenuServiceTest {
 
     @Test
     public void modifyCollaborativeMenuOnAccept(){
-        List<String> disheshost = new ArrayList<>();
+        List<Dish> disheshost = new ArrayList<>();
         CollaborativeMenuAnswer answer = new CollaborativeMenuAnswer("Guest",oldMenu.getId(),new Date(10),disheshost);
         List<Dish> dishes = new ArrayList<>();
         dishes.add(new Dish("Pollo"));
