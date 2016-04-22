@@ -71,4 +71,15 @@ public class PaymentMenuService extends Service<PaymentMenu> {
         answerRepository.insert(answer);
     }
 
+    public List<PaymentMenuAnswer> getAnswers(String menuKey){
+        List<PaymentMenuAnswer> list = answerRepository.all();
+        List<PaymentMenuAnswer> result = new ArrayList<>();
+        for (PaymentMenuAnswer answer : list) {
+            if (menuKey.equals(answer.getIdMenu())){
+                result.add(answer);
+            }
+        }
+        return result;
+    }
+
 }
