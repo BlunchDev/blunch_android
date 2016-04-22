@@ -15,6 +15,13 @@ public class PaymentMenuAnswer implements Entity {
     private String idMenu;
     private String id;
 
+    public PaymentMenuAnswer(List<Dish> choosenDishes, String idMenu) {
+        this.choosenDishes = choosenDishes;
+        this.idMenu = idMenu;
+    }
+
+    public PaymentMenuAnswer() {
+    }
 
     public List<Dish> getChoosenDishes() {
         return choosenDishes;

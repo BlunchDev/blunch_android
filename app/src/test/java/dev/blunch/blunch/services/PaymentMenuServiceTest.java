@@ -14,11 +14,11 @@ import dev.blunch.blunch.BuildConfig;
 import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.domain.PaymentMenu;
+import dev.blunch.blunch.domain.PaymentMenuAnswer;
 import dev.blunch.blunch.utils.MockRepository;
 import dev.blunch.blunch.utils.Repository;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
 /**
  * Created by casassg on 07/04/16.
@@ -34,12 +34,15 @@ public class PaymentMenuServiceTest {
     private PaymentMenu newMenu;
     private PaymentMenu oldMenu;
     private Repository.OnChangedListener.EventType lastChangedType;
+    private Dish pernil;
+    private Dish dorada;
+    private MockRepository<PaymentMenuAnswer> answerRepository;
 
     @Before
     public void setUp() {
         repository = new MockRepository<>();
-        service = new PaymentMenuService(repository);
-        service = new PaymentMenuService(repository, new MockRepository<Dish>());
+        answerRepository = new MockRepository<>();
+        service = new PaymentMenuService(repository, new MockRepository<Dish>(), answerRepository);
         newMenu = new PaymentMenu(
                 "Menu de micro de la FIB",
                 "Encarna", "És un menu de micro de la FIB",
@@ -60,6 +63,8 @@ public class PaymentMenuServiceTest {
                 lastChangedType = type;
             }
         });
+        pernil = new Dish("Pernil", 15.0);
+        dorada = new Dish("Dorada", 10.0);
     }
 
     public List<CollaborativeMenu> generateDummyData(int seed, int size) {
@@ -112,7 +117,7 @@ public class PaymentMenuServiceTest {
         String oldID = oldMenu.getId();
         service.save(oldMenu);
         assertEquals(oldID, oldMenu.getId());
-        assertEquals(oldID,service.get(oldMenu.getId()).getId());
+        assertEquals(oldID, service.get(oldMenu.getId()).getId());
         assertEquals(newAuthor,service.get(oldMenu.getId()).getAuthor());
 
     }
@@ -129,7 +134,7 @@ public class PaymentMenuServiceTest {
     @Test
     public void onMoveExternal() {
         assertEquals(null, lastChangedType);
-        assertEquals(1,service.getAmount());
+        assertEquals(1, service.getAmount());
         repository.simulateExternalMove(oldMenu);
         assertEquals(1, service.getAmount());
         assertEquals(Repository.OnChangedListener.EventType.Moved,lastChangedType);
@@ -168,8 +173,8 @@ public class PaymentMenuServiceTest {
     public void getPriceCorrect() {
         assertEquals(service.getTotalPrice(repository.all().get(0).getId()), (Double) 2.0);
         List<Dish> dishes = new ArrayList<>();
-        dishes.add(new Dish("Pernil", 15.0));
-        dishes.add(new Dish("Dorada", 10.0));
+        dishes.add(pernil);
+        dishes.add(dorada);
         service.save(oldMenu, dishes);
         assertEquals(service.getDishes(repository.all().get(0).getId()).size(), 3);
         assertEquals(service.getTotalPrice(repository.all().get(0).getId()), (Double) 27.0);
@@ -177,5 +182,28 @@ public class PaymentMenuServiceTest {
 
     }
 
+
+    @Test
+    public void answerMenu() {
+        List<Dish> dishList = new ArrayList<>();
+        dishList.add(pernil);
+        PaymentMenuAnswer answer = new PaymentMenuAnswer(dishList,oldMenu.getId());
+        assertEquals(0, answerRepository.all().size());
+        service.answer(oldMenu.getId(), answer);
+        assertEquals(1, answerRepository.all().size());
+
+    }
+
+
+    @Test
+    public void getAnswerMenu(){
+        List<Dish> dishList = new ArrayList<>();
+        dishList.add(pernil);
+        PaymentMenuAnswer answer = new PaymentMenuAnswer(dishList,oldMenu.getId());
+        answerRepository.insert(answer);
+        assertEquals(1, answerRepository.all().size());
+        List<PaymentMenuAnswer> lists = service.getAnswers(oldMenu.getId());
+        assertEquals(1, lists.size());
+    }
 
 }
