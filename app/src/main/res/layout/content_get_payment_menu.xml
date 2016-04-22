@@ -116,7 +116,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:id="@+id/checkboxDishesLayout">
+                    android:id="@+id/checkboxDishesLayout"
+                    android:layout_gravity="center"
+                    android:gravity="center">
 
                 </LinearLayout>
 
@@ -126,7 +128,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_gravity="center">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -138,8 +141,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/description"
-                    android:layout_gravity="center"
-                    android:textSize="22dp" />
+                    android:textSize="22dp"
+                    android:layout_marginLeft="30dp" />
 
                 <Space
                     android:layout_width="wrap_content"

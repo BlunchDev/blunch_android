@@ -1,6 +1,7 @@
 package dev.blunch.blunch.view;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.ViewGroup;
@@ -31,8 +32,10 @@ public class SelectPaymentDishLayout extends LinearLayout {
         setGravity(Gravity.CENTER);
 
         checkBox = new CheckBox(context);
-        checkBox.setDrawingCacheBackgroundColor(getResources().getColor(R.color.black));
-        checkBox.setHintTextColor(getResources().getColor(R.color.black));
+        //checkBox.setDrawingCacheBackgroundColor(getResources().getColor(R.color.black));
+        //checkBox.setHintTextColor(getResources().getColor(R.color.black));
+        int id = Resources.getSystem().getIdentifier("btn_check_holo_light", "drawable", "android");
+        checkBox.setButtonDrawable(id);
         LinearLayout.LayoutParams checkLayout = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         addView(checkBox, checkLayout);
 

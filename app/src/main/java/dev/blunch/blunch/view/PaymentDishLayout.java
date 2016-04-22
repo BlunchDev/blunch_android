@@ -1,6 +1,9 @@
 package dev.blunch.blunch.view;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.text.InputType;
 import android.util.TypedValue;
 import android.view.View;

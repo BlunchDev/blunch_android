@@ -64,9 +64,6 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
                 }
             }
         });
-
-
-
     }
 
     private void initialize() {
