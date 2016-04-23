@@ -41,7 +41,7 @@ public class MenuListAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return Long.parseLong(menuList.get(position).getId());
+        return position;
     }
 
     @Override
@@ -49,12 +49,10 @@ public class MenuListAdapter extends BaseAdapter {
         View vi = convertView;
         if (vi == null)
             vi = inflater.inflate(R.layout.menu_item_list_layout, null);
-        ImageView icon = (ImageView) vi.findViewById(R.id.icon);
         TextView title = (TextView) vi.findViewById(R.id.menu_name);
-        TextView description = (TextView) vi.findViewById(R.id.menu_descr);
+        TextView description = (TextView) vi.findViewById(R.id.menu_loc);
         title.setText(menuList.get(position).getName());
-        icon.setImageResource(R.drawable.user);
-        description.setText(menuList.get(position).getDescription());
+        description.setText(menuList.get(position).getLocalization());
         return vi;
     }
 }
