@@ -44,15 +44,6 @@ public class ListMenus extends AppCompatActivity {
             }
         });
 
-        collaborativeMenuService.setOnChangedListener(new Repository.OnChangedListener() {
-            @Override
-            public void onChanged(EventType type) {
-                if (type.equals(EventType.Full)) {
-
-                }
-            }
-        });
-
     }
 
 }
