@@ -12,7 +12,7 @@ import dev.blunch.blunch.services.CollaborativeMenuService;
 import dev.blunch.blunch.services.PaymentMenuService;
 import dev.blunch.blunch.utils.Repository;
 
-public class ListMenus extends AppCompatActivity {
+public class ListMenusActivity extends AppCompatActivity {
 
     CollaborativeMenuService collaborativeMenuService;
     PaymentMenuService paymentMenuService;

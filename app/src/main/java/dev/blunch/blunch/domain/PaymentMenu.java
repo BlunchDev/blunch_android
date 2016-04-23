@@ -19,13 +19,16 @@ public class PaymentMenu extends Menu {
     public PaymentMenu(String name, String author, String description, String localization,
                              Date dateStart, Date dateEnd, Set<String> dishes) {
         super(name, author, description, localization, dateStart, dateEnd);
-
         if(dishes!=null) {
             for (String dish : dishes) {
                 this.dishes.put(dish, true);
             }
         }
+    }
 
+    public PaymentMenu(String name, String author, String description, String localization,
+                       Date dateStart, Date dateEnd) {
+        super(name, author, description, localization, dateStart, dateEnd);
     }
 
     public Map<String, Object> getDishes() {

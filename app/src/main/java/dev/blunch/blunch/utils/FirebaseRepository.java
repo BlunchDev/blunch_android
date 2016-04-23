@@ -13,8 +13,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import dev.blunch.blunch.domain.CollaborativeMenu;
-
 /**
  * Repository abstract class
  *
@@ -160,7 +158,7 @@ public abstract class FirebaseRepository<T extends Entity> extends Repository<T>
     }
 
     @Override
-    public T convert(DataSnapshot data) {
+    protected T convert(DataSnapshot data) {
         return null;
     }
 

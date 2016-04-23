@@ -6,9 +6,7 @@ import com.firebase.client.DataSnapshot;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import dev.blunch.blunch.domain.PaymentMenu;
 import dev.blunch.blunch.utils.FirebaseRepository;
@@ -23,7 +21,7 @@ public class PaymentMenuRepository extends FirebaseRepository<PaymentMenu> {
     }
 
     @Override
-    public PaymentMenu convert(DataSnapshot data) {
+    protected PaymentMenu convert(DataSnapshot data) {
         PaymentMenu paymentMenu = new PaymentMenu();
         paymentMenu.setId(data.getKey());
         for (DataSnapshot d : data.getChildren()) {
