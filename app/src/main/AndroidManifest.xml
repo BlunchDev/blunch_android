@@ -44,6 +44,11 @@
             android:name=".activity.NewPaymentMenuActivity"
             android:label=".activity.paymentMenuActivity"
             android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".activity.GetPaymentMenuActivity"
+            android:label="@string/getPaymentMenuActivity_name"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
