@@ -214,6 +214,8 @@ public class PaymentMenuServiceTest {
         assertEquals(1, answerRepository.all().size());
         List<PaymentMenuAnswer> lists = service.getAnswers(oldMenu.getId());
         assertEquals(1, lists.size());
+        assertEquals(service.getAnswerDishes(answer.getId()).size(), 1);
+
     }
 
 }

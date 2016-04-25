@@ -90,17 +90,17 @@ public class PaymentMenuAnswer implements Entity {
             this.choosenDishes.put(dish.getId(), true);
         }    }
 
-    public boolean containsOfferedDish(String dish) {
+    public boolean containsChoosenDish(String dish) {
         return this.choosenDishes.containsKey(dish);
     }
 
-    public void addOfferedDish(String dish) {
+    public void addChoosenDish(String dish) {
         this.choosenDishes.put(dish, true);
     }
 
-    public void addOfferedDish(Dish dish) { this.choosenDishes.put(dish.getId(), true); }
+    public void addChoosenDish(Dish dish) { this.choosenDishes.put(dish.getId(), true); }
 
-    public void removeOfferedDish(String dish) {
+    public void removeChoosenDish(String dish) {
         this.choosenDishes.remove(dish);
     }
 }

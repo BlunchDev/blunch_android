@@ -59,6 +59,7 @@ public class CollaborativeMenuServiceTest {
         );
         service.save(oldMenu, offeredDishes, dishes);
         lastChangedType = null;
+        service.setCollaborativeMenuAnswerListener(null);
         service.setOnChangedListener(new Repository.OnChangedListener() {
             @Override
             public void onChanged(EventType type) {
@@ -190,6 +191,8 @@ public class CollaborativeMenuServiceTest {
         assertEquals(service.getOfferedDishes(repository.all().get(0).getId()).get(0).getName(), "Langosta");
         assertEquals(service.getSuggestedDishes(repository.all().get(0).getId()).size(), 1);
         assertEquals(service.getSuggestedDishes(repository.all().get(0).getId()).get(0).getName(), "Tacos");
+        String tacosID = service.getSuggestedDishes(repository.all().get(0).getId()).get(0).getId();
+        assertEquals(service.getDish(tacosID).getName(), "Tacos");
     }
 
 

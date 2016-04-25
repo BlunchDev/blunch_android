@@ -82,4 +82,13 @@ public class PaymentMenuService extends Service<PaymentMenu> {
         return result;
     }
 
+    public List<Dish> getAnswerDishes(String answerKey) {
+        PaymentMenuAnswer answer = answerRepository.get(answerKey);
+        List<Dish> dishes = new ArrayList<>();
+        for (String key : answer.getChoosenDishes().keySet()) {
+            dishes.add(dishesRepository.get(key));
+        }
+        return dishes;
+    }
+
 }
