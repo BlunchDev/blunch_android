@@ -19,6 +19,7 @@ import dev.blunch.blunch.utils.MockRepository;
 import dev.blunch.blunch.utils.Repository;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -245,6 +246,7 @@ public class CollaborativeMenuServiceTest {
         CollaborativeMenu menuHost = service.get(oldMenu.getId());
         for (Dish d : dishes){
             assertTrue(menuHost.containsOfferedDish(d.getName()));
+            assertFalse(menuHost.containsSuggestedDish(d.getName()));
         }
     }
 

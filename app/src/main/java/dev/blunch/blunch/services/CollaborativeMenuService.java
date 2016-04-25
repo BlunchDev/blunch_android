@@ -116,6 +116,7 @@ public class CollaborativeMenuService extends Service<CollaborativeMenu> {
         CollaborativeMenu menuHost = repository.get(answer.getMenuId());
         for (Map.Entry<String, Object> entry : answer.getOfferedDishes().entrySet()) {
             menuHost.addOfferedDish(entry.getKey());
+            if(menuHost.containsSuggestedDish(entry.getKey())) menuHost.removeSuggestedDish(entry.getKey());
         }
         repository.update(menuHost);
         collaborativeMenuAnswerRepository.delete(key);
