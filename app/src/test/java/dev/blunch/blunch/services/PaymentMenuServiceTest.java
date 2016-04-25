@@ -7,6 +7,7 @@ import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -187,7 +188,9 @@ public class PaymentMenuServiceTest {
     public void answerMenu() {
         List<Dish> dishList = new ArrayList<>();
         dishList.add(pernil);
-        PaymentMenuAnswer answer = new PaymentMenuAnswer(dishList,oldMenu.getId());
+        String guest = "Pepe";
+        Date date = Calendar.getInstance().getTime();
+        PaymentMenuAnswer answer = new PaymentMenuAnswer(oldMenu.getId(), guest, date, dishList);
         assertEquals(0, answerRepository.all().size());
         service.answer(oldMenu.getId(), answer);
         assertEquals(1, answerRepository.all().size());
@@ -199,7 +202,9 @@ public class PaymentMenuServiceTest {
     public void getAnswerMenu(){
         List<Dish> dishList = new ArrayList<>();
         dishList.add(pernil);
-        PaymentMenuAnswer answer = new PaymentMenuAnswer(dishList,oldMenu.getId());
+        String guest = "Pepe";
+        Date date = Calendar.getInstance().getTime();
+        PaymentMenuAnswer answer = new PaymentMenuAnswer(oldMenu.getId(), guest, date, dishList);
         answerRepository.insert(answer);
         assertEquals(1, answerRepository.all().size());
         List<PaymentMenuAnswer> lists = service.getAnswers(oldMenu.getId());

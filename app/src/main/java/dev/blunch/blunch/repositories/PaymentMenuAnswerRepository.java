@@ -4,6 +4,9 @@ import android.content.Context;
 
 import com.firebase.client.DataSnapshot;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import dev.blunch.blunch.domain.PaymentMenuAnswer;
 import dev.blunch.blunch.utils.FirebaseRepository;
 
@@ -29,6 +32,21 @@ public class PaymentMenuAnswerRepository extends FirebaseRepository<PaymentMenuA
 
     @Override
     protected PaymentMenuAnswer convert(DataSnapshot data) {
+        PaymentMenuAnswer answer = new PaymentMenuAnswer();
+        answer.setId(data.getKey());
+        for (DataSnapshot d : data.getChildren()) {
+            if (d.getKey().equals("idMenu"))
+                answer.setIdMenu(d.getValue(String.class));
+            else if (d.getKey().equals("guest"))
+                answer.setGuest(d.getValue(String.class));
+            else if (d.getKey().equals("choosenDishes")) {
+                List<String> dishes = new ArrayList<>();
+                for (DataSnapshot dish : d.getChildren()) {
+                    dishes.add(dish.getKey());
+                }
+                answer.setChoosenDishesKeys(dishes);
+            }
+        }
         return data.getValue(PaymentMenuAnswer.class);
     }
 }

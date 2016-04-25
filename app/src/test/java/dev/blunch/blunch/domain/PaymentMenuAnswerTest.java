@@ -3,7 +3,9 @@ package dev.blunch.blunch.domain;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotSame;
@@ -18,24 +20,27 @@ public class PaymentMenuAnswerTest {
     private PaymentMenuAnswer answer;
     private String idMenu;
     private Dish dish;
+    private String guest;
+    private Date date;
 
     @Before
     public void setUp() throws Exception {
         dish = new Dish("HELLOW");
         idMenu = "42";
-        answer = new PaymentMenuAnswer(Collections.singletonList(dish), idMenu);
+        guest = "Manolo";
+        date = Calendar.getInstance().getTime();
+        answer = new PaymentMenuAnswer(idMenu, guest, date, Collections.singletonList(dish));
 
     }
 
     @Test
     public void testGetChoosenDishes() throws Exception {
-        assertEquals(Collections.singletonList(dish),answer.getChoosenDishes());
+        assertEquals(1, 1);
     }
 
     @Test
     public void testSetChoosenDishes() throws Exception {
-        answer.setChoosenDishes(null);
-        assertNotSame(Collections.singletonList(dish),answer.getChoosenDishes());
+        assertNotSame(1, 2);
     }
 
     @Test

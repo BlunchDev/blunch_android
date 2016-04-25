@@ -5,6 +5,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -23,6 +24,7 @@ import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.domain.PaymentMenu;
 import dev.blunch.blunch.domain.PaymentMenuAnswer;
 import dev.blunch.blunch.repositories.DishRepository;
+import dev.blunch.blunch.repositories.PaymentMenuAnswerRepository;
 import dev.blunch.blunch.repositories.PaymentMenuRepository;
 import dev.blunch.blunch.services.PaymentMenuService;
 import dev.blunch.blunch.utils.Repository;
@@ -60,7 +62,9 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
             }
         });
 
-        paymentMenuService = new PaymentMenuService(new PaymentMenuRepository(getApplicationContext()), new DishRepository(getApplicationContext()));
+        paymentMenuService = new PaymentMenuService(new PaymentMenuRepository(getApplicationContext()),
+                                                    new DishRepository(getApplicationContext()),
+                                                    new PaymentMenuAnswerRepository(getApplicationContext()));
         paymentMenuService.setOnChangedListener(new Repository.OnChangedListener() {
             @Override
             public void onChanged(EventType type) {
@@ -100,12 +104,8 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
         join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("numero plats: "+answerDishes.size());
-                paymentMenuAnswer = new PaymentMenuAnswer(answerDishes,paymentMenu.getId());
-                System.out.println("crea menu");
-                System.out.println("payment menu answer: " + paymentMenuAnswer.getId());
+                paymentMenuAnswer = new PaymentMenuAnswer(paymentMenu.getId(), "Platon", Calendar.getInstance().getTime(), answerDishes);
                 paymentMenuService.answer(paymentMenu.getId(), paymentMenuAnswer);
-                System.out.println("guarda menu");
 
                 Toast.makeText(v.getContext(), "OK", Toast.LENGTH_LONG).show();
                 answerDishes = new ArrayList<Dish>();
