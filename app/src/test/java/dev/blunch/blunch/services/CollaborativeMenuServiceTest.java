@@ -192,6 +192,7 @@ public class CollaborativeMenuServiceTest {
         assertEquals(service.getSuggestedDishes(repository.all().get(0).getId()).get(0).getName(), "Tacos");
     }
 
+
     @Test
     public void getActiveProposals(){
         List<Dish> disheshost = new ArrayList<>();

@@ -30,7 +30,7 @@ import static org.junit.Assert.assertEquals;
 @Config(constants = BuildConfig.class)
 public class PaymentMenuServiceTest {
 
-    private PaymentMenuService service;
+    private PaymentMenuService service, service2, service3;
     private MockRepository<PaymentMenu> repository;
     private PaymentMenu newMenu;
     private PaymentMenu oldMenu;
@@ -44,6 +44,8 @@ public class PaymentMenuServiceTest {
         repository = new MockRepository<>();
         answerRepository = new MockRepository<>();
         service = new PaymentMenuService(repository, new MockRepository<Dish>(), answerRepository);
+        service2 = new PaymentMenuService(repository);
+        service3 = new PaymentMenuService(repository,new MockRepository<Dish>());
         newMenu = new PaymentMenu(
                 "Menu de micro de la FIB",
                 "Encarna", "És un menu de micro de la FIB",
@@ -77,9 +79,12 @@ public class PaymentMenuServiceTest {
         return menus;
     }
 
+
     @Test
     public void onSave() {
         service.save(newMenu);
+        service2.save(newMenu);
+
 
         assertEquals(2, repository.all().size());
     }
