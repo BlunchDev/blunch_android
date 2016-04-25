@@ -3,7 +3,6 @@ package dev.blunch.blunch.view;
 import android.content.Context;
 import android.content.res.Resources;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;

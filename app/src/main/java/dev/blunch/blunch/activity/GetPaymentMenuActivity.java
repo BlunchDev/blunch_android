@@ -5,19 +5,17 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import dev.blunch.blunch.R;
 import dev.blunch.blunch.domain.Dish;
@@ -39,6 +37,7 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
     private PaymentMenuAnswer paymentMenuAnswer;
     private List<Dish> dishes;
     private final String COMA = ",";
+    private final String FAKE_GUEST = "Platon";
     private TextView userName, localization, city, description, hour;
     private Button join;
     private Toolbar toolbar;
@@ -104,7 +103,7 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
         join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                paymentMenuAnswer = new PaymentMenuAnswer(paymentMenu.getId(), "Platon", Calendar.getInstance().getTime(), answerDishes);
+                paymentMenuAnswer = new PaymentMenuAnswer(paymentMenu.getId(), FAKE_GUEST, Calendar.getInstance().getTime(), answerDishes);
                 paymentMenuService.answer(paymentMenu.getId(), paymentMenuAnswer);
 
                 Toast.makeText(v.getContext(), "OK", Toast.LENGTH_LONG).show();
@@ -147,10 +146,9 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
     }
 
     private void removeDish(String id) {
-        for(Dish d: answerDishes){
-            if(d.getId().equals(id)){
+        for (Dish d: answerDishes){
+            if (d.getId().equals(id))
                 answerDishes.remove(d);
-            }
         }
     }
 
