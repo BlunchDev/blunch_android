@@ -1,6 +1,7 @@
 package dev.blunch.blunch.activity;
 
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -29,6 +30,8 @@ import dev.blunch.blunch.view.CollaborativeDishLayout;
 
 @SuppressWarnings("all")
 public class NewCollaborativeMenuActivity extends AppCompatActivity {
+
+    private final static String SERVICE = "CollaborativeMenuService";
 
     private int     iHour,
                     iMinute,
@@ -286,6 +289,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
             collaborativeMenuService.save(collaborativeMenu, offeredDish, suggestedDish);
             Toast.makeText(this, "Añadido correctamente",
                     Toast.LENGTH_LONG).show();
+            finish();
         }
     }
 
