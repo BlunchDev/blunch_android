@@ -7,7 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -44,6 +46,23 @@ public class ListMenusActivity extends AppCompatActivity {
 
         DishRepository dishRepository = new DishRepository(getApplicationContext());
 
+        Spinner spinner = (Spinner) findViewById(R.id.menu_spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.menu_types, R.layout.spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                init(parent.getItemAtPosition(position).toString());
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         collaborativeMenuService = new CollaborativeMenuService(
                 new CollaborativeMenuRepository(getApplicationContext()),
                 dishRepository,
@@ -69,7 +88,7 @@ public class ListMenusActivity extends AppCompatActivity {
                 if (type.equals(EventType.Full)) {
                     colReady = true;
                     if (payReady & colReady)
-                        init();
+                        init("All");
                 }
             }
         });
@@ -80,18 +99,33 @@ public class ListMenusActivity extends AppCompatActivity {
                 if (type.equals(EventType.Full)) {
                     payReady = true;
                     if (payReady & colReady)
-                        init();
+                        init("All");
                 }
             }
         });
 
     }
 
-    private void init() {
+    private void init(String filter) {
 
         List<Menu> menuList = new ArrayList<>();
-        menuList.addAll(collaborativeMenuService.getAll());
-        menuList.addAll(paymentMenuService.getAll());
+
+        switch (filter) {
+            case "Todos":
+                menuList.addAll(collaborativeMenuService.getAll());
+                menuList.addAll(paymentMenuService.getAll());
+                break;
+            case "Colaborativo":
+                menuList.addAll(collaborativeMenuService.getAll());
+                break;
+            case "De pago":
+                menuList.addAll(paymentMenuService.getAll());
+                break;
+            default:
+                menuList.addAll(collaborativeMenuService.getAll());
+                menuList.addAll(paymentMenuService.getAll());
+                break;
+        }
 
         final MenuListAdapter menuListAdapter = new MenuListAdapter(
                 getApplicationContext(),
@@ -107,6 +141,7 @@ public class ListMenusActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),menu.getName(), Toast.LENGTH_SHORT).show();
             }
         });
+
 
     }
 

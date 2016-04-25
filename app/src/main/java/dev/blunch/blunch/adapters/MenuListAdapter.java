@@ -11,6 +11,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import dev.blunch.blunch.R;
+import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.domain.Menu;
 
 /**
@@ -51,8 +52,16 @@ public class MenuListAdapter extends BaseAdapter {
             vi = inflater.inflate(R.layout.menu_item_list_layout, null);
         TextView title = (TextView) vi.findViewById(R.id.menu_name);
         TextView description = (TextView) vi.findViewById(R.id.menu_loc);
+        TextView host = (TextView) vi.findViewById(R.id.menu_host);
+        ImageView type = (ImageView) vi.findViewById(R.id.menu_type);
         title.setText(menuList.get(position).getName());
         description.setText(menuList.get(position).getLocalization());
+        host.setText("Menú de " + menuList.get(position).getAuthor());
+        if (CollaborativeMenu.class.isAssignableFrom(menuList.get(position).getClass())) {
+            type.setImageResource(R.drawable.group);
+        } else {
+            type.setImageResource(R.drawable.euro);
+        }
         return vi;
     }
 }
