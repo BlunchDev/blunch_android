@@ -1,6 +1,10 @@
 package dev.blunch.blunch.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -50,6 +54,7 @@ public class ListMenusActivity extends AppCompatActivity {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.menu_types, R.layout.spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         spinner.setAdapter(adapter);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -77,8 +82,23 @@ public class ListMenusActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(ListMenusActivity.this);
+                builder.setMessage("Qué tipo de menú quieres dar de alta?")
+                        .setCancelable(false)
+                        .setPositiveButton("Menú colaborativo", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                Intent intent = new Intent(ListMenusActivity.this, NewCollaborativeMenuActivity.class);
+                                startActivity(intent);
+                            }
+                        })
+                        .setNegativeButton("Menú de pago", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                Intent intent = new Intent(ListMenusActivity.this, NewPaymentMenuActivity.class);
+                                startActivity(intent);
+                            }
+                        });
+                AlertDialog alert = builder.create();
+                alert.show();
             }
         });
 
@@ -138,7 +158,22 @@ public class ListMenusActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Menu menu = menuListAdapter.getItem(position);
-                Toast.makeText(getApplicationContext(),menu.getName(), Toast.LENGTH_SHORT).show();
+
+                String s = menu.getClass().getSimpleName();
+
+                switch (s) {
+                    case "CollaborativeMenu":
+                        Intent intent = new Intent(ListMenusActivity.this, GetCollaborativeMenuActivity.class);
+                        intent.putExtra("menuId", menu.getId());
+                        startActivity(intent);
+                        break;
+                    case "PaymentMenu":
+                        //TODO getPaymentMenu
+                        Toast.makeText(getApplicationContext(), menu.getName(), Toast.LENGTH_SHORT).show();
+                        break;
+                    default:
+                        break;
+                }
             }
         });
 
