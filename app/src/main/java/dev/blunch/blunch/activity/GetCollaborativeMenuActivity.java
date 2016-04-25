@@ -1,5 +1,6 @@
 package dev.blunch.blunch.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -39,19 +40,22 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
     private Button join;
     private Toolbar toolbar;
 
+    private String menuId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_get_collaborative_menu);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
+        menuId = getIntent().getStringExtra("menuId");
+
         collaborativeMenuService = new CollaborativeMenuService(new CollaborativeMenuRepository(getApplicationContext()), new DishRepository(getApplicationContext()));
         collaborativeMenuService.setOnChangedListener(new Repository.OnChangedListener() {
             @Override
             public void onChanged(EventType type) {
                 if (type.equals(EventType.Full)) {
-                    List<CollaborativeMenu> list = collaborativeMenuService.getAll();
-                    collaborativeMenu = list.get(0);
+                    collaborativeMenu = collaborativeMenuService.get(menuId);
                     suggestedDishes = collaborativeMenuService.getSuggestedDishes(collaborativeMenu.getId());
                     offeredDishes = collaborativeMenuService.getOfferedDishes(collaborativeMenu.getId());
                     initialize();
@@ -88,7 +92,9 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
         join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), "NO VAAAA!", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(GetCollaborativeMenuActivity.this, CollaborativeMenuAnswerActivity.class);
+                intent.putExtra("menuId", menuId);
+                startActivity(intent);
             }
         });
 
