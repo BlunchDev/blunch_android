@@ -14,10 +14,14 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import dev.blunch.blunch.R;
 import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.domain.PaymentMenu;
+import dev.blunch.blunch.domain.PaymentMenuAnswer;
 import dev.blunch.blunch.repositories.DishRepository;
 import dev.blunch.blunch.repositories.PaymentMenuRepository;
 import dev.blunch.blunch.services.PaymentMenuService;
@@ -30,6 +34,7 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
 
     private PaymentMenuService paymentMenuService;
     private PaymentMenu paymentMenu;
+    private PaymentMenuAnswer paymentMenuAnswer;
     private List<Dish> dishes;
     private final String COMA = ",";
     private TextView userName, localization, city, description, hour;
@@ -38,6 +43,7 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
     private LinearLayout dishesLayout;
     private TextView precio;
     private ArrayList<SelectPaymentDishLayout> paymentDishesLayoutList;
+    private List<Dish> answerDishes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +100,15 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
         join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), "NO VAAAA!", Toast.LENGTH_LONG).show();
+                System.out.println("numero plats: "+answerDishes.size());
+                paymentMenuAnswer = new PaymentMenuAnswer(answerDishes,paymentMenu.getId());
+                System.out.println("crea menu");
+                System.out.println("payment menu answer: " + paymentMenuAnswer.getId());
+                paymentMenuService.answer(paymentMenu.getId(), paymentMenuAnswer);
+                System.out.println("guarda menu");
+
+                Toast.makeText(v.getContext(), "OK", Toast.LENGTH_LONG).show();
+                answerDishes = new ArrayList<Dish>();
             }
         });
         precio.setText("0 €");
@@ -104,6 +118,7 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         paymentDishesLayoutList = new ArrayList<>();
+        answerDishes = new ArrayList<Dish>();
 
         for (final Dish d : dishes){
             SelectPaymentDishLayout n = new SelectPaymentDishLayout(getApplicationContext(), d.getName(), d.getPrice());
@@ -117,15 +132,25 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
                         double a = Double.parseDouble(price);
                         a += d.getPrice();
                         precio.setText(String.valueOf(a) + " €");
+                        answerDishes.add(d);
                     }
                     else {
                         String price = precio.getText().toString().split(" ")[0];
                         double a = Double.parseDouble(price);
                         a -= d.getPrice();
                         precio.setText(String.valueOf(a) + " €");
+                        removeDish(d.getId());
                     }
                 }
             });
+        }
+    }
+
+    private void removeDish(String id) {
+        for(Dish d: answerDishes){
+            if(d.getId().equals(id)){
+                answerDishes.remove(d);
+            }
         }
     }
 

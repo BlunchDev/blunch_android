@@ -15,9 +15,16 @@ public class PaymentMenuAnswer implements Entity {
     private String idMenu;
     private String id;
 
+    String c="0";
+    int cm;
+
     public PaymentMenuAnswer(List<Dish> choosenDishes, String idMenu) {
         this.choosenDishes = choosenDishes;
         this.idMenu = idMenu;
+        this.id = c;
+        cm =  Integer.parseInt(c);
+        cm++;
+        c= ""+cm;
     }
 
     public PaymentMenuAnswer() {
