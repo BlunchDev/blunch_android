@@ -77,12 +77,6 @@ public class MenuListAdapterTest {
     }
 
     @Test
-    public void getItemIdTest() throws Exception {
-        assertEquals(menuListAdapter.getItemId(0), Long.parseLong(firstMenu.getId()));
-        assertEquals(menuListAdapter.getItemId(2), Long.parseLong(thirdMenu.getId()));
-    }
-
-    @Test
     public void getViewShouldNotBeNull() throws Exception {
         assertNotNull(menuListAdapter.getView(0, null, null));
     }
