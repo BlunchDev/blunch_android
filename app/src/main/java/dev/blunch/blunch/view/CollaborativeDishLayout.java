@@ -25,6 +25,7 @@ public class CollaborativeDishLayout extends LinearLayout{
     private Switch switch1;
     private ImageButton close;
 
+
     public CollaborativeDishLayout(Context context, int num) {
         super(context);
         setOrientation(VERTICAL);
@@ -39,7 +40,7 @@ public class CollaborativeDishLayout extends LinearLayout{
         h1.addView(space1, spaceLayout);
 
         dishName = new EditText(context);
-        dishName.setText("Plato " + num);
+
         dishName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
         dishName.setTextColor(getResources().getColor(R.color.colorEdit));
         LinearLayout.LayoutParams nomPlatLayout = new LinearLayout.LayoutParams(400, ViewGroup.LayoutParams.WRAP_CONTENT);

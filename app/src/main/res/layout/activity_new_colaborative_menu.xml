@@ -56,7 +56,7 @@
                         android:id="@+id/nomMenu"
                         android:layout_width="200dp"
                         android:layout_height="wrap_content"
-                        android:text="MENÚ"
+                        android:hint="MENÚ"
                         android:textSize="40dp"
                         android:layout_gravity="center"
                         android:textColor="#bfbdbd"
@@ -71,7 +71,7 @@
                             android:layout_width="336dp"
                             android:layout_height="73dp"
                             android:id="@+id/description"
-                            android:text="Descripción"
+                            android:hint="Descripción"
                             android:maxLength="140"
                             android:gravity="top"
                             android:textColor="@color/colorEdit"
@@ -205,7 +205,7 @@
                                 <EditText
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Tu dirección"
+                                    android:hint="Tu dirección"
                                     android:id="@+id/adress"
                                     android:layout_weight="0.49" />
 
@@ -228,7 +228,7 @@
                                 <EditText
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Tu ciudad"
+                                    android:hint="Tu ciudad"
                                     android:id="@+id/city"
                                     android:layout_gravity="left"
                                     android:layout_weight="0.57" />

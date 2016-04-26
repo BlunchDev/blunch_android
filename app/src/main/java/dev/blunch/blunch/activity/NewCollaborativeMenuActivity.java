@@ -70,18 +70,13 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         updateTime(0, 0, 0, 0);
 
         final EditText menuName = (EditText) findViewById(R.id.nomMenu);
-        menuName.setOnClickListener(new View.OnClickListener() {
+       /* menuName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (menuName.getText().toString().equals("MENÚ")) {
-                    menuName.setText("");
-                    menuName.setTextColor(getResources().getColor(R.color.black));
-                } else if (menuName.getText().toString().equals("")) {
-                    menuName.setText("MENÚ");
-                    menuName.setTextColor(getResources().getColor(R.color.colorEdit));
-                }
+                menuName.setHint("MENÚ");
+                Log.d("teste", "d");
             }
-        });
+        });*/
 
         final ImageButton moreDishes = (ImageButton) findViewById(R.id.moreDishes);
         final LinearLayout moreDishesLayout = (LinearLayout) findViewById(R.id.dishesLayout);
@@ -276,6 +271,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
                 }
                 n++;
             }
+
 
             CollaborativeMenu collaborativeMenu = new CollaborativeMenu(menuNameString,
                                                                         author,
