@@ -38,8 +38,8 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
 
     private int     iHour,
                     iMinute,
-                    hourDuration,
-            minuteDuration,
+                    fHour,
+                    fMinute,
                     numDish;
     private Date    start,
                     finish;
@@ -71,20 +71,18 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
     }
 
     private void initialize() {
-        day = month = year = 0;
-        iHour = iMinute = hourDuration = minuteDuration = 0;
-        numDish = 0;
         Calendar now = Calendar.getInstance();
-        updateTime(0, 0, 0, 0, now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH));
+        year = now.get(Calendar.YEAR);
+        month = now.get(Calendar.MONTH);
+        day = now.get(Calendar.DAY_OF_MONTH);
+        iHour = now.get(Calendar.HOUR_OF_DAY);
+        iMinute = now.get(Calendar.MINUTE);
+        fHour = now.get(Calendar.HOUR_OF_DAY);
+        fMinute = now.get(Calendar.MINUTE);
+        numDish = 0;
+        updateTime(0, 0, 0, 0, year, month, day);
 
         final EditText menuName = (EditText) findViewById(R.id.nomMenu);
-       /* menuName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                menuName.setHint("MENÚ");
-                Log.d("teste", "d");
-            }
-        });*/
         final ImageButton moreDishes = (ImageButton) findViewById(R.id.moreDishes);
         final LinearLayout moreDishesLayout = (LinearLayout) findViewById(R.id.dishesLayout);
         final CollaborativeDishLayout menu = new CollaborativeDishLayout(getApplicationContext(), numDish);
@@ -195,17 +193,27 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         cStart.set(Calendar.DAY_OF_MONTH, day);
         start = cStart.getTime();
 
-        date.setText(day+"/"+month+"/"+year);
+        date.setText(this.day + "/" + this.month + "/" + this.year);
 
         Calendar cFinish = Calendar.getInstance();
         cFinish.set(Calendar.HOUR_OF_DAY,fHour);
         cFinish.set(Calendar.MINUTE, fMinut);
+        if (fHour < iHour) {
+            cFinish.set(Calendar.MONTH, month);
+            cFinish.set(Calendar.YEAR, year);
+            cFinish.set(Calendar.DAY_OF_MONTH, day);
+            cFinish.add(Calendar.DAY_OF_MONTH, 1);
+        }
+        else {
+            cFinish.set(Calendar.MONTH, month);
+            cFinish.set(Calendar.YEAR, year);
+            cFinish.set(Calendar.DAY_OF_MONTH, day);
+        }
         finish = cFinish.getTime();
     }
 
     private TimePickerDialog.OnTimeSetListener initialTimeSetListener =
             new TimePickerDialog.OnTimeSetListener() {
-
                 @Override
                 public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                     iHour = hourOfDay; iMinute = minute;
@@ -214,7 +222,6 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
 
     private DatePickerDialog.OnDateSetListener dateSetListener =
             new DatePickerDialog.OnDateSetListener() {
-
                 @Override
                 public void onDateSet(DatePicker view, int yearOf, int monthOfYear, int dayOfMonth) {
                     year = yearOf;
@@ -228,21 +235,20 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
 
                 @Override
                 public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                    hourDuration = hourOfDay; minuteDuration = minute;
-                    updateTime(iHour, iMinute, hourDuration, minuteDuration, year, month, day);
+                    fHour = hourOfDay; fMinute = minute;
+                    updateTime(iHour, iMinute, fHour, fMinute, year, month, day);
+
                 }
             };
 
     private void showDialogTime() {
-        //showDialogFinalTime().show();
-        showDialogDate().show();
+        showDialogFinalTime().show();
         showDialogInitialTime().show();
-
+        showDialogDate().show();
     }
 
     private DatePickerDialog showDialogDate() {
         DatePickerDialog a = new DatePickerDialog(this, dateSetListener, year, month, day);
-
         return a;
     }
 
@@ -257,9 +263,9 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
     }
 
     private TimePickerDialog showDialogFinalTime() {
-        TimePickerDialog a = new TimePickerDialog(this, finalTimeSetListener, hourDuration, minuteDuration, false);
+        TimePickerDialog a = new TimePickerDialog(this, finalTimeSetListener, fHour, fMinute, false);
         TextView title = new TextView(this);
-        title.setText("Hora Fin");
+        title.setText("Hora Final");
         title.setTextSize(20);
         title.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
         a.setCustomTitle(title);
