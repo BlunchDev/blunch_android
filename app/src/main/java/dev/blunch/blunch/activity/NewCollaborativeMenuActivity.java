@@ -30,6 +30,8 @@ import dev.blunch.blunch.view.CollaborativeDishLayout;
 @SuppressWarnings("all")
 public class NewCollaborativeMenuActivity extends AppCompatActivity {
 
+    private final static String SERVICE = "CollaborativeMenuService";
+
     private int     iHour,
                     iMinute,
                     fHour,
@@ -282,6 +284,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
             collaborativeMenuService.save(collaborativeMenu, offeredDish, suggestedDish);
             Toast.makeText(this, "Añadido correctamente",
                     Toast.LENGTH_LONG).show();
+            finish();
         }
     }
 

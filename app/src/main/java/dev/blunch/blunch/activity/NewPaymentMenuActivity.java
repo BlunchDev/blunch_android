@@ -24,6 +24,7 @@ import dev.blunch.blunch.domain.PaymentMenu;
 import dev.blunch.blunch.repositories.DishRepository;
 import dev.blunch.blunch.repositories.PaymentMenuRepository;
 import dev.blunch.blunch.services.PaymentMenuService;
+import dev.blunch.blunch.utils.Repository;
 import dev.blunch.blunch.view.PaymentDishLayout;
 
 @SuppressWarnings("all")
@@ -49,7 +50,14 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         paymentMenuService = new PaymentMenuService(new PaymentMenuRepository(getApplicationContext()), new DishRepository(getApplicationContext()));
-        initialize();
+        paymentMenuService.setOnChangedListener(new Repository.OnChangedListener() {
+            @Override
+            public void onChanged(EventType type) {
+                if (type.equals(EventType.Full)) {
+                    initialize();
+                }
+            }
+        });
     }
 
     @Override
@@ -276,6 +284,7 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
             paymentMenuService.save(paymentMenu, dishes);
             Toast.makeText(this, "Añadido correctamente",
                     Toast.LENGTH_LONG).show();
+            finish();
         }
     }
 
