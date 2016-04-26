@@ -246,9 +246,38 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
         String description = descriptionEditText.getText().toString();
 
         if(isIncomplete(address, city, menuNameString, description)){
+            String s = "";
+            boolean added = false;
+            if(address.equals("") || address.equals("Tu dirección") ) {
+                if (!added) {
+                    s += "Direccion";
+                    added = true;
+                }
+                else s += ", direccion";
+            }
+            if(city.equals("") || city.equals("Tu ciudad")){
+                if (!added) {
+                    s += "Ciudad";
+                    added = true;
+                }
+                else s += ", ciudad";
+            }
 
-            Toast.makeText(this, "Campos incompletos",
-                    Toast.LENGTH_LONG).show();
+            if(menuNameString.equals("") || menuNameString.equals("MENÚ") ){
+                if (!added) {
+                    s += "Nombre del menu";
+                    added = true;
+                }
+                else s += ", nombre del menu";
+            }
+            if(description.equals("") || description.equals("Descripción")) {
+                if (!added) {
+                    s += "Descripcion";
+                    added = true;
+                }
+                else s += ", descripcion";
+            }
+            Toast.makeText(this, s +" incompleta",Toast.LENGTH_LONG).show();
         }
         else if(start.getTime()>=finish.getTime()){
             Toast.makeText(this, "Hora de inicio más pequeña o igual que hora final",

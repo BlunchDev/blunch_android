@@ -32,7 +32,6 @@ public class PaymentDishLayout extends LinearLayout{
         h1.setOrientation(HORIZONTAL);
 
         dishName = new EditText(context);
-        dishName.setText("Plato " + num);
         dishName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
         dishName.setTextColor(getResources().getColor(R.color.colorEdit));
         LinearLayout.LayoutParams nomPlatLayout = new LinearLayout.LayoutParams(800, ViewGroup.LayoutParams.WRAP_CONTENT);
