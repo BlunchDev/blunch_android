@@ -26,39 +26,27 @@ public class CollaborativeDishLayout extends LinearLayout{
     private ImageButton close;
 
 
-    public CollaborativeDishLayout(Context context, int num) {
+    public CollaborativeDishLayout(Context context) {
         super(context);
-        setOrientation(VERTICAL);
+        setOrientation(HORIZONTAL);
         setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
-        //H1
-        final LinearLayout h1 = new LinearLayout(context);
-        h1.setOrientation(HORIZONTAL);
-
         Space space1 = new Space(context);
-        LinearLayout.LayoutParams spaceLayout = new LinearLayout.LayoutParams(80, ViewGroup.LayoutParams.MATCH_PARENT);
-        h1.addView(space1, spaceLayout);
+        LinearLayout.LayoutParams spaceLayout = new LinearLayout.LayoutParams(40, ViewGroup.LayoutParams.MATCH_PARENT);
+        addView(space1, spaceLayout);
 
         dishName = new EditText(context);
+        dishName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+        dishName.setTextColor(getResources().getColor(R.color.black));
+        dishName.setHintTextColor(getResources().getColor(R.color.gray));
+        dishName.setHint("Nombre");
+        LinearLayout.LayoutParams nomPlatLayout = new LinearLayout.LayoutParams(500, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-        dishName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
-        dishName.setTextColor(getResources().getColor(R.color.colorEdit));
-        LinearLayout.LayoutParams nomPlatLayout = new LinearLayout.LayoutParams(400, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dishName.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (dishName.getText().toString().equals("MENÚ")) {
-                    dishName.setText("");
-                    dishName.setTextColor(getResources().getColor(R.color.black));
-                }
-            }
-        });
-
-        h1.addView(dishName, nomPlatLayout);
+        addView(dishName, nomPlatLayout);
 
         Space space5 = new Space(context);
-        LinearLayout.LayoutParams space5Layout = new LinearLayout.LayoutParams(100, ViewGroup.LayoutParams.MATCH_PARENT);
-        h1.addView(space5, space5Layout);
+        LinearLayout.LayoutParams space5Layout = new LinearLayout.LayoutParams(40, ViewGroup.LayoutParams.MATCH_PARENT);
+        addView(space5, space5Layout);
 
         close = new ImageButton(context);
         close.setBackgroundColor(getResources().getColor(R.color.background));
@@ -75,48 +63,40 @@ public class CollaborativeDishLayout extends LinearLayout{
                 CollaborativeDishLayout.this.setVisibility(GONE);
             }
         });
-        h1.addView(close, closeLayout);
+        addView(close, closeLayout);
 
-
-
-        LinearLayout.LayoutParams h1Layout = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        this.addView(h1, h1Layout);
-
-        //H2
-        LinearLayout h2 = new LinearLayout(context);
-        h2.setOrientation(HORIZONTAL);
-
+        Space space6 = new Space(context);
+        LinearLayout.LayoutParams space6Layout = new LinearLayout.LayoutParams(40, ViewGroup.LayoutParams.MATCH_PARENT);
+        addView(space6, space6Layout);
 
         TextView me = new TextView(context);
         me.setText("Yo");
+        me.setTextColor(getResources().getColor(R.color.gray));
         LinearLayout.LayoutParams meLayout = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        h2.addView(me, meLayout);
+        addView(me, meLayout);
 
         Space space2 = new Space(context);
-        LinearLayout.LayoutParams space2Layout = new LinearLayout.LayoutParams(40, ViewGroup.LayoutParams.MATCH_PARENT);
-        h2.addView(space2, space2Layout);
+        LinearLayout.LayoutParams space2Layout = new LinearLayout.LayoutParams(30, ViewGroup.LayoutParams.MATCH_PARENT);
+        addView(space2, space2Layout);
 
         switch1 = new Switch(context);
         switch1.setBackgroundColor(getResources().getColor(R.color.colorAccent));
         switch1.setChecked(false);
         LinearLayout.LayoutParams switchLayout = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        h2.addView(switch1, switchLayout);
+        addView(switch1, switchLayout);
 
         Space space3 = new Space(context);
-        LinearLayout.LayoutParams space3Layout = new LinearLayout.LayoutParams(40, ViewGroup.LayoutParams.MATCH_PARENT);
-        h2.addView(space3, space3Layout);
+        LinearLayout.LayoutParams space3Layout = new LinearLayout.LayoutParams(30, ViewGroup.LayoutParams.MATCH_PARENT);
+        addView(space3, space3Layout);
 
         TextView sug = new TextView(context);
-        sug.setText("Sugerencia");
-        h2.addView(sug, meLayout);
+        sug.setText("Sug");
+        sug.setTextColor(getResources().getColor(R.color.gray));
+        addView(sug, meLayout);
 
         Space space4 = new Space(context);
         LinearLayout.LayoutParams space4Layout = new LinearLayout.LayoutParams(40, ViewGroup.LayoutParams.MATCH_PARENT);
-        h2.addView(space4, space4Layout);
-
-        LinearLayout.LayoutParams h2Layout = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        h2Layout.gravity = Gravity.RIGHT;
-        this.addView(h2, h2Layout);
+        addView(space4, space4Layout);
 
     }
 

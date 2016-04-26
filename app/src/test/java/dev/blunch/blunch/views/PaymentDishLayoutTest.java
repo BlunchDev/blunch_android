@@ -28,12 +28,12 @@ public class PaymentDishLayoutTest {
 
     @Before
     public void setUp() {
-        layout = new PaymentDishLayout(RuntimeEnvironment.application, 1);
+        layout = new PaymentDishLayout(RuntimeEnvironment.application);
     }
 
     @Test
     public void test() throws Exception {
-        assertTrue(layout.getDishName().contains(Integer.toString(1)));
+        assertNotNull(layout.getDishName());
         assertNotNull(layout.getClose());
     }
 

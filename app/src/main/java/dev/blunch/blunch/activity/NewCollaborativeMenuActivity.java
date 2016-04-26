@@ -3,6 +3,7 @@ package dev.blunch.blunch.activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -26,6 +27,7 @@ import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.repositories.CollaborativeMenuRepository;
 import dev.blunch.blunch.repositories.DishRepository;
 import dev.blunch.blunch.services.CollaborativeMenuService;
+import dev.blunch.blunch.services.ServiceFactory;
 import dev.blunch.blunch.utils.Repository;
 import dev.blunch.blunch.view.CollaborativeDishLayout;
 
@@ -39,8 +41,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
     private int     iHour,
                     iMinute,
                     fHour,
-                    fMinute,
-                    numDish;
+                    fMinute;
     private Date    start,
                     finish;
     protected ArrayList<CollaborativeDishLayout> myDishes = new ArrayList<>();
@@ -54,7 +55,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        collaborativeMenuService = new CollaborativeMenuService(new CollaborativeMenuRepository(getApplicationContext()), new DishRepository(getApplicationContext()));
+        collaborativeMenuService = ServiceFactory.getCollaborativeMenuService(getApplicationContext());
         collaborativeMenuService.setOnChangedListener(new Repository.OnChangedListener() {
             @Override
             public void onChanged(EventType type) {
@@ -63,11 +64,6 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
     }
 
     private void initialize() {
@@ -79,36 +75,38 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         iMinute = now.get(Calendar.MINUTE);
         fHour = now.get(Calendar.HOUR_OF_DAY);
         fMinute = now.get(Calendar.MINUTE);
-        numDish = 0;
         updateTime(0, 0, 0, 0, year, month, day);
 
         final EditText menuName = (EditText) findViewById(R.id.nomMenu);
         final ImageButton moreDishes = (ImageButton) findViewById(R.id.moreDishes);
         final LinearLayout moreDishesLayout = (LinearLayout) findViewById(R.id.dishesLayout);
-        final CollaborativeDishLayout menu = new CollaborativeDishLayout(getApplicationContext(), numDish);
+        final CollaborativeDishLayout menu = new CollaborativeDishLayout(getApplicationContext());
         myDishes.add(menu);
         moreDishesLayout.addView(menu);
-        ++numDish;
         menu.getClose().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                moreDishesLayout.removeView(menu);
-                myDishes.remove(menu);
+                if (myDishes.size() > 1) {
+                    moreDishesLayout.removeView(menu);
+                    myDishes.remove(menu);
+                }
             }
         });
 
         moreDishes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final CollaborativeDishLayout a = new CollaborativeDishLayout(NewCollaborativeMenuActivity.this, ++numDish);
+                final CollaborativeDishLayout a = new CollaborativeDishLayout(NewCollaborativeMenuActivity.this);
                 myDishes.add(a);
                 moreDishesLayout.addView(a);
                 ImageButton close = a.getClose();
                 close.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        moreDishesLayout.removeView(a);
-                        myDishes.remove(a);
+                        if (myDishes.size() > 1) {
+                            moreDishesLayout.removeView(a);
+                            myDishes.remove(a);
+                        }
                     }
                 });
             }
@@ -158,9 +156,6 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
                 }
             }
         });
-
-
-
     }
 
     private void isGlutenFree() {
@@ -191,7 +186,13 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         cStart.set(Calendar.DAY_OF_MONTH, day);
         start = cStart.getTime();
 
-        mDateDisplay.setText(this.day + "/" + this.month + "/" + this.year + "\n"
+        String dayS = String.valueOf(this.day);
+        String monthS = String.valueOf(this.month);
+        String yearS = String.valueOf(this.year);
+        if (this.day < 10) dayS = "0" + dayS;
+        if (this.month < 10) monthS = "0" + monthS;
+
+        mDateDisplay.setText("   " + dayS + "/" + monthS + "/" + yearS + "\n"
                 + iniH + ":" + iniMin + "h - " + finH + ":" + finMin + "h");
 
         Calendar cFinish = Calendar.getInstance();
@@ -300,14 +301,12 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
             List<Dish> offeredDish = new ArrayList<>();
             List<Dish> suggestedDish = new ArrayList<>();
 
-            int n = 1;
             for (CollaborativeDishLayout dishLayout : myDishes) {
-                if (!dishLayout.getDishName().equals("Plato " + n)) {
+                if (!dishLayout.getDishName().equals("")) {
                     Dish dish = new Dish(dishLayout.getDishName());
                     if (!dishLayout.isSuggest()) offeredDish.add(dish);
                     else suggestedDish.add(dish);
                 }
-                n++;
             }
 
 
@@ -318,7 +317,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
                                                                         start,
                                                                         finish);
             collaborativeMenuService.save(collaborativeMenu, offeredDish, suggestedDish);
-            Toast.makeText(this, "Añadido correctamente",
+            Toast.makeText(this, "Menu colaborativo creado correctamente!",
                     Toast.LENGTH_LONG).show();
             finish();
         }
