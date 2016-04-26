@@ -59,7 +59,8 @@
                     android:hint="MENÚ"
                     android:textSize="40dp"
                     android:layout_gravity="center"
-                    android:textColor="#bfbdbd"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/gray"
                     android:gravity="center" />
                 <Space
                     android:layout_width="match_parent"
@@ -74,7 +75,8 @@
                         android:hint="Descripción"
                         android:maxLength="140"
                         android:gravity="top"
-                        android:textColor="@color/colorEdit"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/gray"
                         android:layout_gravity="center" />
                 </ScrollView>
                 <TextView
@@ -208,11 +210,14 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Dirección"/>
+                                android:text="Dirección"
+                                android:layout_marginRight="6dp"/>
                             <EditText
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:hint="Tu dirección"
+                                android:textColorHint="@color/gray"
+                                android:textColor="@color/black"
                                 android:id="@+id/adress" />
 
                         </LinearLayout>
@@ -228,12 +233,15 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginRight="20dp"
                                 android:text="Ciudad"/>
 
                             <EditText
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:hint="Tu ciudad"
+                                android:textColorHint="@color/gray"
+                                android:textColor="@color/black"
                                 android:id="@+id/city" />
                         </LinearLayout>
 

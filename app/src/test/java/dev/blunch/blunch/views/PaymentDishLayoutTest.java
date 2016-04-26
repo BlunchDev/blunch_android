@@ -28,7 +28,7 @@ public class PaymentDishLayoutTest {
 
     @Before
     public void setUp() {
-        layout = new PaymentDishLayout(RuntimeEnvironment.application, 1);
+        layout = new PaymentDishLayout(RuntimeEnvironment.application);
     }
 
     @Test

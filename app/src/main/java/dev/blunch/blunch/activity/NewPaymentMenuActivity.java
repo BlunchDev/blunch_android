@@ -26,6 +26,7 @@ import dev.blunch.blunch.domain.PaymentMenu;
 import dev.blunch.blunch.repositories.DishRepository;
 import dev.blunch.blunch.repositories.PaymentMenuRepository;
 import dev.blunch.blunch.services.PaymentMenuService;
+import dev.blunch.blunch.services.ServiceFactory;
 import dev.blunch.blunch.utils.Repository;
 import dev.blunch.blunch.view.PaymentDishLayout;
 
@@ -35,13 +36,12 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
 
     private int day,month,year;
 
-    private int     iHour,
-            iMinute,
-            fHour,
-            fMinute,
-            numDish;
+    private int iHour,
+                iMinute,
+                fHour,
+                fMinute;
     private Date    start,
-            finish;
+                    finish;
     private List<ImageButton> idClose = new ArrayList<>();
     private EditText menuName;
 
@@ -56,7 +56,7 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        paymentMenuService = new PaymentMenuService(new PaymentMenuRepository(getApplicationContext()), new DishRepository(getApplicationContext()));
+        paymentMenuService = ServiceFactory.getPaymentMenuService(getApplicationContext());
         paymentMenuService.setOnChangedListener(new Repository.OnChangedListener() {
             @Override
             public void onChanged(EventType type) {
@@ -65,11 +65,6 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
     }
 
     private void initialize() {
@@ -81,7 +76,6 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
         iMinute = now.get(Calendar.MINUTE);
         fHour = now.get(Calendar.HOUR_OF_DAY);
         fMinute = now.get(Calendar.MINUTE);
-        numDish = 0;
         updateTime(0, 0, 0, 0, year, month, day);
 
         menuName = (EditText) findViewById(R.id.nomMenu);
@@ -93,7 +87,6 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
                     menuName.setTextColor(getResources().getColor(R.color.black));
                 }
                 else if(menuName.getText().toString().equals("")){
-                    menuName.setText("MENÚ");
                     menuName.setTextColor(getResources().getColor(R.color.colorEdit));
                 }
             }
@@ -101,30 +94,33 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
 
         final ImageButton moreDishes = (ImageButton) findViewById(R.id.moreDishes);
         final LinearLayout moreDishesLayout = (LinearLayout) findViewById(R.id.dishesLayout);
-        final PaymentDishLayout paymentDishLayout = new PaymentDishLayout(getApplicationContext(), numDish);
+        final PaymentDishLayout paymentDishLayout = new PaymentDishLayout(getApplicationContext());
         myDishes.add(paymentDishLayout);
         moreDishesLayout.addView(paymentDishLayout);
-        ++numDish;
         paymentDishLayout.getClose().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                moreDishesLayout.removeView(paymentDishLayout);
-                myDishes.remove(paymentDishLayout);
+                if (myDishes.size() > 1) {
+                    moreDishesLayout.removeView(paymentDishLayout);
+                    myDishes.remove(paymentDishLayout);
+                }
             }
         });
 
         moreDishes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final PaymentDishLayout a = new PaymentDishLayout(NewPaymentMenuActivity.this, ++numDish);
+                final PaymentDishLayout a = new PaymentDishLayout(NewPaymentMenuActivity.this);
                 myDishes.add(a);
                 moreDishesLayout.addView(a);
                 ImageButton close = a.getClose();
                 close.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        moreDishesLayout.removeView(a);
-                        myDishes.remove(a);
+                        if (myDishes.size() > 1) {
+                            moreDishesLayout.removeView(a);
+                            myDishes.remove(a);
+                        }
                     }
                 });
             }
@@ -205,7 +201,13 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
         cStart.set(Calendar.DAY_OF_MONTH, day);
         start = cStart.getTime();
 
-        mDateDisplay.setText(this.day + "/" + this.month + "/" + this.year + "\n"
+        String dayS = String.valueOf(this.day);
+        String monthS = String.valueOf(this.month);
+        String yearS = String.valueOf(this.year);
+        if (this.day < 10) dayS = "0" + dayS;
+        if (this.month < 10) monthS = "0" + monthS;
+
+        mDateDisplay.setText("   " + dayS + "/" + monthS + "/" + yearS + "\n"
                 + iniH + ":" + iniMin + "h - " + finH + ":" + finMin + "h");
 
         Calendar cFinish = Calendar.getInstance();
