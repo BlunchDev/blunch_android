@@ -74,7 +74,37 @@
                 android:orientation="horizontal"
                 android:layout_gravity="center_horizontal">
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Data inicio: "
+                    android:textIsSelectable="false"
+                    android:textSize="22dp"
+                    android:textStyle="bold" />
+                <Space
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/dateStart"
+                    android:textSize="22dp" />
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Data fim: "
+                    android:textIsSelectable="false"
+                    android:textSize="22dp"
+                    android:textStyle="bold" />
+                <Space
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/dateEnd"
+                    android:textSize="22dp" />
 
                 <TextView
                     android:layout_width="match_parent"
