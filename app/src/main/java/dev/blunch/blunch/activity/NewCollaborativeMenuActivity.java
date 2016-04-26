@@ -173,7 +173,6 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
 
     private void updateTime(int iHour, int iMinut, int fHour, int fMinut, int year, int month, int day) {
         TextView mDateDisplay = (TextView) findViewById(R.id.timeText);
-        final TextView date = (TextView) findViewById(R.id.date);
         String iniH, iniMin, finH, finMin;
         if(iHour < 10) iniH = "0"+iHour;
         else iniH = iHour+"";
@@ -184,7 +183,6 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         if(fMinut < 10) finMin = "0"+fMinut;
         else finMin = fMinut+"";
 
-        mDateDisplay.setText(iniH + ":" + iniMin + "h - " + finH + ":" + finMin + "h");
         Calendar cStart = Calendar.getInstance();
         cStart.set(Calendar.HOUR_OF_DAY,iHour);
         cStart.set(Calendar.MINUTE, iMinut);
@@ -193,7 +191,8 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         cStart.set(Calendar.DAY_OF_MONTH, day);
         start = cStart.getTime();
 
-        date.setText(this.day + "/" + this.month + "/" + this.year);
+        mDateDisplay.setText(this.day + "/" + this.month + "/" + this.year + "\n"
+                + iniH + ":" + iniMin + "h - " + finH + ":" + finMin + "h");
 
         Calendar cFinish = Calendar.getInstance();
         cFinish.set(Calendar.HOUR_OF_DAY,fHour);
