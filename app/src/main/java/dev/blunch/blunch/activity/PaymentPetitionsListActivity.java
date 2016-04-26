@@ -65,7 +65,7 @@ public class PaymentPetitionsListActivity extends AppCompatActivity {
                 PaymentMenu menu = service.getAll().get(0);
                 if (menu != null && idMenu==null) {
                     assert toolbar != null;
-                    toolbar.setTitle("petitions for "+menu.getName());
+                    toolbar.setTitle("Petitions for "+menu.getName());
                     idMenu = menu.getId();
                 }
             }
