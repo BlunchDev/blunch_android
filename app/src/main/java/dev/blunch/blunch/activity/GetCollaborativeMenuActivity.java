@@ -61,7 +61,7 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
                 }
             }
         });
-
+    }
 
     @SuppressWarnings("all")
     private void initialize() {
