@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/proposal_list"
+    android:name="dev.blunch.blunch.activity.ProposalListFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ECEFF1"
+    app:layoutManager="LinearLayoutManager"
+    tools:context="dev.blunch.blunch.activity.ProposalListActivity"
+    tools:listitem="@layout/proposal_list_content"/>

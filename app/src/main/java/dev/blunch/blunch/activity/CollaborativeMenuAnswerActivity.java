@@ -50,13 +50,13 @@ public class CollaborativeMenuAnswerActivity extends AppCompatActivity {
                 new DishRepository(getApplicationContext()),
                 new CollaborativeMenuAnswerRepository(getApplicationContext()));
 
+        menuID = getIntent().getStringExtra("menuId");
+
         collaborativeMenuService.setOnChangedListener(new Repository.OnChangedListener() {
             @Override
             public void onChanged(EventType type) {
                 if (type.equals(EventType.Full)) {
-                    List<CollaborativeMenu> list = collaborativeMenuService.getAll();
-                    CollaborativeMenu collaborativeMenu = list.get(0);
-                    menuID = collaborativeMenu.getId();
+                    CollaborativeMenu collaborativeMenu = collaborativeMenuService.get(menuID);
                     hostSuggestions = collaborativeMenuService.getSuggestedDishes(collaborativeMenu.getId());
                     makeProposalCreation();
                     fillHostSuggestions();
@@ -83,6 +83,8 @@ public class CollaborativeMenuAnswerActivity extends AppCompatActivity {
 
                         Snackbar.make(view, "Created answer menu", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
+
+                        finish();
 
                     } catch (Exception e) {
                         e.printStackTrace();

@@ -12,8 +12,31 @@
     tools:context=".activity.ListMenusActivity"
     tools:showIn="@layout/activity_list_menus">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentTop="true"
+        android:id="@+id/filter">
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:id="@+id/filter_tag"
+            android:text="Filtra por:"
+            android:gravity="center_vertical"/>
+
+        <Spinner
+            android:id="@+id/menu_spinner"
+            android:layout_toRightOf="@+id/filter_tag"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="right"/>
+
+    </RelativeLayout>
+
     <ListView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/menu_list"
+        android:layout_below="@+id/filter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

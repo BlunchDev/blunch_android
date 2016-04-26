@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import dev.blunch.blunch.BuildConfig;
 import dev.blunch.blunch.domain.CollaborativeMenu;
@@ -19,6 +20,9 @@ import dev.blunch.blunch.utils.MockRepository;
 import dev.blunch.blunch.utils.Repository;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by casassg on 07/04/16.
@@ -39,6 +43,7 @@ public class CollaborativeMenuServiceTest {
     public void setUp() {
         repository = new MockRepository<>();
         service = new CollaborativeMenuService(repository);
+        service = new CollaborativeMenuService(repository, new MockRepository<Dish>());
         service = new CollaborativeMenuService(repository, new MockRepository<Dish>(),
                 new MockRepository<CollaborativeMenuAnswer>());
         newMenu = new CollaborativeMenu(
@@ -57,6 +62,7 @@ public class CollaborativeMenuServiceTest {
         );
         service.save(oldMenu, offeredDishes, dishes);
         lastChangedType = null;
+        service.setCollaborativeMenuAnswerListener(null);
         service.setOnChangedListener(new Repository.OnChangedListener() {
             @Override
             public void onChanged(EventType type) {
@@ -85,7 +91,8 @@ public class CollaborativeMenuServiceTest {
     public void resizes(){
         assertEquals(1,service.getAmount());
         repository.insert(newMenu);
-        assertEquals(2,service.getAmount());
+        assertEquals(2, service.getAmount());
+        assertEquals(2, service.getAll().size());
     }
 
     @Test
@@ -187,6 +194,73 @@ public class CollaborativeMenuServiceTest {
         assertEquals(service.getOfferedDishes(repository.all().get(0).getId()).get(0).getName(), "Langosta");
         assertEquals(service.getSuggestedDishes(repository.all().get(0).getId()).size(), 1);
         assertEquals(service.getSuggestedDishes(repository.all().get(0).getId()).get(0).getName(), "Tacos");
+        String tacosID = service.getSuggestedDishes(repository.all().get(0).getId()).get(0).getId();
+        assertEquals(service.getDish(tacosID).getName(), "Tacos");
     }
+
+
+    @Test
+    public void getActiveProposals(){
+        List<Dish> disheshost = new ArrayList<>();
+        CollaborativeMenuAnswer answer = new CollaborativeMenuAnswer("Guest",oldMenu.getId(),new Date(10),disheshost);
+        List<Dish> dishes = new ArrayList<>();
+        dishes.add(new Dish("Pollo"));
+        try {
+            service.reply(answer, dishes);
+        }catch(Exception e){
+            //mmm...hola!
+        }
+        List<CollaborativeMenuAnswer> answers = service.getProposal(oldMenu.getId());
+        assertNotNull(answers);
+        assertEquals(answers.size(), 1);
+        assertEquals(answer.getId(), answers.get(0).getId());
+        assertEquals(answer.getMenuId(),answers.get(0).getMenuId());
+        assertEquals(answer.getGuest(),answers.get(0).getGuest());
+        assertEquals(answer.getDate(),answers.get(0).getDate());
+    }
+
+    @Test
+    public void deleteProposalOnDecline(){
+        List<Dish> disheshost = new ArrayList<>();
+        CollaborativeMenuAnswer answer = new CollaborativeMenuAnswer("Guest",oldMenu.getId(),new Date(10),disheshost);
+        List<Dish> dishes = new ArrayList<>();
+        dishes.add(new Dish("Pollo"));
+        try {
+            service.reply(answer, dishes);
+        }catch(Exception e){
+            //mmm...hola!
+        }
+        service.declineProposal(answer.getId());
+        List<CollaborativeMenuAnswer> answers = service.getProposal(oldMenu.getId());
+        assertEquals(answers.size(),0);
+    }
+
+    @Test
+    public void modifyCollaborativeMenuOnAccept(){
+        List<Dish> disheshost = new ArrayList<>();
+        CollaborativeMenuAnswer answer = new CollaborativeMenuAnswer("Guest",oldMenu.getId(),new Date(10),disheshost);
+        List<Dish> dishes = new ArrayList<>();
+        dishes.add(new Dish("POLLO"));
+        for (Map.Entry<String, Object> entry : oldMenu.getSuggestedDishes().entrySet()) {
+            dishes.add(new Dish(entry.getKey()));
+        }
+        try {
+            service.reply(answer, dishes);
+        }catch(Exception e){
+            //mmm...hola!
+        }
+        service.acceptProposal(answer.getId());
+        List<CollaborativeMenuAnswer> answers = service.getProposal(oldMenu.getId());
+        assertEquals(answers.size(),0);
+        CollaborativeMenu menuHost = service.get(oldMenu.getId());
+        for (Dish d : dishes){
+            assertTrue(menuHost.containsOfferedDish(d.getName()));
+            assertFalse(menuHost.containsSuggestedDish(d.getName()));
+        }
+    }
+
+
+//    @Test
+//    public void onSave
 
 }

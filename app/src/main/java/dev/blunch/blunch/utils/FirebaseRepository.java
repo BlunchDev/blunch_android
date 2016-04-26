@@ -158,7 +158,7 @@ public abstract class FirebaseRepository<T extends Entity> extends Repository<T>
     }
 
     @Override
-    public T convert(DataSnapshot data) {
+    protected T convert(DataSnapshot data) {
         return null;
     }
 

@@ -21,21 +21,23 @@ public class CollaborativeMenuAnswerRepository extends FirebaseRepository<Collab
     }
 
     @Override
-    public CollaborativeMenuAnswer convert(DataSnapshot data) {
+    protected CollaborativeMenuAnswer convert(DataSnapshot data) {
         CollaborativeMenuAnswer collaborativeMenuAnswer = new CollaborativeMenuAnswer();
         collaborativeMenuAnswer.setId(data.getKey());
 
         for (DataSnapshot d : data.getChildren()) {
-            if (d.getKey().equals("guest")) {
+            if ("guest".equals(d.getKey())) {
                 collaborativeMenuAnswer.setGuest(d.getValue(String.class));
-            } else if (d.getKey().equals("date")) {
+            } else if ("date".equals(d.getKey())) {
                 collaborativeMenuAnswer.setDate(d.getValue(Date.class));
-            } else if (d.getKey().equals("offeredDishes")) {
+            } else if ("offeredDishes".equals(d.getKey())) {
                 List<String> dishes = new ArrayList<>();
                 for (DataSnapshot dish : d.getChildren()) {
                     dishes.add(dish.getKey());
                 }
                 collaborativeMenuAnswer.setOfferedDishes(dishes);
+            }else if ("menuId".equals(d.getKey())) {
+                collaborativeMenuAnswer.setMenuId(d.getValue(String.class));
             }
         }
         return collaborativeMenuAnswer;

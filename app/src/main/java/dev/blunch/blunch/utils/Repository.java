@@ -78,6 +78,6 @@ public abstract class Repository<T extends Entity> implements ChildEventListener
     }
 
 
-    public abstract T convert(DataSnapshot data);
+    protected abstract T convert(DataSnapshot data);
 
 }

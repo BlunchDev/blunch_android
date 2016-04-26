@@ -1,11 +1,13 @@
 package dev.blunch.blunch.activity;
 
+import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -29,6 +31,10 @@ import dev.blunch.blunch.view.CollaborativeDishLayout;
 
 @SuppressWarnings("all")
 public class NewCollaborativeMenuActivity extends AppCompatActivity {
+
+    private final static String SERVICE = "CollaborativeMenuService";
+
+    private int day,month,year;
 
     private int     iHour,
                     iMinute,
@@ -65,19 +71,18 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
     }
 
     private void initialize() {
-        iHour = iMinute = fHour = fMinute = 0;
+        Calendar now = Calendar.getInstance();
+        year = now.get(Calendar.YEAR);
+        month = now.get(Calendar.MONTH);
+        day = now.get(Calendar.DAY_OF_MONTH);
+        iHour = now.get(Calendar.HOUR_OF_DAY);
+        iMinute = now.get(Calendar.MINUTE);
+        fHour = now.get(Calendar.HOUR_OF_DAY);
+        fMinute = now.get(Calendar.MINUTE);
         numDish = 0;
-        updateTime(0, 0, 0, 0);
+        updateTime(0, 0, 0, 0, year, month, day);
 
         final EditText menuName = (EditText) findViewById(R.id.nomMenu);
-       /* menuName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                menuName.setHint("MENÚ");
-                Log.d("teste", "d");
-            }
-        });*/
-
         final ImageButton moreDishes = (ImageButton) findViewById(R.id.moreDishes);
         final LinearLayout moreDishesLayout = (LinearLayout) findViewById(R.id.dishesLayout);
         final CollaborativeDishLayout menu = new CollaborativeDishLayout(getApplicationContext(), numDish);
@@ -132,10 +137,9 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 isVegetarian();
-                if(vegetarian.getColorFilter().equals(R.color.green)){
+                if (vegetarian.getColorFilter().equals(R.color.green)) {
                     vegetarian.setColorFilter(R.color.colorAccent);
-                }
-                else{
+                } else {
                     vegetarian.setColorFilter(R.color.green);
                 }
             }
@@ -154,6 +158,9 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
                 }
             }
         });
+
+
+
     }
 
     private void isGlutenFree() {
@@ -164,7 +171,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         // TODO El menu es vegetarian
     }
 
-    private void updateTime(int iHour, int iMinut, int fHour, int fMinut) {
+    private void updateTime(int iHour, int iMinut, int fHour, int fMinut, int year, int month, int day) {
         TextView mDateDisplay = (TextView) findViewById(R.id.timeText);
         String iniH, iniMin, finH, finMin;
         if(iHour < 10) iniH = "0"+iHour;
@@ -176,24 +183,49 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         if(fMinut < 10) finMin = "0"+fMinut;
         else finMin = fMinut+"";
 
-        mDateDisplay.setText(iniH + ":" + iniMin + "h - " + finH + ":" + finMin+"h");
         Calendar cStart = Calendar.getInstance();
         cStart.set(Calendar.HOUR_OF_DAY,iHour);
         cStart.set(Calendar.MINUTE, iMinut);
+        cStart.set(Calendar.MONTH, month);
+        cStart.set(Calendar.YEAR, year);
+        cStart.set(Calendar.DAY_OF_MONTH, day);
         start = cStart.getTime();
+
+        mDateDisplay.setText(this.day + "/" + this.month + "/" + this.year + "\n"
+                + iniH + ":" + iniMin + "h - " + finH + ":" + finMin + "h");
 
         Calendar cFinish = Calendar.getInstance();
         cFinish.set(Calendar.HOUR_OF_DAY,fHour);
         cFinish.set(Calendar.MINUTE, fMinut);
+        if (fHour < iHour) {
+            cFinish.set(Calendar.MONTH, month);
+            cFinish.set(Calendar.YEAR, year);
+            cFinish.set(Calendar.DAY_OF_MONTH, day);
+            cFinish.add(Calendar.DAY_OF_MONTH, 1);
+        }
+        else {
+            cFinish.set(Calendar.MONTH, month);
+            cFinish.set(Calendar.YEAR, year);
+            cFinish.set(Calendar.DAY_OF_MONTH, day);
+        }
         finish = cFinish.getTime();
     }
 
     private TimePickerDialog.OnTimeSetListener initialTimeSetListener =
             new TimePickerDialog.OnTimeSetListener() {
-
                 @Override
                 public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                     iHour = hourOfDay; iMinute = minute;
+                }
+            };
+
+    private DatePickerDialog.OnDateSetListener dateSetListener =
+            new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker view, int yearOf, int monthOfYear, int dayOfMonth) {
+                    year = yearOf;
+                    month = monthOfYear;
+                    day = dayOfMonth;
                 }
             };
 
@@ -203,14 +235,20 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
                 @Override
                 public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                     fHour = hourOfDay; fMinute = minute;
-                    updateTime(iHour, iMinute, fHour, fMinute);
+                    updateTime(iHour, iMinute, fHour, fMinute, year, month, day);
+
                 }
             };
 
     private void showDialogTime() {
         showDialogFinalTime().show();
         showDialogInitialTime().show();
+        showDialogDate().show();
+    }
 
+    private DatePickerDialog showDialogDate() {
+        DatePickerDialog a = new DatePickerDialog(this, dateSetListener, year, month, day);
+        return a;
     }
 
     private TimePickerDialog showDialogInitialTime() {
@@ -226,7 +264,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
     private TimePickerDialog showDialogFinalTime() {
         TimePickerDialog a = new TimePickerDialog(this, finalTimeSetListener, fHour, fMinute, false);
         TextView title = new TextView(this);
-        title.setText("Hora Fin");
+        title.setText("Hora Final");
         title.setTextSize(20);
         title.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
         a.setCustomTitle(title);
@@ -282,6 +320,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
             collaborativeMenuService.save(collaborativeMenu, offeredDish, suggestedDish);
             Toast.makeText(this, "Añadido correctamente",
                     Toast.LENGTH_LONG).show();
+            finish();
         }
     }
 

@@ -7,6 +7,7 @@ import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import dev.blunch.blunch.BuildConfig;
 import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.domain.PaymentMenu;
+import dev.blunch.blunch.domain.PaymentMenuAnswer;
 import dev.blunch.blunch.utils.MockRepository;
 import dev.blunch.blunch.utils.Repository;
 
@@ -28,17 +30,22 @@ import static org.junit.Assert.assertEquals;
 @Config(constants = BuildConfig.class)
 public class PaymentMenuServiceTest {
 
-    private PaymentMenuService service;
+    private PaymentMenuService service, service2, service3;
     private MockRepository<PaymentMenu> repository;
     private PaymentMenu newMenu;
     private PaymentMenu oldMenu;
     private Repository.OnChangedListener.EventType lastChangedType;
+    private Dish pernil;
+    private Dish dorada;
+    private MockRepository<PaymentMenuAnswer> answerRepository;
 
     @Before
     public void setUp() {
         repository = new MockRepository<>();
-        service = new PaymentMenuService(repository);
-        service = new PaymentMenuService(repository, new MockRepository<Dish>());
+        answerRepository = new MockRepository<>();
+        service = new PaymentMenuService(repository, new MockRepository<Dish>(), answerRepository);
+        service2 = new PaymentMenuService(repository);
+        service3 = new PaymentMenuService(repository,new MockRepository<Dish>());
         newMenu = new PaymentMenu(
                 "Menu de micro de la FIB",
                 "Encarna", "És un menu de micro de la FIB",
@@ -59,6 +66,8 @@ public class PaymentMenuServiceTest {
                 lastChangedType = type;
             }
         });
+        pernil = new Dish("Pernil", 15.0);
+        dorada = new Dish("Dorada", 10.0);
     }
 
     public List<CollaborativeMenu> generateDummyData(int seed, int size) {
@@ -70,9 +79,12 @@ public class PaymentMenuServiceTest {
         return menus;
     }
 
+
     @Test
     public void onSave() {
         service.save(newMenu);
+        service2.save(newMenu);
+
 
         assertEquals(2, repository.all().size());
     }
@@ -111,7 +123,7 @@ public class PaymentMenuServiceTest {
         String oldID = oldMenu.getId();
         service.save(oldMenu);
         assertEquals(oldID, oldMenu.getId());
-        assertEquals(oldID,service.get(oldMenu.getId()).getId());
+        assertEquals(oldID, service.get(oldMenu.getId()).getId());
         assertEquals(newAuthor,service.get(oldMenu.getId()).getAuthor());
 
     }
@@ -128,7 +140,7 @@ public class PaymentMenuServiceTest {
     @Test
     public void onMoveExternal() {
         assertEquals(null, lastChangedType);
-        assertEquals(1,service.getAmount());
+        assertEquals(1, service.getAmount());
         repository.simulateExternalMove(oldMenu);
         assertEquals(1, service.getAmount());
         assertEquals(Repository.OnChangedListener.EventType.Moved,lastChangedType);
@@ -167,8 +179,8 @@ public class PaymentMenuServiceTest {
     public void getPriceCorrect() {
         assertEquals(service.getTotalPrice(repository.all().get(0).getId()), (Double) 2.0);
         List<Dish> dishes = new ArrayList<>();
-        dishes.add(new Dish("Pernil", 15.0));
-        dishes.add(new Dish("Dorada", 10.0));
+        dishes.add(pernil);
+        dishes.add(dorada);
         service.save(oldMenu, dishes);
         assertEquals(service.getDishes(repository.all().get(0).getId()).size(), 3);
         assertEquals(service.getTotalPrice(repository.all().get(0).getId()), (Double) 27.0);
@@ -176,5 +188,34 @@ public class PaymentMenuServiceTest {
 
     }
 
+
+    @Test
+    public void answerMenu() {
+        List<Dish> dishList = new ArrayList<>();
+        dishList.add(pernil);
+        String guest = "Pepe";
+        Date date = Calendar.getInstance().getTime();
+        PaymentMenuAnswer answer = new PaymentMenuAnswer(oldMenu.getId(), guest, date, dishList);
+        assertEquals(0, answerRepository.all().size());
+        service.answer(oldMenu.getId(), answer);
+        assertEquals(1, answerRepository.all().size());
+
+    }
+
+
+    @Test
+    public void getAnswerMenu(){
+        List<Dish> dishList = new ArrayList<>();
+        dishList.add(pernil);
+        String guest = "Pepe";
+        Date date = Calendar.getInstance().getTime();
+        PaymentMenuAnswer answer = new PaymentMenuAnswer(oldMenu.getId(), guest, date, dishList);
+        answerRepository.insert(answer);
+        assertEquals(1, answerRepository.all().size());
+        List<PaymentMenuAnswer> lists = service.getAnswers(oldMenu.getId());
+        assertEquals(1, lists.size());
+        assertEquals(service.getAnswerDishes(answer.getId()).size(), 1);
+
+    }
 
 }
