@@ -35,7 +35,7 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
     private List<Dish> suggestedDishes;
     private List<Dish> offeredDishes;
     private final String COMA = ",";
-    private TextView userName, localization, city, hostDishes, suggestions, description, hour,dateStart,dateEnd;
+    private TextView userName, localization, city, hostDishes, suggestions, description, hour, dateStart, dateEnd;
     private Button join;
     private Toolbar toolbar;
 
@@ -79,8 +79,7 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "NO VAAAA", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Snackbar.make(view, "NO VAAAA", Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
         });
         userName.setText(obtainUserName());
@@ -90,8 +89,8 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
         suggestions.setText(obtainSuggestedDishSingleString());
         description.setText(obtainDescription());
         hour.setText(obtainHour());
-       // dateStart.setText(obtainDateStart());
-        //dateEnd.setText(obtainDateEnd());
+        dateStart.setText(obtainDateStart());
+        dateEnd.setText(obtainDateEnd());
         join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -165,13 +164,13 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
         return collaborativeMenu.getDescription();
     }
 
-  /*  private String obtainDateEnd() {
+    private String obtainDateEnd() {
         return collaborativeMenu.getDateEnd().toString();
     }
 
     private String obtainDateStart() {
         return collaborativeMenu.getDateStart().toString();
-    }`*/
+    }
 
     private String obtainHour() {
         String result = "";
@@ -199,7 +198,6 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
         result += hour + ":";
 
         if (minute < 10) result += "0";
-
         result += minute;
         return result;
     }
