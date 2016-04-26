@@ -175,7 +175,7 @@ public class CollaborativeMenuService extends Service<CollaborativeMenu> {
         if (loaded == loadNeed) {
             listener.onChanged(Repository.OnChangedListener.EventType.Full);
         } else {
-            listener.onChanged(Repository.OnChangedListener.EventType.Added);
+            listener.onChanged(type);
         }
     }
 }
