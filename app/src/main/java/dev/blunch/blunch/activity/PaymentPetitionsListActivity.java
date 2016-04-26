@@ -60,13 +60,16 @@ public class PaymentPetitionsListActivity extends AppCompatActivity {
         service.setOnChangedListener(new Repository.OnChangedListener() {
             @Override
             public void onChanged(EventType type) {
-                //TODO: posar aixo be quan es tinguin les ids dels menus via intent
-//                PaymentMenu menu = service.get(idMenu);
-                PaymentMenu menu = service.getAll().get(0);
-                if (menu != null && idMenu==null) {
-                    assert toolbar != null;
-                    toolbar.setTitle("Petitions for "+menu.getName());
-                    idMenu = menu.getId();
+                if (type.equals(EventType.Full)) {
+                    //TODO: posar aixo be quan es tinguin les ids dels menus via intent
+//                  PaymentMenu menu = service.get(idMenu);
+                    List<PaymentMenu> list= service.getAll();
+                    PaymentMenu menu = service.getAll().get(0);
+                    if (menu != null && idMenu == null) {
+                        assert toolbar != null;
+                        toolbar.setTitle("Petitions for " + menu.getName());
+                        idMenu = menu.getId();
+                    }
                 }
             }
         });
@@ -77,6 +80,7 @@ public class PaymentPetitionsListActivity extends AppCompatActivity {
                 View recyclerView = findViewById(R.id.petitions_list);
                 assert recyclerView != null;
                 setupRecyclerView((RecyclerView) recyclerView, idMenu);
+
             }
         });
 
