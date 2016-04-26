@@ -89,6 +89,8 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
         city = (TextView) findViewById(R.id.hostCity);
         description = (TextView) findViewById(R.id.description);
         hour = (TextView) findViewById(R.id.hour);
+        dateStart = (TextView) findViewById(R.id.dateStart);
+        dateEnd = (TextView) findViewById(R.id.dateEnd);
         join = (Button) findViewById(R.id.join);
         dishesLayout = (LinearLayout) findViewById(R.id.checkboxDishesLayout);
         dishesLayout.removeAllViews();
@@ -107,6 +109,8 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
         city.setText(obtainCity());
         description.setText(obtainDescription());
         hour.setText(obtainHour());
+        dateStart.setText(obtainDateStart());
+        dateEnd.setText(obtainDateEnd());
         join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -182,6 +186,14 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
 
     private String obtainDescription() {
         return paymentMenu.getDescription();
+    }
+
+    private String obtainDateEnd() {
+        return paymentMenu.getDateEnd().toString();
+    }
+
+    private String obtainDateStart() {
+        return paymentMenu.getDateStart().toString();
     }
 
     private String obtainHour() {
