@@ -11,11 +11,14 @@ import dev.blunch.blunch.utils.Service;
 
 /**
  * Payment Menu Service Class
+ *
  * @author albert on 7/04/16.
  */
 public class PaymentMenuService extends Service<PaymentMenu> {
 
     private final Repository<Dish> dishesRepository;
+    private int loaded = 0;
+    private int loadNeed = 1;
     private final Repository<PaymentMenuAnswer> answerRepository;
 
     public PaymentMenuService(Repository<PaymentMenu> repository) {
@@ -38,7 +41,7 @@ public class PaymentMenuService extends Service<PaymentMenu> {
 
 
     public PaymentMenu save(PaymentMenu item, List<Dish> dishes) {
-        if (dishesRepository == null){
+        if (dishesRepository == null) {
             throw new UnsupportedOperationException("Service needs to be created with the DishRepository to function");
         }
         for (Dish dish : dishes) {
@@ -91,4 +94,33 @@ public class PaymentMenuService extends Service<PaymentMenu> {
         return dishes;
     }
 
+    @Override
+    public void setOnChangedListener(final Repository.OnChangedListener listener) {
+        repository.setOnChangedListener(new Repository.OnChangedListener() {
+            @Override
+            public void onChanged(EventType type) {
+                triggerListener(listener, type);
+            }
+        });
+        if (dishesRepository != null) {
+            loadNeed += 1;
+            dishesRepository.setOnChangedListener(new Repository.OnChangedListener() {
+                @Override
+                public void onChanged(EventType type) {
+                    triggerListener(listener, type);
+                }
+            });
+        }
+    }
+
+    private void triggerListener(Repository.OnChangedListener listener, Repository.OnChangedListener.EventType type) {
+        if (type == Repository.OnChangedListener.EventType.Full) {
+            loaded += 1;
+        }
+        if (loaded == loadNeed) {
+            listener.onChanged(Repository.OnChangedListener.EventType.Full);
+        } else {
+            listener.onChanged(type);
+        }
+    }
 }
