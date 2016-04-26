@@ -5,6 +5,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -73,6 +74,7 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
             @Override
             public void onChanged(EventType type) {
                 if (type.equals(EventType.Full)) {
+                    Log.d("EVENT", "FULL");
                     paymentMenu = paymentMenuService.get(menuId);
                     dishes = paymentMenuService.getDishes(paymentMenu.getId());
                     initialize();
@@ -122,7 +124,6 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
 
         paymentDishesLayoutList = new ArrayList<>();
         answerDishes = new ArrayList<Dish>();
-
         for (final Dish d : dishes){
             SelectPaymentDishLayout n = new SelectPaymentDishLayout(getApplicationContext(), d.getName(), d.getPrice());
             dishesLayout.addView(n);
