@@ -1,5 +1,7 @@
 package dev.blunch.blunch.services;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -175,10 +177,12 @@ public class CollaborativeMenuService extends Service<CollaborativeMenu> {
         }
         if (loaded == loadNeed) {
             listener.onChanged(Repository.OnChangedListener.EventType.Full);
+            Log.e("ROOOOOO", type.toString());
         } else {
             if (type == Repository.OnChangedListener.EventType.Full){
                 type = Repository.OnChangedListener.EventType.Added;
             }
+            Log.e("ROOOOOO", type.toString());
             listener.onChanged(type);
         }
     }
