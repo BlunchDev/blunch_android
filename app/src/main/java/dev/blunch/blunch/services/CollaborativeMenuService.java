@@ -7,7 +7,6 @@ import java.util.Map;
 import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.domain.CollaborativeMenuAnswer;
 import dev.blunch.blunch.domain.Dish;
-import dev.blunch.blunch.repositories.CollaborativeMenuAnswerRepository;
 import dev.blunch.blunch.utils.Repository;
 import dev.blunch.blunch.utils.Service;
 
@@ -21,6 +20,8 @@ public class CollaborativeMenuService extends Service<CollaborativeMenu> {
     private static final String TAG = CollaborativeMenuService.class.getSimpleName();
     private final Repository<Dish> dishesRepository;
     private final Repository<CollaborativeMenuAnswer> collaborativeMenuAnswerRepository;
+    private int loaded = 0;
+    private int loadNeed = 1;
 
     public CollaborativeMenuService(Repository<CollaborativeMenu> repository, Repository<Dish> repoDishes,
                                     Repository<CollaborativeMenuAnswer> collaborativeMenuAnswerRepository) {
@@ -136,4 +137,45 @@ public class CollaborativeMenuService extends Service<CollaborativeMenu> {
         return dishesRepository.get(key);
     }
 
+    @Override
+    public void setOnChangedListener(final Repository.OnChangedListener listener) {
+
+        repository.setOnChangedListener(new Repository.OnChangedListener() {
+            @Override
+            public void onChanged(EventType type) {
+                triggerListener(listener, type);
+            }
+        });
+        if (dishesRepository != null) {
+            loadNeed+=1;
+            dishesRepository.setOnChangedListener(new Repository.OnChangedListener() {
+                @Override
+                public void onChanged(EventType type) {
+                    triggerListener(listener, type);
+                }
+            });
+        }
+
+        if (collaborativeMenuAnswerRepository != null) {
+            loadNeed+=1;
+            collaborativeMenuAnswerRepository.setOnChangedListener(new Repository.OnChangedListener() {
+                @Override
+                public void onChanged(EventType type) {
+                    triggerListener(listener, type);
+                }
+            });
+        }
+
+    }
+
+    private void triggerListener(Repository.OnChangedListener listener, Repository.OnChangedListener.EventType type) {
+        if (type == Repository.OnChangedListener.EventType.Full) {
+            loaded += 1;
+        }
+        if (loaded == loadNeed) {
+            listener.onChanged(Repository.OnChangedListener.EventType.Full);
+        } else {
+            listener.onChanged(Repository.OnChangedListener.EventType.Added);
+        }
+    }
 }

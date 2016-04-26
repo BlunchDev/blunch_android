@@ -4,9 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -164,7 +162,7 @@ public class ListMenusActivity extends AppCompatActivity {
                 switch (s) {
                     case "CollaborativeMenu":
                         Intent intent = new Intent(ListMenusActivity.this, GetCollaborativeMenuActivity.class);
-                        intent.putExtra("menuId", menu.getId());
+                        intent.putExtra(GetCollaborativeMenuActivity.MENU_ID_KEY, menu.getId());
                         startActivity(intent);
                         break;
                     case "PaymentMenu":
