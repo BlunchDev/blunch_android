@@ -1,11 +1,13 @@
 package dev.blunch.blunch.activity;
 
+import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -31,10 +33,15 @@ import dev.blunch.blunch.view.PaymentDishLayout;
 public class NewPaymentMenuActivity extends AppCompatActivity {
 
 
-    private int iHour, iMinut, fHour;
-    private int fMinut;
-    private int numDish;
-    private Date start, finish;
+    private int day,month,year;
+
+    private int     iHour,
+            iMinute,
+            fHour,
+            fMinute,
+            numDish;
+    private Date    start,
+            finish;
     private List<ImageButton> idClose = new ArrayList<>();
     private EditText menuName;
 
@@ -66,8 +73,16 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
     }
 
     private void initialize() {
-        iHour = iMinut = fHour = fMinut = 0;
-        numDish = 1;
+        Calendar now = Calendar.getInstance();
+        year = now.get(Calendar.YEAR);
+        month = now.get(Calendar.MONTH);
+        day = now.get(Calendar.DAY_OF_MONTH);
+        iHour = now.get(Calendar.HOUR_OF_DAY);
+        iMinute = now.get(Calendar.MINUTE);
+        fHour = now.get(Calendar.HOUR_OF_DAY);
+        fMinute = now.get(Calendar.MINUTE);
+        numDish = 0;
+        updateTime(0, 0, 0, 0, year, month, day);
 
         menuName = (EditText) findViewById(R.id.nomMenu);
         menuName.setOnClickListener(new View.OnClickListener() {
@@ -170,7 +185,7 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
         // TODO El menu es vegetaria
     }
 
-    private void updateTime(int iHour, int iMinut, int fHour, int fMinut) {
+    private void updateTime(int iHour, int iMinut, int fHour, int fMinut, int year, int month, int day) {
         TextView mDateDisplay = (TextView) findViewById(R.id.timeText);
         String iniH, iniMin, finH, finMin;
         if(iHour < 10) iniH = "0"+iHour;
@@ -182,24 +197,50 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
         if(fMinut < 10) finMin = "0"+fMinut;
         else finMin = fMinut+"";
 
-        mDateDisplay.setText(iniH + ":" + iniMin + "h - " + finH + ":" + finMin+"h");
         Calendar cStart = Calendar.getInstance();
         cStart.set(Calendar.HOUR_OF_DAY,iHour);
         cStart.set(Calendar.MINUTE, iMinut);
+        cStart.set(Calendar.MONTH, month);
+        cStart.set(Calendar.YEAR, year);
+        cStart.set(Calendar.DAY_OF_MONTH, day);
         start = cStart.getTime();
+
+        mDateDisplay.setText(this.day + "/" + this.month + "/" + this.year + "\n"
+                + iniH + ":" + iniMin + "h - " + finH + ":" + finMin + "h");
 
         Calendar cFinish = Calendar.getInstance();
         cFinish.set(Calendar.HOUR_OF_DAY,fHour);
         cFinish.set(Calendar.MINUTE, fMinut);
+        if (fHour < iHour) {
+            cFinish.set(Calendar.MONTH, month);
+            cFinish.set(Calendar.YEAR, year);
+            cFinish.set(Calendar.DAY_OF_MONTH, day);
+            cFinish.add(Calendar.DAY_OF_MONTH, 1);
+        }
+        else {
+            cFinish.set(Calendar.MONTH, month);
+            cFinish.set(Calendar.YEAR, year);
+            cFinish.set(Calendar.DAY_OF_MONTH, day);
+        }
         finish = cFinish.getTime();
     }
 
+
     private TimePickerDialog.OnTimeSetListener initialTimeSetListener =
             new TimePickerDialog.OnTimeSetListener() {
-
                 @Override
                 public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                    iHour = hourOfDay; iMinut = minute;
+                    iHour = hourOfDay; iMinute = minute;
+                }
+            };
+
+    private DatePickerDialog.OnDateSetListener dateSetListener =
+            new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker view, int yearOf, int monthOfYear, int dayOfMonth) {
+                    year = yearOf;
+                    month = monthOfYear;
+                    day = dayOfMonth;
                 }
             };
 
@@ -208,19 +249,25 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
 
                 @Override
                 public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                    fHour = hourOfDay; fMinut = minute;
-                    updateTime(iHour, iMinut, fHour, fMinut);
+                    fHour = hourOfDay; fMinute = minute;
+                    updateTime(iHour, iMinute, fHour, fMinute, year, month, day);
+
                 }
             };
 
     private void showDialogTime() {
         showDialogFinalTime().show();
         showDialogInitialTime().show();
+        showDialogDate().show();
+    }
 
+    private DatePickerDialog showDialogDate() {
+        DatePickerDialog a = new DatePickerDialog(this, dateSetListener, year, month, day);
+        return a;
     }
 
     private TimePickerDialog showDialogInitialTime() {
-        TimePickerDialog a = new TimePickerDialog(this, initialTimeSetListener, iHour, iMinut, false);
+        TimePickerDialog a = new TimePickerDialog(this, initialTimeSetListener, iHour, iMinute, false);
         TextView title = new TextView(this);
         title.setText("Hora Inicio");
         title.setTextSize(20);
@@ -230,7 +277,7 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
     }
 
     private TimePickerDialog showDialogFinalTime() {
-        TimePickerDialog a = new TimePickerDialog(this, finalTimeSetListener, fHour, fMinut, false);
+        TimePickerDialog a = new TimePickerDialog(this, finalTimeSetListener, fHour, fMinute, false);
         TextView title = new TextView(this);
         title.setText("Hora Fin");
         title.setTextSize(20);
