@@ -3,6 +3,7 @@ package dev.blunch.blunch.activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -26,6 +27,7 @@ import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.repositories.CollaborativeMenuRepository;
 import dev.blunch.blunch.repositories.DishRepository;
 import dev.blunch.blunch.services.CollaborativeMenuService;
+import dev.blunch.blunch.services.ServiceFactory;
 import dev.blunch.blunch.utils.Repository;
 import dev.blunch.blunch.view.CollaborativeDishLayout;
 
@@ -54,7 +56,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        collaborativeMenuService = new CollaborativeMenuService(new CollaborativeMenuRepository(getApplicationContext()), new DishRepository(getApplicationContext()));
+        collaborativeMenuService = ServiceFactory.getCollaborativeMenuService(getApplicationContext());
         collaborativeMenuService.setOnChangedListener(new Repository.OnChangedListener() {
             @Override
             public void onChanged(EventType type) {
@@ -63,11 +65,6 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
     }
 
     private void initialize() {
@@ -158,9 +155,6 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
                 }
             }
         });
-
-
-
     }
 
     private void isGlutenFree() {
@@ -191,7 +185,13 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         cStart.set(Calendar.DAY_OF_MONTH, day);
         start = cStart.getTime();
 
-        mDateDisplay.setText(this.day + "/" + this.month + "/" + this.year + "\n"
+        String dayS = String.valueOf(this.day);
+        String monthS = String.valueOf(this.month);
+        String yearS = String.valueOf(this.year);
+        if (this.day < 10) dayS = "0" + dayS;
+        if (this.month < 10) monthS = "0" + monthS;
+
+        mDateDisplay.setText("   " + dayS + "/" + monthS + "/" + yearS + "\n"
                 + iniH + ":" + iniMin + "h - " + finH + ":" + finMin + "h");
 
         Calendar cFinish = Calendar.getInstance();
@@ -318,7 +318,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
                                                                         start,
                                                                         finish);
             collaborativeMenuService.save(collaborativeMenu, offeredDish, suggestedDish);
-            Toast.makeText(this, "Añadido correctamente",
+            Toast.makeText(this, "Menu colaborativo creado correctamente!",
                     Toast.LENGTH_LONG).show();
             finish();
         }
