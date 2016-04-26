@@ -108,8 +108,7 @@ public class ListMenusActivity extends AppCompatActivity {
 
         switch (filter) {
             case "Todos":
-                menuList.addAll(menuService.getCollaborativeMenus());
-                menuList.addAll(menuService.getPaymentMenus());
+                menuList.addAll(menuService.getMenus());
                 break;
             case "Colaborativo":
                 menuList.addAll(menuService.getCollaborativeMenus());
@@ -118,8 +117,7 @@ public class ListMenusActivity extends AppCompatActivity {
                 menuList.addAll(menuService.getPaymentMenus());
                 break;
             default:
-                menuList.addAll(menuService.getCollaborativeMenus());
-                menuList.addAll(menuService.getPaymentMenus());
+                menuList.addAll(menuService.getMenus());
                 break;
         }
 

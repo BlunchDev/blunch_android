@@ -1,5 +1,6 @@
 package dev.blunch.blunch.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import dev.blunch.blunch.domain.CollaborativeMenu;
@@ -29,6 +30,13 @@ public class MenuService extends Service<CollaborativeMenu> {
 
     public List<PaymentMenu> getPaymentMenus() {
         return paymentMenuRepository.all();
+    }
+
+    public List<Menu> getMenus() {
+        List<Menu> menus = new ArrayList<>();
+        menus.addAll(repository.all());
+        menus.addAll(paymentMenuRepository.all());
+        return menus;
     }
 
     @Override
