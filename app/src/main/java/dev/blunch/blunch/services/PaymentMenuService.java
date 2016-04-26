@@ -1,5 +1,7 @@
 package dev.blunch.blunch.services;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,6 +91,12 @@ public class PaymentMenuService extends Service<PaymentMenu> {
             dishes.add(dishesRepository.get(key));
         }
         return dishes;
+    }
+
+    public void setPaymentMenuAnswerListener(Repository.OnChangedListener listener) {
+        if (answerRepository != null) {
+            answerRepository.setOnChangedListener(listener);
+        }
     }
 
 }

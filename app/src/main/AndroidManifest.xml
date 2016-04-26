@@ -63,7 +63,11 @@
         <activity
             android:name=".activity.PaymentPetitionsListActivity"
             android:label="@string/title_activity_payment_petitions_list"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
