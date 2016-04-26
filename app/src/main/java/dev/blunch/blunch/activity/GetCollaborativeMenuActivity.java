@@ -77,8 +77,9 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "NO VAAAA", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(GetCollaborativeMenuActivity.this, ProposalListActivity.class);
+                intent.putExtra(MENU_ID_KEY, menuId);
+                startActivity(intent);
             }
         });
         userName.setText(obtainUserName());
