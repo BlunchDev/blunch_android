@@ -199,7 +199,7 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
         minute = calendar.get(Calendar.MINUTE);
         if (hour < 10) result += "0";
         result += hour + ":";
-        if (minute < 10) result += "0 ";
+        if (minute < 10) result += "0";
         result += minute;
         return result;
     }
