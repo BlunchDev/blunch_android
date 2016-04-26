@@ -1,11 +1,13 @@
 package dev.blunch.blunch.activity;
 
+import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -32,10 +34,12 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
 
     private final static String SERVICE = "CollaborativeMenuService";
 
+    private int day,month,year;
+
     private int     iHour,
                     iMinute,
-                    fHour,
-                    fMinute,
+                    hourDuration,
+            minuteDuration,
                     numDish;
     private Date    start,
                     finish;
@@ -67,9 +71,11 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
     }
 
     private void initialize() {
-        iHour = iMinute = fHour = fMinute = 0;
+        day = month = year = 0;
+        iHour = iMinute = hourDuration = minuteDuration = 0;
         numDish = 0;
-        updateTime(0, 0, 0, 0);
+        Calendar now = Calendar.getInstance();
+        updateTime(0, 0, 0, 0, now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH));
 
         final EditText menuName = (EditText) findViewById(R.id.nomMenu);
        /* menuName.setOnClickListener(new View.OnClickListener() {
@@ -79,7 +85,6 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
                 Log.d("teste", "d");
             }
         });*/
-
         final ImageButton moreDishes = (ImageButton) findViewById(R.id.moreDishes);
         final LinearLayout moreDishesLayout = (LinearLayout) findViewById(R.id.dishesLayout);
         final CollaborativeDishLayout menu = new CollaborativeDishLayout(getApplicationContext(), numDish);
@@ -134,10 +139,9 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 isVegetarian();
-                if(vegetarian.getColorFilter().equals(R.color.green)){
+                if (vegetarian.getColorFilter().equals(R.color.green)) {
                     vegetarian.setColorFilter(R.color.colorAccent);
-                }
-                else{
+                } else {
                     vegetarian.setColorFilter(R.color.green);
                 }
             }
@@ -156,6 +160,9 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
                 }
             }
         });
+
+
+
     }
 
     private void isGlutenFree() {
@@ -166,8 +173,9 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         // TODO El menu es vegetarian
     }
 
-    private void updateTime(int iHour, int iMinut, int fHour, int fMinut) {
+    private void updateTime(int iHour, int iMinut, int fHour, int fMinut, int year, int month, int day) {
         TextView mDateDisplay = (TextView) findViewById(R.id.timeText);
+        final TextView date = (TextView) findViewById(R.id.date);
         String iniH, iniMin, finH, finMin;
         if(iHour < 10) iniH = "0"+iHour;
         else iniH = iHour+"";
@@ -178,11 +186,16 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         if(fMinut < 10) finMin = "0"+fMinut;
         else finMin = fMinut+"";
 
-        mDateDisplay.setText(iniH + ":" + iniMin + "h - " + finH + ":" + finMin+"h");
+        mDateDisplay.setText(iniH + ":" + iniMin + "h - " + finH + ":" + finMin + "h");
         Calendar cStart = Calendar.getInstance();
         cStart.set(Calendar.HOUR_OF_DAY,iHour);
         cStart.set(Calendar.MINUTE, iMinut);
+        cStart.set(Calendar.MONTH, month);
+        cStart.set(Calendar.YEAR, year);
+        cStart.set(Calendar.DAY_OF_MONTH, day);
         start = cStart.getTime();
+
+        date.setText(day+"/"+month+"/"+year);
 
         Calendar cFinish = Calendar.getInstance();
         cFinish.set(Calendar.HOUR_OF_DAY,fHour);
@@ -199,20 +212,38 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
                 }
             };
 
+    private DatePickerDialog.OnDateSetListener dateSetListener =
+            new DatePickerDialog.OnDateSetListener() {
+
+                @Override
+                public void onDateSet(DatePicker view, int yearOf, int monthOfYear, int dayOfMonth) {
+                    year = yearOf;
+                    month = monthOfYear;
+                    day = dayOfMonth;
+                }
+            };
+
     private TimePickerDialog.OnTimeSetListener finalTimeSetListener =
             new TimePickerDialog.OnTimeSetListener() {
 
                 @Override
                 public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                    fHour = hourOfDay; fMinute = minute;
-                    updateTime(iHour, iMinute, fHour, fMinute);
+                    hourDuration = hourOfDay; minuteDuration = minute;
+                    updateTime(iHour, iMinute, hourDuration, minuteDuration, year, month, day);
                 }
             };
 
     private void showDialogTime() {
-        showDialogFinalTime().show();
+        //showDialogFinalTime().show();
+        showDialogDate().show();
         showDialogInitialTime().show();
 
+    }
+
+    private DatePickerDialog showDialogDate() {
+        DatePickerDialog a = new DatePickerDialog(this, dateSetListener, year, month, day);
+
+        return a;
     }
 
     private TimePickerDialog showDialogInitialTime() {
@@ -226,7 +257,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
     }
 
     private TimePickerDialog showDialogFinalTime() {
-        TimePickerDialog a = new TimePickerDialog(this, finalTimeSetListener, fHour, fMinute, false);
+        TimePickerDialog a = new TimePickerDialog(this, finalTimeSetListener, hourDuration, minuteDuration, false);
         TextView title = new TextView(this);
         title.setText("Hora Fin");
         title.setTextSize(20);
