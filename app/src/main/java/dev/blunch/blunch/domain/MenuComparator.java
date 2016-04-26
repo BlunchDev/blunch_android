@@ -8,6 +8,6 @@ import java.util.Comparator;
 public class MenuComparator implements Comparator<Menu> {
     @Override
     public int compare(Menu lhs, Menu rhs) {
-        return lhs.getDateStart().compareTo(rhs.getDateStart());
+        return rhs.getDateStart().compareTo(lhs.getDateStart());
     }
 }

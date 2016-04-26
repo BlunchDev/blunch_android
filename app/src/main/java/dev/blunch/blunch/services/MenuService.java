@@ -72,12 +72,12 @@ public class MenuService extends Service<CollaborativeMenu> {
         List<Menu> menus = getMenus();
         List<Menu> result = new ArrayList<>();
         for (Menu menu : menus) {
-            Log.d("Date",menu.getDateEnd().toString());
             if (menu.getDateEnd().compareTo(Calendar.getInstance().getTime()) < 0) {
                 result.add(menu);
             }
         }
         Collections.sort(result, new MenuComparator());
+        for (Menu menu : result) Log.d("Date", menu.getDateStart().toString());
         return result;
     }
 
