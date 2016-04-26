@@ -23,4 +23,5 @@
         <item>Colaborativo</item>
         <item>De pago</item>
     </string-array>
+    <string name="title_activity_payment_petitions_list">PaymentPetitionsListActivity</string>
 </resources>
