@@ -28,7 +28,7 @@ public class CollaborativeDishLayoutTest {
 
     @Before
     public void setUp() {
-        layout = new CollaborativeDishLayout(RuntimeEnvironment.application, 1);
+        layout = new CollaborativeDishLayout(RuntimeEnvironment.application);
     }
 
     @Test

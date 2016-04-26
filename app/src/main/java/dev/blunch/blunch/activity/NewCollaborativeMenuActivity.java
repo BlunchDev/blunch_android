@@ -41,8 +41,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
     private int     iHour,
                     iMinute,
                     fHour,
-                    fMinute,
-                    numDish;
+                    fMinute;
     private Date    start,
                     finish;
     protected ArrayList<CollaborativeDishLayout> myDishes = new ArrayList<>();
@@ -76,36 +75,38 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         iMinute = now.get(Calendar.MINUTE);
         fHour = now.get(Calendar.HOUR_OF_DAY);
         fMinute = now.get(Calendar.MINUTE);
-        numDish = 0;
         updateTime(0, 0, 0, 0, year, month, day);
 
         final EditText menuName = (EditText) findViewById(R.id.nomMenu);
         final ImageButton moreDishes = (ImageButton) findViewById(R.id.moreDishes);
         final LinearLayout moreDishesLayout = (LinearLayout) findViewById(R.id.dishesLayout);
-        final CollaborativeDishLayout menu = new CollaborativeDishLayout(getApplicationContext(), numDish);
+        final CollaborativeDishLayout menu = new CollaborativeDishLayout(getApplicationContext());
         myDishes.add(menu);
         moreDishesLayout.addView(menu);
-        ++numDish;
         menu.getClose().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                moreDishesLayout.removeView(menu);
-                myDishes.remove(menu);
+                if (myDishes.size() > 1) {
+                    moreDishesLayout.removeView(menu);
+                    myDishes.remove(menu);
+                }
             }
         });
 
         moreDishes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final CollaborativeDishLayout a = new CollaborativeDishLayout(NewCollaborativeMenuActivity.this, ++numDish);
+                final CollaborativeDishLayout a = new CollaborativeDishLayout(NewCollaborativeMenuActivity.this);
                 myDishes.add(a);
                 moreDishesLayout.addView(a);
                 ImageButton close = a.getClose();
                 close.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        moreDishesLayout.removeView(a);
-                        myDishes.remove(a);
+                        if (myDishes.size() > 1) {
+                            moreDishesLayout.removeView(a);
+                            myDishes.remove(a);
+                        }
                     }
                 });
             }
@@ -300,14 +301,12 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
             List<Dish> offeredDish = new ArrayList<>();
             List<Dish> suggestedDish = new ArrayList<>();
 
-            int n = 1;
             for (CollaborativeDishLayout dishLayout : myDishes) {
-                if (!dishLayout.getDishName().equals("Plato " + n)) {
+                if (!dishLayout.getDishName().equals("")) {
                     Dish dish = new Dish(dishLayout.getDishName());
                     if (!dishLayout.isSuggest()) offeredDish.add(dish);
                     else suggestedDish.add(dish);
                 }
-                n++;
             }
 
 

@@ -332,13 +332,12 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
 
             List<Dish> dishes = new ArrayList<>();
 
-            int n = 1;
+
             for (PaymentDishLayout d : myDishes) {
-                if (!d.getDishName().equals("Plato " + n)) {
+                if (!d.getDishName().equals("")) {
                     Dish dish = new Dish(d.getDishName(), d.getDishPrice());
                     dishes.add(dish);
                 }
-                n++;
             }
 
             PaymentMenu paymentMenu = new PaymentMenu(  menuNameString,
@@ -348,7 +347,7 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
                                                         start,
                                                         finish);
             paymentMenuService.save(paymentMenu, dishes);
-            Toast.makeText(this, "Añadido correctamente",
+            Toast.makeText(this, "Menu de pago creado correctamente!",
                     Toast.LENGTH_LONG).show();
             finish();
         }
