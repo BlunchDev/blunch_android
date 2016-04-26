@@ -29,6 +29,7 @@ import dev.blunch.blunch.utils.Repository;
  */
 public class GetCollaborativeMenuActivity extends AppCompatActivity {
 
+    public static final String MENU_ID_KEY = "menuId";
     private CollaborativeMenuService collaborativeMenuService;
     private CollaborativeMenu collaborativeMenu;
     private List<Dish> suggestedDishes;
@@ -46,14 +47,14 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_get_collaborative_menu);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        menuId = getIntent().getStringExtra("menuId");
+        this.menuId = getIntent().getStringExtra(MENU_ID_KEY);
 
         collaborativeMenuService = new CollaborativeMenuService(new CollaborativeMenuRepository(getApplicationContext()), new DishRepository(getApplicationContext()));
         collaborativeMenuService.setOnChangedListener(new Repository.OnChangedListener() {
             @Override
             public void onChanged(EventType type) {
                 if (type.equals(EventType.Full)) {
-                    collaborativeMenu = collaborativeMenuService.get(menuId);
+                    collaborativeMenu = collaborativeMenuService.get(GetCollaborativeMenuActivity.this.menuId);
                     suggestedDishes = collaborativeMenuService.getSuggestedDishes(collaborativeMenu.getId());
                     offeredDishes = collaborativeMenuService.getOfferedDishes(collaborativeMenu.getId());
                     initialize();
@@ -95,6 +96,7 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        //
 
         toolbar.setTitle(obtainTitle());
         // TODO Set user image: toolbar.setLogo();
