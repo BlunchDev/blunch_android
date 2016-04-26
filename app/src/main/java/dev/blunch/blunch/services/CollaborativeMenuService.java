@@ -1,5 +1,7 @@
 package dev.blunch.blunch.services;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -62,6 +64,14 @@ public class CollaborativeMenuService extends Service<CollaborativeMenu> {
         return repository.insert(item);
     }
 
+
+    /**
+     *
+     * Instance of collaborativeMenuAnswer contains dishes offered by the guest that
+     * have been accepted by the host
+     * newOfferedDishes is a list with new dishes offered by the host that needs to be
+     * added in the repository
+     */
     public CollaborativeMenuAnswer reply(CollaborativeMenuAnswer collaborativeMenuAnswer,
                                          List<Dish> newOfferedDishes) throws Exception {
         List<CollaborativeMenu> collaborativeMenus = repository.all();
@@ -74,7 +84,7 @@ public class CollaborativeMenuService extends Service<CollaborativeMenu> {
             throw new Exception("No s'han afegit plats a l'oferta de participació");
         for (Dish dish : newOfferedDishes) {
             Dish d = dishesRepository.insert(dish);
-            collaborativeMenuAnswer.addOfferedDish(d.getName());
+            collaborativeMenuAnswer.addOfferedDish(d.getId());
         }
         return collaborativeMenuAnswerRepository.insert(collaborativeMenuAnswer);
     }

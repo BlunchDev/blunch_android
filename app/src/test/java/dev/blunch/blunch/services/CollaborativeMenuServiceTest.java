@@ -253,8 +253,8 @@ public class CollaborativeMenuServiceTest {
         assertEquals(answers.size(),0);
         CollaborativeMenu menuHost = service.get(oldMenu.getId());
         for (Dish d : dishes){
-            assertTrue(menuHost.containsOfferedDish(d.getName()));
-            assertFalse(menuHost.containsSuggestedDish(d.getName()));
+            assertTrue(menuHost.containsOfferedDish(d.getId()));
+            assertFalse(menuHost.containsSuggestedDish(d.getId()));
         }
     }
 

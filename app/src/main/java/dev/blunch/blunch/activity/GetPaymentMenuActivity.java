@@ -5,6 +5,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -32,6 +33,7 @@ import dev.blunch.blunch.view.SelectPaymentDishLayout;
 public class GetPaymentMenuActivity extends AppCompatActivity {
 
 
+    public static final String MENU_ID_KEY = "menuId";
     private PaymentMenuService paymentMenuService;
     private PaymentMenu paymentMenu;
     private PaymentMenuAnswer paymentMenuAnswer;
@@ -45,6 +47,8 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
     private TextView precio;
     private ArrayList<SelectPaymentDishLayout> paymentDishesLayoutList;
     private List<Dish> answerDishes;
+
+    private String menuId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,15 +65,17 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
             }
         });
 
+        menuId = getIntent().getStringExtra(MENU_ID_KEY);
+
         paymentMenuService = new PaymentMenuService(new PaymentMenuRepository(getApplicationContext()),
-                                                    new DishRepository(getApplicationContext()),
-                                                    new PaymentMenuAnswerRepository(getApplicationContext()));
+                new DishRepository(getApplicationContext()),
+                new PaymentMenuAnswerRepository(getApplicationContext()));
         paymentMenuService.setOnChangedListener(new Repository.OnChangedListener() {
             @Override
             public void onChanged(EventType type) {
                 if (type.equals(EventType.Full)) {
-                    List<PaymentMenu> list = paymentMenuService.getAll();
-                    paymentMenu = list.get(0);
+                    Log.d("EVENT", "FULL");
+                    paymentMenu = paymentMenuService.get(menuId);
                     dishes = paymentMenuService.getDishes(paymentMenu.getId());
                     initialize();
                 }
@@ -118,7 +124,6 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
 
         paymentDishesLayoutList = new ArrayList<>();
         answerDishes = new ArrayList<Dish>();
-
         for (final Dish d : dishes){
             SelectPaymentDishLayout n = new SelectPaymentDishLayout(getApplicationContext(), d.getName(), d.getPrice());
             dishesLayout.addView(n);
