@@ -38,8 +38,6 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
     private TextView userName, localization, city, hostDishes, suggestions, description, hour,dateStart,dateEnd;
     private Button join;
     private Toolbar toolbar;
-    private Date dateStartD;
-    private Date dateEndD;
 
     private String menuId;
 
@@ -92,8 +90,8 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
         suggestions.setText(obtainSuggestedDishSingleString());
         description.setText(obtainDescription());
         hour.setText(obtainHour());
-        dateStart.setText(obtainDateStart());
-        dateEnd.setText(obtainDateEnd());
+       // dateStart.setText(obtainDateStart());
+        //dateEnd.setText(obtainDateEnd());
         join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -167,13 +165,13 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
         return collaborativeMenu.getDescription();
     }
 
-    private String obtainDateEnd() {
+  /*  private String obtainDateEnd() {
         return collaborativeMenu.getDateEnd().toString();
     }
 
     private String obtainDateStart() {
         return collaborativeMenu.getDateStart().toString();
-    }
+    }`*/
 
     private String obtainHour() {
         String result = "";
