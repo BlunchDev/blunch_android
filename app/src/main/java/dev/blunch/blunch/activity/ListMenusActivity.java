@@ -162,7 +162,7 @@ public class ListMenusActivity extends AppCompatActivity {
                 switch (s) {
                     case "CollaborativeMenu":
                         Intent intent = new Intent(ListMenusActivity.this, GetCollaborativeMenuActivity.class);
-                        intent.putExtra("menuId", menu.getId());
+                        intent.putExtra(GetCollaborativeMenuActivity.MENU_ID_KEY, menu.getId());
                         startActivity(intent);
                         break;
                     case "PaymentMenu":
