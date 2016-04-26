@@ -26,6 +26,7 @@ import dev.blunch.blunch.repositories.DishRepository;
 import dev.blunch.blunch.repositories.PaymentMenuAnswerRepository;
 import dev.blunch.blunch.repositories.PaymentMenuRepository;
 import dev.blunch.blunch.services.PaymentMenuService;
+import dev.blunch.blunch.services.ServiceFactory;
 import dev.blunch.blunch.utils.Repository;
 import dev.blunch.blunch.view.SelectPaymentDishLayout;
 
@@ -56,27 +57,15 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_get_payment_menu);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         menuId = getIntent().getStringExtra(MENU_ID_KEY);
 
-        paymentMenuService = new PaymentMenuService(new PaymentMenuRepository(getApplicationContext()),
-                new DishRepository(getApplicationContext()),
-                new PaymentMenuAnswerRepository(getApplicationContext()));
+        paymentMenuService = ServiceFactory.getPaymentMenuService(getApplicationContext());
         paymentMenuService.setOnChangedListener(new Repository.OnChangedListener() {
             @Override
             public void onChanged(EventType type) {
                 if (type.equals(EventType.Full)) {
-                    Log.d("EVENT", "FULL");
                     paymentMenu = paymentMenuService.get(menuId);
-                    dishes = paymentMenuService.getDishes(paymentMenu.getId());
+                    dishes = paymentMenuService.getDishes(menuId);
                     initialize();
                 }
             }
