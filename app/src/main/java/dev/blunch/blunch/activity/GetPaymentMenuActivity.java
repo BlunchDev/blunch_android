@@ -5,7 +5,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -22,9 +21,6 @@ import dev.blunch.blunch.R;
 import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.domain.PaymentMenu;
 import dev.blunch.blunch.domain.PaymentMenuAnswer;
-import dev.blunch.blunch.repositories.DishRepository;
-import dev.blunch.blunch.repositories.PaymentMenuAnswerRepository;
-import dev.blunch.blunch.repositories.PaymentMenuRepository;
 import dev.blunch.blunch.services.PaymentMenuService;
 import dev.blunch.blunch.services.ServiceFactory;
 import dev.blunch.blunch.utils.Repository;
@@ -203,7 +199,7 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
         minute = calendar.get(Calendar.MINUTE);
         if (hour < 10) result += "0";
         result += hour + ":";
-        if (minute < 10) result += "0";
+        if (minute < 10) result += "0 ";
         result += minute;
         return result;
     }
