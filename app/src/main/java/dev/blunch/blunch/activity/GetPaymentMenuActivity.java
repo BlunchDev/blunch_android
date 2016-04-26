@@ -91,6 +91,7 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
         hour = (TextView) findViewById(R.id.hour);
         join = (Button) findViewById(R.id.join);
         dishesLayout = (LinearLayout) findViewById(R.id.checkboxDishesLayout);
+        dishesLayout.removeAllViews();
         precio = (TextView) findViewById(R.id.precio);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
