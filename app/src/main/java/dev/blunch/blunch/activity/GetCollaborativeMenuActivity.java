@@ -96,6 +96,7 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        //
 
         toolbar.setTitle(obtainTitle());
         // TODO Set user image: toolbar.setLogo();
