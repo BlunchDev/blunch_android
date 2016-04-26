@@ -107,16 +107,16 @@ public class ListMenusActivity extends AppCompatActivity {
 
         switch (filter) {
             case "Todos":
-                menuList.addAll(menuService.getMenus());
+                menuList.addAll(menuService.getMenusOrderedByDate());
                 break;
             case "Colaborativo":
-                menuList.addAll(menuService.getCollaborativeMenus());
+                menuList.addAll(menuService.getCollaborativeMenusOrderedByDate());
                 break;
             case "De pago":
-                menuList.addAll(menuService.getPaymentMenus());
+                menuList.addAll(menuService.getPaymentMenusOrderedByDate());
                 break;
             default:
-                menuList.addAll(menuService.getMenus());
+                menuList.addAll(menuService.getMenusOrderedByDate());
                 break;
         }
 

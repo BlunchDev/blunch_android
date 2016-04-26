@@ -1,10 +1,15 @@
 package dev.blunch.blunch.services;
 
+import android.util.Log;
+
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.domain.Menu;
+import dev.blunch.blunch.domain.MenuComparator;
 import dev.blunch.blunch.domain.PaymentMenu;
 import dev.blunch.blunch.utils.Repository;
 import dev.blunch.blunch.utils.Service;
@@ -37,6 +42,43 @@ public class MenuService extends Service<CollaborativeMenu> {
         menus.addAll(repository.all());
         menus.addAll(paymentMenuRepository.all());
         return menus;
+    }
+
+    public List<CollaborativeMenu> getCollaborativeMenusOrderedByDate() {
+        List<CollaborativeMenu> menus = repository.all();
+        List<CollaborativeMenu> result = new ArrayList<>();
+        for (CollaborativeMenu menu : menus) {
+            if (menu.getDateEnd().compareTo(Calendar.getInstance().getTime()) < 0) {
+                result.add(menu);
+            }
+        }
+        Collections.sort(result, new MenuComparator());
+        return result;
+    }
+
+    public List<PaymentMenu> getPaymentMenusOrderedByDate() {
+        List<PaymentMenu> menus = paymentMenuRepository.all();
+        List<PaymentMenu> result = new ArrayList<>();
+        for (PaymentMenu menu : menus) {
+            if (menu.getDateEnd().compareTo(Calendar.getInstance().getTime()) < 0) {
+                result.add(menu);
+            }
+        }
+        Collections.sort(result, new MenuComparator());
+        return result;
+    }
+
+    public List<Menu> getMenusOrderedByDate() {
+        List<Menu> menus = getMenus();
+        List<Menu> result = new ArrayList<>();
+        for (Menu menu : menus) {
+            Log.d("Date",menu.getDateEnd().toString());
+            if (menu.getDateEnd().compareTo(Calendar.getInstance().getTime()) < 0) {
+                result.add(menu);
+            }
+        }
+        Collections.sort(result, new MenuComparator());
+        return result;
     }
 
     @Override
