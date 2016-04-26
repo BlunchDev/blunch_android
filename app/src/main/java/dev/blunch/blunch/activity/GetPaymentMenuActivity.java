@@ -32,6 +32,7 @@ import dev.blunch.blunch.view.SelectPaymentDishLayout;
 public class GetPaymentMenuActivity extends AppCompatActivity {
 
 
+    public static final String MENU_ID_KEY = "menuId";
     private PaymentMenuService paymentMenuService;
     private PaymentMenu paymentMenu;
     private PaymentMenuAnswer paymentMenuAnswer;
@@ -45,6 +46,8 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
     private TextView precio;
     private ArrayList<SelectPaymentDishLayout> paymentDishesLayoutList;
     private List<Dish> answerDishes;
+
+    private String menuId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +64,8 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
             }
         });
 
+        menuId = getIntent().getStringExtra(MENU_ID_KEY);
+
         paymentMenuService = new PaymentMenuService(new PaymentMenuRepository(getApplicationContext()),
                                                     new DishRepository(getApplicationContext()),
                                                     new PaymentMenuAnswerRepository(getApplicationContext()));
@@ -68,8 +73,7 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
             @Override
             public void onChanged(EventType type) {
                 if (type.equals(EventType.Full)) {
-                    List<PaymentMenu> list = paymentMenuService.getAll();
-                    paymentMenu = list.get(0);
+                    paymentMenu = paymentMenuService.get(menuId);
                     dishes = paymentMenuService.getDishes(paymentMenu.getId());
                     initialize();
                 }

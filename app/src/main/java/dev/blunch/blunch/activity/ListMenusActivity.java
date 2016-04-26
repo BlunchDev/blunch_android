@@ -166,8 +166,9 @@ public class ListMenusActivity extends AppCompatActivity {
                         startActivity(intent);
                         break;
                     case "PaymentMenu":
-                        //TODO getPaymentMenu
-                        Toast.makeText(getApplicationContext(), menu.getName(), Toast.LENGTH_SHORT).show();
+                        Intent intent2 = new Intent(ListMenusActivity.this, GetPaymentMenuActivity.class);
+                        intent2.putExtra(GetPaymentMenuActivity.MENU_ID_KEY, menu.getId());
+                        startActivity(intent2);
                         break;
                     default:
                         break;
