@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import dev.blunch.blunch.BuildConfig;
 import dev.blunch.blunch.domain.CollaborativeMenu;
@@ -19,6 +20,7 @@ import dev.blunch.blunch.utils.MockRepository;
 import dev.blunch.blunch.utils.Repository;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -237,7 +239,10 @@ public class CollaborativeMenuServiceTest {
         List<Dish> disheshost = new ArrayList<>();
         CollaborativeMenuAnswer answer = new CollaborativeMenuAnswer("Guest",oldMenu.getId(),new Date(10),disheshost);
         List<Dish> dishes = new ArrayList<>();
-        dishes.add(new Dish("Pollo"));
+        dishes.add(new Dish("POLLO"));
+        for (Map.Entry<String, Object> entry : oldMenu.getSuggestedDishes().entrySet()) {
+            dishes.add(new Dish(entry.getKey()));
+        }
         try {
             service.reply(answer, dishes);
         }catch(Exception e){
@@ -249,6 +254,7 @@ public class CollaborativeMenuServiceTest {
         CollaborativeMenu menuHost = service.get(oldMenu.getId());
         for (Dish d : dishes){
             assertTrue(menuHost.containsOfferedDish(d.getName()));
+            assertFalse(menuHost.containsSuggestedDish(d.getName()));
         }
     }
 
