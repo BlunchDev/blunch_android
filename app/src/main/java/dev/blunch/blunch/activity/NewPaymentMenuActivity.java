@@ -79,18 +79,6 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
         updateTime(0, 0, 0, 0, year, month, day);
 
         menuName = (EditText) findViewById(R.id.nomMenu);
-        menuName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (menuName.getText().toString().equals("MENÚ")) {
-                    menuName.setText("");
-                    menuName.setTextColor(getResources().getColor(R.color.black));
-                }
-                else if(menuName.getText().toString().equals("")){
-                    menuName.setTextColor(getResources().getColor(R.color.colorEdit));
-                }
-            }
-        });
 
         final ImageButton moreDishes = (ImageButton) findViewById(R.id.moreDishes);
         final LinearLayout moreDishesLayout = (LinearLayout) findViewById(R.id.dishesLayout);
