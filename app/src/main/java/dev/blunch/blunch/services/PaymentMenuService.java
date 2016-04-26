@@ -129,6 +129,9 @@ public class PaymentMenuService extends Service<PaymentMenu> {
         if (loaded == loadNeed) {
             listener.onChanged(Repository.OnChangedListener.EventType.Full);
         } else {
+            if (type == Repository.OnChangedListener.EventType.Full){
+                type = Repository.OnChangedListener.EventType.Added;
+            }
             listener.onChanged(type);
         }
     }
