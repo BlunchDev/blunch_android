@@ -40,7 +40,7 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
     private List<Dish> dishes;
     private final String COMA = ",";
     private final String FAKE_GUEST = "Platon";
-    private TextView userName, localization, city, description, hour;
+    private TextView userName, localization, city, description, hour,dateStart, dateEnd;
     private Button join;
     private Toolbar toolbar;
     private LinearLayout dishesLayout;
