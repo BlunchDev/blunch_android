@@ -77,7 +77,6 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
     private void initialize() {
         userName = (TextView) findViewById(R.id.hostName);
         localization = (TextView) findViewById(R.id.hostLocalization);
-        city = (TextView) findViewById(R.id.hostCity);
         description = (TextView) findViewById(R.id.description);
         hour = (TextView) findViewById(R.id.hour);
         join = (Button) findViewById(R.id.join);
@@ -95,8 +94,7 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
             }
         });
         userName.setText(obtainUserName());
-        localization.setText(obtainAddress());
-        city.setText(obtainCity());
+        localization.setText(obtainAddress() + ", " + obtainCity());
         description.setText(obtainDescription());
         hour.setText(obtainHour());
         join.setOnClickListener(new View.OnClickListener() {
