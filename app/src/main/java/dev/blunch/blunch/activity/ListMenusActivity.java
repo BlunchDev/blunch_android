@@ -31,10 +31,12 @@ import dev.blunch.blunch.services.PaymentMenuService;
 import dev.blunch.blunch.services.ServiceFactory;
 import dev.blunch.blunch.utils.Repository;
 
+@SuppressWarnings("all")
 public class ListMenusActivity extends AppCompatActivity {
 
     MenuService menuService;
-
+    CollaborativeMenuService collaborativeMenuService;
+    PaymentMenuService paymentMenuService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,8 @@ public class ListMenusActivity extends AppCompatActivity {
         });
 
         menuService = ServiceFactory.getMenuService(getApplicationContext());
+        collaborativeMenuService = ServiceFactory.getCollaborativeMenuService(getApplicationContext());
+        paymentMenuService = ServiceFactory.getPaymentMenuService(getApplicationContext());
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
