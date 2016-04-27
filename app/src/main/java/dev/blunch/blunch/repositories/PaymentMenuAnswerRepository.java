@@ -1,6 +1,7 @@
 package dev.blunch.blunch.repositories;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.firebase.client.DataSnapshot;
 
@@ -47,8 +48,9 @@ public class PaymentMenuAnswerRepository extends FirebaseRepository<PaymentMenuA
                 answer.setChoosenDishesKeys(dishes);
             }
         }
-        return data.getValue(PaymentMenuAnswer.class);
+        return answer;
     }
+
 }
 
 

@@ -41,8 +41,9 @@ public abstract class FirebaseRepository<T extends Entity> extends Repository<T>
         firebase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot child : dataSnapshot.getChildren())
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
                     insertInternal(convert(child));
+                }
                 notifyChange(OnChangedListener.EventType.Full);
             }
             @Override
