@@ -3,6 +3,7 @@ package dev.blunch.blunch.services;
 
 import android.content.Context;
 
+import dev.blunch.blunch.domain.PaymentMenu;
 import dev.blunch.blunch.repositories.CollaborativeMenuAnswerRepository;
 import dev.blunch.blunch.repositories.CollaborativeMenuRepository;
 import dev.blunch.blunch.repositories.DishRepository;
@@ -16,11 +17,34 @@ import dev.blunch.blunch.repositories.PaymentMenuRepository;
  */
 public final class ServiceFactory {
 
+    private static CollaborativeMenuService collaborativeMenuService;
+    private static PaymentMenuService paymentMenuService;
+    private static MenuService menuService;
+
     public static CollaborativeMenuService getCollaborativeMenuService(Context context){
-        return new CollaborativeMenuService(new CollaborativeMenuRepository(context), new DishRepository(context), new CollaborativeMenuAnswerRepository(context));
+        if (collaborativeMenuService == null)
+            collaborativeMenuService = new CollaborativeMenuService(
+                    new CollaborativeMenuRepository(context),
+                    new DishRepository(context),
+                    new CollaborativeMenuAnswerRepository(context));
+        return collaborativeMenuService;
     }
 
     public static PaymentMenuService getPaymentMenuService(Context context) {
-        return new PaymentMenuService(new PaymentMenuRepository(context),new DishRepository(context),new PaymentMenuAnswerRepository(context));
+        if (paymentMenuService == null)
+            paymentMenuService = new PaymentMenuService(
+                    new PaymentMenuRepository(context),
+                    new DishRepository(context),
+                    new PaymentMenuAnswerRepository(context));
+        return paymentMenuService;
     }
+
+    public static MenuService getMenuService(Context context) {
+        if (menuService == null)
+            menuService = new MenuService(
+                    new CollaborativeMenuRepository(context),
+                    new PaymentMenuRepository(context));
+        return menuService;
+    }
+
 }
