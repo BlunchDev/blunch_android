@@ -8,6 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -77,15 +79,27 @@ public class MenuListAdapter extends BaseAdapter {
     }
 
     private String getTimeString(Date dateStart, Date dateEnd) {
-        String s = ((dateStart.getHours() > 9) ? dateStart.getHours() : ("0" + dateStart.getHours())).toString()
-                + ":" + ((dateStart.getMinutes() > 9) ? dateStart.getMinutes() : ("0" + dateStart.getMinutes())).toString()
-                + " - " + ((dateEnd.getHours() > 9) ? dateEnd.getHours() : ("0" + dateEnd.getHours())).toString()
-                + ":" + ((dateEnd.getMinutes() > 9) ? dateEnd.getMinutes() : ("0" + dateEnd.getMinutes())).toString();
+        Calendar start = Calendar.getInstance();
+        start.setTimeInMillis(dateStart.getTime());
+        Calendar end = Calendar.getInstance();
+        end.setTimeInMillis(dateEnd.getTime());
+
+        int startH = start.get(Calendar.HOUR_OF_DAY);
+        int startM = start.get(Calendar.MINUTE);
+        int endH = end.get(Calendar.HOUR_OF_DAY);
+        int endM = end.get(Calendar.MINUTE);
+
+        String s = ((startH > 9) ? startH : ("0" + startH)).toString()
+                + ":" + ((startM > 9) ? startM : ("0" + startM)).toString()
+                + " - " + ((endH > 9) ? endH : ("0" + endH)).toString()
+                + ":" + ((endM > 9) ? endM : ("0" + endM)).toString();
         return s;
     }
 
     private String getDateString(Date dateStart) {
-        String s = dateStart.getDate() + "/" + dateStart.getMonth() + "/" + dateStart.getYear();
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(dateStart.getTime());
+        String s = cal.get(Calendar.DAY_OF_MONTH) + "/" + cal.get(Calendar.MONTH) + "/" + cal.get(Calendar.YEAR);
         return s;
     }
 }
