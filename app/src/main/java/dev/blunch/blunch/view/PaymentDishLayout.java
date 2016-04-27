@@ -39,7 +39,8 @@ public class PaymentDishLayout extends LinearLayout{
         dishName.setHint("Nombre");
         dishName.setHintTextColor(getResources().getColor(R.color.gray));
         dishName.setTextSize(20);
-        LinearLayout.LayoutParams nomPlatLayout = new LinearLayout.LayoutParams(700, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dishName.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+        LinearLayout.LayoutParams nomPlatLayout = new LinearLayout.LayoutParams(400, ViewGroup.LayoutParams.WRAP_CONTENT);
         nomPlatLayout.setMargins(margin12, 0, 0, 0);
         h1.addView(dishName, nomPlatLayout);
 
@@ -55,7 +56,7 @@ public class PaymentDishLayout extends LinearLayout{
         priceDish.setHint("Precio");
         priceDish.setHintTextColor(getResources().getColor(R.color.gray));
         priceDish.setTextSize(20);
-        LinearLayout.LayoutParams priceDishLayout = new LinearLayout.LayoutParams(200, ViewGroup.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams priceDishLayout = new LinearLayout.LayoutParams(140, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         h1.addView(priceDish, priceDishLayout);
 
@@ -72,7 +73,7 @@ public class PaymentDishLayout extends LinearLayout{
         h1.addView(eur, eurLayout);
 
         Space space7 = new Space(context);
-        LinearLayout.LayoutParams space7Layout = new LinearLayout.LayoutParams(18, ViewGroup.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams space7Layout = new LinearLayout.LayoutParams(20, ViewGroup.LayoutParams.WRAP_CONTENT);
         h1.addView(space7, space7Layout);
 
         close = new ImageButton(context);
