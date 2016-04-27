@@ -99,7 +99,7 @@ public class MenuListAdapter extends BaseAdapter {
     private String getDateString(Date dateStart) {
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(dateStart.getTime());
-        String s = cal.get(Calendar.DAY_OF_MONTH) + "/" + cal.get(Calendar.MONTH) + "/" + cal.get(Calendar.YEAR);
+        String s = cal.get(Calendar.DAY_OF_MONTH) + "/" + (cal.get(Calendar.MONTH) + 1) + "/" + cal.get(Calendar.YEAR);
         return s;
     }
 }

@@ -167,7 +167,7 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
         calendar.setTime(dateStart);
 
         String day = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
-        String month = String.valueOf(calendar.get(Calendar.MONTH));
+        String month = String.valueOf(calendar.get(Calendar.MONTH) + 1);
         String year = String.valueOf(calendar.get(Calendar.YEAR));
         if (calendar.get(Calendar.DAY_OF_MONTH) < 10) day = "0" + day;
         if (calendar.get(Calendar.MONTH) < 10) month = "0" + month;
