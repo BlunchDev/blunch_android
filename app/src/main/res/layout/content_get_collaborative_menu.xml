@@ -37,7 +37,7 @@
                     android:text="Irina Shayk"
                     android:id="@+id/hostName_getCollaborative"
                     android:textSize="28dp"
-                    android:textStyle="bold"
+                    android:textStyle="bold|italic"
                     android:layout_gravity="center" />
 
                 <TextView
@@ -45,18 +45,58 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/hostLocalization_getCollaborative"
                     android:text="C/Les Sogues, 22"
-                    android:textSize="22dp"
+                    android:textSize="18dp"
                     android:layout_gravity="center" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Barcelona"
-                    android:id="@+id/hostCity_getCollaborative"
-                    android:textSize="22dp"
+                    android:id="@+id/hour_getCollaborative"
+                    android:textSize="18dp"
                     android:layout_gravity="center" />
+
             </LinearLayout>
         </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="15dp" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:background="@color/colorAccent"
+            android:layout_marginLeft="18dp"
+            android:layout_marginRight="18dp"/>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:id="@+id/description_getCollaborative"
+            android:gravity="center"
+            android:textSize="20dp"
+            android:textStyle="italic"/>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:background="@color/colorAccent"
+            android:layout_marginLeft="18dp"
+            android:layout_marginRight="18dp"/>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="25dp" />
 
         <LinearLayout
             android:orientation="vertical"
@@ -64,53 +104,44 @@
             android:layout_height="match_parent"
             android:gravity="center">
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="20dp" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center_horizontal">
-
-
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="7dp"
-                    android:text="Fecha: "
-                    android:textIsSelectable="false"
-                    android:textSize="22dp"
-                    android:textStyle="bold" />
-                <Space
-                    android:layout_width="30dp"
-                    android:layout_height="wrap_content" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/hour_getCollaborative"
-                    android:textSize="22dp" />
-            </LinearLayout>
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="20dp" />
-
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Se ofrece"
-                    android:id="@+id/offeredTitle_getCollaborative"
-                    android:textSize="24dp"
-                    android:textStyle="bold" />
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp">
+
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/leftdecorator"
+                        android:id="@+id/left_decorator"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Se ofrece"
+                        android:id="@+id/offeredTitle_getCollaborative"
+                        android:textSize="22dp"
+                        android:textStyle="bold"
+                        android:layout_toRightOf="@+id/left_decorator"
+                        android:paddingLeft="12dp"
+                        android:paddingRight="12dp"
+                        android:gravity="center"/>
+
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/rightdecorator"
+                        android:layout_gravity="right"
+                        android:layout_toRightOf="@+id/offeredTitle_getCollaborative"/>
+
+                </RelativeLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -119,7 +150,7 @@
                     android:gravity="center"
                     android:id="@+id/hostDishes_getCollaborative"
                     android:layout_gravity="center_horizontal"
-                    android:textSize="22dp" />
+                    android:textSize="18dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -128,13 +159,39 @@
                 android:layout_height="wrap_content"
                 android:gravity="center">
 
-                <TextView
-                    android:layout_width="wrap_content"
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Se sugiere"
-                    android:id="@+id/SuggestionTitle_getCollaborative"
-                    android:textSize="24dp"
-                    android:textStyle="bold" />
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp">
+
+                    <ImageView
+                        android:layout_width="95dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/leftdecorator"
+                        android:id="@+id/left_decorator2"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Se sugiere"
+                        android:id="@+id/SuggestionTitle_getCollaborative"
+                        android:textSize="22dp"
+                        android:textStyle="bold"
+                        android:layout_toRightOf="@+id/left_decorator2"
+                        android:paddingLeft="12dp"
+                        android:paddingRight="12dp"
+                        android:gravity="center"/>
+
+                    <ImageView
+                        android:layout_width="95dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/rightdecorator"
+                        android:layout_gravity="right"
+                        android:layout_toRightOf="@+id/SuggestionTitle_getCollaborative"/>
+
+                </RelativeLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -143,37 +200,7 @@
                     android:gravity="center"
                     android:id="@+id/suggestions_getCollaborative"
                     android:layout_gravity="center_horizontal"
-                    android:textSize="22dp" />
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Descripción: "
-                    android:textStyle="bold"
-                    android:gravity="center"
-                    android:textSize="22dp" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginEnd="15dp"
-                    android:id="@+id/description_getCollaborative"
-                    android:layout_gravity="center_horizontal"
-                    android:textSize="22dp" />
-
-                <Space
-                    android:layout_width="wrap_content"
-                    android:layout_height="60dp" />
-
+                    android:textSize="18dp" />
 
             </LinearLayout>
 

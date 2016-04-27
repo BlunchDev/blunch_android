@@ -63,7 +63,6 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
     private void initialize() {
         userName = (TextView) findViewById(R.id.hostName_getCollaborative);
         localization = (TextView) findViewById(R.id.hostLocalization_getCollaborative);
-        city = (TextView) findViewById(R.id.hostCity_getCollaborative);
         hostDishes = (TextView) findViewById(R.id.hostDishes_getCollaborative);
         suggestions = (TextView) findViewById(R.id.suggestions_getCollaborative);
         description = (TextView) findViewById(R.id.description_getCollaborative);
@@ -79,8 +78,7 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
             }
         });
         userName.setText(obtainUserName());
-        localization.setText(obtainAddress());
-        city.setText(obtainCity());
+        localization.setText(obtainAddress() + ", " + obtainCity());
         hostDishes.setText(obtainOfferedDishSingleString());
         suggestions.setText(obtainSuggestedDishSingleString());
         description.setText(obtainDescription());
@@ -155,7 +153,7 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
     }
 
     private String obtainDescription() {
-        return collaborativeMenu.getDescription();
+        return "\"" + collaborativeMenu.getDescription() + "\"";
     }
 
     private String obtainHour() {
