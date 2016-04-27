@@ -191,6 +191,15 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
         Date dateStart = paymentMenu.getDateStart();
         Date dateEnd = paymentMenu.getDateEnd();
         calendar.setTime(dateStart);
+
+        String day = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+        String month = String.valueOf(calendar.get(Calendar.MONTH));
+        String year = String.valueOf(calendar.get(Calendar.YEAR));
+        if (calendar.get(Calendar.DAY_OF_MONTH) < 10) day = "0" + day;
+        if (calendar.get(Calendar.MONTH) < 10) month = "0" + month;
+
+        result += " " + day + "/" + month + "/" + year + "\n";
+
         hour = calendar.get(Calendar.HOUR_OF_DAY);
         minute = calendar.get(Calendar.MINUTE);
         if (hour < 10) result += "0";
