@@ -16,7 +16,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="#CD5C5C"
+            android:background="@color/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay" >
 
             <TextView
@@ -259,7 +259,7 @@
                 android:layout_height="wrap_content"
                 android:text="PUBLICA"
                 android:gravity="center"
-                android:background="#CD5C5C"
+                android:background="@color/colorPrimary"
                 android:textSize="24dp"
                 android:id="@+id/publish"
                 android:layout_weight="0.15"

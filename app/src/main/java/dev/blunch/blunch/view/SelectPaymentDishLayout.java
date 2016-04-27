@@ -3,6 +3,7 @@ package dev.blunch.blunch.view;
 import android.content.Context;
 import android.content.res.Resources;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
@@ -25,12 +26,13 @@ public class SelectPaymentDishLayout extends LinearLayout {
         super(context);
 
         int margin10 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getResources().getDisplayMetrics());
-        int margin70 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 70, getResources().getDisplayMetrics());
+        int margin50 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, getResources().getDisplayMetrics());
 
 
         setOrientation(HORIZONTAL);
         LinearLayout.LayoutParams mainParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        mainParams.setMargins(margin70, 0, 0, margin10);
+        mainParams.setMargins(margin50, 0, 0, margin10);
+        mainParams.gravity = Gravity.CENTER;
         setLayoutParams(mainParams);
 
         checkBox = new CheckBox(context);
@@ -47,7 +49,7 @@ public class SelectPaymentDishLayout extends LinearLayout {
         addView(dishNameText, dishTextLayout);
 
         dishPriceText = new TextView(context);
-        dishPriceText.setText(price + " €");
+        dishPriceText.setText("(" + price + " €)");
         dishPriceText.setTextColor(getResources().getColor(R.color.gray));
         dishPriceText.setTextSize(18);
         LinearLayout.LayoutParams priceTextLayout = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
