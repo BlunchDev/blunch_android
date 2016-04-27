@@ -21,10 +21,12 @@ public class PaymentDishLayout extends LinearLayout{
     private ImageButton close;
     private TextView eur;
 
-    public PaymentDishLayout(Context context, int num) {
+    public PaymentDishLayout(Context context) {
         super(context);
         setOrientation(VERTICAL);
         setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+        int margin12 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 12, getResources().getDisplayMetrics());
 
         //H1
 
@@ -32,21 +34,15 @@ public class PaymentDishLayout extends LinearLayout{
         h1.setOrientation(HORIZONTAL);
 
         dishName = new EditText(context);
-        dishName.setText("Plato " + num);
         dishName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
-        dishName.setTextColor(getResources().getColor(R.color.colorEdit));
-        LinearLayout.LayoutParams nomPlatLayout = new LinearLayout.LayoutParams(800, ViewGroup.LayoutParams.WRAP_CONTENT);
-
+        dishName.setTextColor(getResources().getColor(R.color.black));
+        dishName.setHint("Nombre");
+        dishName.setHintTextColor(getResources().getColor(R.color.gray));
+        dishName.setTextSize(20);
+        LinearLayout.LayoutParams nomPlatLayout = new LinearLayout.LayoutParams(700, ViewGroup.LayoutParams.WRAP_CONTENT);
+        nomPlatLayout.setMargins(margin12, 0, 0, 0);
         h1.addView(dishName, nomPlatLayout);
-        dishName.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (dishName.getText().toString().equals("MENÚ")) {
-                    dishName.setText("");
-                    dishName.setTextColor(getResources().getColor(R.color.black));
-                }
-            }
-        });
+
 
         Space space5 = new Space(context);
         LinearLayout.LayoutParams space5Layout = new LinearLayout.LayoutParams(8, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -55,25 +51,28 @@ public class PaymentDishLayout extends LinearLayout{
         priceDish = new EditText(context);
         priceDish.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         priceDish.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
-        priceDish.setTextColor(getResources().getColor(R.color.colorEdit));
-        LinearLayout.LayoutParams priceDishLayout = new LinearLayout.LayoutParams(400, ViewGroup.LayoutParams.WRAP_CONTENT);
+        priceDish.setTextColor(getResources().getColor(R.color.black));
+        priceDish.setHint("Precio");
+        priceDish.setHintTextColor(getResources().getColor(R.color.gray));
+        priceDish.setTextSize(20);
+        LinearLayout.LayoutParams priceDishLayout = new LinearLayout.LayoutParams(200, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         h1.addView(priceDish, priceDishLayout);
 
         Space space6 = new Space(context);
-        LinearLayout.LayoutParams space6Layout = new LinearLayout.LayoutParams(2, ViewGroup.LayoutParams.MATCH_PARENT);
+        LinearLayout.LayoutParams space6Layout = new LinearLayout.LayoutParams(2, ViewGroup.LayoutParams.WRAP_CONTENT);
         h1.addView(space6, space6Layout);
 
         eur = new TextView(context);
         eur.setText("€");
-        eur.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
-        eur.setTextColor(getResources().getColor(R.color.colorEdit));
-        LinearLayout.LayoutParams eurLayout = new LinearLayout.LayoutParams(100, ViewGroup.LayoutParams.WRAP_CONTENT);
+        eur.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+        eur.setTextColor(getResources().getColor(R.color.gray));
+        LinearLayout.LayoutParams eurLayout = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         h1.addView(eur, eurLayout);
 
         Space space7 = new Space(context);
-        LinearLayout.LayoutParams space7Layout = new LinearLayout.LayoutParams(18, ViewGroup.LayoutParams.MATCH_PARENT);
+        LinearLayout.LayoutParams space7Layout = new LinearLayout.LayoutParams(18, ViewGroup.LayoutParams.WRAP_CONTENT);
         h1.addView(space7, space7Layout);
 
         close = new ImageButton(context);

@@ -54,12 +54,13 @@
 
                 <EditText
                     android:id="@+id/nomMenu"
-                    android:layout_width="200dp"
+                    android:layout_width="300dp"
                     android:layout_height="wrap_content"
-                    android:text="MENÚ"
-                    android:textSize="40dp"
+                    android:hint="MENÚ"
+                    android:textSize="35dp"
                     android:layout_gravity="center"
-                    android:textColor="#bfbdbd"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/gray"
                     android:gravity="center" />
                 <Space
                     android:layout_width="match_parent"
@@ -71,13 +72,20 @@
                         android:layout_width="336dp"
                         android:layout_height="73dp"
                         android:id="@+id/description"
-                        android:text="Descripción"
+                        android:hint="Descripción"
                         android:maxLength="140"
                         android:gravity="top"
-                        android:textColor="@color/colorEdit"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/gray"
                         android:layout_gravity="center" />
                 </ScrollView>
-
+                <TextView
+                    android:layout_width="328dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:text="Platos:"
+                    android:longClickable="false"
+                    android:textSize="25dp" />
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -202,11 +210,14 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Dirección"/>
+                                android:text="Dirección"
+                                android:layout_marginRight="6dp"/>
                             <EditText
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Tu dirección"
+                                android:hint="Tu dirección"
+                                android:textColorHint="@color/gray"
+                                android:textColor="@color/black"
                                 android:id="@+id/adress" />
 
                         </LinearLayout>
@@ -222,11 +233,15 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginRight="20dp"
                                 android:text="Ciudad"/>
+
                             <EditText
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Tu ciudad"
+                                android:hint="Tu ciudad"
+                                android:textColorHint="@color/gray"
+                                android:textColor="@color/black"
                                 android:id="@+id/city" />
                         </LinearLayout>
 

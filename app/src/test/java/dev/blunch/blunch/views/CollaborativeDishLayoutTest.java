@@ -28,12 +28,12 @@ public class CollaborativeDishLayoutTest {
 
     @Before
     public void setUp() {
-        layout = new CollaborativeDishLayout(RuntimeEnvironment.application, 1);
+        layout = new CollaborativeDishLayout(RuntimeEnvironment.application);
     }
 
     @Test
     public void test() throws Exception {
-        assertTrue(layout.getDishName().contains(Integer.toString(1)));
+        assertNotNull(layout.getDishName());
         assertNotNull(layout.getClose());
     }
 

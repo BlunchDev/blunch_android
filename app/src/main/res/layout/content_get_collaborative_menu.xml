@@ -35,7 +35,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Irina Shayk"
-                    android:id="@+id/hostName"
+                    android:id="@+id/hostName_getCollaborative"
                     android:textSize="28dp"
                     android:textStyle="bold"
                     android:layout_gravity="center" />
@@ -43,7 +43,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/hostLocalization"
+                    android:id="@+id/hostLocalization_getCollaborative"
                     android:text="C/Les Sogues, 22"
                     android:textSize="22dp"
                     android:layout_gravity="center" />
@@ -52,7 +52,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Barcelona"
-                    android:id="@+id/hostCity"
+                    android:id="@+id/hostCity_getCollaborative"
                     android:textSize="22dp"
                     android:layout_gravity="center" />
             </LinearLayout>
@@ -79,7 +79,8 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Hour: "
+                    android:layout_marginTop="7dp"
+                    android:text="Fecha: "
                     android:textIsSelectable="false"
                     android:textSize="22dp"
                     android:textStyle="bold" />
@@ -89,14 +90,14 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/hour"
+                    android:id="@+id/hour_getCollaborative"
                     android:textSize="22dp" />
             </LinearLayout>
 
             <Space
                 android:layout_width="match_parent"
                 android:layout_height="20dp" />
-            
+
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
@@ -107,7 +108,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Se ofrece"
-                    android:id="@+id/offeredTitle"
+                    android:id="@+id/offeredTitle_getCollaborative"
                     android:textSize="24dp"
                     android:textStyle="bold" />
 
@@ -115,7 +116,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Platoos"
-                    android:id="@+id/hostDishes"
+                    android:gravity="center"
+                    android:id="@+id/hostDishes_getCollaborative"
                     android:layout_gravity="center_horizontal"
                     android:textSize="22dp" />
             </LinearLayout>
@@ -130,7 +132,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Se sugiere"
-                    android:id="@+id/SuggestionTitle"
+                    android:id="@+id/SuggestionTitle_getCollaborative"
                     android:textSize="24dp"
                     android:textStyle="bold" />
 
@@ -138,10 +140,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Sugerenciaas"
-                    android:id="@+id/suggestions"
+                    android:gravity="center"
+                    android:id="@+id/suggestions_getCollaborative"
                     android:layout_gravity="center_horizontal"
                     android:textSize="22dp" />
-                
+
                 <Space
                     android:layout_width="match_parent"
                     android:layout_height="0dp" />
@@ -151,23 +154,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Descripción: "
-                android:textStyle="bold"
-                android:gravity="center"
-                android:textSize="22dp" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/description"
-                android:layout_gravity="center"
-                android:textSize="22dp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Descripción: "
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:textSize="22dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:id="@+id/description_getCollaborative"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="22dp" />
 
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="60dp" />
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="60dp" />
 
 
             </LinearLayout>

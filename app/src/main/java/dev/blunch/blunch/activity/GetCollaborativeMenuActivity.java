@@ -65,14 +65,14 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
 
     @SuppressWarnings("all")
     private void initialize() {
-        userName = (TextView) findViewById(R.id.hostName);
-        localization = (TextView) findViewById(R.id.hostLocalization);
-        city = (TextView) findViewById(R.id.hostCity);
-        hostDishes = (TextView) findViewById(R.id.hostDishes);
-        suggestions = (TextView) findViewById(R.id.suggestions);
-        description = (TextView) findViewById(R.id.description);
-        hour = (TextView) findViewById(R.id.hour);
-        join = (Button) findViewById(R.id.join);
+        userName = (TextView) findViewById(R.id.hostName_getCollaborative);
+        localization = (TextView) findViewById(R.id.hostLocalization_getCollaborative);
+        city = (TextView) findViewById(R.id.hostCity_getCollaborative);
+        hostDishes = (TextView) findViewById(R.id.hostDishes_getCollaborative);
+        suggestions = (TextView) findViewById(R.id.suggestions_getCollaborative);
+        description = (TextView) findViewById(R.id.description_getCollaborative);
+        hour = (TextView) findViewById(R.id.hour_getCollaborative);
+        join = (Button) findViewById(R.id.join_getCollaborative);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -169,6 +169,15 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
         Date dateStart = collaborativeMenu.getDateStart();
         Date dateEnd = collaborativeMenu.getDateEnd();
         calendar.setTime(dateStart);
+
+        String day = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+        String month = String.valueOf(calendar.get(Calendar.MONTH));
+        String year = String.valueOf(calendar.get(Calendar.YEAR));
+        if (calendar.get(Calendar.DAY_OF_MONTH) < 10) day = "0" + day;
+        if (calendar.get(Calendar.MONTH) < 10) month = "0" + month;
+
+        result += " " + day + "/" + month + "/" + year + "\n";
+
         hour = calendar.get(Calendar.HOUR_OF_DAY);
         minute = calendar.get(Calendar.MINUTE);
         if (hour < 10) result += "0";

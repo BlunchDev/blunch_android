@@ -43,6 +43,7 @@ public class CollaborativeMenuServiceTest {
     public void setUp() {
         repository = new MockRepository<>();
         service = new CollaborativeMenuService(repository);
+        service = new CollaborativeMenuService(repository, new MockRepository<Dish>());
         service = new CollaborativeMenuService(repository, new MockRepository<Dish>(),
                 new MockRepository<CollaborativeMenuAnswer>());
         newMenu = new CollaborativeMenu(
