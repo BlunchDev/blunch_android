@@ -29,10 +29,10 @@ public class PaymentMenuService extends Service<PaymentMenu> {
         answerRepository = null;
     }
 
-    public PaymentMenuService(Repository<PaymentMenu> repository,Repository<Dish> dishRepository, Repository<PaymentMenuAnswer> answerRepository) {
+    public PaymentMenuService(Repository<PaymentMenu> repository,Repository<Dish> dishRepository, Repository<PaymentMenuAnswer> answerRep) {
         super(repository);
         dishesRepository = dishRepository;
-        this.answerRepository = answerRepository;
+        answerRepository = answerRep;
     }
 
     public PaymentMenuService(Repository<PaymentMenu> repository, Repository<Dish> dishRepository) {
@@ -82,7 +82,7 @@ public class PaymentMenuService extends Service<PaymentMenu> {
         Log.d("Menu id", menuKey);
         Log.d("Checking", list.size()+"");
         for (PaymentMenuAnswer answer : list) {
-            Log.d("Check", answer.getIdMenu());
+            Log.d("Check", answer.getId());
             if (menuKey.equals(answer.getIdMenu())){
                 result.add(answer);
             }

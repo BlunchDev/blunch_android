@@ -77,7 +77,6 @@ public class MenuService extends Service<CollaborativeMenu> {
             }
         }
         Collections.sort(result, new MenuComparator());
-        for (Menu menu : result) Log.d("Date", menu.getDateStart().toString());
         return result;
     }
 
