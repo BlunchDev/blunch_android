@@ -25,6 +25,7 @@ import dev.blunch.blunch.repositories.CollaborativeMenuAnswerRepository;
 import dev.blunch.blunch.repositories.CollaborativeMenuRepository;
 import dev.blunch.blunch.repositories.DishRepository;
 import dev.blunch.blunch.services.CollaborativeMenuService;
+import dev.blunch.blunch.services.ServiceFactory;
 import dev.blunch.blunch.utils.Repository;
 
 public class CollaborativeMenuAnswerActivity extends AppCompatActivity {
@@ -45,24 +46,15 @@ public class CollaborativeMenuAnswerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_collaborative_menu_answer);
         guestSuggestions = new ArrayList<>();
         guestNewSuggestions = new ArrayList<>();
-        collaborativeMenuService = new CollaborativeMenuService(
-                new CollaborativeMenuRepository(getApplicationContext()),
-                new DishRepository(getApplicationContext()),
-                new CollaborativeMenuAnswerRepository(getApplicationContext()));
+        collaborativeMenuService = ServiceFactory.getCollaborativeMenuService(getApplicationContext());
 
         menuID = getIntent().getStringExtra("menuId");
 
-        collaborativeMenuService.setOnChangedListener(new Repository.OnChangedListener() {
-            @Override
-            public void onChanged(EventType type) {
-                if (type.equals(EventType.Full)) {
-                    CollaborativeMenu collaborativeMenu = collaborativeMenuService.get(menuID);
-                    hostSuggestions = collaborativeMenuService.getSuggestedDishes(collaborativeMenu.getId());
-                    makeProposalCreation();
-                    fillHostSuggestions();
-                }
-            }
-        });
+        CollaborativeMenu collaborativeMenu = collaborativeMenuService.get(menuID);
+        hostSuggestions = collaborativeMenuService.getSuggestedDishes(collaborativeMenu.getId());
+        makeProposalCreation();
+        fillHostSuggestions();
+
     }
 
     private void makeProposalCreation() {

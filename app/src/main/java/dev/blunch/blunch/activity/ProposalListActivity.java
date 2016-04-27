@@ -27,7 +27,7 @@ import dev.blunch.blunch.utils.Repository;
 public class ProposalListActivity extends AppCompatActivity {
 
 
-    public static final String ID_COLLABORATIVE_MENU_KEY = "collaborative_menu_key";
+    public static final String MENU_ID_KEY = "menuId";
     private static final String TAG = ProposalListActivity.class.getSimpleName();
     private CollaborativeMenuService service;
     private String idMenu;
@@ -49,38 +49,19 @@ public class ProposalListActivity extends AppCompatActivity {
                 new SimpleItemRecyclerViewAdapter(new ArrayList<CollaborativeMenuAnswer>())
         );
 
-
-        Intent intent = getIntent();
-
-        idMenu = null;
-        if (intent.hasExtra(ID_COLLABORATIVE_MENU_KEY)) {
-            idMenu = intent.getStringExtra(ID_COLLABORATIVE_MENU_KEY);
-        }
+        idMenu = getIntent().getStringExtra(MENU_ID_KEY);
 
         service = ServiceFactory.getCollaborativeMenuService(getApplicationContext());
-        service.setOnChangedListener(new Repository.OnChangedListener() {
-            @Override
-            public void onChanged(EventType type) {
-                //TODO: posar aixo be quan es tinguin les ids dels menus via intent
-//                CollaborativeMenu menu = service.get(idMenu);
-                CollaborativeMenu menu = service.getAll().get(0);
-                if (menu != null && idMenu==null) {
-                    toolbar.setTitle("Answers for "+menu.getName());
-                    idMenu = menu.getId();
-                }
-            }
-        });
 
-        service.setCollaborativeMenuAnswerListener(new Repository.OnChangedListener() {
-            @Override
-            public void onChanged(EventType type) {
-                View recyclerView = findViewById(R.id.proposal_list);
-                assert recyclerView != null;
-                setupRecyclerView((RecyclerView) recyclerView, idMenu);
-            }
-        });
+        CollaborativeMenu menu = service.get(idMenu);
+        if (menu != null && idMenu==null) {
+            toolbar.setTitle("Answers for "+menu.getName());
+            idMenu = menu.getId();
+        }
 
-
+        View recyclerView2 = findViewById(R.id.proposal_list);
+        assert recyclerView2 != null;
+        setupRecyclerView((RecyclerView) recyclerView2, idMenu);
 
     }
 

@@ -1,11 +1,13 @@
 package dev.blunch.blunch.activity;
 
+import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -24,6 +26,7 @@ import dev.blunch.blunch.domain.PaymentMenu;
 import dev.blunch.blunch.repositories.DishRepository;
 import dev.blunch.blunch.repositories.PaymentMenuRepository;
 import dev.blunch.blunch.services.PaymentMenuService;
+import dev.blunch.blunch.services.ServiceFactory;
 import dev.blunch.blunch.utils.Repository;
 import dev.blunch.blunch.view.PaymentDishLayout;
 
@@ -31,10 +34,14 @@ import dev.blunch.blunch.view.PaymentDishLayout;
 public class NewPaymentMenuActivity extends AppCompatActivity {
 
 
-    private int iHour, iMinut, fHour;
-    private int fMinut;
-    private int numDish;
-    private Date start, finish;
+    private int day,month,year;
+
+    private int iHour,
+                iMinute,
+                fHour,
+                fMinute;
+    private Date    start,
+                    finish;
     private List<ImageButton> idClose = new ArrayList<>();
     private EditText menuName;
 
@@ -49,67 +56,52 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        paymentMenuService = new PaymentMenuService(new PaymentMenuRepository(getApplicationContext()), new DishRepository(getApplicationContext()));
-        paymentMenuService.setOnChangedListener(new Repository.OnChangedListener() {
-            @Override
-            public void onChanged(EventType type) {
-                if (type.equals(EventType.Full)) {
-                    initialize();
-                }
-            }
-        });
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
+        paymentMenuService = ServiceFactory.getPaymentMenuService(getApplicationContext());
+        initialize();
     }
 
     private void initialize() {
-        iHour = iMinut = fHour = fMinut = 0;
-        numDish = 1;
+        Calendar now = Calendar.getInstance();
+        year = now.get(Calendar.YEAR);
+        month = now.get(Calendar.MONTH);
+        day = now.get(Calendar.DAY_OF_MONTH);
+        iHour = now.get(Calendar.HOUR_OF_DAY);
+        iMinute = now.get(Calendar.MINUTE);
+        fHour = now.get(Calendar.HOUR_OF_DAY);
+        fMinute = now.get(Calendar.MINUTE);
+        updateTime(0, 0, 0, 0, year, month, day);
 
         menuName = (EditText) findViewById(R.id.nomMenu);
-        menuName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (menuName.getText().toString().equals("MENÚ")) {
-                    menuName.setText("");
-                    menuName.setTextColor(getResources().getColor(R.color.black));
-                }
-                else if(menuName.getText().toString().equals("")){
-                    menuName.setText("MENÚ");
-                    menuName.setTextColor(getResources().getColor(R.color.colorEdit));
-                }
-            }
-        });
 
         final ImageButton moreDishes = (ImageButton) findViewById(R.id.moreDishes);
         final LinearLayout moreDishesLayout = (LinearLayout) findViewById(R.id.dishesLayout);
-        final PaymentDishLayout paymentDishLayout = new PaymentDishLayout(getApplicationContext(), numDish);
+        final PaymentDishLayout paymentDishLayout = new PaymentDishLayout(getApplicationContext());
         myDishes.add(paymentDishLayout);
         moreDishesLayout.addView(paymentDishLayout);
-        ++numDish;
         paymentDishLayout.getClose().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                moreDishesLayout.removeView(paymentDishLayout);
-                myDishes.remove(paymentDishLayout);
+                if (myDishes.size() > 1) {
+                    moreDishesLayout.removeView(paymentDishLayout);
+                    myDishes.remove(paymentDishLayout);
+                }
             }
         });
 
         moreDishes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final PaymentDishLayout a = new PaymentDishLayout(NewPaymentMenuActivity.this, ++numDish);
+                final PaymentDishLayout a = new PaymentDishLayout(NewPaymentMenuActivity.this);
                 myDishes.add(a);
                 moreDishesLayout.addView(a);
                 ImageButton close = a.getClose();
                 close.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        moreDishesLayout.removeView(a);
-                        myDishes.remove(a);
+                        if (myDishes.size() > 1) {
+                            moreDishesLayout.removeView(a);
+                            myDishes.remove(a);
+                        }
                     }
                 });
             }
@@ -170,7 +162,7 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
         // TODO El menu es vegetaria
     }
 
-    private void updateTime(int iHour, int iMinut, int fHour, int fMinut) {
+    private void updateTime(int iHour, int iMinut, int fHour, int fMinut, int year, int month, int day) {
         TextView mDateDisplay = (TextView) findViewById(R.id.timeText);
         String iniH, iniMin, finH, finMin;
         if(iHour < 10) iniH = "0"+iHour;
@@ -182,24 +174,56 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
         if(fMinut < 10) finMin = "0"+fMinut;
         else finMin = fMinut+"";
 
-        mDateDisplay.setText(iniH + ":" + iniMin + "h - " + finH + ":" + finMin+"h");
         Calendar cStart = Calendar.getInstance();
         cStart.set(Calendar.HOUR_OF_DAY,iHour);
         cStart.set(Calendar.MINUTE, iMinut);
+        cStart.set(Calendar.MONTH, month);
+        cStart.set(Calendar.YEAR, year);
+        cStart.set(Calendar.DAY_OF_MONTH, day);
         start = cStart.getTime();
+
+        String dayS = String.valueOf(this.day);
+        String monthS = String.valueOf(this.month);
+        String yearS = String.valueOf(this.year);
+        if (this.day < 10) dayS = "0" + dayS;
+        if (this.month < 10) monthS = "0" + monthS;
+
+        mDateDisplay.setText("   " + dayS + "/" + monthS + "/" + yearS + "\n"
+                + iniH + ":" + iniMin + "h - " + finH + ":" + finMin + "h");
 
         Calendar cFinish = Calendar.getInstance();
         cFinish.set(Calendar.HOUR_OF_DAY,fHour);
         cFinish.set(Calendar.MINUTE, fMinut);
+        if (fHour < iHour) {
+            cFinish.set(Calendar.MONTH, month);
+            cFinish.set(Calendar.YEAR, year);
+            cFinish.set(Calendar.DAY_OF_MONTH, day);
+            cFinish.add(Calendar.DAY_OF_MONTH, 1);
+        }
+        else {
+            cFinish.set(Calendar.MONTH, month);
+            cFinish.set(Calendar.YEAR, year);
+            cFinish.set(Calendar.DAY_OF_MONTH, day);
+        }
         finish = cFinish.getTime();
     }
 
+
     private TimePickerDialog.OnTimeSetListener initialTimeSetListener =
             new TimePickerDialog.OnTimeSetListener() {
-
                 @Override
                 public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                    iHour = hourOfDay; iMinut = minute;
+                    iHour = hourOfDay; iMinute = minute;
+                }
+            };
+
+    private DatePickerDialog.OnDateSetListener dateSetListener =
+            new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker view, int yearOf, int monthOfYear, int dayOfMonth) {
+                    year = yearOf;
+                    month = monthOfYear;
+                    day = dayOfMonth;
                 }
             };
 
@@ -208,19 +232,25 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
 
                 @Override
                 public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                    fHour = hourOfDay; fMinut = minute;
-                    updateTime(iHour, iMinut, fHour, fMinut);
+                    fHour = hourOfDay; fMinute = minute;
+                    updateTime(iHour, iMinute, fHour, fMinute, year, month, day);
+
                 }
             };
 
     private void showDialogTime() {
         showDialogFinalTime().show();
         showDialogInitialTime().show();
+        showDialogDate().show();
+    }
 
+    private DatePickerDialog showDialogDate() {
+        DatePickerDialog a = new DatePickerDialog(this, dateSetListener, year, month, day);
+        return a;
     }
 
     private TimePickerDialog showDialogInitialTime() {
-        TimePickerDialog a = new TimePickerDialog(this, initialTimeSetListener, iHour, iMinut, false);
+        TimePickerDialog a = new TimePickerDialog(this, initialTimeSetListener, iHour, iMinute, false);
         TextView title = new TextView(this);
         title.setText("Hora Inicio");
         title.setTextSize(20);
@@ -230,7 +260,7 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
     }
 
     private TimePickerDialog showDialogFinalTime() {
-        TimePickerDialog a = new TimePickerDialog(this, finalTimeSetListener, fHour, fMinut, false);
+        TimePickerDialog a = new TimePickerDialog(this, finalTimeSetListener, fHour, fMinute, false);
         TextView title = new TextView(this);
         title.setText("Hora Fin");
         title.setTextSize(20);
@@ -254,9 +284,38 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
         String description = descriptionEditText.getText().toString();
 
         if(isIncomplete(address, city, menuNameString, description)){
+            String s = "";
+            boolean added = false;
+            if(address.equals("") || address.equals("Tu dirección") ) {
+                if (!added) {
+                    s += "Direccion";
+                    added = true;
+                }
+                else s += ", direccion";
+            }
+            if(city.equals("") || city.equals("Tu ciudad")){
+                if (!added) {
+                    s += "Ciudad";
+                    added = true;
+                }
+                else s += ", ciudad";
+            }
 
-            Toast.makeText(this, "Campos incompletos",
-                    Toast.LENGTH_LONG).show();
+            if(menuNameString.equals("") || menuNameString.equals("MENÚ") ){
+                if (!added) {
+                    s += "Nombre del menu";
+                    added = true;
+                }
+                else s += ", nombre del menu";
+            }
+            if(description.equals("") || description.equals("Descripción")) {
+                if (!added) {
+                    s += "Descripcion";
+                    added = true;
+                }
+                else s += ", descripcion";
+            }
+            Toast.makeText(this, s +" incompleta",Toast.LENGTH_LONG).show();
         }
         else if(start.getTime()>=finish.getTime()){
             Toast.makeText(this, "Hora de inicio más pequeña o igual que hora final",
@@ -266,13 +325,12 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
 
             List<Dish> dishes = new ArrayList<>();
 
-            int n = 1;
+
             for (PaymentDishLayout d : myDishes) {
-                if (!d.getDishName().equals("Plato " + n)) {
+                if (!d.getDishName().equals("")) {
                     Dish dish = new Dish(d.getDishName(), d.getDishPrice());
                     dishes.add(dish);
                 }
-                n++;
             }
 
             PaymentMenu paymentMenu = new PaymentMenu(  menuNameString,
@@ -282,7 +340,7 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
                                                         start,
                                                         finish);
             paymentMenuService.save(paymentMenu, dishes);
-            Toast.makeText(this, "Añadido correctamente",
+            Toast.makeText(this, "Menu de pago creado correctamente!",
                     Toast.LENGTH_LONG).show();
             finish();
         }

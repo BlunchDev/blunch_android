@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -25,22 +26,21 @@ import dev.blunch.blunch.repositories.CollaborativeMenuRepository;
 import dev.blunch.blunch.repositories.DishRepository;
 import dev.blunch.blunch.repositories.PaymentMenuRepository;
 import dev.blunch.blunch.services.CollaborativeMenuService;
+import dev.blunch.blunch.services.MenuService;
 import dev.blunch.blunch.services.PaymentMenuService;
+import dev.blunch.blunch.services.ServiceFactory;
 import dev.blunch.blunch.utils.Repository;
 
+@SuppressWarnings("all")
 public class ListMenusActivity extends AppCompatActivity {
 
+    MenuService menuService;
     CollaborativeMenuService collaborativeMenuService;
     PaymentMenuService paymentMenuService;
-    boolean colReady;
-    boolean payReady;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        colReady = false;
-        payReady = false;
         setContentView(R.layout.activity_list_menus);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -66,15 +66,9 @@ public class ListMenusActivity extends AppCompatActivity {
             }
         });
 
-        collaborativeMenuService = new CollaborativeMenuService(
-                new CollaborativeMenuRepository(getApplicationContext()),
-                dishRepository,
-                new CollaborativeMenuAnswerRepository(getApplicationContext()));
-
-        paymentMenuService = new PaymentMenuService(
-                new PaymentMenuRepository(getApplicationContext()),
-                dishRepository
-        );
+        menuService = ServiceFactory.getMenuService(getApplicationContext());
+        collaborativeMenuService = ServiceFactory.getCollaborativeMenuService(getApplicationContext());
+        paymentMenuService = ServiceFactory.getPaymentMenuService(getApplicationContext());
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -100,28 +94,14 @@ public class ListMenusActivity extends AppCompatActivity {
             }
         });
 
-        collaborativeMenuService.setOnChangedListener(new Repository.OnChangedListener() {
+        menuService.setOnChangedListener(new Repository.OnChangedListener() {
             @Override
             public void onChanged(EventType type) {
                 if (type.equals(EventType.Full)) {
-                    colReady = true;
-                    if (payReady & colReady)
-                        init("All");
+                    init("All");
                 }
             }
         });
-
-        paymentMenuService.setOnChangedListener(new Repository.OnChangedListener() {
-            @Override
-            public void onChanged(EventType type) {
-                if (type.equals(EventType.Full)) {
-                    payReady = true;
-                    if (payReady & colReady)
-                        init("All");
-                }
-            }
-        });
-
     }
 
     private void init(String filter) {
@@ -130,18 +110,16 @@ public class ListMenusActivity extends AppCompatActivity {
 
         switch (filter) {
             case "Todos":
-                menuList.addAll(collaborativeMenuService.getAll());
-                menuList.addAll(paymentMenuService.getAll());
+                menuList.addAll(menuService.getMenusOrderedByDate());
                 break;
             case "Colaborativo":
-                menuList.addAll(collaborativeMenuService.getAll());
+                menuList.addAll(menuService.getCollaborativeMenusOrderedByDate());
                 break;
             case "De pago":
-                menuList.addAll(paymentMenuService.getAll());
+                menuList.addAll(menuService.getPaymentMenusOrderedByDate());
                 break;
             default:
-                menuList.addAll(collaborativeMenuService.getAll());
-                menuList.addAll(paymentMenuService.getAll());
+                menuList.addAll(menuService.getMenusOrderedByDate());
                 break;
         }
 
@@ -166,8 +144,9 @@ public class ListMenusActivity extends AppCompatActivity {
                         startActivity(intent);
                         break;
                     case "PaymentMenu":
-                        //TODO getPaymentMenu
-                        Toast.makeText(getApplicationContext(), menu.getName(), Toast.LENGTH_SHORT).show();
+                        Intent intent2 = new Intent(ListMenusActivity.this, GetPaymentMenuActivity.class);
+                        intent2.putExtra(GetPaymentMenuActivity.MENU_ID_KEY, menu.getId());
+                        startActivity(intent2);
                         break;
                     default:
                         break;
