@@ -3,31 +3,22 @@ package dev.blunch.blunch.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import dev.blunch.blunch.R;
-import dev.blunch.blunch.domain.CollaborativeMenu;
-import dev.blunch.blunch.domain.CollaborativeMenuAnswer;
 import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.domain.PaymentMenu;
 import dev.blunch.blunch.domain.PaymentMenuAnswer;
-import dev.blunch.blunch.services.CollaborativeMenuService;
 import dev.blunch.blunch.services.PaymentMenuService;
 import dev.blunch.blunch.services.ServiceFactory;
-import dev.blunch.blunch.utils.Repository;
 
 public class PaymentPetitionsListActivity extends AppCompatActivity {
 
@@ -40,14 +31,8 @@ public class PaymentPetitionsListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment_petitions_list);
 
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_payment);
         setSupportActionBar(toolbar);
-
-        View recyclerView = findViewById(R.id.petitions_list);
-        assert recyclerView != null;
-        ((RecyclerView) recyclerView).setAdapter(
-                new SimpleItemRecyclerViewAdapter(new ArrayList<PaymentMenuAnswer>())
-        );
 
         Intent intent = getIntent();
 
@@ -59,11 +44,9 @@ public class PaymentPetitionsListActivity extends AppCompatActivity {
         service = ServiceFactory.getPaymentMenuService(getApplicationContext());
 
         PaymentMenu menu = service.get(idMenu);
-        if (menu != null && idMenu == null) {
-            assert toolbar != null;
-            toolbar.setTitle("Petitions for " + menu.getName());
-            idMenu = menu.getId();
-        }
+        assert menu !=null;
+        assert toolbar != null;
+        toolbar.setTitle("Petitions for " + menu.getName());
 
         View recyclerView2 = findViewById(R.id.petitions_list);
         assert recyclerView2 != null;
@@ -100,13 +83,13 @@ public class PaymentPetitionsListActivity extends AppCompatActivity {
             List <Dish> petition = service.getAnswerDishes(holder.mItem.getId());
             for (Dish d : petition){
                 if (d != null) {
-                    result += d.getName() + "\n";
+                    result +="- "+ d.getName() + "\n";
                     total += d.getPrice();
                 }
             }
-
             holder.mContentView.setText(result);
             holder.totalView.setText(total+"€");
+            holder.commentView.setText("Petición de "+holder.mItem.getGuest());
         }
 
         private void removeItem(int position) {
@@ -114,7 +97,6 @@ public class PaymentPetitionsListActivity extends AppCompatActivity {
             notifyItemRemoved(position);
             notifyItemRangeChanged(position, mValues.size());
         }
-
         @Override
         public int getItemCount() {
             return mValues.size();
@@ -124,6 +106,7 @@ public class PaymentPetitionsListActivity extends AppCompatActivity {
             public final View mView;
             public final TextView mContentView;
             public final TextView totalView;
+            public final TextView commentView;
             public PaymentMenuAnswer mItem;
 
             public ViewHolder(View view) {
@@ -131,6 +114,7 @@ public class PaymentPetitionsListActivity extends AppCompatActivity {
                 mView = view;
                 mContentView = (TextView) view.findViewById(R.id.contentDishes);
                 totalView = (TextView) view.findViewById(R.id.total);
+                commentView = (TextView) view.findViewById(R.id.comment);
             }
 
             @Override
