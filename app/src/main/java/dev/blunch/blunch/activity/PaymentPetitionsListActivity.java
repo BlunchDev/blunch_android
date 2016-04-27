@@ -31,7 +31,7 @@ import dev.blunch.blunch.utils.Repository;
 
 public class PaymentPetitionsListActivity extends AppCompatActivity {
 
-    public static final String ID_PAYMENT_MENU_KEY = "payment_menu_key";
+    public static final String ID_PAYMENT_MENU_KEY = "menuId";
     private PaymentMenuService service;
     private String idMenu;
 
@@ -57,32 +57,17 @@ public class PaymentPetitionsListActivity extends AppCompatActivity {
         }
 
         service = ServiceFactory.getPaymentMenuService(getApplicationContext());
-        service.setOnChangedListener(new Repository.OnChangedListener() {
-            @Override
-            public void onChanged(EventType type) {
-                if (type.equals(EventType.Full)) {
-                    //TODO: posar aixo be quan es tinguin les ids dels menus via intent
-//                  PaymentMenu menu = service.get(idMenu);
-                    List<PaymentMenu> list= service.getAll();
-                    PaymentMenu menu = service.getAll().get(0);
-                    if (menu != null && idMenu == null) {
-                        assert toolbar != null;
-                        toolbar.setTitle("Petitions for " + menu.getName());
-                        idMenu = menu.getId();
-                    }
-                }
-            }
-        });
 
-        service.setPaymentMenuAnswerListener(new Repository.OnChangedListener() {
-            @Override
-            public void onChanged(EventType type) {
-                View recyclerView = findViewById(R.id.petitions_list);
-                assert recyclerView != null;
-                setupRecyclerView((RecyclerView) recyclerView, idMenu);
+        PaymentMenu menu = service.get(idMenu);
+        if (menu != null && idMenu == null) {
+            assert toolbar != null;
+            toolbar.setTitle("Petitions for " + menu.getName());
+            idMenu = menu.getId();
+        }
 
-            }
-        });
+        View recyclerView2 = findViewById(R.id.petitions_list);
+        assert recyclerView2 != null;
+        setupRecyclerView((RecyclerView) recyclerView2, idMenu);
 
     }
 
