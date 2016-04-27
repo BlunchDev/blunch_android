@@ -44,7 +44,7 @@ public class ListMenusActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list_menus);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        setTitle("Ofertas de menú");
+        setTitle("BLUNCH");
 
         DishRepository dishRepository = new DishRepository(getApplicationContext());
 
