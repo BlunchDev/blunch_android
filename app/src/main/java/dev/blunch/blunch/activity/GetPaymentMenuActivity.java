@@ -1,5 +1,6 @@
 package dev.blunch.blunch.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -61,8 +62,7 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+
             }
         });
 
@@ -89,8 +89,9 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "NO VAAAA", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(GetPaymentMenuActivity.this, PaymentPetitionsListActivity.class);
+                intent.putExtra(MENU_ID_KEY, menuId);
+                startActivity(intent);
             }
         });
         userName.setText(obtainUserName());
