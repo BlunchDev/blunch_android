@@ -38,6 +38,7 @@
         android:id="@+id/menu_list"
         android:layout_below="@+id/filter"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:divider="@drawable/custom_divider"/>
 
 </RelativeLayout>
