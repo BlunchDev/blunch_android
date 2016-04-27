@@ -48,7 +48,7 @@ public class MenuService extends Service<CollaborativeMenu> {
         List<CollaborativeMenu> menus = repository.all();
         List<CollaborativeMenu> result = new ArrayList<>();
         for (CollaborativeMenu menu : menus) {
-            if (menu.getDateEnd().compareTo(Calendar.getInstance().getTime()) < 0) {
+            if (menu.getDateEnd().compareTo(Calendar.getInstance().getTime()) > 0) {
                 result.add(menu);
             }
         }
@@ -60,7 +60,7 @@ public class MenuService extends Service<CollaborativeMenu> {
         List<PaymentMenu> menus = paymentMenuRepository.all();
         List<PaymentMenu> result = new ArrayList<>();
         for (PaymentMenu menu : menus) {
-            if (menu.getDateEnd().compareTo(Calendar.getInstance().getTime()) < 0) {
+            if (menu.getDateEnd().compareTo(Calendar.getInstance().getTime()) > 0) {
                 result.add(menu);
             }
         }
@@ -72,7 +72,7 @@ public class MenuService extends Service<CollaborativeMenu> {
         List<Menu> menus = getMenus();
         List<Menu> result = new ArrayList<>();
         for (Menu menu : menus) {
-            if (menu.getDateEnd().compareTo(Calendar.getInstance().getTime()) < 0) {
+            if (menu.getDateEnd().compareTo(Calendar.getInstance().getTime()) > 0) {
                 result.add(menu);
             }
         }
