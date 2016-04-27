@@ -24,6 +24,7 @@ import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.repositories.CollaborativeMenuRepository;
 import dev.blunch.blunch.repositories.DishRepository;
 import dev.blunch.blunch.services.CollaborativeMenuService;
+import dev.blunch.blunch.services.ServiceFactory;
 import dev.blunch.blunch.utils.Repository;
 import dev.blunch.blunch.view.CollaborativeDishLayout;
 
@@ -50,7 +51,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        collaborativeMenuService = new CollaborativeMenuService(new CollaborativeMenuRepository(getApplicationContext()), new DishRepository(getApplicationContext()));
+        collaborativeMenuService = ServiceFactory.getCollaborativeMenuService(getApplicationContext());
         collaborativeMenuService.setOnChangedListener(new Repository.OnChangedListener() {
             @Override
             public void onChanged(EventType type) {

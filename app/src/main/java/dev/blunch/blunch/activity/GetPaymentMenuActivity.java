@@ -26,6 +26,7 @@ import dev.blunch.blunch.repositories.DishRepository;
 import dev.blunch.blunch.repositories.PaymentMenuAnswerRepository;
 import dev.blunch.blunch.repositories.PaymentMenuRepository;
 import dev.blunch.blunch.services.PaymentMenuService;
+import dev.blunch.blunch.services.ServiceFactory;
 import dev.blunch.blunch.utils.Repository;
 import dev.blunch.blunch.view.SelectPaymentDishLayout;
 
@@ -67,9 +68,7 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
 
         menuId = getIntent().getStringExtra(MENU_ID_KEY);
 
-        paymentMenuService = new PaymentMenuService(new PaymentMenuRepository(getApplicationContext()),
-                new DishRepository(getApplicationContext()),
-                new PaymentMenuAnswerRepository(getApplicationContext()));
+        paymentMenuService = ServiceFactory.getPaymentMenuService(getApplicationContext());
         paymentMenuService.setOnChangedListener(new Repository.OnChangedListener() {
             @Override
             public void onChanged(EventType type) {

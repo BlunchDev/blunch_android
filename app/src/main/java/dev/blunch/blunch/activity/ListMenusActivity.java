@@ -28,6 +28,7 @@ import dev.blunch.blunch.repositories.PaymentMenuRepository;
 import dev.blunch.blunch.services.CollaborativeMenuService;
 import dev.blunch.blunch.services.MenuService;
 import dev.blunch.blunch.services.PaymentMenuService;
+import dev.blunch.blunch.services.ServiceFactory;
 import dev.blunch.blunch.utils.Repository;
 
 public class ListMenusActivity extends AppCompatActivity {
@@ -63,9 +64,7 @@ public class ListMenusActivity extends AppCompatActivity {
             }
         });
 
-        menuService = new MenuService(
-                new CollaborativeMenuRepository(getApplicationContext()),
-                new PaymentMenuRepository(getApplicationContext()));
+        menuService = ServiceFactory.getMenuService(getApplicationContext());
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

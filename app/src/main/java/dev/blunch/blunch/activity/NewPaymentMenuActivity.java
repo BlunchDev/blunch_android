@@ -24,6 +24,7 @@ import dev.blunch.blunch.domain.PaymentMenu;
 import dev.blunch.blunch.repositories.DishRepository;
 import dev.blunch.blunch.repositories.PaymentMenuRepository;
 import dev.blunch.blunch.services.PaymentMenuService;
+import dev.blunch.blunch.services.ServiceFactory;
 import dev.blunch.blunch.utils.Repository;
 import dev.blunch.blunch.view.PaymentDishLayout;
 
@@ -49,7 +50,7 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        paymentMenuService = new PaymentMenuService(new PaymentMenuRepository(getApplicationContext()), new DishRepository(getApplicationContext()));
+        paymentMenuService = ServiceFactory.getPaymentMenuService(getApplicationContext());
         paymentMenuService.setOnChangedListener(new Repository.OnChangedListener() {
             @Override
             public void onChanged(EventType type) {
