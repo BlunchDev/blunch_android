@@ -1,6 +1,7 @@
 package dev.blunch.blunch.view;
 
 import android.content.Context;
+import android.text.InputType;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -39,13 +40,14 @@ public class CollaborativeDishLayout extends LinearLayout{
         dishName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
         dishName.setTextColor(getResources().getColor(R.color.black));
         dishName.setHintTextColor(getResources().getColor(R.color.gray));
+        dishName.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         dishName.setHint("Nombre");
-        LinearLayout.LayoutParams nomPlatLayout = new LinearLayout.LayoutParams(500, ViewGroup.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams nomPlatLayout = new LinearLayout.LayoutParams(350, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         addView(dishName, nomPlatLayout);
 
         Space space5 = new Space(context);
-        LinearLayout.LayoutParams space5Layout = new LinearLayout.LayoutParams(40, ViewGroup.LayoutParams.MATCH_PARENT);
+        LinearLayout.LayoutParams space5Layout = new LinearLayout.LayoutParams(15, ViewGroup.LayoutParams.MATCH_PARENT);
         addView(space5, space5Layout);
 
         close = new ImageButton(context);
@@ -66,7 +68,7 @@ public class CollaborativeDishLayout extends LinearLayout{
         addView(close, closeLayout);
 
         Space space6 = new Space(context);
-        LinearLayout.LayoutParams space6Layout = new LinearLayout.LayoutParams(40, ViewGroup.LayoutParams.MATCH_PARENT);
+        LinearLayout.LayoutParams space6Layout = new LinearLayout.LayoutParams(15, ViewGroup.LayoutParams.MATCH_PARENT);
         addView(space6, space6Layout);
 
         TextView me = new TextView(context);
@@ -76,7 +78,7 @@ public class CollaborativeDishLayout extends LinearLayout{
         addView(me, meLayout);
 
         Space space2 = new Space(context);
-        LinearLayout.LayoutParams space2Layout = new LinearLayout.LayoutParams(30, ViewGroup.LayoutParams.MATCH_PARENT);
+        LinearLayout.LayoutParams space2Layout = new LinearLayout.LayoutParams(25, ViewGroup.LayoutParams.MATCH_PARENT);
         addView(space2, space2Layout);
 
         switch1 = new Switch(context);
@@ -86,18 +88,13 @@ public class CollaborativeDishLayout extends LinearLayout{
         addView(switch1, switchLayout);
 
         Space space3 = new Space(context);
-        LinearLayout.LayoutParams space3Layout = new LinearLayout.LayoutParams(30, ViewGroup.LayoutParams.MATCH_PARENT);
+        LinearLayout.LayoutParams space3Layout = new LinearLayout.LayoutParams(25, ViewGroup.LayoutParams.MATCH_PARENT);
         addView(space3, space3Layout);
 
         TextView sug = new TextView(context);
         sug.setText("Sug");
         sug.setTextColor(getResources().getColor(R.color.gray));
         addView(sug, meLayout);
-
-        Space space4 = new Space(context);
-        LinearLayout.LayoutParams space4Layout = new LinearLayout.LayoutParams(40, ViewGroup.LayoutParams.MATCH_PARENT);
-        addView(space4, space4Layout);
-
     }
 
     public String getDishName(){
