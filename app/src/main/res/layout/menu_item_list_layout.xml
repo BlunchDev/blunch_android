@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/menu_name"
             android:textSize="18dp"
-            android:textColor="#3964c3"
+            android:textColor="@color/colorPrimaryDark"
             android:textStyle="bold"
             android:textAlignment="center"/>
 

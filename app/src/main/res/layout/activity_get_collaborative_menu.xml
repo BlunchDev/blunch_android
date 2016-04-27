@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:id="@+id/join_getCollaborative"
-            android:text="UNIR-SE"
+            android:text="UNIRSE"
             android:background="@color/colorPrimary"/>
     </LinearLayout>
 

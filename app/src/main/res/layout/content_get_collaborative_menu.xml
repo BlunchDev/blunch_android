@@ -23,7 +23,15 @@
             android:layout_height="wrap_content"
             android:weightSum="1"
             android:layout_gravity="center"
-            android:gravity="center">
+            android:gravity="center"
+            android:paddingLeft="30dp"
+            android:layout_marginTop="12dp">
+
+            <ImageView
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:id="@+id/user_icon"
+                android:src="@drawable/user"/>
 
             <LinearLayout
                 android:orientation="vertical"
@@ -36,7 +44,7 @@
                     android:layout_height="wrap_content"
                     android:text="Irina Shayk"
                     android:id="@+id/hostName_getCollaborative"
-                    android:textSize="28dp"
+                    android:textSize="22dp"
                     android:textStyle="bold|italic"
                     android:layout_gravity="center" />
 
@@ -60,7 +68,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="15dp" />
+            android:layout_height="25dp" />
 
         <View
             android:layout_width="fill_parent"

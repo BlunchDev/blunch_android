@@ -1,6 +1,7 @@
 package dev.blunch.blunch.activity;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -132,6 +133,11 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
         String sd = "";
         for (String s : obtainSuggestedDishNames()){
             sd += s + "\n";
+        }
+        if (obtainSuggestedDishNames().size() == 0) {
+            sd = "No quedan platos sugeridos por el huésped";
+            TextView textView = (TextView) findViewById(R.id.suggestions_getCollaborative);
+            textView.setTypeface(null, Typeface.ITALIC);
         }
         return sd;
     }
