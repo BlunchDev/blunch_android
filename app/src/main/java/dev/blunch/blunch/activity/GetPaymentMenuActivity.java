@@ -22,7 +22,6 @@ import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.domain.PaymentMenu;
 import dev.blunch.blunch.domain.PaymentMenuAnswer;
 import dev.blunch.blunch.services.PaymentMenuService;
-import dev.blunch.blunch.services.ServiceFactory;
 import dev.blunch.blunch.utils.Repository;
 import dev.blunch.blunch.view.SelectPaymentDishLayout;
 
@@ -37,7 +36,7 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
     private List<Dish> dishes;
     private final String COMA = ",";
     private final String FAKE_GUEST = "Platon";
-    private TextView userName, localization, city, description, hour,dateStart, dateEnd;
+    private TextView userName, localization, city, description, hour;
     private Button join;
     private Toolbar toolbar;
     private LinearLayout dishesLayout;
@@ -53,15 +52,27 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_get_payment_menu);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+
         menuId = getIntent().getStringExtra(MENU_ID_KEY);
 
-        paymentMenuService = ServiceFactory.getPaymentMenuService(getApplicationContext());
+        paymentMenuService = new PaymentMenuService(new PaymentMenuRepository(getApplicationContext()),
+                new DishRepository(getApplicationContext()),
+                new PaymentMenuAnswerRepository(getApplicationContext()));
         paymentMenuService.setOnChangedListener(new Repository.OnChangedListener() {
             @Override
             public void onChanged(EventType type) {
                 if (type.equals(EventType.Full)) {
+                    Log.d("EVENT", "FULL");
                     paymentMenu = paymentMenuService.get(menuId);
-                    dishes = paymentMenuService.getDishes(menuId);
+                    dishes = paymentMenuService.getDishes(paymentMenu.getId());
                     initialize();
                 }
             }
@@ -74,8 +85,6 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
         city = (TextView) findViewById(R.id.hostCity);
         description = (TextView) findViewById(R.id.description);
         hour = (TextView) findViewById(R.id.hour);
-        dateStart = (TextView) findViewById(R.id.dateStart);
-        dateEnd = (TextView) findViewById(R.id.dateEnd);
         join = (Button) findViewById(R.id.join);
         dishesLayout = (LinearLayout) findViewById(R.id.checkboxDishesLayout);
         dishesLayout.removeAllViews();
@@ -94,8 +103,6 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
         city.setText(obtainCity());
         description.setText(obtainDescription());
         hour.setText(obtainHour());
-        dateStart.setText(obtainDateStart());
-        dateEnd.setText(obtainDateEnd());
         join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -171,14 +178,6 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
 
     private String obtainDescription() {
         return paymentMenu.getDescription();
-    }
-
-    private String obtainDateEnd() {
-        return paymentMenu.getDateEnd().toString();
-    }
-
-    private String obtainDateStart() {
-        return paymentMenu.getDateStart().toString();
     }
 
     private String obtainHour() {

@@ -35,7 +35,7 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
     private List<Dish> suggestedDishes;
     private List<Dish> offeredDishes;
     private final String COMA = ",";
-    private TextView userName, localization, city, hostDishes, suggestions, description, hour, dateStart, dateEnd;
+    private TextView userName, localization, city, hostDishes, suggestions, description, hour;
     private Button join;
     private Toolbar toolbar;
 
@@ -65,21 +65,21 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
 
     @SuppressWarnings("all")
     private void initialize() {
-        userName = (TextView) findViewById(R.id.hostName);
-        localization = (TextView) findViewById(R.id.hostLocalization);
-        city = (TextView) findViewById(R.id.hostCity);
-        hostDishes = (TextView) findViewById(R.id.hostDishes);
-        suggestions = (TextView) findViewById(R.id.suggestions);
-        description = (TextView) findViewById(R.id.description);
-        hour = (TextView) findViewById(R.id.hour);
-        dateStart = (TextView)findViewById(R.id.dateStart);
-        dateEnd = (TextView)findViewById(R.id.dateEnd);
-        join = (Button) findViewById(R.id.join);
+        userName = (TextView) findViewById(R.id.hostName_getCollaborative);
+        localization = (TextView) findViewById(R.id.hostLocalization_getCollaborative);
+        city = (TextView) findViewById(R.id.hostCity_getCollaborative);
+        hostDishes = (TextView) findViewById(R.id.hostDishes_getCollaborative);
+        suggestions = (TextView) findViewById(R.id.suggestions_getCollaborative);
+        description = (TextView) findViewById(R.id.description_getCollaborative);
+        hour = (TextView) findViewById(R.id.hour_getCollaborative);
+        join = (Button) findViewById(R.id.join_getCollaborative);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "NO VAAAA", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                Intent intent = new Intent(GetCollaborativeMenuActivity.this, ProposalListActivity.class);
+                intent.putExtra(MENU_ID_KEY, menuId);
+                startActivity(intent);
             }
         });
         userName.setText(obtainUserName());
@@ -89,8 +89,6 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
         suggestions.setText(obtainSuggestedDishSingleString());
         description.setText(obtainDescription());
         hour.setText(obtainHour());
-        dateStart.setText(obtainDateStart());
-        dateEnd.setText(obtainDateEnd());
         join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -164,14 +162,6 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
         return collaborativeMenu.getDescription();
     }
 
-    private String obtainDateEnd() {
-        return collaborativeMenu.getDateEnd().toString();
-    }
-
-    private String obtainDateStart() {
-        return collaborativeMenu.getDateStart().toString();
-    }
-
     private String obtainHour() {
         String result = "";
         Integer hour, minute;
@@ -181,22 +171,15 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
         calendar.setTime(dateStart);
         hour = calendar.get(Calendar.HOUR_OF_DAY);
         minute = calendar.get(Calendar.MINUTE);
-
         if (hour < 10) result += "0";
-
         result += hour + ":";
-
         if (minute < 10) result += "0";
-
         result += minute + " - ";
         calendar.setTime(dateEnd);
         hour = calendar.get(Calendar.HOUR_OF_DAY);
         minute = calendar.get(Calendar.MINUTE);
-
         if (hour < 10) result += "0";
-
         result += hour + ":";
-
         if (minute < 10) result += "0";
         result += minute;
         return result;
