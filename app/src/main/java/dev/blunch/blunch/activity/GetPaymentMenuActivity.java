@@ -69,17 +69,9 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
         menuId = getIntent().getStringExtra(MENU_ID_KEY);
 
         paymentMenuService = ServiceFactory.getPaymentMenuService(getApplicationContext());
-        paymentMenuService.setOnChangedListener(new Repository.OnChangedListener() {
-            @Override
-            public void onChanged(EventType type) {
-                if (type.equals(EventType.Full)) {
-                    Log.d("EVENT", "FULL");
-                    paymentMenu = paymentMenuService.get(menuId);
-                    dishes = paymentMenuService.getDishes(paymentMenu.getId());
-                    initialize();
-                }
-            }
-        });
+        paymentMenu = paymentMenuService.get(menuId);
+        dishes = paymentMenuService.getDishes(paymentMenu.getId());
+        initialize();
     }
 
     private void initialize() {

@@ -52,27 +52,16 @@ public class ProposalListActivity extends AppCompatActivity {
         idMenu = getIntent().getStringExtra(MENU_ID_KEY);
 
         service = ServiceFactory.getCollaborativeMenuService(getApplicationContext());
-        service.setOnChangedListener(new Repository.OnChangedListener() {
-            @Override
-            public void onChanged(EventType type) {
-                CollaborativeMenu menu = service.get(idMenu);
-                if (menu != null && idMenu==null) {
-                    toolbar.setTitle("Answers for "+menu.getName());
-                    idMenu = menu.getId();
-                }
-            }
-        });
 
-        service.setCollaborativeMenuAnswerListener(new Repository.OnChangedListener() {
-            @Override
-            public void onChanged(EventType type) {
-                View recyclerView = findViewById(R.id.proposal_list);
-                assert recyclerView != null;
-                setupRecyclerView((RecyclerView) recyclerView, idMenu);
-            }
-        });
+        CollaborativeMenu menu = service.get(idMenu);
+        if (menu != null && idMenu==null) {
+            toolbar.setTitle("Answers for "+menu.getName());
+            idMenu = menu.getId();
+        }
 
-
+        View recyclerView2 = findViewById(R.id.proposal_list);
+        assert recyclerView2 != null;
+        setupRecyclerView((RecyclerView) recyclerView2, idMenu);
 
     }
 

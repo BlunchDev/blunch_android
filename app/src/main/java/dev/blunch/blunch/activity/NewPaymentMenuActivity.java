@@ -57,14 +57,7 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         paymentMenuService = ServiceFactory.getPaymentMenuService(getApplicationContext());
-        paymentMenuService.setOnChangedListener(new Repository.OnChangedListener() {
-            @Override
-            public void onChanged(EventType type) {
-                if (type.equals(EventType.Full)) {
-                    initialize();
-                }
-            }
-        });
+        initialize();
     }
 
     private void initialize() {

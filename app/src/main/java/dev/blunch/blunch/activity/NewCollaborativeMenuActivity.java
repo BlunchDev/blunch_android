@@ -56,14 +56,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         collaborativeMenuService = ServiceFactory.getCollaborativeMenuService(getApplicationContext());
-        collaborativeMenuService.setOnChangedListener(new Repository.OnChangedListener() {
-            @Override
-            public void onChanged(EventType type) {
-                if (type.equals(EventType.Full)) {
-                    initialize();
-                }
-            }
-        });
+        initialize();
     }
 
     private void initialize() {

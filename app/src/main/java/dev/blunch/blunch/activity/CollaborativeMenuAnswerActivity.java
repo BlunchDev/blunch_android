@@ -50,17 +50,11 @@ public class CollaborativeMenuAnswerActivity extends AppCompatActivity {
 
         menuID = getIntent().getStringExtra("menuId");
 
-        collaborativeMenuService.setOnChangedListener(new Repository.OnChangedListener() {
-            @Override
-            public void onChanged(EventType type) {
-                if (type.equals(EventType.Full)) {
-                    CollaborativeMenu collaborativeMenu = collaborativeMenuService.get(menuID);
-                    hostSuggestions = collaborativeMenuService.getSuggestedDishes(collaborativeMenu.getId());
-                    makeProposalCreation();
-                    fillHostSuggestions();
-                }
-            }
-        });
+        CollaborativeMenu collaborativeMenu = collaborativeMenuService.get(menuID);
+        hostSuggestions = collaborativeMenuService.getSuggestedDishes(collaborativeMenu.getId());
+        makeProposalCreation();
+        fillHostSuggestions();
+
     }
 
     private void makeProposalCreation() {
