@@ -3,8 +3,6 @@ package dev.blunch.blunch.activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -30,7 +28,7 @@ import dev.blunch.blunch.services.ServiceFactory;
 import dev.blunch.blunch.view.CollaborativeDishLayout;
 
 @SuppressWarnings("all")
-public class NewCollaborativeMenuActivityReviewed extends AppCompatActivity {
+public class NewCollaborativeMenuActivity extends AppCompatActivity {
 
     private final static String SERVICE = "CollaborativeMenuService";
 
@@ -92,7 +90,7 @@ public class NewCollaborativeMenuActivityReviewed extends AppCompatActivity {
         moreDishes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final CollaborativeDishLayout a = new CollaborativeDishLayout(NewCollaborativeMenuActivityReviewed.this);
+                final CollaborativeDishLayout a = new CollaborativeDishLayout(NewCollaborativeMenuActivity.this);
                 myDishes.add(a);
                 moreDishesLayout.addView(a);
                 ImageButton close = a.getClose();
@@ -109,7 +107,7 @@ public class NewCollaborativeMenuActivityReviewed extends AppCompatActivity {
         moreSuggestedDishes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final CollaborativeDishLayout a = new CollaborativeDishLayout(NewCollaborativeMenuActivityReviewed.this);
+                final CollaborativeDishLayout a = new CollaborativeDishLayout(NewCollaborativeMenuActivity.this);
                 suggestedDishes.add(a);
                 moreSuggestedDishesLayout.addView(a);
                 ImageButton close = a.getClose();

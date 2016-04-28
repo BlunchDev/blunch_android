@@ -29,4 +29,7 @@
     <string name="title_activity_new_collaborative_menu_activity_reviewed">
         NewCollaborativeMenuActivityReviewed
     </string>
+    <string name="title_activity_new_payment_menu_activity_reviewed">
+        NewPaymentMenuActivityReviewed
+    </string>
 </resources>

@@ -104,7 +104,7 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
                 paymentMenuAnswer = new PaymentMenuAnswer(paymentMenu.getId(), FAKE_GUEST, Calendar.getInstance().getTime(), answerDishes);
                 paymentMenuService.answer(paymentMenu.getId(), paymentMenuAnswer);
 
-                Toast.makeText(v.getContext(), "OK", Toast.LENGTH_LONG).show();
+                Toast.makeText(v.getContext(), "Menú solicitado correctamente!", Toast.LENGTH_LONG).show();
                 answerDishes = new ArrayList<Dish>();
             }
         });
