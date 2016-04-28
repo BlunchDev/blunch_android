@@ -12,6 +12,8 @@
         android:layout_height="90dp"
         android:id="@+id/profile_pic"
         android:layout_alignTop="@+id/comment"
+        android:scaleY="0.5"
+        android:scaleX="0.5"
         android:src="@drawable/user"
         android:layout_alignParentStart="true" />
 
@@ -22,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_toEndOf="@+id/profile_pic"
         android:layout_toStartOf="@+id/total"
-        android:layout_marginLeft="1dp"
+        android:textSize="15sp"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="1dp" />
@@ -33,10 +35,9 @@
         android:layout_height="wrap_content"
         android:layout_toEndOf="@+id/profile_pic"
         android:layout_below="@+id/comment"
-        android:text="test"
         android:layout_toStartOf="@+id/total"
+        android:textSize="12sp"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_marginLeft="15dp"
         android:layout_marginTop="4dp" />
 
 
@@ -44,7 +45,7 @@
         android:id="@+id/total"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="10€"
+        android:textSize="15sp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentStart="false"
         android:layout_margin="15dp"
