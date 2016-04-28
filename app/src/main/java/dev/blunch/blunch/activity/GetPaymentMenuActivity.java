@@ -50,7 +50,7 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
     private ArrayList<SelectPaymentDishLayout> paymentDishesLayoutList;
     private List<Dish> answerDishes;
 
-    private String menuId;
+    private static String menuId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +58,11 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_get_payment_menu);
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -67,7 +72,7 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
             }
         });
 
-        menuId = getIntent().getStringExtra(MENU_ID_KEY);
+        if (getIntent().getStringExtra(MENU_ID_KEY) != null) this.menuId = getIntent().getStringExtra(MENU_ID_KEY);
 
         paymentMenuService = ServiceFactory.getPaymentMenuService(getApplicationContext());
         paymentMenu = paymentMenuService.get(menuId);
@@ -101,11 +106,15 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
         join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                paymentMenuAnswer = new PaymentMenuAnswer(paymentMenu.getId(), FAKE_GUEST, Calendar.getInstance().getTime(), answerDishes);
-                paymentMenuService.answer(paymentMenu.getId(), paymentMenuAnswer);
+                if (answerDishes.size() == 0) {
+                    Toast.makeText(getApplicationContext(), "Debes seleccionar al menos un plato para realizar el pedido", Toast.LENGTH_SHORT).show();
+                } else {
+                    paymentMenuAnswer = new PaymentMenuAnswer(paymentMenu.getId(), FAKE_GUEST, Calendar.getInstance().getTime(), answerDishes);
+                    paymentMenuService.answer(paymentMenu.getId(), paymentMenuAnswer);
 
-                Toast.makeText(v.getContext(), "OK", Toast.LENGTH_LONG).show();
-                answerDishes = new ArrayList<Dish>();
+                    Toast.makeText(v.getContext(), "Menú solicitado correctamente!", Toast.LENGTH_LONG).show();
+                    answerDishes = new ArrayList<Dish>();
+                }
             }
         });
         precio.setText("0 €");
@@ -205,6 +214,13 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
         if (minute < 10) result += "0";
         result += minute;
         return result;
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        finish();
+        startActivity(getIntent());
     }
 
 }

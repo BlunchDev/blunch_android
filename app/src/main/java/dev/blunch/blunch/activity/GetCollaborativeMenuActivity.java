@@ -4,10 +4,8 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -20,11 +18,8 @@ import java.util.List;
 import dev.blunch.blunch.R;
 import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.domain.Dish;
-import dev.blunch.blunch.repositories.CollaborativeMenuRepository;
-import dev.blunch.blunch.repositories.DishRepository;
 import dev.blunch.blunch.services.CollaborativeMenuService;
 import dev.blunch.blunch.services.ServiceFactory;
-import dev.blunch.blunch.utils.Repository;
 
 /**
  * GetMenuCollaborative Activity
@@ -42,7 +37,7 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
     private Button join;
     private Toolbar toolbar;
 
-    private String menuId;
+    private static String menuId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +45,12 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_get_collaborative_menu);
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        this.menuId = getIntent().getStringExtra(MENU_ID_KEY);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        if (getIntent().getStringExtra(MENU_ID_KEY) != null) this.menuId = getIntent().getStringExtra(MENU_ID_KEY);
 
         collaborativeMenuService = ServiceFactory.getCollaborativeMenuService(getApplicationContext());
 
@@ -74,7 +73,7 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(GetCollaborativeMenuActivity.this, ProposalListActivity.class);
+                Intent intent = new Intent(GetCollaborativeMenuActivity.this, CollaborativePetitionsListActivity.class);
                 intent.putExtra(MENU_ID_KEY, menuId);
                 startActivity(intent);
             }
@@ -193,6 +192,13 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
         if (minute < 10) result += "0";
         result += minute;
         return result;
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        finish();
+        startActivity(getIntent());
     }
 
 }

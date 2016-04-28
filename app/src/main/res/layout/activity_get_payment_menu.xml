@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:id="@+id/join"
-            android:text="UNIR-SE"
+            android:text="SOLICITAR"
             android:background="@color/colorPrimary"/>
     </LinearLayout>
 

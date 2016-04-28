@@ -7,13 +7,11 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,10 +19,6 @@ import java.util.List;
 import dev.blunch.blunch.R;
 import dev.blunch.blunch.adapters.MenuListAdapter;
 import dev.blunch.blunch.domain.Menu;
-import dev.blunch.blunch.repositories.CollaborativeMenuAnswerRepository;
-import dev.blunch.blunch.repositories.CollaborativeMenuRepository;
-import dev.blunch.blunch.repositories.DishRepository;
-import dev.blunch.blunch.repositories.PaymentMenuRepository;
 import dev.blunch.blunch.services.CollaborativeMenuService;
 import dev.blunch.blunch.services.MenuService;
 import dev.blunch.blunch.services.PaymentMenuService;
@@ -45,8 +39,6 @@ public class ListMenusActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTitle("BLUNCH");
-
-        DishRepository dishRepository = new DishRepository(getApplicationContext());
 
         Spinner spinner = (Spinner) findViewById(R.id.menu_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -71,6 +63,7 @@ public class ListMenusActivity extends AppCompatActivity {
         paymentMenuService = ServiceFactory.getPaymentMenuService(getApplicationContext());
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setImageResource(R.drawable.add);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -155,6 +148,13 @@ public class ListMenusActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        finish();
+        startActivity(getIntent());
     }
 
 }

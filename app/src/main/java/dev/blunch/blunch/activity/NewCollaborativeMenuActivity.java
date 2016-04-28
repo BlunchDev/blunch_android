@@ -3,7 +3,6 @@ package dev.blunch.blunch.activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -24,11 +23,8 @@ import java.util.List;
 import dev.blunch.blunch.R;
 import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.domain.Dish;
-import dev.blunch.blunch.repositories.CollaborativeMenuRepository;
-import dev.blunch.blunch.repositories.DishRepository;
 import dev.blunch.blunch.services.CollaborativeMenuService;
 import dev.blunch.blunch.services.ServiceFactory;
-import dev.blunch.blunch.utils.Repository;
 import dev.blunch.blunch.view.CollaborativeDishLayout;
 
 @SuppressWarnings("all")
@@ -39,24 +35,30 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
     private int day,month,year;
 
     private int     iHour,
-                    iMinute,
-                    fHour,
-                    fMinute;
-    private Date    start,
-                    finish;
+            iMinute,
+            fHour,
+            fMinute;
+    private Date start,
+            finish;
     protected ArrayList<CollaborativeDishLayout> myDishes = new ArrayList<>();
+    protected ArrayList<CollaborativeDishLayout> suggestedDishes = new ArrayList<>();
 
     private CollaborativeMenuService collaborativeMenuService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_colaborative_menu);
+        setContentView(R.layout.activity_new_collaborative_menu_activity_reviewed);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         collaborativeMenuService = ServiceFactory.getCollaborativeMenuService(getApplicationContext());
+        setTitle("Crear menú colaborativo");
         initialize();
+
     }
 
     private void initialize() {
@@ -72,8 +74,10 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
 
         final EditText menuName = (EditText) findViewById(R.id.nomMenu);
         final ImageButton moreDishes = (ImageButton) findViewById(R.id.moreDishes);
+        final ImageButton moreSuggestedDishes = (ImageButton) findViewById(R.id.moreSuggestdDishes);
         final LinearLayout moreDishesLayout = (LinearLayout) findViewById(R.id.dishesLayout);
-        final CollaborativeDishLayout menu = new CollaborativeDishLayout(getApplicationContext());
+        final LinearLayout moreSuggestedDishesLayout = (LinearLayout) findViewById(R.id.suggestedDishesLayout);
+        /*final CollaborativeDishLayout menu = new CollaborativeDishLayout(getApplicationContext());
         myDishes.add(menu);
         moreDishesLayout.addView(menu);
         menu.getClose().setOnClickListener(new View.OnClickListener() {
@@ -84,7 +88,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
                     myDishes.remove(menu);
                 }
             }
-        });
+        });*/
 
         moreDishes.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,10 +100,25 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
                 close.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (myDishes.size() > 1) {
-                            moreDishesLayout.removeView(a);
-                            myDishes.remove(a);
-                        }
+                        moreDishesLayout.removeView(a);
+                        myDishes.remove(a);
+                    }
+                });
+            }
+        });
+
+        moreSuggestedDishes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final CollaborativeDishLayout a = new CollaborativeDishLayout(NewCollaborativeMenuActivity.this);
+                suggestedDishes.add(a);
+                moreSuggestedDishesLayout.addView(a);
+                ImageButton close = a.getClose();
+                close.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        moreSuggestedDishesLayout.removeView(a);
+                        suggestedDishes.remove(a);
                     }
                 });
             }
@@ -122,33 +141,6 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
             }
         });
 
-        final ImageButton vegetarian = (ImageButton) findViewById(R.id.vegetarian);
-        vegetarian.setColorFilter(R.color.black);
-        vegetarian.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isVegetarian();
-                if (vegetarian.getColorFilter().equals(R.color.green)) {
-                    vegetarian.setColorFilter(R.color.colorAccent);
-                } else {
-                    vegetarian.setColorFilter(R.color.green);
-                }
-            }
-        });
-
-        final ImageButton glutenFree = (ImageButton) findViewById(R.id.glutenfree);
-        glutenFree.setColorFilter(R.color.black);
-        glutenFree.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isGlutenFree();
-                if (glutenFree.getColorFilter().equals(R.color.green)) {
-                    glutenFree.setColorFilter(R.color.colorAccent);
-                } else {
-                    glutenFree.setColorFilter(R.color.green);
-                }
-            }
-        });
     }
 
     private void isGlutenFree() {
@@ -180,7 +172,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         start = cStart.getTime();
 
         String dayS = String.valueOf(this.day);
-        String monthS = String.valueOf(this.month);
+        String monthS = String.valueOf(this.month + 1);
         String yearS = String.valueOf(this.year);
         if (this.day < 10) dayS = "0" + dayS;
         if (this.month < 10) monthS = "0" + monthS;
@@ -297,22 +289,33 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
             for (CollaborativeDishLayout dishLayout : myDishes) {
                 if (!dishLayout.getDishName().equals("")) {
                     Dish dish = new Dish(dishLayout.getDishName());
-                    if (!dishLayout.isSuggest()) offeredDish.add(dish);
-                    else suggestedDish.add(dish);
+                    offeredDish.add(dish);
                 }
             }
 
+            for (CollaborativeDishLayout dishLayout : suggestedDishes) {
+                if (!dishLayout.getDishName().equals("")) {
+                    Dish dish = new Dish(dishLayout.getDishName());
+                    suggestedDish.add(dish);
+                }
+            }
 
-            CollaborativeMenu collaborativeMenu = new CollaborativeMenu(menuNameString,
-                                                                        author,
-                                                                        description,
-                                                                        localization,
-                                                                        start,
-                                                                        finish);
-            collaborativeMenuService.save(collaborativeMenu, offeredDish, suggestedDish);
-            Toast.makeText(this, "Menu colaborativo creado correctamente!",
-                    Toast.LENGTH_LONG).show();
-            finish();
+            if (offeredDish.size() == 0) {
+                Toast.makeText(getApplicationContext(), "Debes ofrecer al menos un plato!", Toast.LENGTH_SHORT).show();
+            }
+
+            else {
+                CollaborativeMenu collaborativeMenu = new CollaborativeMenu(menuNameString,
+                        author,
+                        description,
+                        localization,
+                        start,
+                        finish);
+                collaborativeMenuService.save(collaborativeMenu, offeredDish, suggestedDish);
+                Toast.makeText(this, "Menú colaborativo creado correctamente!",
+                        Toast.LENGTH_LONG).show();
+                finish();
+            }
         }
     }
 
@@ -322,4 +325,5 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
                 || city.equals("") || city.equals("Tu ciudad")
                 || description.equals("") || description.equals("descripción");
     }
+
 }
