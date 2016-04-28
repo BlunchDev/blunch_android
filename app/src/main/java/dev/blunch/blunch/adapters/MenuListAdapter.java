@@ -89,17 +89,19 @@ public class MenuListAdapter extends BaseAdapter {
         int endH = end.get(Calendar.HOUR_OF_DAY);
         int endM = end.get(Calendar.MINUTE);
 
-        String s = ((startH > 9) ? startH : ("0" + startH)).toString()
+        return  ((startH > 9) ? startH : ("0" + startH)).toString()
                 + ":" + ((startM > 9) ? startM : ("0" + startM)).toString()
                 + " - " + ((endH > 9) ? endH : ("0" + endH)).toString()
                 + ":" + ((endM > 9) ? endM : ("0" + endM)).toString();
-        return s;
     }
 
     private String getDateString(Date dateStart) {
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(dateStart.getTime());
-        String s = cal.get(Calendar.DAY_OF_MONTH) + "/" + (cal.get(Calendar.MONTH) + 1) + "/" + cal.get(Calendar.YEAR);
-        return s;
+        String day = String.valueOf(cal.get(Calendar.DAY_OF_MONTH));
+        String month = String.valueOf(cal.get(Calendar.MONTH) + 1);
+        if (cal.get(Calendar.DAY_OF_MONTH) < 10) day = "0" + day;
+        if (cal.get(Calendar.MONTH) + 1 < 10) month = "0" + month;
+        return day + "/" + month + "/" + cal.get(Calendar.YEAR);
     }
 }
