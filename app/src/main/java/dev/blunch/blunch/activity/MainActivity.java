@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 
@@ -46,62 +48,9 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         setTitle("BLUNCH");
 
-        Spinner spinner = (Spinner) findViewById(R.id.menu_spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.menu_types, R.layout.spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        spinner.setAdapter(adapter);
-
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                init(parent.getItemAtPosition(position).toString());
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
         menuService = ServiceFactory.getMenuService(getApplicationContext());
         collaborativeMenuService = ServiceFactory.getCollaborativeMenuService(getApplicationContext());
         paymentMenuService = ServiceFactory.getPaymentMenuService(getApplicationContext());
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setImageResource(R.drawable.add);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setMessage("Qué tipo de menú quieres dar de alta?")
-                        .setCancelable(false)
-                        .setPositiveButton("Menú colaborativo", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                Intent intent = new Intent(MainActivity.this, NewCollaborativeMenuActivity.class);
-                                startActivity(intent);
-                            }
-                        })
-                        .setNegativeButton("Menú de pago", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                Intent intent = new Intent(MainActivity.this, NewPaymentMenuActivity.class);
-                                startActivity(intent);
-                            }
-                        });
-                AlertDialog alert = builder.create();
-                alert.show();
-            }
-        });
-
-        menuService.setOnChangedListener(new Repository.OnChangedListener() {
-            @Override
-            public void onChanged(EventType type) {
-                if (type.equals(EventType.Full)) {
-                   init("All");
-                }
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -111,6 +60,10 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.getMenu().getItem(0).setChecked(true);
+
+        initFragment(R.layout.content_list_menus);
+        initializeSearchMenus();
     }
 
     private void init(String filter) {
@@ -203,16 +156,101 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.my_menus) {
-
-        } else if (id == R.id.collaborating_menus) {
-
-        } else if (id == R.id.payment_menus) {
-
+        if (id == R.id.search_menus) {
+            initFragment(R.layout.content_list_menus);
+            initializeSearchMenus();
+        }
+        else if (id == R.id.my_menus) {
+            //initFragment(R.layout.content);
+            initializeMyMenus();
+        }
+        else if (id == R.id.collaborating_menus) {
+            //initFragment(R.layout.content);
+            initializeCollaboratingMenus();
+        }
+        else if (id == R.id.payment_menus) {
+            //initFragment(R.layout.content);
+            initializePaymentmenus();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void initFragment(int id) {
+        LayoutInflater inflater = getLayoutInflater();
+        View v = inflater.inflate(id, null);
+        FrameLayout frameLayout = (FrameLayout) findViewById(R.id.main_frame_layout);
+        frameLayout.removeAllViews();
+        frameLayout.addView(v);
+    }
+
+    private void initializeSearchMenus() {
+
+        Spinner spinner = (Spinner) findViewById(R.id.menu_spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.menu_types, R.layout.spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                init(parent.getItemAtPosition(position).toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setImageResource(R.drawable.add);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setMessage("Qué tipo de menú quieres dar de alta?")
+                        .setCancelable(false)
+                        .setPositiveButton("Menú colaborativo", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                Intent intent = new Intent(MainActivity.this, NewCollaborativeMenuActivity.class);
+                                startActivity(intent);
+                            }
+                        })
+                        .setNegativeButton("Menú de pago", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                Intent intent = new Intent(MainActivity.this, NewPaymentMenuActivity.class);
+                                startActivity(intent);
+                            }
+                        });
+                AlertDialog alert = builder.create();
+                alert.show();
+            }
+        });
+
+        menuService.setOnChangedListener(new Repository.OnChangedListener() {
+            @Override
+            public void onChanged(EventType type) {
+                if (type.equals(EventType.Full)) {
+                    init("All");
+                }
+            }
+        });
+    }
+
+    private void initializeCollaboratingMenus() {
+        //TODO fill view
+    }
+
+    private void initializePaymentmenus() {
+        //TODO fill view
+    }
+
+    private void initializeMyMenus() {
+        //TODO fill view
     }
 }

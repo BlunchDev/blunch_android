@@ -8,8 +8,15 @@
     tools:context="dev.blunch.blunch.activity.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-    <include layout="@layout/content_list_menus"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:id="@+id/main_frame_layout">
+
+    </FrameLayout>
+
+    <!--<include layout="@layout/content_list_menus"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />-->
 
 </RelativeLayout>

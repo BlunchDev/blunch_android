@@ -3,6 +3,10 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/search_menus"
+            android:icon="@android:drawable/ic_dialog_info"
+            android:title="Buscar menús" />
+        <item
             android:id="@+id/my_menus"
             android:icon="@android:drawable/ic_menu_agenda"
             android:title="Mis menús" />
