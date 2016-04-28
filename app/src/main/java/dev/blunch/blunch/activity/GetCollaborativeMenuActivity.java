@@ -194,4 +194,11 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
         return result;
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        finish();
+        startActivity(getIntent());
+    }
+
 }
