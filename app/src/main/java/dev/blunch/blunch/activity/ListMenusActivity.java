@@ -71,6 +71,7 @@ public class ListMenusActivity extends AppCompatActivity {
         paymentMenuService = ServiceFactory.getPaymentMenuService(getApplicationContext());
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setImageResource(R.drawable.add);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
