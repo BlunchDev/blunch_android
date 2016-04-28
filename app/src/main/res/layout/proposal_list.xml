@@ -8,5 +8,5 @@
     android:layout_height="match_parent"
     android:background="#ECEFF1"
     app:layoutManager="LinearLayoutManager"
-    tools:context="dev.blunch.blunch.activity.ProposalListActivity"
+    tools:context=".activity.CollaborativePetitionsListActivity"
     tools:listitem="@layout/proposal_list_content"/>

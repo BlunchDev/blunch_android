@@ -52,6 +52,9 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         collaborativeMenuService = ServiceFactory.getCollaborativeMenuService(getApplicationContext());
         setTitle("Crear menú colaborativo");
         initialize();

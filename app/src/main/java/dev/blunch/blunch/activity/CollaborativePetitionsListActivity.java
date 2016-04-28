@@ -22,11 +22,11 @@ import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.services.CollaborativeMenuService;
 import dev.blunch.blunch.services.ServiceFactory;
 
-public class ProposalListActivity extends AppCompatActivity {
+public class CollaborativePetitionsListActivity extends AppCompatActivity {
 
 
     public static final String MENU_ID_KEY = "menuId";
-    private static final String TAG = ProposalListActivity.class.getSimpleName();
+    private static final String TAG = CollaborativePetitionsListActivity.class.getSimpleName();
     private CollaborativeMenuService service;
     private String idMenu;
 
@@ -39,6 +39,9 @@ public class ProposalListActivity extends AppCompatActivity {
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         toolbar.setTitle(getTitle());
 
         View recyclerView = findViewById(R.id.proposal_list);
