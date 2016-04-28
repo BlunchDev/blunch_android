@@ -80,7 +80,7 @@ public class ListMenusActivity extends AppCompatActivity {
                         .setCancelable(false)
                         .setPositiveButton("Menú colaborativo", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                Intent intent = new Intent(ListMenusActivity.this, NewCollaborativeMenuActivity.class);
+                                Intent intent = new Intent(ListMenusActivity.this, NewCollaborativeMenuActivityReviewed.class);
                                 startActivity(intent);
                             }
                         })

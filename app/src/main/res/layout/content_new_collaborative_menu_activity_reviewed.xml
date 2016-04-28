@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="dev.blunch.blunch.activity.NewCollaborativeMenuActivityReviewed"
+    tools:showIn="@layout/activity_new_collaborative_menu_activity_reviewed">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbarLayout"
+        android:orientation="vertical"
+        android:gravity="bottom"
+        android:weightSum="1">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="460dp"
+            android:paddingTop="16dp"
+            android:layout_weight="1.03">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/nomMenu"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:hint="MENÚ"
+                    android:textSize="35dp"
+                    android:layout_gravity="center"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/gray"
+                    android:gravity="center" />
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp">
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/description"
+                        android:hint="Descripción"
+                        android:maxLength="140"
+                        android:gravity="top"
+                        android:textColorHint="@color/gray"
+                        android:textColor="@color/black"
+                        android:layout_gravity="center" />
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/description"
+                        android:hint="Tu dirección"
+                        android:textColorHint="@color/gray"
+                        android:textColor="@color/black"
+                        android:id="@+id/adress" />
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/adress"
+                        android:hint="Tu ciudad"
+                        android:textColorHint="@color/gray"
+                        android:textColor="@color/black"
+                        android:id="@+id/city" />
+
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="328dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:text="Platos:"
+                    android:longClickable="false"
+                    android:textSize="25dp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:id="@+id/dishesLayout">
+
+                </LinearLayout>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_alignParentBottom="true">
+                    <Space
+                        android:layout_width="50dp"
+                        android:layout_height="match_parent"/>
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="New Button"
+                        android:id="@+id/moreDishes"
+                        android:src="@drawable/sign"
+                        android:background="#eae1e1">
+                    </ImageButton>
+
+                </LinearLayout>
+
+                <Space
+                    android:layout_width="100dp"
+                    android:layout_height="20px" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <Space
+                        android:layout_width="100dp"
+                        android:layout_height="20px" />
+                </LinearLayout>
+
+                <Space
+                    android:layout_width="20px"
+                    android:layout_height="0px" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:weightSum="1"
+                    android:layout_gravity="bottom"
+                    android:gravity="bottom"
+                    android:baselineAligned="true"
+                    android:visibility="visible">
+
+                    <Space
+                        android:layout_width="20px"
+                        android:layout_height="20px" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_gravity="left">
+
+                        <Space
+                            android:layout_width="40px"
+                            android:layout_height="20px" />
+
+                        <ImageButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/clock"
+                            android:id="@+id/timetablebutton"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:text="00:00 h - 00:00h"
+                            android:layout_gravity="center_vertical"
+                            android:id="@+id/timeText" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/date"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="PUBLICA"
+                android:gravity="center"
+                android:background="@color/colorPrimary"
+                android:textSize="24dp"
+                android:id="@+id/publish"
+                android:layout_weight="0.15"
+                android:layout_gravity="bottom" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>
