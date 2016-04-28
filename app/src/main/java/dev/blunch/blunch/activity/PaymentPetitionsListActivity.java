@@ -48,7 +48,7 @@ public class PaymentPetitionsListActivity extends AppCompatActivity {
         PaymentMenu menu = service.get(idMenu);
         assert menu !=null;
         assert toolbar != null;
-        toolbar.setTitle("Peticiones de " + menu.getName());
+        setTitle("Peticiones de " + menu.getName());
 
         View recyclerView2 = findViewById(R.id.petitions_list);
         assert recyclerView2 != null;
