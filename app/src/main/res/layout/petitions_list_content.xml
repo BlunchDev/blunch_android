@@ -6,19 +6,35 @@
     android:background="#FFFFFF"
     android:orientation="horizontal">
 
+
+    <TextView
+        android:id="@+id/comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/total"
+        android:layout_marginLeft="15dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="1dp" />
     <TextView
         android:id="@+id/contentDishes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_margin="15dp"
+        android:layout_below="@+id/comment"
+        android:text="test"
         android:layout_toStartOf="@+id/total"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="4dp" />
+
 
     <TextView
         android:id="@+id/total"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="10€"
         android:layout_alignParentEnd="true"
         android:layout_alignParentStart="false"
         android:layout_margin="15dp"
