@@ -1,5 +1,7 @@
 package dev.blunch.blunch.activity;
 
+import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -44,6 +46,9 @@ public class CollaborativeMenuAnswerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_collaborative_menu_answer);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.CollaborativeMenuAnswerBtnEnd);
+        fab.setImageResource(R.drawable.check);
+
         guestSuggestions = new ArrayList<>();
         guestNewSuggestions = new ArrayList<>();
         collaborativeMenuService = ServiceFactory.getCollaborativeMenuService(getApplicationContext());
@@ -63,7 +68,6 @@ public class CollaborativeMenuAnswerActivity extends AppCompatActivity {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
                     try {
 
                         List<Dish> newSuggestions = new ArrayList<>();
@@ -95,6 +99,9 @@ public class CollaborativeMenuAnswerActivity extends AppCompatActivity {
                 CheckBox checkBox = new CheckBox(getApplicationContext());
                 checkBox.setText(hostSuggestions.get(i).getName());
                 checkBox.setTextColor(Color.GRAY);
+                int id = Resources.getSystem().getIdentifier("btn_check_holo_light", "drawable", "android");
+                checkBox.setButtonDrawable(id);
+                checkBox.setHighlightColor(getResources().getColor(R.color.colorPrimary));
                 checkBox.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
                 checkBox.setOnClickListener(new View.OnClickListener() {
@@ -115,6 +122,9 @@ public class CollaborativeMenuAnswerActivity extends AppCompatActivity {
                 });
 
                 linearLayout.addView(checkBox);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                params.setMargins(60,0,0,0 );
+                linearLayout.setLayoutParams(params);
             }
         }
     }

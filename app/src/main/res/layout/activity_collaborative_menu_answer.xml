@@ -17,19 +17,17 @@
         <android.support.v7.widget.Toolbar
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="#CD5C5C"
+            android:background="@color/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay" >
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/app_name"
-                android:textAlignment="center"
-                android:textStyle="bold"
-                android:textSize="35sp"
-                android:gravity="center_vertical|center_horizontal"
-                android:id="@+id/titolApp"
-                android:textColor="#F3EFE0" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sugerencias"
+                android:gravity="left"
+                android:textSize="24dp"
+                android:textStyle="bold"/>
+
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
@@ -52,6 +50,10 @@
                 android:layout_marginTop="30sp"
                 android:textSize="20sp"
                 android:layout_gravity="bottom" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
 
             <LinearLayout
                 android:id="@+id/CollaborativeMenuAnswerHostSuggestions"
@@ -92,7 +94,9 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:text="@string/collaborative_menu_answer_Btn_add"
-                    android:onClick="addSuggestion"/>
+                    android:onClick="addSuggestion"
+                    android:background="@color/colorPrimary"
+                    android:textColor="@color/background"/>
 
             </RelativeLayout>
 
@@ -116,7 +120,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_input_add"/>
+        android:layout_margin="@dimen/fab_margin"/>
 
 </RelativeLayout>
