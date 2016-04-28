@@ -8,6 +8,7 @@
     tools:context="dev.blunch.blunch.activity.NewCollaborativeMenuActivityReviewed"
     tools:showIn="@layout/activity_new_collaborative_menu_activity_reviewed">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
