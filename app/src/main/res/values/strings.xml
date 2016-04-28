@@ -16,7 +16,7 @@
     <string name="check_descript">Accept proposal</string>
     <string name="close_descript">Reject proposal</string>
     <string name="title_activity_list_menu">ListMenuActivity</string>
-    <string name="title_activity_list_menus">ListMenus</string>
+    <string name="title_activity_list_menus">Blunch</string>
     <string name="getPaymentMenuActivity_name">Menu pagament</string>
     <string-array name="menu_types">
         <item>Todos</item>
