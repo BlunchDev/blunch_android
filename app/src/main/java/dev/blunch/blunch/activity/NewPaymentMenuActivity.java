@@ -23,25 +23,21 @@ import java.util.List;
 import dev.blunch.blunch.R;
 import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.domain.PaymentMenu;
-import dev.blunch.blunch.repositories.DishRepository;
-import dev.blunch.blunch.repositories.PaymentMenuRepository;
 import dev.blunch.blunch.services.PaymentMenuService;
 import dev.blunch.blunch.services.ServiceFactory;
-import dev.blunch.blunch.utils.Repository;
 import dev.blunch.blunch.view.PaymentDishLayout;
 
 @SuppressWarnings("all")
 public class NewPaymentMenuActivity extends AppCompatActivity {
 
-
     private int day,month,year;
 
     private int iHour,
-                iMinute,
-                fHour,
-                fMinute;
-    private Date    start,
-                    finish;
+            iMinute,
+            fHour,
+            fMinute;
+    private Date start,
+            finish;
     private List<ImageButton> idClose = new ArrayList<>();
     private EditText menuName;
 
@@ -49,15 +45,18 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
 
     protected ArrayList<PaymentDishLayout> myDishes = new ArrayList<>();
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_paymentmenu_menu);
+        setContentView(R.layout.activity_new_payment_menu_activity_reviewed);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        setTitle("Crear menú de pago");
         paymentMenuService = ServiceFactory.getPaymentMenuService(getApplicationContext());
         initialize();
+
     }
 
     private void initialize() {
@@ -75,18 +74,6 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
 
         final ImageButton moreDishes = (ImageButton) findViewById(R.id.moreDishes);
         final LinearLayout moreDishesLayout = (LinearLayout) findViewById(R.id.dishesLayout);
-        final PaymentDishLayout paymentDishLayout = new PaymentDishLayout(getApplicationContext());
-        myDishes.add(paymentDishLayout);
-        moreDishesLayout.addView(paymentDishLayout);
-        paymentDishLayout.getClose().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (myDishes.size() > 1) {
-                    moreDishesLayout.removeView(paymentDishLayout);
-                    myDishes.remove(paymentDishLayout);
-                }
-            }
-        });
 
         moreDishes.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,10 +85,8 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
                 close.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (myDishes.size() > 1) {
                             moreDishesLayout.removeView(a);
                             myDishes.remove(a);
-                        }
                     }
                 });
             }
@@ -123,35 +108,6 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
             }
         });
 
-        final ImageButton vegetarian = (ImageButton) findViewById(R.id.vegetarian);
-        vegetarian.setColorFilter(R.color.black);
-        vegetarian.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isVegetarian();
-                if(vegetarian.getColorFilter().equals(R.color.green)){
-                    vegetarian.setColorFilter(R.color.colorAccent);
-                }
-                else{
-                    vegetarian.setColorFilter(R.color.green);
-                }
-            }
-        });
-
-        final ImageButton glutenfree = (ImageButton) findViewById(R.id.glutenfree);
-        glutenfree.setColorFilter(R.color.black);
-        glutenfree.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isGlutenFree();
-                if(glutenfree.getColorFilter().equals(R.color.green)){
-                    glutenfree.setColorFilter(R.color.colorAccent);
-                }
-                else{
-                    glutenfree.setColorFilter(R.color.green);
-                }
-            }
-        });
     }
 
     private void isGlutenFree() {
@@ -183,7 +139,7 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
         start = cStart.getTime();
 
         String dayS = String.valueOf(this.day);
-        String monthS = String.valueOf(this.month);
+        String monthS = String.valueOf(this.month + 1);
         String yearS = String.valueOf(this.year);
         if (this.day < 10) dayS = "0" + dayS;
         if (this.month < 10) monthS = "0" + monthS;
@@ -288,10 +244,10 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
             boolean added = false;
             if(address.equals("") || address.equals("Tu dirección") ) {
                 if (!added) {
-                    s += "Direccion";
+                    s += "Dirección";
                     added = true;
                 }
-                else s += ", direccion";
+                else s += ", dirección";
             }
             if(city.equals("") || city.equals("Tu ciudad")){
                 if (!added) {
@@ -303,19 +259,19 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
 
             if(menuNameString.equals("") || menuNameString.equals("MENÚ") ){
                 if (!added) {
-                    s += "Nombre del menu";
+                    s += "Nombre del menú";
                     added = true;
                 }
-                else s += ", nombre del menu";
+                else s += ", nombre del menú";
             }
             if(description.equals("") || description.equals("Descripción")) {
                 if (!added) {
-                    s += "Descripcion";
+                    s += "Descripción";
                     added = true;
                 }
-                else s += ", descripcion";
+                else s += ", descripción";
             }
-            Toast.makeText(this, s +" incompleta",Toast.LENGTH_LONG).show();
+            Toast.makeText(this, s + " incompleta", Toast.LENGTH_LONG).show();
         }
         else if(start.getTime()>=finish.getTime()){
             Toast.makeText(this, "Hora de inicio más pequeña o igual que hora final",
@@ -334,11 +290,11 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
             }
 
             PaymentMenu paymentMenu = new PaymentMenu(  menuNameString,
-                                                        author,
-                                                        description,
-                                                        localization,
-                                                        start,
-                                                        finish);
+                    author,
+                    description,
+                    localization,
+                    start,
+                    finish);
             paymentMenuService.save(paymentMenu, dishes);
             Toast.makeText(this, "Menu de pago creado correctamente!",
                     Toast.LENGTH_LONG).show();
@@ -352,4 +308,5 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
                 || city.equals("") || city.equals("Tu ciudad")
                 || description.equals("") || description.equals("descripción");
     }
+
 }

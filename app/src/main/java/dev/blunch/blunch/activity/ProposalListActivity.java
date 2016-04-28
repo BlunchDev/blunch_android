@@ -57,6 +57,8 @@ public class ProposalListActivity extends AppCompatActivity {
             idMenu = menu.getId();
         }
 
+        setTitle("Peticiones de " + menu.getName());
+
         View recyclerView2 = findViewById(R.id.proposal_list);
         assert recyclerView2 != null;
         setupRecyclerView((RecyclerView) recyclerView2, idMenu);

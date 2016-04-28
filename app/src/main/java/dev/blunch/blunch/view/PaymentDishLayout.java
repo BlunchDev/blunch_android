@@ -56,7 +56,7 @@ public class PaymentDishLayout extends LinearLayout{
         priceDish.setHint("Precio");
         priceDish.setHintTextColor(getResources().getColor(R.color.gray));
         priceDish.setTextSize(20);
-        LinearLayout.LayoutParams priceDishLayout = new LinearLayout.LayoutParams(140, ViewGroup.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams priceDishLayout = new LinearLayout.LayoutParams(160, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         h1.addView(priceDish, priceDishLayout);
 
@@ -77,7 +77,7 @@ public class PaymentDishLayout extends LinearLayout{
         h1.addView(space7, space7Layout);
 
         close = new ImageButton(context);
-        close.setBackgroundColor(getResources().getColor(R.color.background));
+        close.setBackgroundColor(getResources().getColor(R.color.white));
         close.setImageResource(R.drawable.cross);
         close.setScaleType(ImageView.ScaleType.FIT_XY);
         close.setScaleX(0.5f);
