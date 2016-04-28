@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/my_menus"
+            android:icon="@android:drawable/ic_menu_agenda"
+            android:title="Mis menús" />
+        <item
+            android:id="@+id/collaborating_menus"
+            android:icon="@android:drawable/ic_menu_compass"
+            android:title="Menús en colaboración" />
+        <item
+            android:id="@+id/payment_menus"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Menús comprados" />
+    </group>
+
+    <!--<item android:title="Usuario">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Mi perfil" />
+        </menu>
+    </item>-->
+
+</menu>
