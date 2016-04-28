@@ -80,7 +80,7 @@ public class CollaborativeMenuAnswerActivity extends AppCompatActivity {
                         collaborativeMenuService.reply(new CollaborativeMenuAnswer(FAKE_GUEST, menuID,
                                 Calendar.getInstance().getTime(), guestSuggestions), newSuggestions);
 
-                        Snackbar.make(view, "Created answer menu", Snackbar.LENGTH_LONG)
+                        Snackbar.make(view, "Petición creada", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
 
                         finish();
@@ -132,26 +132,47 @@ public class CollaborativeMenuAnswerActivity extends AppCompatActivity {
         }
     }
 
-    public void addSuggestion(View view){
+    public void addSuggestion(View view) {
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.CollaborativeMenuAnswerGuestSuggestions);
+        linearLayout.setHorizontalGravity(LinearLayout.TEXT_ALIGNMENT_CENTER);
         EditText editText = (EditText) findViewById(R.id.CollaborativeMenuAnswerEt);
-        if(editText != null && linearLayout != null){
+        if (editText != null && linearLayout != null) {
             String suggestion = editText.getText().toString();
             boolean exists = false;
-            for (Dish d : guestSuggestions) if (suggestion.equals(d.getName())) {exists = true; break;}
-            if (exists || guestNewSuggestions.contains(suggestion)) {
-                Snackbar.make(view, "This dish already exists in this menu", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            for (Dish d : guestSuggestions) {
+                if (suggestion.equals(d.getName())) {
+                    exists = true;
+                    break;
+                }
             }
-            else if(!suggestion.equals("")) {
+            if (!exists) {
+                for (Dish d : hostSuggestions) {
+                    if (suggestion.equals(d.getName())) {
+                        exists = true;
+                        break;
+                    }
+                }
+            }
+            if (exists || guestNewSuggestions.contains(suggestion)) {
+                Snackbar.make(view, "El plato ya existe en este menú", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            } else if (!suggestion.equals("")) {
 
                 //Creating text view containig proposal
                 TextView textView = new TextView(this);
+                textView.setTextSize(20);
                 textView.setText(suggestion);
-                textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT,(float)0.8));
+                LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, (float) 0.8);
+                p.setMargins(0, 12, 0, 0);
+                textView.setLayoutParams(p);
+
+                Space s = new Space(this);
+                s.setLayoutParams(new ViewGroup.LayoutParams(10, LinearLayout.LayoutParams.WRAP_CONTENT));
 
                 //Creating image button to remove layout with proposal
                 ImageButton button = new ImageButton(getApplicationContext());
+                button.setImageResource(R.drawable.close);
+                button.setBackgroundColor(1);
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -174,7 +195,7 @@ public class CollaborativeMenuAnswerActivity extends AppCompatActivity {
                 layout_in.addView(s);
                 layout_in.addView(button);
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                params.setMargins(60,0,0,0);
+                params.setMargins(50, 0, 0, 0);
                 layout_in.setLayoutParams(params);
 
                 //Adding the layout created before to the dynamic layout
@@ -189,9 +210,9 @@ public class CollaborativeMenuAnswerActivity extends AppCompatActivity {
     }
 
 
-    //TESTING PURPOSES
-    public List<String> getGuestNewSuggestions() {
-        return guestNewSuggestions;
-    }
+        //TESTING PURPOSES
+        public List<String> getGuestNewSuggestions () {
+            return guestNewSuggestions;
+        }
 
 }
