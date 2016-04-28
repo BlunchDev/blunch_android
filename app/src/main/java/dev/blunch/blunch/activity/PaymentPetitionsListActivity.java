@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -107,6 +108,7 @@ public class PaymentPetitionsListActivity extends AppCompatActivity {
             public final TextView mContentView;
             public final TextView totalView;
             public final TextView commentView;
+            public final ImageView profilePic;
             public PaymentMenuAnswer mItem;
 
             public ViewHolder(View view) {
@@ -115,6 +117,7 @@ public class PaymentPetitionsListActivity extends AppCompatActivity {
                 mContentView = (TextView) view.findViewById(R.id.contentDishes);
                 totalView = (TextView) view.findViewById(R.id.total);
                 commentView = (TextView) view.findViewById(R.id.comment);
+                profilePic = (ImageView) view.findViewById(R.id.profile_pic);
             }
 
             @Override
