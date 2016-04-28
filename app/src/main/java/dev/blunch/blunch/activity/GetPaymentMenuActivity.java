@@ -106,11 +106,15 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
         join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                paymentMenuAnswer = new PaymentMenuAnswer(paymentMenu.getId(), FAKE_GUEST, Calendar.getInstance().getTime(), answerDishes);
-                paymentMenuService.answer(paymentMenu.getId(), paymentMenuAnswer);
+                if (answerDishes.size() == 0) {
+                    Toast.makeText(getApplicationContext(), "Debes seleccionar al menos un plato para realizar el pedido", Toast.LENGTH_SHORT).show();
+                } else {
+                    paymentMenuAnswer = new PaymentMenuAnswer(paymentMenu.getId(), FAKE_GUEST, Calendar.getInstance().getTime(), answerDishes);
+                    paymentMenuService.answer(paymentMenu.getId(), paymentMenuAnswer);
 
-                Toast.makeText(v.getContext(), "Menú solicitado correctamente!", Toast.LENGTH_LONG).show();
-                answerDishes = new ArrayList<Dish>();
+                    Toast.makeText(v.getContext(), "Menú solicitado correctamente!", Toast.LENGTH_LONG).show();
+                    answerDishes = new ArrayList<Dish>();
+                }
             }
         });
         precio.setText("0 €");
