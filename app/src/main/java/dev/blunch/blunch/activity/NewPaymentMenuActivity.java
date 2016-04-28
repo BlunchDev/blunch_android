@@ -3,8 +3,6 @@ package dev.blunch.blunch.activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -30,7 +28,7 @@ import dev.blunch.blunch.services.ServiceFactory;
 import dev.blunch.blunch.view.PaymentDishLayout;
 
 @SuppressWarnings("all")
-public class NewPaymentMenuActivityReviewed extends AppCompatActivity {
+public class NewPaymentMenuActivity extends AppCompatActivity {
 
     private int day,month,year;
 
@@ -80,7 +78,7 @@ public class NewPaymentMenuActivityReviewed extends AppCompatActivity {
         moreDishes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final PaymentDishLayout a = new PaymentDishLayout(NewPaymentMenuActivityReviewed.this);
+                final PaymentDishLayout a = new PaymentDishLayout(NewPaymentMenuActivity.this);
                 myDishes.add(a);
                 moreDishesLayout.addView(a);
                 ImageButton close = a.getClose();

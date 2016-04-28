@@ -1,6 +1,5 @@
 package dev.blunch.blunch.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -22,7 +21,6 @@ import dev.blunch.blunch.domain.CollaborativeMenuAnswer;
 import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.services.CollaborativeMenuService;
 import dev.blunch.blunch.services.ServiceFactory;
-import dev.blunch.blunch.utils.Repository;
 
 public class ProposalListActivity extends AppCompatActivity {
 
@@ -54,10 +52,12 @@ public class ProposalListActivity extends AppCompatActivity {
         service = ServiceFactory.getCollaborativeMenuService(getApplicationContext());
 
         CollaborativeMenu menu = service.get(idMenu);
-        if (menu != null && idMenu==null) {
-            toolbar.setTitle("Answers for "+menu.getName());
+        if (menu != null && idMenu == null) {
+            toolbar.setTitle("Answers for " + menu.getName());
             idMenu = menu.getId();
         }
+
+        setTitle("Peticiones de " + menu.getName());
 
         View recyclerView2 = findViewById(R.id.proposal_list);
         assert recyclerView2 != null;
@@ -67,8 +67,8 @@ public class ProposalListActivity extends AppCompatActivity {
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView, String id) {
         List<CollaborativeMenuAnswer> proposal = service.getProposal(id);
-        Log.e(TAG,""+proposal.size());
-        Log.e(TAG,""+id);
+        Log.e(TAG, "" + proposal.size());
+        Log.e(TAG, "" + id);
         recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(proposal));
     }
 
@@ -92,14 +92,16 @@ public class ProposalListActivity extends AppCompatActivity {
         public void onBindViewHolder(final ViewHolder holder, final int position) {
             holder.mItem = mValues.get(position);
             String result = "";
-            for (  String dish_key : holder.mItem.getOfferedDishes().keySet()){
+            for (String dish_key : holder.mItem.getOfferedDishes().keySet()) {
                 Dish dish = service.getDish(dish_key);
-                if (dish!=null) {
-                    result += dish.getName() + "\n";
+                if (dish != null) {
+                    result += "- " + dish.getName() + "\n";
                 }
             }
 
+            if (position == mValues.size() - 1) holder.divider.setVisibility(View.GONE);
             holder.mContentView.setText(result);
+            holder.titleView.setText("Propuesta de " + holder.mItem.getGuest());
 
             holder.acceptView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -134,6 +136,9 @@ public class ProposalListActivity extends AppCompatActivity {
             public final TextView mContentView;
             public final ImageView acceptView;
             public final ImageView rejectView;
+            public final ImageView profilePic;
+            public final TextView titleView;
+            public final ImageView divider;
             public CollaborativeMenuAnswer mItem;
 
             public ViewHolder(View view) {
@@ -141,7 +146,10 @@ public class ProposalListActivity extends AppCompatActivity {
                 mView = view;
                 acceptView = (ImageView) view.findViewById(R.id.check);
                 rejectView = (ImageView) view.findViewById(R.id.close);
-                mContentView = (TextView) view.findViewById(R.id.content);
+                mContentView = (TextView) view.findViewById(R.id.contentDishes);
+                profilePic = (ImageView) view.findViewById(R.id.profile_pic);
+                titleView = (TextView) view.findViewById(R.id.comment);
+                divider = (ImageView) view.findViewById(R.id.divider);
             }
 
             @Override

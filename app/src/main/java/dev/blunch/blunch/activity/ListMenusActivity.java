@@ -19,7 +19,6 @@ import java.util.List;
 import dev.blunch.blunch.R;
 import dev.blunch.blunch.adapters.MenuListAdapter;
 import dev.blunch.blunch.domain.Menu;
-import dev.blunch.blunch.repositories.DishRepository;
 import dev.blunch.blunch.services.CollaborativeMenuService;
 import dev.blunch.blunch.services.MenuService;
 import dev.blunch.blunch.services.PaymentMenuService;
@@ -40,8 +39,6 @@ public class ListMenusActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTitle("BLUNCH");
-
-        DishRepository dishRepository = new DishRepository(getApplicationContext());
 
         Spinner spinner = (Spinner) findViewById(R.id.menu_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -81,7 +78,7 @@ public class ListMenusActivity extends AppCompatActivity {
                         })
                         .setNegativeButton("Menú de pago", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                Intent intent = new Intent(ListMenusActivity.this, NewPaymentMenuActivityReviewed.class);
+                                Intent intent = new Intent(ListMenusActivity.this, NewPaymentMenuActivity.class);
                                 startActivity(intent);
                             }
                         });
