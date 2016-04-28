@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -111,6 +112,7 @@ public class CollaborativePetitionsListActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     service.acceptProposal(holder.mItem.getId());
                     removeItem(position);
+                    Toast.makeText(getApplicationContext(), "Solicitud de participación aceptada", Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -119,6 +121,7 @@ public class CollaborativePetitionsListActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     service.declineProposal(holder.mItem.getId());
                     removeItem(position);
+                    Toast.makeText(getApplicationContext(), "Solicitud de participación rechazada", Toast.LENGTH_SHORT).show();
                 }
             });
         }

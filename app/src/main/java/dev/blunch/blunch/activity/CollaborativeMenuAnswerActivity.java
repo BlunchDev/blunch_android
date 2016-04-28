@@ -1,17 +1,22 @@
 package dev.blunch.blunch.activity;
 
+import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Space;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -45,6 +50,7 @@ public class CollaborativeMenuAnswerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_collaborative_menu_answer);
+
         guestSuggestions = new ArrayList<>();
         guestNewSuggestions = new ArrayList<>();
         collaborativeMenuService = ServiceFactory.getCollaborativeMenuService(getApplicationContext());
@@ -59,12 +65,11 @@ public class CollaborativeMenuAnswerActivity extends AppCompatActivity {
     }
 
     private void makeProposalCreation() {
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.CollaborativeMenuAnswerBtnEnd);
-        if (fab != null) {
-            fab.setOnClickListener(new View.OnClickListener() {
+        ImageButton done = (ImageButton) findViewById(R.id.CollaborativeMenuAnswerBtnEnd);
+        if (done != null) {
+            done.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
                     try {
 
                         List<Dish> newSuggestions = new ArrayList<>();
@@ -74,7 +79,7 @@ public class CollaborativeMenuAnswerActivity extends AppCompatActivity {
                         collaborativeMenuService.reply(new CollaborativeMenuAnswer(FAKE_GUEST, menuID,
                                 Calendar.getInstance().getTime(), guestSuggestions), newSuggestions);
 
-                        Snackbar.make(view, "Created answer menu", Snackbar.LENGTH_LONG)
+                        Snackbar.make(view, "Petición creada", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
 
                         finish();
@@ -96,6 +101,9 @@ public class CollaborativeMenuAnswerActivity extends AppCompatActivity {
                 CheckBox checkBox = new CheckBox(getApplicationContext());
                 checkBox.setText(hostSuggestions.get(i).getName());
                 checkBox.setTextColor(Color.GRAY);
+                int id = Resources.getSystem().getIdentifier("btn_check_holo_light", "drawable", "android");
+                checkBox.setButtonDrawable(id);
+                checkBox.setHighlightColor(getResources().getColor(R.color.colorPrimary));
                 checkBox.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
                 checkBox.setOnClickListener(new View.OnClickListener() {
@@ -116,30 +124,54 @@ public class CollaborativeMenuAnswerActivity extends AppCompatActivity {
                 });
 
                 linearLayout.addView(checkBox);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                params.setMargins(60,0,0,0 );
+                linearLayout.setLayoutParams(params);
             }
         }
     }
 
-    public void addSuggestion(View view){
+    public void addSuggestion(View view) {
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.CollaborativeMenuAnswerGuestSuggestions);
+        linearLayout.setHorizontalGravity(LinearLayout.TEXT_ALIGNMENT_CENTER);
         EditText editText = (EditText) findViewById(R.id.CollaborativeMenuAnswerEt);
-        if(editText != null && linearLayout != null){
+        if (editText != null && linearLayout != null) {
             String suggestion = editText.getText().toString();
             boolean exists = false;
-            for (Dish d : guestSuggestions) if (suggestion.equals(d.getName())) {exists = true; break;}
-            if (exists || guestNewSuggestions.contains(suggestion)) {
-                Snackbar.make(view, "This dish already exists in this menu", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            for (Dish d : guestSuggestions) {
+                if (suggestion.equals(d.getName())) {
+                    exists = true;
+                    break;
+                }
             }
-            else if(!suggestion.equals("")) {
+            if (!exists) {
+                for (Dish d : hostSuggestions) {
+                    if (suggestion.equals(d.getName())) {
+                        exists = true;
+                        break;
+                    }
+                }
+            }
+            if (exists || guestNewSuggestions.contains(suggestion)) {
+                Snackbar.make(view, "El plato ya existe en este menú", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            } else if (!suggestion.equals("")) {
 
                 //Creating text view containig proposal
                 TextView textView = new TextView(this);
+                textView.setTextSize(20);
                 textView.setText(suggestion);
-                textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT,(float)0.8));
+                LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, (float) 0.8);
+                p.setMargins(0, 12, 0, 0);
+                textView.setLayoutParams(p);
+
+                Space s = new Space(this);
+                s.setLayoutParams(new ViewGroup.LayoutParams(10, LinearLayout.LayoutParams.WRAP_CONTENT));
 
                 //Creating image button to remove layout with proposal
                 ImageButton button = new ImageButton(getApplicationContext());
+                button.setImageResource(R.drawable.close);
+                button.setBackgroundColor(1);
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -155,11 +187,15 @@ public class CollaborativeMenuAnswerActivity extends AppCompatActivity {
                 });
                 button.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
+
                 //Creating layout which contains textview and button
                 LinearLayout layout_in = new LinearLayout(getApplicationContext());
                 layout_in.addView(textView);
+                layout_in.addView(s);
                 layout_in.addView(button);
-                layout_in.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                params.setMargins(50, 0, 0, 0);
+                layout_in.setLayoutParams(params);
 
                 //Adding the layout created before to the dynamic layout
                 linearLayout.addView(layout_in);
@@ -173,9 +209,9 @@ public class CollaborativeMenuAnswerActivity extends AppCompatActivity {
     }
 
 
-    //TESTING PURPOSES
-    public List<String> getGuestNewSuggestions() {
-        return guestNewSuggestions;
-    }
+        //TESTING PURPOSES
+        public List<String> getGuestNewSuggestions () {
+            return guestNewSuggestions;
+        }
 
 }
