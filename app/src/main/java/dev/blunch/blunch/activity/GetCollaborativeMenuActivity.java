@@ -48,6 +48,7 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_get_collaborative_menu);
+        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         this.menuId = getIntent().getStringExtra(MENU_ID_KEY);
