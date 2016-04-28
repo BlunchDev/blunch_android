@@ -11,6 +11,7 @@ import android.view.Gravity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -49,8 +50,6 @@ public class CollaborativeMenuAnswerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_collaborative_menu_answer);
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.CollaborativeMenuAnswerBtnEnd);
-        fab.setImageResource(R.drawable.check);
 
         guestSuggestions = new ArrayList<>();
         guestNewSuggestions = new ArrayList<>();
@@ -66,9 +65,9 @@ public class CollaborativeMenuAnswerActivity extends AppCompatActivity {
     }
 
     private void makeProposalCreation() {
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.CollaborativeMenuAnswerBtnEnd);
-        if (fab != null) {
-            fab.setOnClickListener(new View.OnClickListener() {
+        ImageButton done = (ImageButton) findViewById(R.id.CollaborativeMenuAnswerBtnEnd);
+        if (done != null) {
+            done.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     try {
