@@ -53,6 +53,9 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         setTitle("Crear menú de pago");
         paymentMenuService = ServiceFactory.getPaymentMenuService(getApplicationContext());
         initialize();
@@ -85,7 +88,7 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
                 close.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                            moreDishesLayout.removeView(a);
+                        moreDishesLayout.removeView(a);
                             myDishes.remove(a);
                     }
                 });

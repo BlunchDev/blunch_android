@@ -50,7 +50,7 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
     private ArrayList<SelectPaymentDishLayout> paymentDishesLayoutList;
     private List<Dish> answerDishes;
 
-    private String menuId;
+    private static String menuId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +58,11 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_get_payment_menu);
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -67,7 +72,7 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
             }
         });
 
-        menuId = getIntent().getStringExtra(MENU_ID_KEY);
+        if (getIntent().getStringExtra(MENU_ID_KEY) != null) this.menuId = getIntent().getStringExtra(MENU_ID_KEY);
 
         paymentMenuService = ServiceFactory.getPaymentMenuService(getApplicationContext());
         paymentMenu = paymentMenuService.get(menuId);
@@ -205,6 +210,13 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
         if (minute < 10) result += "0";
         result += minute;
         return result;
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        finish();
+        startActivity(getIntent());
     }
 
 }
