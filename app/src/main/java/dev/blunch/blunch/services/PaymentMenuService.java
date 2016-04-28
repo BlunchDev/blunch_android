@@ -1,7 +1,5 @@
 package dev.blunch.blunch.services;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,10 +77,7 @@ public class PaymentMenuService extends Service<PaymentMenu> {
     public List<PaymentMenuAnswer> getAnswers(String menuKey){
         List<PaymentMenuAnswer> list = answerRepository.all();
         List<PaymentMenuAnswer> result = new ArrayList<>();
-        Log.d("Menu id", menuKey);
-        Log.d("Checking", list.size()+"");
         for (PaymentMenuAnswer answer : list) {
-            Log.d("Check", answer.getId());
             if (menuKey.equals(answer.getIdMenu())){
                 result.add(answer);
             }
