@@ -97,6 +97,7 @@ public class ProposalListActivity extends AppCompatActivity {
                 }
             }
 
+            if (position == mValues.size() - 1) holder.divider.setVisibility(View.GONE);
             holder.mContentView.setText(result);
             holder.titleView.setText("Propuesta de " + holder.mItem.getGuest());
 
@@ -135,6 +136,7 @@ public class ProposalListActivity extends AppCompatActivity {
             public final ImageView rejectView;
             public final ImageView profilePic;
             public final TextView titleView;
+            public final ImageView divider;
             public CollaborativeMenuAnswer mItem;
 
             public ViewHolder(View view) {
@@ -145,6 +147,7 @@ public class ProposalListActivity extends AppCompatActivity {
                 mContentView = (TextView) view.findViewById(R.id.contentDishes);
                 profilePic = (ImageView) view.findViewById(R.id.profile_pic);
                 titleView = (TextView) view.findViewById(R.id.comment);
+                divider = (ImageView) view.findViewById(R.id.divider);
             }
 
             @Override

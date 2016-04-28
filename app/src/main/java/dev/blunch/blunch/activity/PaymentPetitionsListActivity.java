@@ -21,6 +21,7 @@ import dev.blunch.blunch.domain.PaymentMenuAnswer;
 import dev.blunch.blunch.services.PaymentMenuService;
 import dev.blunch.blunch.services.ServiceFactory;
 
+@SuppressWarnings("all")
 public class PaymentPetitionsListActivity extends AppCompatActivity {
 
     public static final String ID_PAYMENT_MENU_KEY = "menuId";
@@ -47,7 +48,7 @@ public class PaymentPetitionsListActivity extends AppCompatActivity {
         PaymentMenu menu = service.get(idMenu);
         assert menu !=null;
         assert toolbar != null;
-        toolbar.setTitle("Petitions for " + menu.getName());
+        toolbar.setTitle("Peticiones de " + menu.getName());
 
         View recyclerView2 = findViewById(R.id.petitions_list);
         assert recyclerView2 != null;
@@ -88,8 +89,9 @@ public class PaymentPetitionsListActivity extends AppCompatActivity {
                     total += d.getPrice();
                 }
             }
+            if (position == mValues.size() - 1) holder.divider.setVisibility(View.GONE);
             holder.mContentView.setText(result);
-            holder.totalView.setText(total+"€");
+            holder.totalView.setText(String.valueOf(total));
             holder.commentView.setText("Petición de "+holder.mItem.getGuest());
         }
 
@@ -108,7 +110,9 @@ public class PaymentPetitionsListActivity extends AppCompatActivity {
             public final TextView mContentView;
             public final TextView totalView;
             public final TextView commentView;
+            public final TextView euro;
             public final ImageView profilePic;
+            public final ImageView divider;
             public PaymentMenuAnswer mItem;
 
             public ViewHolder(View view) {
@@ -118,6 +122,8 @@ public class PaymentPetitionsListActivity extends AppCompatActivity {
                 totalView = (TextView) view.findViewById(R.id.total);
                 commentView = (TextView) view.findViewById(R.id.comment);
                 profilePic = (ImageView) view.findViewById(R.id.profile_pic);
+                divider = (ImageView) view.findViewById(R.id.divider);
+                euro = (TextView) view.findViewById(R.id.euro);
             }
 
             @Override

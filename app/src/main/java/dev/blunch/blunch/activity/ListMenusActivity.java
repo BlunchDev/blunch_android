@@ -46,8 +46,6 @@ public class ListMenusActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         setTitle("BLUNCH");
 
-        DishRepository dishRepository = new DishRepository(getApplicationContext());
-
         Spinner spinner = (Spinner) findViewById(R.id.menu_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.menu_types, R.layout.spinner_item);
