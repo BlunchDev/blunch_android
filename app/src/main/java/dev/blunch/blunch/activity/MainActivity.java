@@ -21,6 +21,7 @@ import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,13 +41,15 @@ public class MainActivity extends AppCompatActivity
     CollaborativeMenuService collaborativeMenuService;
     PaymentMenuService paymentMenuService;
 
+    FloatingActionButton fab;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        setTitle("BLUNCH");
+        setTitle("Buscar menús");
 
         menuService = ServiceFactory.getMenuService(getApplicationContext());
         collaborativeMenuService = ServiceFactory.getCollaborativeMenuService(getApplicationContext());
@@ -63,7 +66,138 @@ public class MainActivity extends AppCompatActivity
         navigationView.getMenu().getItem(0).setChecked(true);
 
         initFragment(R.layout.content_list_menus);
+
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setImageResource(R.drawable.add);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setMessage("Qué tipo de menú quieres dar de alta?")
+                        .setCancelable(false)
+                        .setPositiveButton("Menú colaborativo", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                Intent intent = new Intent(MainActivity.this, NewCollaborativeMenuActivity.class);
+                                startActivity(intent);
+                            }
+                        })
+                        .setNegativeButton("Menú de pago", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                Intent intent = new Intent(MainActivity.this, NewPaymentMenuActivity.class);
+                                startActivity(intent);
+                            }
+                        });
+                AlertDialog alert = builder.create();
+                alert.show();
+            }
+        });
+
         initializeSearchMenus();
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.search_menus) {
+            initFragment(R.layout.content_list_menus);
+            Toast.makeText(getApplicationContext(), "Search menus", Toast.LENGTH_SHORT).show();
+            initializeSearchMenus();
+        }
+        else if (id == R.id.my_menus) {
+            initFragment(-1);
+            Toast.makeText(getApplicationContext(), "My menus", Toast.LENGTH_SHORT).show();
+            initializeMyMenus();
+        }
+        else if (id == R.id.collaborating_menus) {
+            initFragment(-1);
+            Toast.makeText(getApplicationContext(), "Collaborating menus", Toast.LENGTH_SHORT).show();
+            initializeCollaboratingMenus();
+        }
+        else if (id == R.id.payment_menus) {
+            initFragment(-1);
+            Toast.makeText(getApplicationContext(), "Payed menus", Toast.LENGTH_SHORT).show();
+            initializePaymentmenus();
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    private void initFragment(int id) {
+        LayoutInflater inflater = getLayoutInflater();
+        View v;
+        if (id != -1) v = inflater.inflate(id, null);
+        else v = new View(getApplicationContext());
+        FrameLayout frameLayout = (FrameLayout) findViewById(R.id.main_frame_layout);
+        frameLayout.removeAllViews();
+        frameLayout.addView(v);
+    }
+
+    private void initializeSearchMenus() {
+
+        Spinner spinner = (Spinner) findViewById(R.id.menu_spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.menu_types, R.layout.spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                init(parent.getItemAtPosition(position).toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        menuService.setOnChangedListener(new Repository.OnChangedListener() {
+            @Override
+            public void onChanged(EventType type) {
+                if (type.equals(EventType.Full)) {
+                    init("All");
+                }
+            }
+        });
     }
 
     private void init(String filter) {
@@ -118,139 +252,18 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.search_menus) {
-            initFragment(R.layout.content_list_menus);
-            initializeSearchMenus();
-        }
-        else if (id == R.id.my_menus) {
-            //initFragment(R.layout.content);
-            initializeMyMenus();
-        }
-        else if (id == R.id.collaborating_menus) {
-            //initFragment(R.layout.content);
-            initializeCollaboratingMenus();
-        }
-        else if (id == R.id.payment_menus) {
-            //initFragment(R.layout.content);
-            initializePaymentmenus();
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
-    private void initFragment(int id) {
-        LayoutInflater inflater = getLayoutInflater();
-        View v = inflater.inflate(id, null);
-        FrameLayout frameLayout = (FrameLayout) findViewById(R.id.main_frame_layout);
-        frameLayout.removeAllViews();
-        frameLayout.addView(v);
-    }
-
-    private void initializeSearchMenus() {
-
-        Spinner spinner = (Spinner) findViewById(R.id.menu_spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.menu_types, R.layout.spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        spinner.setAdapter(adapter);
-
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                init(parent.getItemAtPosition(position).toString());
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setImageResource(R.drawable.add);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setMessage("Qué tipo de menú quieres dar de alta?")
-                        .setCancelable(false)
-                        .setPositiveButton("Menú colaborativo", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                Intent intent = new Intent(MainActivity.this, NewCollaborativeMenuActivity.class);
-                                startActivity(intent);
-                            }
-                        })
-                        .setNegativeButton("Menú de pago", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                Intent intent = new Intent(MainActivity.this, NewPaymentMenuActivity.class);
-                                startActivity(intent);
-                            }
-                        });
-                AlertDialog alert = builder.create();
-                alert.show();
-            }
-        });
-
-        menuService.setOnChangedListener(new Repository.OnChangedListener() {
-            @Override
-            public void onChanged(EventType type) {
-                if (type.equals(EventType.Full)) {
-                    init("All");
-                }
-            }
-        });
-    }
-
     private void initializeCollaboratingMenus() {
         //TODO fill view
+        setTitle("Menús en colaboración");
     }
 
     private void initializePaymentmenus() {
         //TODO fill view
+        setTitle("Menús comprados");
     }
 
     private void initializeMyMenus() {
         //TODO fill view
+        setTitle("Mis menús");
     }
 }
