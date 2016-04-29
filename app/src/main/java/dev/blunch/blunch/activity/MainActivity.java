@@ -74,7 +74,6 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setMessage("Qué tipo de menú quieres dar de alta?")
-                        .setCancelable(false)
                         .setPositiveButton("Menú colaborativo", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 Intent intent = new Intent(MainActivity.this, NewCollaborativeMenuActivity.class);
