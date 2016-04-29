@@ -5,19 +5,19 @@
         <item
             android:id="@+id/search_menus"
             android:icon="@android:drawable/ic_dialog_info"
-            android:title="Buscar menús" />
+            android:title="@string/buscar_menus" />
         <item
             android:id="@+id/my_menus"
             android:icon="@android:drawable/ic_menu_agenda"
-            android:title="Mis menús" />
+            android:title="@string/mis_menus" />
         <item
             android:id="@+id/collaborating_menus"
             android:icon="@android:drawable/ic_menu_compass"
-            android:title="Menús en colaboración" />
+            android:title="@string/menus_participo" />
         <item
             android:id="@+id/payment_menus"
             android:icon="@drawable/ic_menu_manage"
-            android:title="Menús comprados" />
+            android:title="@string/valoracion_menus" />
     </group>
 
     <!--<item android:title="Usuario">
