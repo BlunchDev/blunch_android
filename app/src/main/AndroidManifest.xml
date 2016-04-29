@@ -11,10 +11,9 @@
         android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
-            android:name=".activity.ListMenusActivity"
-            android:label="@string/title_activity_list_menus"
+            android:name=".activity.MainActivity"
+            android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,47 +21,39 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
         <activity
             android:name=".activity.NewCollaborativeMenuActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".activity.ListMenusActivity">
-        </activity>
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".activity.NewPaymentMenuActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".activity.ListMenusActivity">
-        </activity>
-
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".activity.GetCollaborativeMenuActivity"
             android:label="@string/getMenuCollaborativeActivity_name"
-            android:parentActivityName=".activity.ListMenusActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".activity.GetPaymentMenuActivity"
             android:label="@string/getPaymentMenuActivity_name"
-            android:parentActivityName=".activity.ListMenusActivity"
+            android:parentActivityName=".activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
-
         <activity
             android:name=".activity.CollaborativeMenuAnswerActivity"
             android:label="@string/title_activity_collaborative_menu_answer"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".activity.GetCollaborativeMenuActivity"/>
+            android:parentActivityName=".activity.GetCollaborativeMenuActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.CollaborativePetitionsListActivity"
             android:label="@string/title_proposal_list"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".activity.GetCollaborativeMenuActivity"/>
+            android:parentActivityName=".activity.GetCollaborativeMenuActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.PaymentPetitionsListActivity"
             android:label="@string/title_activity_payment_petitions_list"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".activity.GetPaymentMenuActivity"/>
+            android:parentActivityName=".activity.GetPaymentMenuActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
     </application>
 

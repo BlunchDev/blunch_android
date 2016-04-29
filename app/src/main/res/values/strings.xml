@@ -32,4 +32,12 @@
     <string name="title_activity_new_payment_menu_activity_reviewed">
         NewPaymentMenuActivityReviewed
     </string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="mis_menus">Mis menús</string>
+    <string name="buscar_menus">Buscar menús</string>
+    <string name="menus_participo">Menús en los que participo</string>
+    <string name="valoracion_menus">Valoración de menús</string>
 </resources>
