@@ -1,11 +1,14 @@
 package dev.blunch.blunch.services;
 
+import com.firebase.client.core.Repo;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.domain.PaymentMenu;
 import dev.blunch.blunch.domain.PaymentMenuAnswer;
+import dev.blunch.blunch.domain.User;
 import dev.blunch.blunch.utils.Repository;
 import dev.blunch.blunch.utils.Service;
 
@@ -20,23 +23,28 @@ public class PaymentMenuService extends Service<PaymentMenu> {
     private int loaded = 0;
     private int loadNeed = 1;
     private final Repository<PaymentMenuAnswer> answerRepository;
+    private final Repository<User> userRepository;
 
     public PaymentMenuService(Repository<PaymentMenu> repository) {
         super(repository);
         dishesRepository = null;
         answerRepository = null;
+        this.userRepository = null;
     }
 
-    public PaymentMenuService(Repository<PaymentMenu> repository,Repository<Dish> dishRepository, Repository<PaymentMenuAnswer> answerRep) {
+    public PaymentMenuService(Repository<PaymentMenu> repository,Repository<Dish> dishRepository,
+                              Repository<PaymentMenuAnswer> answerRep, Repository<User> userRepository) {
         super(repository);
         dishesRepository = dishRepository;
         answerRepository = answerRep;
+        this.userRepository = userRepository;
     }
 
     public PaymentMenuService(Repository<PaymentMenu> repository, Repository<Dish> dishRepository) {
         super(repository);
         dishesRepository = dishRepository;
         answerRepository = null;
+        this.userRepository = null;
     }
 
 

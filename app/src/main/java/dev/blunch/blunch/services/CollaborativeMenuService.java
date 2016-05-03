@@ -2,6 +2,8 @@ package dev.blunch.blunch.services;
 
 import android.util.Log;
 
+import com.firebase.client.core.Repo;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +11,7 @@ import java.util.Map;
 import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.domain.CollaborativeMenuAnswer;
 import dev.blunch.blunch.domain.Dish;
+import dev.blunch.blunch.domain.User;
 import dev.blunch.blunch.utils.Repository;
 import dev.blunch.blunch.utils.Service;
 
@@ -22,26 +25,31 @@ public class CollaborativeMenuService extends Service<CollaborativeMenu> {
     private static final String TAG = CollaborativeMenuService.class.getSimpleName();
     private final Repository<Dish> dishesRepository;
     private final Repository<CollaborativeMenuAnswer> collaborativeMenuAnswerRepository;
+    private final Repository<User> userRepository;
     private int loaded = 0;
     private int loadNeed = 1;
 
     public CollaborativeMenuService(Repository<CollaborativeMenu> repository, Repository<Dish> repoDishes,
-                                    Repository<CollaborativeMenuAnswer> collaborativeMenuAnswerRepository) {
+                                    Repository<CollaborativeMenuAnswer> collaborativeMenuAnswerRepository,
+                                    Repository<User> userRepository) {
         super(repository);
         this.dishesRepository = repoDishes;
         this.collaborativeMenuAnswerRepository = collaborativeMenuAnswerRepository;
+        this.userRepository = userRepository;
     }
 
     public CollaborativeMenuService(Repository<CollaborativeMenu> repository, Repository<Dish> repoDishes) {
         super(repository);
         dishesRepository = repoDishes;
         this.collaborativeMenuAnswerRepository = null;
+        this.userRepository = null;
     }
 
     public CollaborativeMenuService(Repository<CollaborativeMenu> repository) {
         super(repository);
         dishesRepository = null;
         collaborativeMenuAnswerRepository = null;
+        this.userRepository = null;
     }
 
     @Override
