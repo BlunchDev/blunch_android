@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.firebase.client.DataSnapshot;
@@ -101,6 +102,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     public static class ChatMessageViewHolder extends RecyclerView.ViewHolder {
+        ImageView authorImage;
         TextView dateText;
         TextView authorText;
         TextView contentText;
@@ -110,6 +112,7 @@ public class ChatActivity extends AppCompatActivity {
             contentText = (TextView)itemView.findViewById(R.id.content);
             authorText = (TextView)itemView.findViewById(R.id.author);
             dateText = (TextView)itemView.findViewById(R.id.date);
+            authorImage = (ImageView) itemView.findViewById(R.id.user_icon);
         }
     }
 }
