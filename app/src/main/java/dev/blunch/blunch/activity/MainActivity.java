@@ -6,15 +6,11 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.StrictMode;
-import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -37,6 +33,7 @@ import android.widget.Toast;
 import com.facebook.FacebookContentProvider;
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
+import com.firebase.client.utilities.Base64;
 
 import org.w3c.dom.Text;
 
@@ -47,6 +44,7 @@ import java.util.List;
 
 import dev.blunch.blunch.R;
 import dev.blunch.blunch.adapters.MenuListAdapter;
+import dev.blunch.blunch.domain.User;
 import dev.blunch.blunch.services.CollaborativeMenuService;
 import dev.blunch.blunch.services.MenuService;
 import dev.blunch.blunch.services.PaymentMenuService;
@@ -60,14 +58,15 @@ public class MainActivity extends AppCompatActivity
     CollaborativeMenuService collaborativeMenuService;
     PaymentMenuService paymentMenuService;
 
+    private String email;
+
     FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        email = getIntent().getStringExtra("user_email");
         FacebookSdk.sdkInitialize(getApplicationContext());
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -126,16 +125,9 @@ public class MainActivity extends AppCompatActivity
 
         ImageView userPhoto = (ImageView) headerView.findViewById(R.id.user_picture_nav);
         try {
-            URL image = new URL(Profile.getCurrentProfile().getProfilePictureUri(140, 140).toString());
-
-            Resources res = getResources();
-            Bitmap src = BitmapFactory.decodeStream(image.openConnection().getInputStream());
-            RoundedBitmapDrawable dr =
-                    RoundedBitmapDrawableFactory.create(res, src);
-            dr.setCornerRadius(Math.max(src.getWidth(), src.getHeight()) / 2.0f);
-
-            userPhoto.setImageDrawable(dr);
-        } catch (IOException e) {
+            User user = menuService.findUserByEmail(email);
+            userPhoto.setImageDrawable(user.getImageRounded(getResources()));
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

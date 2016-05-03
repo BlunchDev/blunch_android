@@ -1,5 +1,13 @@
 package dev.blunch.blunch.domain;
 
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+
+import com.firebase.client.utilities.Base64;
+
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -88,5 +96,14 @@ public class User implements Entity {
 
     public void addNewParticipatedMenu(Menu menu) {
         participatedMenus.put(menu.getId(), true);
+    }
+
+    public RoundedBitmapDrawable getImageRounded(Resources res) throws Exception{
+        byte[] imageAsBytes = Base64.decode(imageFile.getBytes());
+        Bitmap bp = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
+        RoundedBitmapDrawable dr =
+                RoundedBitmapDrawableFactory.create(res, bp);
+        dr.setCornerRadius(Math.max(bp.getWidth(), bp.getHeight()) / 2.0f);
+        return dr;
     }
 }

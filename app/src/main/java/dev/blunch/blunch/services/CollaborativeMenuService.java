@@ -185,6 +185,15 @@ public class CollaborativeMenuService extends Service<CollaborativeMenu> {
             });
         }
 
+        if (userRepository != null) {
+            loadNeed += 1;
+            userRepository.setOnChangedListener(new Repository.OnChangedListener() {
+                @Override
+                public void onChanged(EventType type) {
+                    triggerListener(listener, type);
+                }
+            });
+        }
     }
 
     private void triggerListener(Repository.OnChangedListener listener, Repository.OnChangedListener.EventType type) {

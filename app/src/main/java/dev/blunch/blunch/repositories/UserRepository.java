@@ -1,6 +1,7 @@
 package dev.blunch.blunch.repositories;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.firebase.client.DataSnapshot;
 
@@ -24,9 +25,9 @@ public class UserRepository extends FirebaseRepository<User> {
         for (DataSnapshot d : dataSnapshot.getChildren()) {
             if (d.getKey().equals("name")) {
                 user.setName(d.getValue(String.class));
-            } else if (d.getKey().equals("author")) {
+            } else if (d.getKey().equals("email")) {
                 user.setEmail(d.getValue(String.class));
-            } else if (d.getKey().equals("description")) {
+            } else if (d.getKey().equals("imageFile")) {
                 user.setImageFile(d.getValue(String.class));
             } else if (d.getKey().equals("myMenus")) {
                 List<String> menus = new ArrayList<>();

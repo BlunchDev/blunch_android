@@ -1,13 +1,19 @@
 package dev.blunch.blunch.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -25,16 +31,25 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 import dev.blunch.blunch.R;
+import dev.blunch.blunch.domain.User;
 import dev.blunch.blunch.services.MenuService;
 import dev.blunch.blunch.services.ServiceFactory;
 import dev.blunch.blunch.utils.Repository;
@@ -44,38 +59,48 @@ public class LogInActivity extends AppCompatActivity {
 
     private CallbackManager callbackManager;
     private ProfileTracker mProfileTracker;
-    private FacebookCallback<LoginResult> loginResultFacebookCallback =
-            new FacebookCallback<LoginResult>() {
-                @Override
-                public void onSuccess(LoginResult loginResult) {
-                    RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.splash_screen);
-                    relativeLayout.findViewById(R.id.login_button).setVisibility(View.GONE);
-                    relativeLayout.findViewById(R.id.progress_bar).setVisibility(View.VISIBLE);
-                    if(Profile.getCurrentProfile() == null) {
-                        mProfileTracker = new ProfileTracker() {
-                            @Override
-                            protected void onCurrentProfileChanged(Profile profile, Profile profile2) {
-                                mProfileTracker.stopTracking();
-                                initApp();
-                            }
-                        };
-                        mProfileTracker.startTracking();
-                    }
-                    else {
-                        initApp();
-                    }
-                }
 
-                @Override
-                public void onCancel() {
+    private String email;
+    private String name;
 
-                }
+    private boolean prof;
+    private boolean graph;
 
-                @Override
-                public void onError(FacebookException error) {
+    SharedPreferences prefs;
 
-                }
-            };
+    private FacebookCallback<LoginResult> loginResultFacebookCallback;
+
+    private void createUser() {
+        if (menuService.findUserByEmail(email) == null) {
+            String imageFile = getImageStringFile();
+            menuService.createNewUser(new User(
+                    name,
+                    email,
+                    imageFile
+            ));
+        }
+
+        initApp();
+    }
+
+    private String getImageStringFile() {
+        try {
+            URL image = new URL(Profile.getCurrentProfile()
+                    .getProfilePictureUri(140, 140).toString());
+
+            Resources res = getResources();
+            Bitmap src = BitmapFactory.decodeStream(image.openConnection().getInputStream());
+
+            ByteArrayOutputStream bYtE = new ByteArrayOutputStream();
+            src.compress(Bitmap.CompressFormat.PNG, 100, bYtE);
+            src.recycle();
+            byte[] byteArray = bYtE.toByteArray();
+            return Base64.encodeToString(byteArray, Base64.DEFAULT);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     private MenuService menuService;
     private boolean logIn;
@@ -84,8 +109,71 @@ public class LogInActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        loginResultFacebookCallback =
+                new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        GraphRequest request = GraphRequest.newMeRequest(
+                                loginResult.getAccessToken(),
+                                new GraphRequest.GraphJSONObjectCallback() {
+                                    @Override
+                                    public void onCompleted(JSONObject object, GraphResponse response) {
+                                        Log.v("LoginActivity", response.toString());
+                                        try {
+                                            email = object.getString("email");
+                                            prefs.edit().putString("user_email", email).apply();
+                                            name = object.getString("name");
+                                            graph = true;
+                                            if (prof && graph) createUser();
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
+                        Bundle parameters = new Bundle();
+                        parameters.putString("fields", "id,name,email");
+                        request.setParameters(parameters);
+                        request.executeAsync();
+
+                        RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.splash_screen);
+                        relativeLayout.findViewById(R.id.login_button).setVisibility(View.GONE);
+                        relativeLayout.findViewById(R.id.progress_bar).setVisibility(View.VISIBLE);
+                        if(Profile.getCurrentProfile() == null) {
+                            mProfileTracker = new ProfileTracker() {
+                                @Override
+                                protected void onCurrentProfileChanged(Profile profile, Profile profile2) {
+                                    mProfileTracker.stopTracking();
+                                    prof = true;
+                                    if (prof && graph)
+                                        createUser();
+                                }
+                            };
+                            mProfileTracker.startTracking();
+                        }
+                        else {
+                            initApp();
+                        }
+                    }
+
+                    @Override
+                    public void onCancel() {
+
+                    }
+
+                    @Override
+                    public void onError(FacebookException error) {
+
+                    }
+                };
+
+        prof = false;
+        graph = false;
+        logIn = false;
+
         FacebookSdk.sdkInitialize(getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
 
         setContentView(R.layout.activity_log_in);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -95,16 +183,20 @@ public class LogInActivity extends AppCompatActivity {
         initializeServices();
 
         LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
-        loginButton.setReadPermissions(Arrays.asList("public_profile", "user_photos"));
+        loginButton.setReadPermissions(Arrays.asList("public_profile", "user_photos", "email"));
         loginButton.registerCallback(callbackManager, loginResultFacebookCallback);
 
         //Only for development purposes
         printKeyHash();
 
+        prefs = this.getSharedPreferences(
+                "dev.blunch.blunch", Context.MODE_PRIVATE);
+
         ((ProgressBar) findViewById(R.id.progress_bar)).getIndeterminateDrawable().setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
 
         if (Profile.getCurrentProfile() != null) {
             logIn = true;
+            email = prefs.getString("user_email", new String());
             RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.splash_screen);
             relativeLayout.findViewById(R.id.login_button).setVisibility(View.GONE);
         } else {
@@ -130,6 +222,8 @@ public class LogInActivity extends AppCompatActivity {
 
     private void initApp() {
         Intent intent = new Intent(LogInActivity.this, MainActivity.class);
+        intent.putExtra("user_email", email);
+        Log.d(email, email);
         startActivity(intent);
     }
 

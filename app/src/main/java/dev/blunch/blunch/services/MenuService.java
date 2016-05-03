@@ -27,7 +27,6 @@ public class MenuService extends Service<CollaborativeMenu> {
     int loadNeed = 1;
     int loaded = 0;
 
-
     public MenuService(Repository<CollaborativeMenu> repository, Repository<PaymentMenu> paymentMenuRepository,
                        Repository<User> userRepository) {
         super(repository);
@@ -41,6 +40,19 @@ public class MenuService extends Service<CollaborativeMenu> {
 
     public List<PaymentMenu> getPaymentMenus() {
         return paymentMenuRepository.all();
+    }
+
+    public User findUserByEmail(String email) {
+        List<User> users = userRepository.all();
+        Log.d("size", users.size()+"");
+        for (User user : users) {
+            if (user.getEmail().equals(email)) return user;
+        }
+        return null;
+    }
+
+    public User createNewUser(User user) {
+        return userRepository.insert(user);
     }
 
     public List<Menu> getMenus() {
@@ -97,6 +109,15 @@ public class MenuService extends Service<CollaborativeMenu> {
         if (paymentMenuRepository != null) {
             loadNeed += 1;
             paymentMenuRepository.setOnChangedListener(new Repository.OnChangedListener() {
+                @Override
+                public void onChanged(EventType type) {
+                    triggerListener(listener, type);
+                }
+            });
+        }
+        if (userRepository != null) {
+            loadNeed += 1;
+            userRepository.setOnChangedListener(new Repository.OnChangedListener() {
                 @Override
                 public void onChanged(EventType type) {
                     triggerListener(listener, type);
