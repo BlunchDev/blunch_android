@@ -3,9 +3,16 @@ package dev.blunch.blunch.activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.StrictMode;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -19,10 +26,20 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.FacebookContentProvider;
+import com.facebook.FacebookSdk;
+import com.facebook.Profile;
+
+import org.w3c.dom.Text;
+
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +63,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -64,6 +84,8 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(0).setChecked(true);
+
+        setUserInfo(navigationView);
 
         initFragment(R.layout.content_list_menus);
 
@@ -92,6 +114,28 @@ public class MainActivity extends AppCompatActivity
         });
 
         initializeSearchMenus();
+    }
+
+    private void setUserInfo(NavigationView navigationView) {
+        View headerView = navigationView.getHeaderView(0);
+
+        TextView userName = (TextView) headerView.findViewById(R.id.user_name_nav);
+        userName.setText(Profile.getCurrentProfile().getName());
+
+        ImageView userPhoto = (ImageView) headerView.findViewById(R.id.user_picture_nav);
+        try {
+            URL image = new URL(Profile.getCurrentProfile().getProfilePictureUri(140, 140).toString());
+
+            Resources res = getResources();
+            Bitmap src = BitmapFactory.decodeStream(image.openConnection().getInputStream());
+            RoundedBitmapDrawable dr =
+                    RoundedBitmapDrawableFactory.create(res, src);
+            dr.setCornerRadius(Math.max(src.getWidth(), src.getHeight()) / 2.0f);
+
+            userPhoto.setImageDrawable(dr);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
