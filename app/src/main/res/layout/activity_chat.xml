@@ -34,9 +34,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center_vertical|bottom"
         android:id="@+id/bottom_bar"
-        android:orientation="horizontal"
-        android:gravity="bottom">
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
 
 
         <EditText
@@ -44,7 +45,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/new_message"
             android:inputType="textCapSentences"
-            android:singleLine="true"
+            android:layout_weight="1"
             android:hint="Write message here...." />
 
         <Button

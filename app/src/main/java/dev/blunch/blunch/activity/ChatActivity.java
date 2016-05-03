@@ -58,8 +58,6 @@ public class ChatActivity extends AppCompatActivity {
                 message.setContent(messageText.getText().toString());
                 mRef.push().setValue(message);
                 messageText.setText("");
-
-
             }
         });
     }
