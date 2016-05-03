@@ -24,16 +24,16 @@
         <activity
             android:name=".activity.NewCollaborativeMenuActivity"
             android:parentActivityName=".activity.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.NewPaymentMenuActivity"
             android:parentActivityName=".activity.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.GetCollaborativeMenuActivity"
             android:label="@string/getMenuCollaborativeActivity_name"
             android:parentActivityName=".activity.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.GetPaymentMenuActivity"
             android:label="@string/getPaymentMenuActivity_name"
@@ -54,7 +54,12 @@
             android:label="@string/title_activity_payment_petitions_list"
             android:parentActivityName=".activity.GetPaymentMenuActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
+        <activity
+            android:name=".activity.ChatActivity"
+            android:label="@string/title_activity_chat"
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>
