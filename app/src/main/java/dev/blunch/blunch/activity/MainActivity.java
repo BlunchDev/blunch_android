@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -22,10 +21,8 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import dev.blunch.blunch.R;
 import dev.blunch.blunch.adapters.MenuListAdapter;
 import dev.blunch.blunch.services.CollaborativeMenuService;
@@ -34,6 +31,7 @@ import dev.blunch.blunch.services.PaymentMenuService;
 import dev.blunch.blunch.services.ServiceFactory;
 import dev.blunch.blunch.utils.Repository;
 
+@SuppressWarnings("all")
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -147,8 +145,8 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(getApplicationContext(), "Collaborating menus", Toast.LENGTH_SHORT).show();
             initializeCollaboratingMenus();
         }
-        else if (id == R.id.payment_menus) {
-            initFragment(-1);
+        else if (id == R.id.old_menus) {
+            initFragment(R.layout.content_list_old_menus);
             Toast.makeText(getApplicationContext(), "Payed menus", Toast.LENGTH_SHORT).show();
             initializePaymentmenus();
         }
