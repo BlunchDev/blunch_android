@@ -7,6 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.firebase.client.Firebase;
@@ -33,7 +35,7 @@ public class ChatActivity extends AppCompatActivity {
         recycler.setLayoutManager(new LinearLayoutManager(this));
         Firebase.setAndroidContext(getApplicationContext());
 
-        Firebase mRef = new Firebase("https://blunch.firebaseio.com/chats/-1");
+        final Firebase mRef = new Firebase("https://blunch.firebaseio.com/chats/-1");
 
 
         mAdapter = new FirebaseRecyclerAdapter<ChatMessage, ChatMessageViewHolder>(ChatMessage.class, R.layout.message, ChatMessageViewHolder.class, mRef) {
@@ -43,6 +45,23 @@ public class ChatActivity extends AppCompatActivity {
             }
         };
         recycler.setAdapter(mAdapter);
+
+        Button sendButton = (Button) findViewById(R.id.send);
+        final EditText messageText = (EditText) findViewById(R.id.new_message);
+        assert sendButton != null;
+        assert messageText != null;
+        sendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ChatMessage message = new ChatMessage();
+                message.setAuthor("TEST");
+                message.setContent(messageText.getText().toString());
+                mRef.push().setValue(message);
+                messageText.setText("");
+
+
+            }
+        });
     }
 
     @Override
