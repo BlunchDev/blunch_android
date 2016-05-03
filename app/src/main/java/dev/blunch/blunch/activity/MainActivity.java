@@ -119,13 +119,13 @@ public class MainActivity extends AppCompatActivity
 
     private void setUserInfo(NavigationView navigationView) {
         View headerView = navigationView.getHeaderView(0);
-
+        User user = menuService.findUserByEmail(email);
         TextView userName = (TextView) headerView.findViewById(R.id.user_name_nav);
-        userName.setText(Profile.getCurrentProfile().getName());
+        userName.setText(user.getName());
 
         ImageView userPhoto = (ImageView) headerView.findViewById(R.id.user_picture_nav);
         try {
-            User user = menuService.findUserByEmail(email);
+
             userPhoto.setImageDrawable(user.getImageRounded(getResources()));
         } catch (Exception e) {
             e.printStackTrace();
