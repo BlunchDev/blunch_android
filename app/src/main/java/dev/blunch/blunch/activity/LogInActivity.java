@@ -26,6 +26,7 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
+import com.facebook.ProfileTracker;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
@@ -42,15 +43,27 @@ import dev.blunch.blunch.utils.Repository;
 public class LogInActivity extends AppCompatActivity {
 
     private CallbackManager callbackManager;
+    private ProfileTracker mProfileTracker;
     private FacebookCallback<LoginResult> loginResultFacebookCallback =
             new FacebookCallback<LoginResult>() {
                 @Override
                 public void onSuccess(LoginResult loginResult) {
                     RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.splash_screen);
                     relativeLayout.findViewById(R.id.login_button).setVisibility(View.GONE);
-                    //THIS CAN BE CALLED AT ANY MOMENT
-                    Profile profile = Profile.getCurrentProfile();
-                    initApp();
+                    relativeLayout.findViewById(R.id.progress_bar).setVisibility(View.VISIBLE);
+                    if(Profile.getCurrentProfile() == null) {
+                        mProfileTracker = new ProfileTracker() {
+                            @Override
+                            protected void onCurrentProfileChanged(Profile profile, Profile profile2) {
+                                mProfileTracker.stopTracking();
+                                initApp();
+                            }
+                        };
+                        mProfileTracker.startTracking();
+                    }
+                    else {
+                        initApp();
+                    }
                 }
 
                 @Override
@@ -85,13 +98,15 @@ public class LogInActivity extends AppCompatActivity {
         loginButton.setReadPermissions(Arrays.asList("public_profile", "user_photos"));
         loginButton.registerCallback(callbackManager, loginResultFacebookCallback);
 
+        //Only for development purposes
         printKeyHash();
+
+        ((ProgressBar) findViewById(R.id.progress_bar)).getIndeterminateDrawable().setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
 
         if (Profile.getCurrentProfile() != null) {
             logIn = true;
             RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.splash_screen);
             relativeLayout.findViewById(R.id.login_button).setVisibility(View.GONE);
-            ((ProgressBar) findViewById(R.id.progress_bar)).getIndeterminateDrawable().setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
         } else {
             logIn = false;
             findViewById(R.id.loadingPanel).setVisibility(View.GONE);
