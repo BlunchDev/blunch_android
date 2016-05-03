@@ -46,6 +46,8 @@ public class LogInActivity extends AppCompatActivity {
             new FacebookCallback<LoginResult>() {
                 @Override
                 public void onSuccess(LoginResult loginResult) {
+                    RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.splash_screen);
+                    relativeLayout.findViewById(R.id.login_button).setVisibility(View.GONE);
                     //THIS CAN BE CALLED AT ANY MOMENT
                     Profile profile = Profile.getCurrentProfile();
                     initApp();
