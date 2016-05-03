@@ -10,4 +10,5 @@
     app:layoutManager="LinearLayoutManager"
     tools:context=".activity.CollaborativePetitionsListActivity"
     tools:listitem="@layout/message"
-    tools:showIn="@layout/activity_chat"/>
+    tools:showIn="@layout/activity_chat"
+    android:paddingBottom="50dp"/>

@@ -1,15 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_marginBottom="2dp"
+    android:layout_height="wrap_content" android:padding="10dp">
 
-    <TextView
-        android:id="@+id/content"
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/user_icon"
+        android:src="@drawable/user"/>
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textStyle="italic"
-        android:textSize="12sp"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_marginTop="4dp" />
+        android:background="#ffffff"
+        android:orientation="vertical"
+        android:padding="10dp">
+        <TextView
+            android:id="@+id/author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="manuel"
+            android:textSize="14sp"
+            android:layout_marginTop="4dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MISSATGE DE PROVES"
+            android:textSize="16sp"
+            android:layout_marginTop="4dp"
+            android:textIsSelectable="true" />
+
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12:33 12/3/2015"
+            android:textSize="8sp"
+            android:layout_marginTop="4dp" />
+    </LinearLayout>
+
 
 </LinearLayout>

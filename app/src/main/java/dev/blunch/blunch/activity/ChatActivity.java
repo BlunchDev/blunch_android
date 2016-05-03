@@ -11,8 +11,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.firebase.ui.FirebaseRecyclerAdapter;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 import dev.blunch.blunch.R;
 import dev.blunch.blunch.domain.ChatMessage;
@@ -30,9 +36,11 @@ public class ChatActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        RecyclerView recycler = (RecyclerView) findViewById(R.id.chat_list);
+        final RecyclerView recycler = (RecyclerView) findViewById(R.id.chat_list);
+        assert recycler!=null;
         recycler.setHasFixedSize(true);
-        recycler.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager layout = new LinearLayoutManager(this);
+        recycler.setLayoutManager(layout);
         Firebase.setAndroidContext(getApplicationContext());
 
         final Firebase mRef = new Firebase("https://blunch.firebaseio.com/chats/-1");
@@ -42,9 +50,24 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void populateViewHolder(ChatMessageViewHolder chatMessageViewHolder, ChatMessage chatMessage, int position) {
                 chatMessageViewHolder.contentText.setText(chatMessage.getContent());
+                chatMessageViewHolder.authorText.setText(chatMessage.getAuthor());
+                DateFormat sdf = SimpleDateFormat.getDateTimeInstance();
+                chatMessageViewHolder.dateText.setText(sdf.format(chatMessage.createdAt()));
             }
         };
+        mRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                recycler.smoothScrollToPosition(mAdapter.getItemCount()-1);
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
         recycler.setAdapter(mAdapter);
+
 
         Button sendButton = (Button) findViewById(R.id.send);
         final EditText messageText = (EditText) findViewById(R.id.new_message);
@@ -53,9 +76,7 @@ public class ChatActivity extends AppCompatActivity {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ChatMessage message = new ChatMessage();
-                message.setAuthor("TEST");
-                message.setContent(messageText.getText().toString());
+                ChatMessage message = new ChatMessage("TEST",messageText.getText().toString());
                 mRef.push().setValue(message);
                 messageText.setText("");
             }
@@ -80,11 +101,15 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     public static class ChatMessageViewHolder extends RecyclerView.ViewHolder {
+        TextView dateText;
+        TextView authorText;
         TextView contentText;
 
         public ChatMessageViewHolder(View itemView) {
             super(itemView);
             contentText = (TextView)itemView.findViewById(R.id.content);
+            authorText = (TextView)itemView.findViewById(R.id.author);
+            dateText = (TextView)itemView.findViewById(R.id.date);
         }
     }
 }
