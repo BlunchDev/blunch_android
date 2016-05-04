@@ -1,12 +1,9 @@
 package dev.blunch.blunch.activity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
-import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,8 +11,6 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
@@ -23,10 +18,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -42,7 +34,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -52,6 +43,7 @@ import dev.blunch.blunch.R;
 import dev.blunch.blunch.domain.User;
 import dev.blunch.blunch.services.MenuService;
 import dev.blunch.blunch.services.ServiceFactory;
+import dev.blunch.blunch.utils.Preferences;
 import dev.blunch.blunch.utils.Repository;
 
 @SuppressWarnings("all")
@@ -65,8 +57,6 @@ public class LogInActivity extends AppCompatActivity {
 
     private boolean prof;
     private boolean graph;
-
-    SharedPreferences prefs;
 
     private FacebookCallback<LoginResult> loginResultFacebookCallback;
 
@@ -109,6 +99,8 @@ public class LogInActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Preferences.init(getApplicationContext());
+
         loginResultFacebookCallback =
                 new FacebookCallback<LoginResult>() {
                     @Override
@@ -121,7 +113,7 @@ public class LogInActivity extends AppCompatActivity {
                                         Log.v("LoginActivity", response.toString());
                                         try {
                                             email = object.getString("email");
-                                            prefs.edit().putString("user_email", email).apply();
+                                            Preferences.setCurrentUserEmail(email);
                                             name = object.getString("name");
                                             graph = true;
                                             if (prof && graph) createUser();
@@ -189,14 +181,11 @@ public class LogInActivity extends AppCompatActivity {
         //Only for development purposes
         printKeyHash();
 
-        prefs = this.getSharedPreferences(
-                "dev.blunch.blunch", Context.MODE_PRIVATE);
-
         ((ProgressBar) findViewById(R.id.progress_bar)).getIndeterminateDrawable().setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
 
         if (Profile.getCurrentProfile() != null) {
             logIn = true;
-            email = prefs.getString("user_email", new String());
+            email = Preferences.getCurrentUserEmail();
             RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.splash_screen);
             relativeLayout.findViewById(R.id.login_button).setVisibility(View.GONE);
         } else {
@@ -222,8 +211,6 @@ public class LogInActivity extends AppCompatActivity {
 
     private void initApp() {
         Intent intent = new Intent(LogInActivity.this, MainActivity.class);
-        intent.putExtra("user_email", email);
-        Log.d(email, email);
         startActivity(intent);
     }
 

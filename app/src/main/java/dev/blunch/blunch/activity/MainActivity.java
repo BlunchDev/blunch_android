@@ -3,14 +3,8 @@ package dev.blunch.blunch.activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -30,15 +24,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.FacebookContentProvider;
 import com.facebook.FacebookSdk;
-import com.facebook.Profile;
-import com.firebase.client.utilities.Base64;
 
-import org.w3c.dom.Text;
-
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +36,7 @@ import dev.blunch.blunch.services.CollaborativeMenuService;
 import dev.blunch.blunch.services.MenuService;
 import dev.blunch.blunch.services.PaymentMenuService;
 import dev.blunch.blunch.services.ServiceFactory;
+import dev.blunch.blunch.utils.Preferences;
 import dev.blunch.blunch.utils.Repository;
 
 public class MainActivity extends AppCompatActivity
@@ -65,7 +53,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        email = getIntent().getStringExtra("user_email");
+        email = Preferences.getCurrentUserEmail();
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
