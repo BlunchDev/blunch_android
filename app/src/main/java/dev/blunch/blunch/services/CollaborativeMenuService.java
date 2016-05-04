@@ -2,6 +2,8 @@ package dev.blunch.blunch.services;
 
 import android.util.Log;
 
+import com.firebase.client.core.Repo;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +11,8 @@ import java.util.Map;
 import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.domain.CollaborativeMenuAnswer;
 import dev.blunch.blunch.domain.Dish;
+import dev.blunch.blunch.domain.User;
+import dev.blunch.blunch.utils.Preferences;
 import dev.blunch.blunch.utils.Repository;
 import dev.blunch.blunch.utils.Service;
 
@@ -22,31 +26,42 @@ public class CollaborativeMenuService extends Service<CollaborativeMenu> {
     private static final String TAG = CollaborativeMenuService.class.getSimpleName();
     private final Repository<Dish> dishesRepository;
     private final Repository<CollaborativeMenuAnswer> collaborativeMenuAnswerRepository;
+    private final Repository<User> userRepository;
     private int loaded = 0;
     private int loadNeed = 1;
 
     public CollaborativeMenuService(Repository<CollaborativeMenu> repository, Repository<Dish> repoDishes,
-                                    Repository<CollaborativeMenuAnswer> collaborativeMenuAnswerRepository) {
+                                    Repository<CollaborativeMenuAnswer> collaborativeMenuAnswerRepository,
+                                    Repository<User> userRepository) {
         super(repository);
         this.dishesRepository = repoDishes;
         this.collaborativeMenuAnswerRepository = collaborativeMenuAnswerRepository;
+        this.userRepository = userRepository;
     }
 
     public CollaborativeMenuService(Repository<CollaborativeMenu> repository, Repository<Dish> repoDishes) {
         super(repository);
         dishesRepository = repoDishes;
         this.collaborativeMenuAnswerRepository = null;
+        this.userRepository = null;
     }
 
     public CollaborativeMenuService(Repository<CollaborativeMenu> repository) {
         super(repository);
         dishesRepository = null;
         collaborativeMenuAnswerRepository = null;
+        this.userRepository = null;
     }
 
     @Override
     public CollaborativeMenu save(CollaborativeMenu item) {
-        return super.save(item);
+        CollaborativeMenu menu = super.save(item);
+        if (userRepository.exists(item.getAuthor())) {
+            User user = userRepository.get(item.getAuthor());
+            user.addNewMyMenu(menu);
+            userRepository.update(user);
+        }
+        return menu;
     }
 
     public CollaborativeMenu save(CollaborativeMenu item, List<Dish> offeredDishes, List<Dish> suggestedDishes) {
@@ -61,7 +76,22 @@ public class CollaborativeMenuService extends Service<CollaborativeMenu> {
             dishesRepository.insert(dish);
             item.addSuggestedDish(dish.getId());
         }
-        return repository.insert(item);
+        CollaborativeMenu menu = repository.insert(item);
+        Log.d("Menu", menu.getId());
+        Log.d("User", item.getAuthor());
+        Log.d("Size", userRepository.all().size()+"");
+        if (userRepository.exists(item.getAuthor())) {
+            User user = userRepository.get(item.getAuthor());
+            user.addNewMyMenu(menu);
+            userRepository.update(user);
+        }
+        return menu;
+    }
+
+    public List<User> getUsers() { return userRepository.all(); }
+
+    public User findUserByEmail(String email) {
+        return userRepository.get(email);
     }
 
 
@@ -86,7 +116,8 @@ public class CollaborativeMenuService extends Service<CollaborativeMenu> {
             Dish d = dishesRepository.insert(dish);
             collaborativeMenuAnswer.addOfferedDish(d.getId());
         }
-        return collaborativeMenuAnswerRepository.insert(collaborativeMenuAnswer);
+        CollaborativeMenuAnswer answer = collaborativeMenuAnswerRepository.insert(collaborativeMenuAnswer);
+        return answer;
     }
 
     public List<Dish> getSuggestedDishes(String key) {
@@ -131,6 +162,11 @@ public class CollaborativeMenuService extends Service<CollaborativeMenu> {
         }
         repository.update(menuHost);
         collaborativeMenuAnswerRepository.delete(key);
+        if (userRepository.exists(answer.getGuest())) {
+            User user = userRepository.get(answer.getGuest());
+            user.addNewParticipatedMenu(repository.get(answer.getMenuId()));
+            userRepository.update(user);
+        }
     }
 
     public void declineProposal(String key) {
@@ -177,6 +213,15 @@ public class CollaborativeMenuService extends Service<CollaborativeMenu> {
             });
         }
 
+        if (userRepository != null) {
+            loadNeed += 1;
+            userRepository.setOnChangedListener(new Repository.OnChangedListener() {
+                @Override
+                public void onChanged(EventType type) {
+                    triggerListener(listener, type);
+                }
+            });
+        }
     }
 
     private void triggerListener(Repository.OnChangedListener listener, Repository.OnChangedListener.EventType type) {

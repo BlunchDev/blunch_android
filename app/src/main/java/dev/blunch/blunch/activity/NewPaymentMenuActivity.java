@@ -25,6 +25,7 @@ import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.domain.PaymentMenu;
 import dev.blunch.blunch.services.PaymentMenuService;
 import dev.blunch.blunch.services.ServiceFactory;
+import dev.blunch.blunch.utils.Preferences;
 import dev.blunch.blunch.view.PaymentDishLayout;
 
 @SuppressWarnings("all")
@@ -293,7 +294,7 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
             }
 
             PaymentMenu paymentMenu = new PaymentMenu(  menuNameString,
-                    author,
+                    Preferences.getCurrentUserEmail(),
                     description,
                     localization,
                     start,
