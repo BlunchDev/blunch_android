@@ -26,7 +26,10 @@ public class User implements Entity {
     private Map<String, Object> myMenus;
     private Map<String, Object> participatedMenus;
 
-    public User(){}
+    public User(){
+        myMenus = new LinkedHashMap<>();
+        participatedMenus = new LinkedHashMap<>();
+    }
 
     public User(String name, String email, String imageFile) {
         this.name = name;

@@ -77,6 +77,9 @@ public class CollaborativeMenuService extends Service<CollaborativeMenu> {
             item.addSuggestedDish(dish.getId());
         }
         CollaborativeMenu menu = repository.insert(item);
+        Log.d("Menu", menu.getId());
+        Log.d("User", item.getAuthor());
+        Log.d("Size", userRepository.all().size()+"");
         if (userRepository.exists(item.getAuthor())) {
             User user = userRepository.get(item.getAuthor());
             user.addNewMyMenu(menu);
@@ -114,11 +117,6 @@ public class CollaborativeMenuService extends Service<CollaborativeMenu> {
             collaborativeMenuAnswer.addOfferedDish(d.getId());
         }
         CollaborativeMenuAnswer answer = collaborativeMenuAnswerRepository.insert(collaborativeMenuAnswer);
-        if (userRepository.exists(answer.getGuest())) {
-            User user = userRepository.get(answer.getGuest());
-            user.addNewParticipatedMenu(repository.get(answer.getMenuId()));
-            userRepository.update(user);
-        }
         return answer;
     }
 
@@ -164,6 +162,11 @@ public class CollaborativeMenuService extends Service<CollaborativeMenu> {
         }
         repository.update(menuHost);
         collaborativeMenuAnswerRepository.delete(key);
+        if (userRepository.exists(answer.getGuest())) {
+            User user = userRepository.get(answer.getGuest());
+            user.addNewParticipatedMenu(repository.get(answer.getMenuId()));
+            userRepository.update(user);
+        }
     }
 
     public void declineProposal(String key) {

@@ -78,8 +78,8 @@ public class UserTest {
         assertNull(user.getId());
         assertNull(user.getName());
         assertNull(user.getImageFile());
-        assertNull(user.getMyMenus());
-        assertNull(user.getParticipatedMenus());
+        assertEquals(user.getMyMenus().size(), 0);
+        assertEquals(user.getParticipatedMenus().size(), 0);
     }
 
     @Test
