@@ -322,24 +322,18 @@ public class MainActivity extends AppCompatActivity
     private void initOldMenus(String filter) {
         List<dev.blunch.blunch.domain.Menu> menuList = new ArrayList<>();
 
-        String currentUser = "alsumo95@gmail.com";
-
         switch (filter) {
             case "No valorados":
-                // TODO Function at menuService that return a list that contains all menus WITHOUT valoration of specific user.
-                menuList.addAll(menuService.getNonValuedCollaboratedMenusOf(currentUser));
+                menuList.addAll(menuService.getNonValuedCollaboratedMenusOf(email));
                 break;
             case "Valorados":
-                // TODO Function at menuService that return a list that contains all menus WHIT valoration of specific user.
-                menuList.addAll(menuService.getValuedCollaboratedMenusOf(currentUser));
+                menuList.addAll(menuService.getValuedCollaboratedMenusOf(email));
                 break;
             case "Todos":
-                // TODO Function at menuService that return a list that contains ALL menus of specific user.
-                menuList.addAll(menuService.getCollaboratedMenusOf(currentUser));
+                menuList.addAll(menuService.getCollaboratedMenusOf(email));
                 break;
             default:
-                // TODO Same like case -> No valorados
-                menuList.addAll(menuService.getNonValuedCollaboratedMenusOf(currentUser));
+                menuList.addAll(menuService.getNonValuedCollaboratedMenusOf(email));
                 break;
         }
 
@@ -356,7 +350,9 @@ public class MainActivity extends AppCompatActivity
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 dev.blunch.blunch.domain.Menu menu = menuListAdapter.getItem(position);
 
-                String s = menu.getClass().getSimpleName();
+                // TODO Access to valorations repositories and search if menu was valorated by current user
+                String menuId = menu.getId();
+                String s = "";
 
                 // TODO Split Menus between NonValued and Valued.
                 // Valued -> On click: Valoration Activity
