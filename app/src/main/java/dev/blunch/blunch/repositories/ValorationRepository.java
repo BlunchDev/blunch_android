@@ -28,7 +28,7 @@ public class ValorationRepository extends FirebaseRepository<Valoration> {
             }else if ("comment".equals(d.getKey())) {
                 valoration.setComment(d.getValue(String.class));
             }else if ("menu".equals(d.getKey())) {
-                valoration.setMenu(d.getValue(Menu.class));
+                valoration.setMenu(d.getValue(String.class));
             }else if ("host".equals(d.getKey())) {
                 valoration.setHost(d.getValue(String.class));
             }else if ("guest".equals(d.getKey())) {

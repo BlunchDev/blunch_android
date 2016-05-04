@@ -9,6 +9,7 @@ import dev.blunch.blunch.repositories.CollaborativeMenuRepository;
 import dev.blunch.blunch.repositories.DishRepository;
 import dev.blunch.blunch.repositories.PaymentMenuAnswerRepository;
 import dev.blunch.blunch.repositories.PaymentMenuRepository;
+import dev.blunch.blunch.repositories.ValorationRepository;
 
 /**
  * Created by casassg on 17/04/16.
@@ -43,7 +44,7 @@ public final class ServiceFactory {
         if (menuService == null)
             menuService = new MenuService(
                     new CollaborativeMenuRepository(context),
-                    new PaymentMenuRepository(context));
+                    new PaymentMenuRepository(context), new ValorationRepository(context));
         return menuService;
     }
 

@@ -11,6 +11,7 @@ import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.domain.Menu;
 import dev.blunch.blunch.domain.MenuComparator;
 import dev.blunch.blunch.domain.PaymentMenu;
+import dev.blunch.blunch.domain.Valoration;
 import dev.blunch.blunch.utils.Repository;
 import dev.blunch.blunch.utils.Service;
 
@@ -20,13 +21,15 @@ import dev.blunch.blunch.utils.Service;
 public class MenuService extends Service<CollaborativeMenu> {
 
     private final Repository<PaymentMenu> paymentMenuRepository;
+    private final Repository<Valoration> valorationRepository;
     int loadNeed = 1;
     int loaded = 0;
 
 
-    public MenuService(Repository<CollaborativeMenu> repository, Repository<PaymentMenu> paymentMenuRepository) {
+    public MenuService(Repository<CollaborativeMenu> repository, Repository<PaymentMenu> paymentMenuRepository, Repository<Valoration> valorationRepository) {
         super(repository);
         this.paymentMenuRepository = paymentMenuRepository;
+        this.valorationRepository = valorationRepository;
     }
 
     public List<CollaborativeMenu> getCollaborativeMenus() {
@@ -111,5 +114,26 @@ public class MenuService extends Service<CollaborativeMenu> {
             }
             listener.onChanged(type);
         }
+    }
+
+    public void value(String menu, double points, String comment, String host, String guest){
+        Valoration valoration = new Valoration();
+        valoration.setMenu(menu);
+        valoration.setPoints(points);
+        valoration.setComment(comment);
+        valoration.setGuest(guest);
+        valoration.setHost(host);
+
+        valorationRepository.insert(valoration);
+    }
+
+    public Menu getMenu(String menuId) {
+        
+        Menu m = paymentMenuRepository.get(menuId);
+        if(m == null){
+            m = repository.get(menuId);
+        }
+        
+        return m;
     }
 }

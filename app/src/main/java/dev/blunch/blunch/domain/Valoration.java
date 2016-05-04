@@ -9,7 +9,7 @@ public class Valoration implements Entity {
 
     private double points;
     private String comment;
-    private Menu menu;
+    private String menu;
     private String host;
     private String guest;
 
@@ -17,7 +17,7 @@ public class Valoration implements Entity {
 
     }
 
-    public Valoration(String host, String guest, Menu menu, double points, String comment){
+    public Valoration(String host, String guest,String menu, double points, String comment){
         this.host = host;
         this.guest = guest;
         this.menu = menu;
@@ -41,11 +41,11 @@ public class Valoration implements Entity {
         this.comment = comment;
     }
 
-    public Menu getMenu() {
+    public String getMenu() {
         return menu;
     }
 
-    public void setMenu(Menu menu) {
+    public void setMenu(String menu) {
         this.menu = menu;
     }
 
