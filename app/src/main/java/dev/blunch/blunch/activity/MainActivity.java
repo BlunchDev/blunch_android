@@ -147,8 +147,8 @@ public class MainActivity extends AppCompatActivity
         }
         else if (id == R.id.old_menus) {
             initFragment(R.layout.content_list_old_menus);
-            Toast.makeText(getApplicationContext(), "Payed menus", Toast.LENGTH_SHORT).show();
-            initializePaymentmenus();
+            Toast.makeText(getApplicationContext(), "Valoración de menus", Toast.LENGTH_SHORT).show();
+            initializeOldMenus();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -254,9 +254,17 @@ public class MainActivity extends AppCompatActivity
         setTitle("Menús en colaboración");
     }
 
-    private void initializePaymentmenus() {
-        //TODO fill view
-        setTitle("Menús comprados");
+    private void initializeOldMenus() {
+
+        setTitle("Valoración de menus");
+
+        Spinner spinner = (Spinner) findViewById(R.id.menu_spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.old_menu_types, R.layout.spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinner.setAdapter(adapter);
+
     }
 
     private void initializeMyMenus() {
