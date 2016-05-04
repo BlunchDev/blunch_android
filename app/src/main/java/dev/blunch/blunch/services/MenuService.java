@@ -43,11 +43,8 @@ public class MenuService extends Service<CollaborativeMenu> {
     }
 
     public User findUserByEmail(String email) {
-        List<User> users = userRepository.all();
-        Log.d("size", users.size()+"");
-        for (User user : users) {
+        for (User user : userRepository.all())
             if (user.getEmail().equals(email)) return user;
-        }
         return null;
     }
 
