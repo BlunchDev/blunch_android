@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dev.blunch.blunch.domain.Dish;
+import dev.blunch.blunch.domain.Menu;
 import dev.blunch.blunch.domain.PaymentMenu;
 import dev.blunch.blunch.domain.PaymentMenuAnswer;
 import dev.blunch.blunch.domain.User;
@@ -62,7 +63,13 @@ public class PaymentMenuService extends Service<PaymentMenu> {
             dishesRepository.insert(dish);
             item.addDish(dish.getId());
         }
-        return repository.insert(item);
+        PaymentMenu menu =  repository.insert(item);
+        if (userRepository.exists(menu.getAuthor())) {
+            User user = userRepository.get(menu.getAuthor());
+            user.addNewMyMenu(menu);
+            userRepository.update(user);
+        }
+        return menu;
     }
 
     public List<Dish> getDishes(String key) {
@@ -85,7 +92,12 @@ public class PaymentMenuService extends Service<PaymentMenu> {
 
     public void answer(String menuKey, PaymentMenuAnswer answer) {
         answer.setIdMenu(menuKey);
-        answerRepository.insert(answer);
+        PaymentMenuAnswer paymentMenuAnswer = answerRepository.insert(answer);
+        if (userRepository.exists(paymentMenuAnswer.getGuest())) {
+            User user = userRepository.get(paymentMenuAnswer.getGuest());
+            user.addNewParticipatedMenu(repository.get(answer.getIdMenu()));
+            userRepository.update(user);
+        }
     }
 
     public List<PaymentMenuAnswer> getAnswers(String menuKey){

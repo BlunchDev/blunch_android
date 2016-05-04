@@ -55,7 +55,13 @@ public class CollaborativeMenuService extends Service<CollaborativeMenu> {
 
     @Override
     public CollaborativeMenu save(CollaborativeMenu item) {
-        return super.save(item);
+        CollaborativeMenu menu = super.save(item);
+        if (userRepository.exists(item.getAuthor())) {
+            User user = userRepository.get(item.getAuthor());
+            user.addNewMyMenu(menu);
+            userRepository.update(user);
+        }
+        return menu;
     }
 
     public CollaborativeMenu save(CollaborativeMenu item, List<Dish> offeredDishes, List<Dish> suggestedDishes) {
@@ -70,7 +76,13 @@ public class CollaborativeMenuService extends Service<CollaborativeMenu> {
             dishesRepository.insert(dish);
             item.addSuggestedDish(dish.getId());
         }
-        return repository.insert(item);
+        CollaborativeMenu menu = repository.insert(item);
+        if (userRepository.exists(item.getAuthor())) {
+            User user = userRepository.get(item.getAuthor());
+            user.addNewMyMenu(menu);
+            userRepository.update(user);
+        }
+        return menu;
     }
 
     public List<User> getUsers() { return userRepository.all(); }
@@ -101,7 +113,13 @@ public class CollaborativeMenuService extends Service<CollaborativeMenu> {
             Dish d = dishesRepository.insert(dish);
             collaborativeMenuAnswer.addOfferedDish(d.getId());
         }
-        return collaborativeMenuAnswerRepository.insert(collaborativeMenuAnswer);
+        CollaborativeMenuAnswer answer = collaborativeMenuAnswerRepository.insert(collaborativeMenuAnswer);
+        if (userRepository.exists(answer.getGuest())) {
+            User user = userRepository.get(answer.getGuest());
+            user.addNewParticipatedMenu(repository.get(answer.getMenuId()));
+            userRepository.update(user);
+        }
+        return answer;
     }
 
     public List<Dish> getSuggestedDishes(String key) {
