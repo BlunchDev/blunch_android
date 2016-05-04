@@ -8,7 +8,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -16,6 +15,7 @@ import java.util.List;
 import dev.blunch.blunch.R;
 import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.domain.Menu;
+import dev.blunch.blunch.domain.User;
 
 /**
  * Menu List Adapter Class
@@ -25,11 +25,13 @@ public class MenuListAdapter extends BaseAdapter {
 
     Context context;
     List<Menu> menuList;
+    List<User> userList;
     private static LayoutInflater inflater = null;
 
-    public MenuListAdapter(Context context, List<Menu> data) {
+    public MenuListAdapter(Context context, List<Menu> data, List<User> users) {
         this.context = context;
         this.menuList = data;
+        this.userList = users;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -59,6 +61,7 @@ public class MenuListAdapter extends BaseAdapter {
         TextView time = (TextView) vi.findViewById(R.id.menu_time);
         TextView user = (TextView) vi.findViewById(R.id.user_name);
         ImageView type = (ImageView) vi.findViewById(R.id.menu_type);
+        ImageView userPic = (ImageView) vi.findViewById(R.id.user_icon);
         title.setText(menuList.get(position).getName());
         description.setText(menuList.get(position).getLocalization());
 
@@ -69,7 +72,18 @@ public class MenuListAdapter extends BaseAdapter {
         date.setText(dateString);
         time.setText(timeString);
 
-        user.setText(menuList.get(position).getAuthor());
+        User userEnt = null;
+        for (User u : userList) {
+            if (u.getId().equals(menuList.get(position).getAuthor())) userEnt = u;
+        }
+
+        user.setText(userEnt.getName().split(" ")[0]);
+        try {
+            userPic.setImageDrawable(userEnt.getImageRounded(context.getResources()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         if (CollaborativeMenu.class.isAssignableFrom(menuList.get(position).getClass())) {
             type.setImageResource(R.drawable.group);
         } else {

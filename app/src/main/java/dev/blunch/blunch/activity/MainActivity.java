@@ -5,30 +5,38 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.facebook.FacebookSdk;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import dev.blunch.blunch.R;
 import dev.blunch.blunch.adapters.MenuListAdapter;
+import dev.blunch.blunch.domain.User;
 import dev.blunch.blunch.services.CollaborativeMenuService;
 import dev.blunch.blunch.services.MenuService;
 import dev.blunch.blunch.services.PaymentMenuService;
 import dev.blunch.blunch.services.ServiceFactory;
+import dev.blunch.blunch.utils.Preferences;
 import dev.blunch.blunch.utils.Repository;
 
 @SuppressWarnings("all")
@@ -39,11 +47,15 @@ public class MainActivity extends AppCompatActivity
     CollaborativeMenuService collaborativeMenuService;
     PaymentMenuService paymentMenuService;
 
+    private String email;
+
     FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        email = Preferences.getCurrentUserEmail();
+        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -62,6 +74,8 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(0).setChecked(true);
+
+        setUserInfo(navigationView);
 
         initFragment(R.layout.content_list_menus);
 
@@ -92,13 +106,30 @@ public class MainActivity extends AppCompatActivity
         initializeSearchMenus();
     }
 
+    private void setUserInfo(NavigationView navigationView) {
+        View headerView = navigationView.getHeaderView(0);
+        User user = menuService.findUserByEmail(email);
+        TextView userName = (TextView) headerView.findViewById(R.id.user_name_nav);
+
+        try {
+            userName.setText(user.getName());
+            ImageView userPhoto = (ImageView) headerView.findViewById(R.id.user_picture_nav);
+            userPhoto.setImageDrawable(user.getImageRounded(getResources()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            Intent i = new Intent();
+            i.setAction(Intent.ACTION_MAIN);
+            i.addCategory(Intent.CATEGORY_HOME);
+            this.startActivity(i);
         }
     }
 
@@ -191,7 +222,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onChanged(EventType type) {
                 if (type.equals(EventType.Full)) {
-                    init("All");
+                    init("Todos");
                 }
             }
         });
@@ -218,7 +249,8 @@ public class MainActivity extends AppCompatActivity
 
         final MenuListAdapter menuListAdapter = new MenuListAdapter(
                 getApplicationContext(),
-                menuList);
+                menuList,
+                menuService.getUsers());
 
         ListView listView = (ListView) findViewById(R.id.menu_list);
         listView.setAdapter(menuListAdapter);
@@ -313,7 +345,8 @@ public class MainActivity extends AppCompatActivity
 
         final MenuListAdapter menuListAdapter = new MenuListAdapter(
                 getApplicationContext(),
-                menuList);
+                menuList,
+                menuService.getUsers());
 
         ListView listView = (ListView) findViewById(R.id.menu_list);
         listView.setAdapter(menuListAdapter);
@@ -349,5 +382,11 @@ public class MainActivity extends AppCompatActivity
     private void initializeMyMenus() {
         //TODO fill view
         setTitle("Mis menús");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        init("Todos");
     }
 }
