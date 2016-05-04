@@ -48,6 +48,11 @@ public class PaymentMenuService extends Service<PaymentMenu> {
         this.userRepository = null;
     }
 
+    public List<User> getUsers() { return userRepository.all(); }
+
+    public User findUserByEmail(String email) {
+        return userRepository.get(email);
+    }
 
     public PaymentMenu save(PaymentMenu item, List<Dish> dishes) {
         if (dishesRepository == null) {

@@ -1,5 +1,6 @@
 package dev.blunch.blunch.activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +21,7 @@ import dev.blunch.blunch.R;
 import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.domain.CollaborativeMenuAnswer;
 import dev.blunch.blunch.domain.Dish;
+import dev.blunch.blunch.domain.User;
 import dev.blunch.blunch.services.CollaborativeMenuService;
 import dev.blunch.blunch.services.ServiceFactory;
 
@@ -48,7 +50,9 @@ public class CollaborativePetitionsListActivity extends AppCompatActivity {
         View recyclerView = findViewById(R.id.proposal_list);
         assert recyclerView != null;
         ((RecyclerView) recyclerView).setAdapter(
-                new SimpleItemRecyclerViewAdapter(new ArrayList<CollaborativeMenuAnswer>())
+                new SimpleItemRecyclerViewAdapter(getApplicationContext(),
+                        new ArrayList<CollaborativeMenuAnswer>(),
+                        new ArrayList<User>())
         );
 
         idMenu = getIntent().getStringExtra(MENU_ID_KEY);
@@ -73,16 +77,23 @@ public class CollaborativePetitionsListActivity extends AppCompatActivity {
         List<CollaborativeMenuAnswer> proposal = service.getProposal(id);
         Log.e(TAG, "" + proposal.size());
         Log.e(TAG, "" + id);
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(proposal));
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(
+                getApplicationContext(), proposal, service.getUsers()));
     }
 
     public class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
         private final List<CollaborativeMenuAnswer> mValues;
+        private final List<User> users;
+        private final Context context;
 
-        public SimpleItemRecyclerViewAdapter(List<CollaborativeMenuAnswer> items) {
+        public SimpleItemRecyclerViewAdapter(Context context,
+                                             List<CollaborativeMenuAnswer> items,
+                                             List<User> users) {
             mValues = items;
+            this.users = users;
+            this.context = context;
         }
 
         @Override
@@ -105,7 +116,16 @@ public class CollaborativePetitionsListActivity extends AppCompatActivity {
 
             if (position == mValues.size() - 1) holder.divider.setVisibility(View.GONE);
             holder.mContentView.setText(result);
-            holder.titleView.setText("Propuesta de " + holder.mItem.getGuest());
+
+            User user = null;
+            for (User u : users) if (u.getId().equals(holder.mItem.getGuest())) user = u;
+
+            holder.titleView.setText("Propuesta de " + user.getName());
+            try {
+                holder.profilePic.setImageDrawable(user.getImageRounded(context.getResources()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
             holder.acceptView.setOnClickListener(new View.OnClickListener() {
                 @Override

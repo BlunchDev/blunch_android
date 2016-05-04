@@ -73,6 +73,12 @@ public class CollaborativeMenuService extends Service<CollaborativeMenu> {
         return repository.insert(item);
     }
 
+    public List<User> getUsers() { return userRepository.all(); }
+
+    public User findUserByEmail(String email) {
+        return userRepository.get(email);
+    }
+
 
     /**
      *

@@ -2,12 +2,14 @@ package dev.blunch.blunch.activity;
 
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.Calendar;
@@ -33,7 +35,8 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
     private List<Dish> suggestedDishes;
     private List<Dish> offeredDishes;
     private final String COMA = ",";
-    private TextView userName, localization, city, hostDishes, suggestions, description, hour;
+    private TextView userName, localization, hostDishes, suggestions, description, hour;
+    private ImageView userPic;
     private Button join;
     private Toolbar toolbar;
 
@@ -69,6 +72,7 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
         description = (TextView) findViewById(R.id.description_getCollaborative);
         hour = (TextView) findViewById(R.id.hour_getCollaborative);
         join = (Button) findViewById(R.id.join_getCollaborative);
+        userPic = (ImageView) findViewById(R.id.user_icon);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,6 +96,7 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        userPic.setImageDrawable(getUserPic());
         //
 
         toolbar.setTitle(obtainTitle());
@@ -99,8 +104,17 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
     }
 
+    private Drawable getUserPic() {
+        try {
+            return collaborativeMenuService.findUserByEmail(collaborativeMenu.getAuthor()).getImageRounded(getResources());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     private String obtainUserName() {
-        return collaborativeMenu.getAuthor();
+        return collaborativeMenuService.findUserByEmail(collaborativeMenu.getAuthor()).getName();
     }
 
     private String obtainTitle() {

@@ -1,6 +1,7 @@
 package dev.blunch.blunch.activity;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +46,7 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
     private final String COMA = ",";
     private final String FAKE_GUEST = "Platon";
     private TextView userName, localization, city, description, hour;
+    private ImageView userPic;
     private Button join;
     private Toolbar toolbar;
     private LinearLayout dishesLayout;
@@ -90,6 +93,7 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
         dishesLayout = (LinearLayout) findViewById(R.id.checkboxDishesLayout);
         dishesLayout.removeAllViews();
         precio = (TextView) findViewById(R.id.precio);
+        userPic = (ImageView) findViewById(R.id.user_icon);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -100,6 +104,7 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        userPic.setImageDrawable(obtainUserPic());
         userName.setText(obtainUserName());
         localization.setText(obtainAddress() + ", " + obtainCity());
         description.setText(obtainDescription());
@@ -153,6 +158,15 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
         }
     }
 
+    private Drawable obtainUserPic() {
+        try {
+            return paymentMenuService.findUserByEmail(paymentMenu.getAuthor()).getImageRounded(getResources());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     private void removeDish(String id) {
         for (Dish d: answerDishes){
             if (d.getId().equals(id))
@@ -161,7 +175,7 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
     }
 
     private String obtainUserName() {
-        return paymentMenu.getAuthor();
+        return paymentMenuService.findUserByEmail(paymentMenu.getAuthor()).getName();
     }
 
     private String obtainTitle() {
