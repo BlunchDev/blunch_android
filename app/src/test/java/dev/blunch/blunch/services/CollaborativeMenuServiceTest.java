@@ -16,6 +16,7 @@ import dev.blunch.blunch.BuildConfig;
 import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.domain.CollaborativeMenuAnswer;
 import dev.blunch.blunch.domain.Dish;
+import dev.blunch.blunch.domain.User;
 import dev.blunch.blunch.utils.MockRepository;
 import dev.blunch.blunch.utils.Repository;
 
@@ -45,7 +46,7 @@ public class CollaborativeMenuServiceTest {
         service = new CollaborativeMenuService(repository);
         service = new CollaborativeMenuService(repository, new MockRepository<Dish>());
         service = new CollaborativeMenuService(repository, new MockRepository<Dish>(),
-                new MockRepository<CollaborativeMenuAnswer>());
+                new MockRepository<CollaborativeMenuAnswer>(), new MockRepository<User>());
         newMenu = new CollaborativeMenu(
                 "Menu de micro de la FIB",
                 "Encarna", "És un menu de micro de la FIB",

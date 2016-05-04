@@ -32,6 +32,7 @@ import dev.blunch.blunch.repositories.CollaborativeMenuRepository;
 import dev.blunch.blunch.repositories.DishRepository;
 import dev.blunch.blunch.services.CollaborativeMenuService;
 import dev.blunch.blunch.services.ServiceFactory;
+import dev.blunch.blunch.utils.Preferences;
 import dev.blunch.blunch.utils.Repository;
 
 public class CollaborativeMenuAnswerActivity extends AppCompatActivity {
@@ -76,7 +77,8 @@ public class CollaborativeMenuAnswerActivity extends AppCompatActivity {
 
                         for (String s : guestNewSuggestions) newSuggestions.add(new Dish(s, 0.));
 
-                        collaborativeMenuService.reply(new CollaborativeMenuAnswer(FAKE_GUEST, menuID,
+                        collaborativeMenuService.reply(new CollaborativeMenuAnswer(
+                                Preferences.getCurrentUserEmail(), menuID,
                                 Calendar.getInstance().getTime(), guestSuggestions), newSuggestions);
 
                         Snackbar.make(view, "Petición creada", Snackbar.LENGTH_LONG)

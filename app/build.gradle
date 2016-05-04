@@ -30,6 +30,7 @@ android {
 
 repositories {
     maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+    mavenCentral()
 }
 
 dependencies {
@@ -43,6 +44,7 @@ dependencies {
     compile 'com.android.support:support-v4:23.2.1'
     compile 'com.android.support:recyclerview-v7:23.2.1'
     compile 'com.android.support:percent:23+'
+    compile 'com.facebook.android:facebook-android-sdk:4.+'
 }
 
 tasks.withType(Test) {

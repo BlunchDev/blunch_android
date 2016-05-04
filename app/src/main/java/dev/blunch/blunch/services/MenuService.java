@@ -2,6 +2,8 @@ package dev.blunch.blunch.services;
 
 import android.util.Log;
 
+import com.firebase.client.core.Repo;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -11,6 +13,7 @@ import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.domain.Menu;
 import dev.blunch.blunch.domain.MenuComparator;
 import dev.blunch.blunch.domain.PaymentMenu;
+import dev.blunch.blunch.domain.User;
 import dev.blunch.blunch.utils.Repository;
 import dev.blunch.blunch.utils.Service;
 
@@ -20,13 +23,15 @@ import dev.blunch.blunch.utils.Service;
 public class MenuService extends Service<CollaborativeMenu> {
 
     private final Repository<PaymentMenu> paymentMenuRepository;
+    private final Repository<User> userRepository;
     int loadNeed = 1;
     int loaded = 0;
 
-
-    public MenuService(Repository<CollaborativeMenu> repository, Repository<PaymentMenu> paymentMenuRepository) {
+    public MenuService(Repository<CollaborativeMenu> repository, Repository<PaymentMenu> paymentMenuRepository,
+                       Repository<User> userRepository) {
         super(repository);
         this.paymentMenuRepository = paymentMenuRepository;
+        this.userRepository = userRepository;
     }
 
     public List<CollaborativeMenu> getCollaborativeMenus() {
@@ -35,6 +40,17 @@ public class MenuService extends Service<CollaborativeMenu> {
 
     public List<PaymentMenu> getPaymentMenus() {
         return paymentMenuRepository.all();
+    }
+
+    public List<User> getUsers() { return userRepository.all(); }
+
+    public User findUserByEmail(String email) {
+        return userRepository.get(email);
+    }
+
+    public User createNewUser(User user) {
+        user.setId(user.getId().split("\\.")[0]);
+        return userRepository.update(user);
     }
 
     public List<Menu> getMenus() {
@@ -91,6 +107,15 @@ public class MenuService extends Service<CollaborativeMenu> {
         if (paymentMenuRepository != null) {
             loadNeed += 1;
             paymentMenuRepository.setOnChangedListener(new Repository.OnChangedListener() {
+                @Override
+                public void onChanged(EventType type) {
+                    triggerListener(listener, type);
+                }
+            });
+        }
+        if (userRepository != null) {
+            loadNeed += 1;
+            userRepository.setOnChangedListener(new Repository.OnChangedListener() {
                 @Override
                 public void onChanged(EventType type) {
                     triggerListener(listener, type);

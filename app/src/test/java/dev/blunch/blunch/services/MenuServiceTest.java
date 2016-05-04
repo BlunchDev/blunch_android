@@ -11,6 +11,7 @@ import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.domain.Menu;
 import dev.blunch.blunch.domain.PaymentMenu;
+import dev.blunch.blunch.domain.User;
 import dev.blunch.blunch.utils.MockRepository;
 import dev.blunch.blunch.utils.Repository;
 
@@ -32,7 +33,7 @@ public class MenuServiceTest {
     public void setUp() {
         collaborativeMenuMockRepository = new MockRepository<>();
         paymentMenuMockRepository = new MockRepository<>();
-        service = new MenuService(collaborativeMenuMockRepository, paymentMenuMockRepository);
+        service = new MenuService(collaborativeMenuMockRepository, paymentMenuMockRepository, new MockRepository<User>());
         collaborativeMenu = new CollaborativeMenu(
                 "Menu de micro de la FIB",
                 "Encarna", "És un menu de micro de la FIB",

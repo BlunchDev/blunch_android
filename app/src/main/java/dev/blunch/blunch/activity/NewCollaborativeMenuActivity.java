@@ -25,6 +25,7 @@ import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.services.CollaborativeMenuService;
 import dev.blunch.blunch.services.ServiceFactory;
+import dev.blunch.blunch.utils.Preferences;
 import dev.blunch.blunch.view.CollaborativeDishLayout;
 
 @SuppressWarnings("all")
@@ -306,7 +307,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
 
             else {
                 CollaborativeMenu collaborativeMenu = new CollaborativeMenu(menuNameString,
-                        author,
+                        Preferences.getCurrentUserEmail(),
                         description,
                         localization,
                         start,
