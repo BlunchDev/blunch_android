@@ -42,6 +42,8 @@ public class MenuService extends Service<CollaborativeMenu> {
         return paymentMenuRepository.all();
     }
 
+    public List<User> getUsers() { return userRepository.all(); }
+
     public User findUserByEmail(String email) {
         return userRepository.get(email);
     }

@@ -249,7 +249,8 @@ public class MainActivity extends AppCompatActivity
 
         final MenuListAdapter menuListAdapter = new MenuListAdapter(
                 getApplicationContext(),
-                menuList);
+                menuList,
+                menuService.getUsers());
 
         ListView listView = (ListView) findViewById(R.id.menu_list);
         listView.setAdapter(menuListAdapter);
