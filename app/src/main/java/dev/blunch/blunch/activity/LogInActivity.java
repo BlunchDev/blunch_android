@@ -136,8 +136,9 @@ public class LogInActivity extends AppCompatActivity {
                                 protected void onCurrentProfileChanged(Profile profile, Profile profile2) {
                                     mProfileTracker.stopTracking();
                                     prof = true;
-                                    if (prof && graph)
+                                    if (prof && graph) {
                                         createUser();
+                                    }
                                 }
                             };
                             mProfileTracker.startTracking();

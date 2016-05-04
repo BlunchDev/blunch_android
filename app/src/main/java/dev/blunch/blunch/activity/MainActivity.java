@@ -109,11 +109,10 @@ public class MainActivity extends AppCompatActivity
         View headerView = navigationView.getHeaderView(0);
         User user = menuService.findUserByEmail(email);
         TextView userName = (TextView) headerView.findViewById(R.id.user_name_nav);
-        userName.setText(user.getName());
 
-        ImageView userPhoto = (ImageView) headerView.findViewById(R.id.user_picture_nav);
         try {
-
+            userName.setText(user.getName());
+            ImageView userPhoto = (ImageView) headerView.findViewById(R.id.user_picture_nav);
             userPhoto.setImageDrawable(user.getImageRounded(getResources()));
         } catch (Exception e) {
             e.printStackTrace();
