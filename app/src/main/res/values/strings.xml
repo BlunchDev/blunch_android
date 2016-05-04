@@ -41,6 +41,7 @@
     <string name="menus_participo">Menús en los que participo</string>
     <string name="valoracion_menus">Valoración de menús</string>
     <string name="title_activity_log_in">LogInActivity</string>
+    <string name="logout">Log out</string>
 
     <string name="facebook_app_id">1004661026291848</string>
 </resources>
