@@ -43,13 +43,12 @@ public class MenuService extends Service<CollaborativeMenu> {
     }
 
     public User findUserByEmail(String email) {
-        for (User user : userRepository.all())
-            if (user.getEmail().equals(email)) return user;
-        return null;
+        return userRepository.get(email);
     }
 
     public User createNewUser(User user) {
-        return userRepository.insert(user);
+        user.setId(user.getId().split("\\.")[0]);
+        return userRepository.update(user);
     }
 
     public List<Menu> getMenus() {

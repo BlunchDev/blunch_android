@@ -25,8 +25,6 @@ public class UserRepository extends FirebaseRepository<User> {
         for (DataSnapshot d : dataSnapshot.getChildren()) {
             if (d.getKey().equals("name")) {
                 user.setName(d.getValue(String.class));
-            } else if (d.getKey().equals("email")) {
-                user.setEmail(d.getValue(String.class));
             } else if (d.getKey().equals("imageFile")) {
                 user.setImageFile(d.getValue(String.class));
             } else if (d.getKey().equals("myMenus")) {

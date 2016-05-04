@@ -77,7 +77,6 @@ public class UserTest {
         User user = new User();
         assertNull(user.getId());
         assertNull(user.getName());
-        assertNull(user.getEmail());
         assertNull(user.getImageFile());
         assertNull(user.getMyMenus());
         assertNull(user.getParticipatedMenus());
@@ -87,7 +86,6 @@ public class UserTest {
     public void create_correctly_a_payment_menu() throws Exception {
         assertEquals(user.getId(), USER_ID);
         assertEquals(user.getName(), USER_NAME);
-        assertEquals(user.getEmail(), USER_EMAIL);
         assertEquals(user.getImageFile(), USER_IMAGE);
         for (String s : user.getMyMenus().keySet()) {
             assertEquals(s, PAYMENT_ID);
@@ -103,14 +101,11 @@ public class UserTest {
         user.setId(newID);
         String newNAME = "Mariano Rajoy";
         user.setName(newNAME);
-        String newEMAIL = "mariano@rajoy.pp";
-        user.setEmail(newEMAIL);
         String newIMAGE = "akslfj34ui23smfsisd";
         user.setImageFile(newIMAGE);
 
         assertEquals(user.getId(), newID);
         assertEquals(user.getName(), newNAME);
-        assertEquals(user.getEmail(), newEMAIL);
         assertEquals(user.getImageFile(), newIMAGE);
     }
 

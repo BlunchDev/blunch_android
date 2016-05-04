@@ -9,6 +9,7 @@ import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.domain.PaymentMenu;
 import dev.blunch.blunch.domain.PaymentMenuAnswer;
 import dev.blunch.blunch.domain.User;
+import dev.blunch.blunch.utils.Preferences;
 import dev.blunch.blunch.utils.Repository;
 import dev.blunch.blunch.utils.Service;
 

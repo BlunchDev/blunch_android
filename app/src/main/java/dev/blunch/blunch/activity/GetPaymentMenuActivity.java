@@ -28,6 +28,7 @@ import dev.blunch.blunch.repositories.PaymentMenuAnswerRepository;
 import dev.blunch.blunch.repositories.PaymentMenuRepository;
 import dev.blunch.blunch.services.PaymentMenuService;
 import dev.blunch.blunch.services.ServiceFactory;
+import dev.blunch.blunch.utils.Preferences;
 import dev.blunch.blunch.utils.Repository;
 import dev.blunch.blunch.view.SelectPaymentDishLayout;
 
@@ -109,7 +110,8 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
                 if (answerDishes.size() == 0) {
                     Toast.makeText(getApplicationContext(), "Debes seleccionar al menos un plato para realizar el pedido", Toast.LENGTH_SHORT).show();
                 } else {
-                    paymentMenuAnswer = new PaymentMenuAnswer(paymentMenu.getId(), FAKE_GUEST, Calendar.getInstance().getTime(), answerDishes);
+                    paymentMenuAnswer = new PaymentMenuAnswer(paymentMenu.getId(), Preferences.getCurrentUserEmail(),
+                            Calendar.getInstance().getTime(), answerDishes);
                     paymentMenuService.answer(paymentMenu.getId(), paymentMenuAnswer);
 
                     Toast.makeText(v.getContext(), "Menú solicitado correctamente!", Toast.LENGTH_LONG).show();

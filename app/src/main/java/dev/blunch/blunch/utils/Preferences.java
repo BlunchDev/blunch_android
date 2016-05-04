@@ -2,6 +2,7 @@ package dev.blunch.blunch.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import dev.blunch.blunch.activity.LogInActivity;
 
@@ -24,7 +25,7 @@ public class Preferences {
     }
 
     public static void setCurrentUserEmail(String email) {
-        prefs.edit().putString(EMAIL_KEY, email).apply();
+        prefs.edit().putString(EMAIL_KEY, email.split("\\.")[0]).apply();
     }
 
 }

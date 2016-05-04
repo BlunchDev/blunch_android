@@ -22,7 +22,6 @@ public class User implements Entity {
 
     private String id;
     private String name;
-    private String email;
     private String imageFile;
     private Map<String, Object> myMenus;
     private Map<String, Object> participatedMenus;
@@ -31,7 +30,7 @@ public class User implements Entity {
 
     public User(String name, String email, String imageFile) {
         this.name = name;
-        this.email = email;
+        this.id = email;
         this.imageFile = imageFile;
         myMenus = new LinkedHashMap<>();
         participatedMenus = new LinkedHashMap<>();
@@ -52,14 +51,6 @@ public class User implements Entity {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getImageFile() {
