@@ -265,6 +265,85 @@ public class MainActivity extends AppCompatActivity
 
         spinner.setAdapter(adapter);
 
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                initOldMenus(parent.getItemAtPosition(position).toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        menuService.setOnChangedListener(new Repository.OnChangedListener() {
+            @Override
+            public void onChanged(EventType type) {
+                if (type.equals(EventType.Full)) {
+                    initOldMenus("All");
+                }
+            }
+        });
+    }
+
+    private void initOldMenus(String filter) {
+        List<dev.blunch.blunch.domain.Menu> menuList = new ArrayList<>();
+
+        String currentUser = "alsumo95@gmail.com";
+
+        switch (filter) {
+            case "No valorados":
+                // TODO Function at menuService that return a list that contains all menus WITHOUT valoration of specific user.
+                menuList.addAll(menuService.getNonValuedCollaboratedMenusOf(currentUser));
+                break;
+            case "Valorados":
+                // TODO Function at menuService that return a list that contains all menus WHIT valoration of specific user.
+                menuList.addAll(menuService.getValuedCollaboratedMenusOf(currentUser));
+                break;
+            case "Todos":
+                // TODO Function at menuService that return a list that contains ALL menus of specific user.
+                menuList.addAll(menuService.getCollaboratedMenusOf(currentUser));
+                break;
+            default:
+                // TODO Same like case -> No valorados
+                menuList.addAll(menuService.getNonValuedCollaboratedMenusOf(currentUser));
+                break;
+        }
+
+        final MenuListAdapter menuListAdapter = new MenuListAdapter(
+                getApplicationContext(),
+                menuList);
+
+        ListView listView = (ListView) findViewById(R.id.menu_list);
+        listView.setAdapter(menuListAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                dev.blunch.blunch.domain.Menu menu = menuListAdapter.getItem(position);
+
+                String s = menu.getClass().getSimpleName();
+
+                // TODO Split Menus between NonValued and Valued.
+                // Valued -> On click: Valoration Activity
+                // NonValued -> On click: SnackBar notifying that Menu has already valorated.
+                switch (s) {
+                    case "CollaborativeMenu":
+                        Intent intent = new Intent(MainActivity.this, GetCollaborativeMenuActivity.class);
+                        intent.putExtra(GetCollaborativeMenuActivity.MENU_ID_KEY, menu.getId());
+                        startActivity(intent);
+                        break;
+                    case "PaymentMenu":
+                        Intent intent2 = new Intent(MainActivity.this, GetPaymentMenuActivity.class);
+                        intent2.putExtra(GetPaymentMenuActivity.MENU_ID_KEY, menu.getId());
+                        startActivity(intent2);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
     }
 
     private void initializeMyMenus() {

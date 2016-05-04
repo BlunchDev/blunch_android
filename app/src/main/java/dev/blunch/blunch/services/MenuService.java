@@ -4,6 +4,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -111,5 +112,24 @@ public class MenuService extends Service<CollaborativeMenu> {
             }
             listener.onChanged(type);
         }
+    }
+
+    public List<Menu> getNonValuedCollaboratedMenusOf(String currentUser) {
+        List<Menu> menuList = new ArrayList<>();
+
+        return menuList;
+    }
+
+    public List<Menu> getValuedCollaboratedMenusOf(String currentUser) {
+        List<Menu> menuList = new ArrayList<>();
+
+        return menuList;
+    }
+
+
+    public List<Menu> getCollaboratedMenusOf(String currentUser) {
+        List<Menu> menuList = new ArrayList<>();
+
+        return menuList;
     }
 }
