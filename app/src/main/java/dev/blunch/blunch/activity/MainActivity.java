@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -149,7 +150,9 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            LoginManager.getInstance().logOut();
+            Intent intent = new Intent(MainActivity.this, LogInActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
