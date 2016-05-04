@@ -222,7 +222,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onChanged(EventType type) {
                 if (type.equals(EventType.Full)) {
-                    init("All");
+                    init("Todos");
                 }
             }
         });
@@ -296,4 +296,9 @@ public class MainActivity extends AppCompatActivity
         setTitle("Mis menús");
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        init("Todos");
+    }
 }
