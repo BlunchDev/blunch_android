@@ -14,6 +14,7 @@ import dev.blunch.blunch.R;
 import dev.blunch.blunch.domain.Menu;
 import dev.blunch.blunch.services.MenuService;
 import dev.blunch.blunch.services.ServiceFactory;
+import dev.blunch.blunch.utils.Preferences;
 
 public class ValorationActivity extends AppCompatActivity {
 
@@ -21,7 +22,7 @@ public class ValorationActivity extends AppCompatActivity {
     private EditText comment;
     private ImageButton done;
 
-    private String guest = "User";
+    private String guest = "alsumo95@gmail";
     private String menuId;
 
     private MenuService menuService;
@@ -38,7 +39,7 @@ public class ValorationActivity extends AppCompatActivity {
         done = (ImageButton) findViewById(R.id.valorationDone);
 
         //menuId = getIntent().getStringExtra("menuId");
-        menuId = "-KGuj1xw2HKmBHAeGQ0I";
+        menuId = "-KGvSGZm_46FBifCELs4";
 
         done.setOnClickListener(new View.OnClickListener() {
             @Override
