@@ -43,4 +43,5 @@
     <string name="title_activity_log_in">LogInActivity</string>
 
     <string name="facebook_app_id">1004661026291848</string>
+    <string name="title_activity_menus_location">Map</string>
 </resources>
