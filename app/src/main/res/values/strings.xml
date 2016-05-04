@@ -45,5 +45,6 @@
     <string name="addValorationComment">Añade un comentario:</string>
     <string name="valoration_text_Et_hint">Escriba el comentario aquí</string>
     <string name="title_activity_log_in">LogInActivity</string>
+    <string name="logout">Log out</string>
     <string name="facebook_app_id">1004661026291848</string>
 </resources>
