@@ -98,11 +98,11 @@ public class User implements Entity {
         this.valorationAverage = valorationAverage;
     }
 
-    public Integer getValorationNumber() {
+    public int getValorationNumber() {
         return valorationNumber;
     }
 
-    public void setValorationNumber(Integer valorationNumber) {
+    public void setValorationNumber(int valorationNumber) {
         this.valorationNumber = valorationNumber;
     }
 
