@@ -168,22 +168,18 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.search_menus) {
             initFragment(R.layout.content_list_menus);
-            Toast.makeText(getApplicationContext(), "Search menus", Toast.LENGTH_SHORT).show();
             initializeSearchMenus();
         }
         else if (id == R.id.my_menus) {
             initFragment(R.layout.content_list_menus);
-            Toast.makeText(getApplicationContext(), "My menus", Toast.LENGTH_SHORT).show();
             initializeMyMenus();
         }
         else if (id == R.id.collaborating_menus) {
             initFragment(R.layout.content_list_menus);
-            Toast.makeText(getApplicationContext(), "Collaborating menus", Toast.LENGTH_SHORT).show();
             initializeCollaboratingMenus();
         }
         else if (id == R.id.old_menus) {
             initFragment(R.layout.content_list_old_menus);
-            Toast.makeText(getApplicationContext(), "Valoración de menus", Toast.LENGTH_SHORT).show();
             initializeOldMenus();
         }
 
@@ -423,6 +419,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void initializeMyMenus() {
+        setTitle("Mis menús");
+
         Spinner spinner = (Spinner) findViewById(R.id.menu_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.my_menu_types, R.layout.spinner_item);
