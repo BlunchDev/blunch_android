@@ -52,7 +52,6 @@ public class MenuService extends Service<CollaborativeMenu> {
     }
 
     public User createNewUser(User user) {
-        user.setId(user.getId().split("\\.")[0]);
         return userRepository.update(user);
     }
 
