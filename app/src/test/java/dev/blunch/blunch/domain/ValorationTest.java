@@ -28,7 +28,7 @@ public class ValorationTest {
     }
 
     @Test
-    public void create_correctly_a_dish() throws Exception {
+    public void create_correctly_a_valoration() throws Exception {
         assertEquals(valoration.getId(), ID);
         assertEquals(valoration.getHost(), HOST);
         assertEquals(valoration.getGuest(), GUEST);
@@ -38,7 +38,7 @@ public class ValorationTest {
     }
 
     @Test
-    public void update_dish() throws Exception {
+    public void update_valoration() throws Exception {
         final String newID = "id2";
         final String newHOST = "manolo@gmail";
         final String newGUEST = "lama@gmail";
@@ -61,7 +61,7 @@ public class ValorationTest {
     }
 
     @Test
-    public void create_correctly_an_empty_dish() throws Exception {
+    public void create_correctly_an_empty_valoration() throws Exception {
         Valoration emptyValoration = new Valoration();
         assertNull(emptyValoration.getId());
         assertNull(emptyValoration.getHost());
