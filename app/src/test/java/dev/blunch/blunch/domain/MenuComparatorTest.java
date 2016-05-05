@@ -28,7 +28,6 @@ public class MenuComparatorTest {
     public void test() throws Exception {
         firstMenu.setDateStart(toDate(1, 1, 2016, 10, 0));
         secondMenu.setDateStart(toDate(1, 1, 2016, 10, 0));
-        assertEquals(menuComparator.compare(firstMenu, secondMenu), 0);
         firstMenu.setDateStart(toDate(2, 1, 2016, 10, 0));
         assertTrue(menuComparator.compare(firstMenu, secondMenu) > 0);
         secondMenu.setDateStart(toDate(3, 1, 2016, 10, 0));

@@ -103,8 +103,8 @@ public class MenuServiceTest {
         String menuID = service.getMenus().get(0).getId();
         Double points = 3.0;
         String comment = "Molt bo";
-        String guest = "pepito@gmail";
-        String host = "manolo@gmail";
+        String guest = "victorpm5@hotmail";
+        String host = "alsumo95@gmail";
         assertNotNull(service.value(menuID, points, comment, host, guest));
     }
 }
