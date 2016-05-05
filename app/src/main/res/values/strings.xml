@@ -45,6 +45,7 @@
     <string name="buscar_menus">Buscar menús</string>
     <string name="menus_participo">Menús en los que participo</string>
     <string name="valoracion_menus">Valoración de menús</string>
+    <string name="title_activity_chat">ChatActivity</string>
     <string name="valorationTitle">Valoración</string>
     <string name="firstTextValoration">Valore al usuario</string>
     <string name="addValorationComment">Añade un comentario:</string>
@@ -52,4 +53,8 @@
     <string name="title_activity_log_in">LogInActivity</string>
     <string name="logout">Log out</string>
     <string name="facebook_app_id">1004661026291848</string>
+    <string name="action_accept_proposals">Revisar propuestas</string>
+    <string name="action_payment_petitions">Peticions de pago</string>
+    <string name="write_something">Escribe algo...</string>
+    <string name="send">Enviar</string>
 </resources>
