@@ -3,13 +3,13 @@ package dev.blunch.blunch.services;
 
 import android.content.Context;
 
-import dev.blunch.blunch.domain.PaymentMenu;
 import dev.blunch.blunch.repositories.CollaborativeMenuAnswerRepository;
 import dev.blunch.blunch.repositories.CollaborativeMenuRepository;
 import dev.blunch.blunch.repositories.DishRepository;
 import dev.blunch.blunch.repositories.PaymentMenuAnswerRepository;
 import dev.blunch.blunch.repositories.PaymentMenuRepository;
 import dev.blunch.blunch.repositories.UserRepository;
+import dev.blunch.blunch.repositories.ValorationRepository;
 
 /**
  * Created by casassg on 17/04/16.
@@ -47,6 +47,7 @@ public final class ServiceFactory {
             menuService = new MenuService(
                     new CollaborativeMenuRepository(context),
                     new PaymentMenuRepository(context),
+                    new ValorationRepository(context),
                     new UserRepository(context));
         return menuService;
     }

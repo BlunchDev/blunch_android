@@ -12,10 +12,12 @@ import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.domain.Menu;
 import dev.blunch.blunch.domain.PaymentMenu;
 import dev.blunch.blunch.domain.User;
+import dev.blunch.blunch.domain.Valoration;
 import dev.blunch.blunch.utils.MockRepository;
 import dev.blunch.blunch.utils.Repository;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by jmotger on 26/04/16.
@@ -33,7 +35,7 @@ public class MenuServiceTest {
     public void setUp() {
         collaborativeMenuMockRepository = new MockRepository<>();
         paymentMenuMockRepository = new MockRepository<>();
-        service = new MenuService(collaborativeMenuMockRepository, paymentMenuMockRepository, new MockRepository<User>());
+        service = new MenuService(collaborativeMenuMockRepository, paymentMenuMockRepository, new MockRepository<Valoration>(), new MockRepository<User>());
         collaborativeMenu = new CollaborativeMenu(
                 "Menu de micro de la FIB",
                 "Encarna", "És un menu de micro de la FIB",
@@ -84,11 +86,25 @@ public class MenuServiceTest {
     public void listMenus() {
         List<Menu> menus = service.getMenus();
         assertEquals(2, menus.size());
+        String firstID = "";
         for (Menu menu : menus) {
-            if (menu.getClass().getSimpleName().equals("CollaborativeMenu"))
+            if (menu.getClass().getSimpleName().equals("CollaborativeMenu")) {
                 assertEquals("Menu de micro de la FIB", menu.getName());
+                firstID = menu.getId();
+            }
             else
                 assertEquals("Menu del vertex", menu.getName());
         }
+        assertEquals(service.getMenu(firstID).getName(), "Menu del vertex");
+    }
+
+    @Test
+    public void valueTest() {
+        String menuID = service.getMenus().get(0).getId();
+        Double points = 3.0;
+        String comment = "Molt bo";
+        String guest = "victorpm5@hotmail";
+        String host = "alsumo95@gmail";
+        assertNotNull(service.value(menuID, points, comment, host, guest));
     }
 }

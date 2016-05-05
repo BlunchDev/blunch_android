@@ -2,9 +2,6 @@ package dev.blunch.blunch.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
-
-import dev.blunch.blunch.activity.LogInActivity;
 
 /**
  * Created by jmotger on 4/05/16.

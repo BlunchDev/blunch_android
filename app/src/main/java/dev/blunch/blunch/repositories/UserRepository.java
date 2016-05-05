@@ -1,7 +1,6 @@
 package dev.blunch.blunch.repositories;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.firebase.client.DataSnapshot;
 
@@ -27,6 +26,10 @@ public class UserRepository extends FirebaseRepository<User> {
                 user.setName(d.getValue(String.class));
             } else if (d.getKey().equals("imageFile")) {
                 user.setImageFile(d.getValue(String.class));
+            } else if (d.getKey().equals("valorationNumber")) {
+                user.setValorationNumber(d.getValue(Integer.class));
+            } else if (d.getKey().equals("valorationAverage")) {
+                user.setValorationAverage(d.getValue(Double.class));
             } else if (d.getKey().equals("myMenus")) {
                 List<String> menus = new ArrayList<>();
                 for (DataSnapshot menu : d.getChildren()) {

@@ -1,9 +1,17 @@
 package dev.blunch.blunch.domain;
 
+import android.media.Image;
+import android.os.Environment;
+import android.widget.ImageView;
+
+import com.google.android.apps.common.testing.accessibility.framework.proto.FrameworkProtos;
+
+import org.apache.maven.model.Resource;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
@@ -14,10 +22,12 @@ import java.util.List;
 import java.util.Set;
 
 import dev.blunch.blunch.BuildConfig;
+import dev.blunch.blunch.R;
+import dev.blunch.blunch.utils.dummy.EmptyActivity;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Created by jmotger on 3/05/16.
@@ -40,6 +50,8 @@ public class UserTest {
     private static final String USER_NAME = "Paco Paquito";
     private static final String USER_EMAIL = "paco@paquito.com";
     private static final String USER_IMAGE = "7VVYb7S7NBAbJHJSA77ansja";
+    private static final int USER_VALORATION_NUMBER = 3;
+    private static final Double USER_VALORATION_AVERAGE = 4.0;
 
     PaymentMenu paymentMenu;
     CollaborativeMenu collaborativeMenu;
@@ -87,6 +99,8 @@ public class UserTest {
         assertEquals(user.getId(), USER_ID);
         assertEquals(user.getName(), USER_NAME);
         assertEquals(user.getImageFile(), USER_IMAGE);
+        assertEquals(user.getValorationAverage(), 0.0, 0.1);
+        assertEquals(user.getValorationNumber(), 0);
         for (String s : user.getMyMenus().keySet()) {
             assertEquals(s, PAYMENT_ID);
         }
@@ -103,10 +117,32 @@ public class UserTest {
         user.setName(newNAME);
         String newIMAGE = "akslfj34ui23smfsisd";
         user.setImageFile(newIMAGE);
+        user.setValorationAverage(USER_VALORATION_AVERAGE);
+        user.setValorationNumber(USER_VALORATION_NUMBER);
 
         assertEquals(user.getId(), newID);
         assertEquals(user.getName(), newNAME);
         assertEquals(user.getImageFile(), newIMAGE);
+        assertEquals(user.getValorationAverage(), USER_VALORATION_AVERAGE, 0.1);
+        assertEquals(user.getValorationNumber(), USER_VALORATION_NUMBER);
+    }
+
+    @Test
+    public void menusTest() throws Exception {
+        List<String> myMenuKeysList = new ArrayList<>();
+        myMenuKeysList.add("1234");
+        myMenuKeysList.add("5678");
+        List<String> participatedMenuKeysList = new ArrayList<>();
+        participatedMenuKeysList.add("9012");
+        user.setMyMenus(myMenuKeysList);
+        user.setParticipatedMenus(participatedMenuKeysList);
+        assertEquals(user.getParticipatedMenus().size(), 1);
+        assertEquals(user.getMyMenus().size(), 2);
+    }
+
+    @Test
+    public void roundImageTest() throws Exception {
+        assertNotNull(user.getImageRounded(RuntimeEnvironment.application.getResources()));
     }
 
 }
