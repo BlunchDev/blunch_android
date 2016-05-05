@@ -1,9 +1,17 @@
 package dev.blunch.blunch.domain;
 
+import android.media.Image;
+import android.os.Environment;
+import android.widget.ImageView;
+
+import com.google.android.apps.common.testing.accessibility.framework.proto.FrameworkProtos;
+
+import org.apache.maven.model.Resource;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
@@ -14,8 +22,11 @@ import java.util.List;
 import java.util.Set;
 
 import dev.blunch.blunch.BuildConfig;
+import dev.blunch.blunch.R;
+import dev.blunch.blunch.utils.dummy.EmptyActivity;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 /**
@@ -106,6 +117,24 @@ public class UserTest {
         assertEquals(user.getId(), newID);
         assertEquals(user.getName(), newNAME);
         assertEquals(user.getImageFile(), newIMAGE);
+    }
+
+    @Test
+    public void menusTest() throws Exception {
+        List<String> myMenuKeysList = new ArrayList<>();
+        myMenuKeysList.add("1234");
+        myMenuKeysList.add("5678");
+        List<String> participatedMenuKeysList = new ArrayList<>();
+        participatedMenuKeysList.add("9012");
+        user.setMyMenus(myMenuKeysList);
+        user.setParticipatedMenus(participatedMenuKeysList);
+        assertEquals(user.getParticipatedMenus().size(), 1);
+        assertEquals(user.getMyMenus().size(), 2);
+    }
+
+    @Test
+    public void roundImageTest() throws Exception {
+        assertNotNull(user.getImageRounded(RuntimeEnvironment.application.getResources()));
     }
 
 }

@@ -10,6 +10,7 @@ import dev.blunch.blunch.domain.Menu;
 import dev.blunch.blunch.domain.MenuComparator;
 import dev.blunch.blunch.domain.PaymentMenu;
 import dev.blunch.blunch.domain.User;
+import dev.blunch.blunch.domain.Valoration;
 import dev.blunch.blunch.utils.Repository;
 import dev.blunch.blunch.utils.Service;
 
@@ -18,27 +19,30 @@ import dev.blunch.blunch.utils.Service;
  */
 public class MenuService extends Service<CollaborativeMenu> {
 
-    private final Repository<PaymentMenu> paymentMenuRepository;
-    private final Repository<User> userRepository;
+    private Repository<PaymentMenu> paymentMenuRepository;
+    private Repository<User> userRepository;
+    private Repository<Valoration> valorationRepository;
     int loadNeed = 1;
     int loaded = 0;
 
-    public MenuService(Repository<CollaborativeMenu> repository, Repository<PaymentMenu> paymentMenuRepository,
-                       Repository<User> userRepository) {
+
+    public MenuService(Repository<CollaborativeMenu> repository, Repository<PaymentMenu> paymentMenuRepository, Repository<Valoration> valorationRepository,Repository<User> userRepository) {
         super(repository);
         this.paymentMenuRepository = paymentMenuRepository;
+        this.valorationRepository = valorationRepository;
         this.userRepository = userRepository;
     }
 
     public List<CollaborativeMenu> getCollaborativeMenus() {
-        return repository.all();
+        return this.repository.all();
     }
 
-    public List<PaymentMenu> getPaymentMenus() {
-        return paymentMenuRepository.all();
+    public List<PaymentMenu> getPaymentMenus(){
+            List<PaymentMenu> a = this.paymentMenuRepository.all();
+        return a;
     }
 
-    public List<User> getUsers() { return userRepository.all(); }
+    public List<User> getUsers() { return this.userRepository.all(); }
 
     public User findUserByEmail(String email) {
         return userRepository.get(email);
@@ -151,5 +155,26 @@ public class MenuService extends Service<CollaborativeMenu> {
         List<Menu> menuList = new ArrayList<>();
 
         return menuList;
+    }
+
+    public Valoration value(String menu, double points, String comment, String host, String guest){
+        Valoration valoration = new Valoration();
+        valoration.setMenu(menu);
+        valoration.setPoints(points);
+        valoration.setComment(comment);
+        valoration.setGuest(guest);
+        valoration.setHost(host);
+
+        return valorationRepository.insert(valoration);
+    }
+
+    public Menu getMenu(String menuId) {
+        
+        Menu m = paymentMenuRepository.get(menuId);
+        if(m == null){
+            m = repository.get(menuId);
+        }
+        
+        return m;
     }
 }

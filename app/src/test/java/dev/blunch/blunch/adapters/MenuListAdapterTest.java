@@ -74,6 +74,7 @@ public class MenuListAdapterTest {
     public void getItemTest() throws Exception {
         assertEquals(menuListAdapter.getItem(0).getName(), firstMenu.getName());
         assertEquals(menuListAdapter.getItem(2).getAuthor(), thirdMenu.getAuthor());
+        assertNotNull(menuListAdapter.getItemId(0));
     }
 
     private Date toDate(Integer hour, Integer minute) {
