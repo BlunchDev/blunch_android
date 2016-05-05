@@ -64,6 +64,20 @@ public class MenuService extends Service<CollaborativeMenu> {
         return menus;
     }
 
+    public List<Menu> getMyMenus() {
+        List<Menu> menus = new ArrayList<>();
+        menus.addAll(repository.all());
+        Preferences.getCurrentUserEmail().
+        menus.addAll(paymentMenuRepository.all());
+        List<Menu> myMenus = new ArrayList<>();
+        for (Menu menu : menus) {
+            if (menu.getAuthor().compareTo(Preferences.getCurrentUserEmail()) == 0 ) {
+                myMenus.add(menu);
+            }
+        }
+        return myMenus;
+    }
+
     public List<CollaborativeMenu> getCollaborativeMenusOrderedByDate() {
         List<CollaborativeMenu> menus = repository.all();
         List<CollaborativeMenu> result = new ArrayList<>();
@@ -101,22 +115,16 @@ public class MenuService extends Service<CollaborativeMenu> {
     }
 
     public List<Menu> getMyMenusOrderedByDate() {
-        List<Menu> menus = getMenus();
-        List<Menu> result = new ArrayList<>();
-        for (Menu menu : menus) {
-            if (menu.getAuthor().compareTo(Preferences.getCurrentUserEmail()) == 0 ) {
-                result.add(menu);
-            }
-        }
-        Collections.sort(result, new MenuComparator());
-        return result;
+        List<Menu> menus = getMyMenus();
+        Collections.sort(menus, new MenuComparator());
+        return menus;
     }
 
     public List<Menu> getMyOutMenusOrderedByDate() {
-        List<Menu> menus = getMenus();
+        List<Menu> menus = getMyMenus();
         List<Menu> result = new ArrayList<>();
         for (Menu menu : menus) {
-            if (menu.getAuthor().compareTo(Preferences.getCurrentUserEmail()) == 0 && menu.getDateEnd().compareTo(Calendar.getInstance().getTime()) < 0) {
+            if (menu.getDateEnd().compareTo(Calendar.getInstance().getTime()) < 0) {
                 result.add(menu);
             }
         }
@@ -125,16 +133,42 @@ public class MenuService extends Service<CollaborativeMenu> {
     }
 
     public List<Menu> getMyCurrentMenusOrderedByDate() {
-        List<Menu> menus = getMenus();
+        List<Menu> menus = getMyMenus();
         List<Menu> result = new ArrayList<>();
         for (Menu menu : menus) {
-            if (menu.getAuthor().compareTo(Preferences.getCurrentUserEmail()) == 0 && menu.getDateEnd().compareTo(Calendar.getInstance().getTime()) > 0) {
+            if (menu.getDateEnd().compareTo(Calendar.getInstance().getTime()) > 0) {
                 result.add(menu);
             }
         }
         Collections.sort(result, new MenuComparator());
         return result;
     }
+
+    public List<CollaborativeMenu> getCollaborativeMenusOrderedByDate() {
+        List<CollaborativeMenu> menus = repository.all();
+        List<CollaborativeMenu> result = new ArrayList<>();
+        for (CollaborativeMenu menu : menus) {
+            if (menu.getDateEnd().compareTo(Calendar.getInstance().getTime()) > 0) {
+                result.add(menu);
+            }
+        }
+        Collections.sort(result, new MenuComparator());
+        return result;
+    }
+
+    public List<PaymentMenu> getPaymentMenusOrderedByDate() {
+        List<PaymentMenu> menus = paymentMenuRepository.all();
+        List<PaymentMenu> result = new ArrayList<>();
+        for (PaymentMenu menu : menus) {
+            if (menu.getDateEnd().compareTo(Calendar.getInstance().getTime()) > 0) {
+                result.add(menu);
+            }
+        }
+        Collections.sort(result, new MenuComparator());
+        return result;
+    }
+
+
 
     @Override
     public void setOnChangedListener(final Repository.OnChangedListener listener) {
