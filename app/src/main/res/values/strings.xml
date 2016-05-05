@@ -53,4 +53,6 @@
     <string name="title_activity_log_in">LogInActivity</string>
     <string name="logout">Log out</string>
     <string name="facebook_app_id">1004661026291848</string>
+    <string name="action_accept_proposals">Revisar propuestas</string>
+    <string name="action_payment_petitions">Peticions de pago</string>
 </resources>

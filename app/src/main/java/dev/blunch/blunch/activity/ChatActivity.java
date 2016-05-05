@@ -23,10 +23,16 @@ import java.text.SimpleDateFormat;
 
 import dev.blunch.blunch.R;
 import dev.blunch.blunch.domain.ChatMessage;
+import dev.blunch.blunch.domain.Menu;
+import dev.blunch.blunch.domain.User;
+import dev.blunch.blunch.services.MenuService;
+import dev.blunch.blunch.services.ServiceFactory;
+import dev.blunch.blunch.utils.Preferences;
 
 public class ChatActivity extends AppCompatActivity {
 
     private FirebaseRecyclerAdapter<ChatMessage, ChatMessageViewHolder> mAdapter;
+    public static final String MENU_ID = "menu_id";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +40,16 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        String menuId = "GLOBAL";
+        if (getIntent().getStringExtra(MENU_ID) != null) menuId = getIntent().getStringExtra(MENU_ID);
+        final MenuService menuService = ServiceFactory.getMenuService(getApplicationContext());
+        if (!"GLOBAL".equals(menuId)){
+            Menu menu = menuService.getMenu(menuId);
+            setTitle("Chat "+menu.getName());
+        }
+
+
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -44,14 +60,21 @@ public class ChatActivity extends AppCompatActivity {
         recycler.setLayoutManager(layout);
         Firebase.setAndroidContext(getApplicationContext());
 
-        final Firebase mRef = new Firebase("https://blunch.firebaseio.com/chats/-1");
+        final Firebase mRef = new Firebase("https://blunch.firebaseio.com/chats/"+String.valueOf(menuId));
 
 
         mAdapter = new FirebaseRecyclerAdapter<ChatMessage, ChatMessageViewHolder>(ChatMessage.class, R.layout.message, ChatMessageViewHolder.class, mRef) {
             @Override
             public void populateViewHolder(ChatMessageViewHolder chatMessageViewHolder, ChatMessage chatMessage, int position) {
                 chatMessageViewHolder.contentText.setText(chatMessage.getContent());
-                chatMessageViewHolder.authorText.setText(chatMessage.getAuthor());
+                String email = chatMessage.getAuthor();
+                User user = menuService.findUserByEmail(email);
+                chatMessageViewHolder.authorText.setText(user.getName());
+                try {
+                    chatMessageViewHolder.authorImage.setImageDrawable(user.getImageRounded(getResources()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 DateFormat sdf = SimpleDateFormat.getDateTimeInstance();
                 chatMessageViewHolder.dateText.setText(sdf.format(chatMessage.createdAt()));
             }
@@ -59,7 +82,9 @@ public class ChatActivity extends AppCompatActivity {
         mRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                recycler.smoothScrollToPosition(mAdapter.getItemCount()-1);
+                if (mAdapter.getItemCount()>0){
+                    recycler.smoothScrollToPosition(mAdapter.getItemCount()-1);
+                }
             }
 
             @Override
@@ -70,6 +95,10 @@ public class ChatActivity extends AppCompatActivity {
         recycler.setAdapter(mAdapter);
 
 
+        setupSendAction(mRef);
+    }
+
+    private void setupSendAction(final Firebase mRef) {
         Button sendButton = (Button) findViewById(R.id.send);
         final EditText messageText = (EditText) findViewById(R.id.new_message);
         assert sendButton != null;
@@ -77,7 +106,7 @@ public class ChatActivity extends AppCompatActivity {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ChatMessage message = new ChatMessage("TEST",messageText.getText().toString());
+                ChatMessage message = new ChatMessage(Preferences.getCurrentUserEmail(),messageText.getText().toString());
                 mRef.push().setValue(message);
                 messageText.setText("");
             }
