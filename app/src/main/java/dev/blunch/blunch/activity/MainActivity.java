@@ -244,28 +244,28 @@ public class MainActivity extends AppCompatActivity
                 menuList.addAll(menuService.getMenusOrderedByDate());
                 break;
             case "Todos mis menús":
-                menuList.addAll(menuService.getMyMenusOrderedByDate()); ///////////////////////
+                menuList.addAll(menuService.getMyMenusOrderedByDate());
                 break;
             case "Menús con mi participación":
-                menuList.addAll(menuService.getPMenusOrderedByDate()); ///////////////////////
+                menuList.addAll(menuService.getPMenusOrderedByDate());
                 break;
             case "Colaborativo":
                 menuList.addAll(menuService.getCollaborativeMenusOrderedByDate());
                 break;
             case "Mis menús antiguos":
-                menuList.addAll(menuService.getMyOutMenusOrderedByDate()); ////////////////
+                menuList.addAll(menuService.getMyOutMenusOrderedByDate());
                 break;
             case "Participación en menús colaborativos":
-                menuList.addAll(menuService.getPCollaborativeMenusOrderedByDate()); ////////////////
+                menuList.addAll(menuService.getPCollaborativeMenusOrderedByDate());
                 break;
             case "De pago":
                 menuList.addAll(menuService.getPaymentMenusOrderedByDate());
                 break;
             case "Mis menús activos":
-                menuList.addAll(menuService.getMyCurrentMenusOrderedByDate()); ///////////////
+                menuList.addAll(menuService.getMyCurrentMenusOrderedByDate());
                 break;
             case "Participación en menús de pago":
-                menuList.addAll(menuService.getPPaymentMenusOrderedByDate()); ///////////////
+                menuList.addAll(menuService.getPPaymentMenusOrderedByDate());
                 break;
             default:
                 menuList.addAll(menuService.getMenusOrderedByDate());
