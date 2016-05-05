@@ -1,16 +1,12 @@
 package dev.blunch.blunch.services;
 
-import com.firebase.client.core.Repo;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import dev.blunch.blunch.domain.Dish;
-import dev.blunch.blunch.domain.Menu;
 import dev.blunch.blunch.domain.PaymentMenu;
 import dev.blunch.blunch.domain.PaymentMenuAnswer;
 import dev.blunch.blunch.domain.User;
-import dev.blunch.blunch.utils.Preferences;
 import dev.blunch.blunch.utils.Repository;
 import dev.blunch.blunch.utils.Service;
 
