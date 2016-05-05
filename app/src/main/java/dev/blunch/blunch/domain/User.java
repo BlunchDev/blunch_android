@@ -23,18 +23,24 @@ public class User implements Entity {
     private String id;
     private String name;
     private String imageFile;
+    private Double valorationAverage;
+    private Integer valorationNumber;
     private Map<String, Object> myMenus;
     private Map<String, Object> participatedMenus;
 
     public User(){
         myMenus = new LinkedHashMap<>();
         participatedMenus = new LinkedHashMap<>();
+        this.valorationAverage = 0.0;
+        this.valorationNumber = 0;
     }
 
     public User(String name, String email, String imageFile) {
         this.name = name;
         this.id = email;
         this.imageFile = imageFile;
+        this.valorationAverage = 0.0;
+        this.valorationNumber = 0;
         myMenus = new LinkedHashMap<>();
         participatedMenus = new LinkedHashMap<>();
     }
@@ -82,6 +88,22 @@ public class User implements Entity {
         this.participatedMenus = new LinkedHashMap<>();
         for (String s : participatedMenus)
             this.participatedMenus.put(s, true);
+    }
+
+    public Double getValorationAverage() {
+        return valorationAverage;
+    }
+
+    public void setValorationAverage(Double valorationAverage) {
+        this.valorationAverage = valorationAverage;
+    }
+
+    public Integer getValorationNumber() {
+        return valorationNumber;
+    }
+
+    public void setValorationNumber(Integer valorationNumber) {
+        this.valorationNumber = valorationNumber;
     }
 
     public void addNewMyMenu(Menu menu) {
