@@ -14,6 +14,7 @@ import dev.blunch.blunch.utils.FirebaseRepository;
 /**
  * Created by jmotger
  */
+@SuppressWarnings("all")
 public class PaymentMenuRepository extends FirebaseRepository<PaymentMenu> {
 
     public PaymentMenuRepository(Context context) {
@@ -22,6 +23,8 @@ public class PaymentMenuRepository extends FirebaseRepository<PaymentMenu> {
 
     @Override
     protected PaymentMenu convert(DataSnapshot data) {
+        if (data == null) return null;
+
         PaymentMenu paymentMenu = new PaymentMenu();
         paymentMenu.setId(data.getKey());
         for (DataSnapshot d : data.getChildren()) {

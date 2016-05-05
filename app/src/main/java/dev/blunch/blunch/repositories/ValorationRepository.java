@@ -10,6 +10,7 @@ import dev.blunch.blunch.utils.FirebaseRepository;
 /**
  * Created by pere on 5/3/16.
  */
+@SuppressWarnings("all")
 public class ValorationRepository extends FirebaseRepository<Valoration> {
 
     public ValorationRepository(Context context) {
@@ -18,6 +19,8 @@ public class ValorationRepository extends FirebaseRepository<Valoration> {
 
     @Override
     protected Valoration convert(DataSnapshot data) {
+        if (data == null) return null;
+
         Valoration valoration = new Valoration();
         valoration.setId(data.getKey());
 
