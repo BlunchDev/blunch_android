@@ -17,6 +17,7 @@ import dev.blunch.blunch.utils.MockRepository;
 import dev.blunch.blunch.utils.Repository;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by jmotger on 26/04/16.
@@ -85,11 +86,25 @@ public class MenuServiceTest {
     public void listMenus() {
         List<Menu> menus = service.getMenus();
         assertEquals(2, menus.size());
+        String firstID = "";
         for (Menu menu : menus) {
-            if (menu.getClass().getSimpleName().equals("CollaborativeMenu"))
+            if (menu.getClass().getSimpleName().equals("CollaborativeMenu")) {
                 assertEquals("Menu de micro de la FIB", menu.getName());
+                firstID = menu.getId();
+            }
             else
                 assertEquals("Menu del vertex", menu.getName());
         }
+        assertEquals(service.getMenu(firstID).getName(), "Menu del vertex");
+    }
+
+    @Test
+    public void valueTest() {
+        String menuID = service.getMenus().get(0).getId();
+        Double points = 3.0;
+        String comment = "Molt bo";
+        String guest = "pepito@gmail";
+        String host = "manolo@gmail";
+        assertNotNull(service.value(menuID, points, comment, host, guest));
     }
 }

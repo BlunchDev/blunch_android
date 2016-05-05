@@ -138,7 +138,7 @@ public class MenuService extends Service<CollaborativeMenu> {
         }
     }
 
-    public void value(String menu, double points, String comment, String host, String guest){
+    public Valoration value(String menu, double points, String comment, String host, String guest){
         Valoration valoration = new Valoration();
         valoration.setMenu(menu);
         valoration.setPoints(points);
@@ -146,7 +146,7 @@ public class MenuService extends Service<CollaborativeMenu> {
         valoration.setGuest(guest);
         valoration.setHost(host);
 
-        valorationRepository.insert(valoration);
+        return valorationRepository.insert(valoration);
     }
 
     public Menu getMenu(String menuId) {

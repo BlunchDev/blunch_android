@@ -22,12 +22,12 @@ public class MenuComparatorTest {
         menuComparator = new MenuComparator();
         firstMenu = new CollaborativeMenu();
         secondMenu = new CollaborativeMenu();
-        firstMenu.setDateStart(toDate(1, 1, 2016, 10, 0));
-        secondMenu.setDateStart(toDate(1, 1, 2016, 10, 0));
     }
 
     @Test
     public void test() throws Exception {
+        firstMenu.setDateStart(toDate(1, 1, 2016, 10, 0));
+        secondMenu.setDateStart(toDate(1, 1, 2016, 10, 0));
         assertEquals(menuComparator.compare(firstMenu, secondMenu), 0);
         firstMenu.setDateStart(toDate(2, 1, 2016, 10, 0));
         assertTrue(menuComparator.compare(firstMenu, secondMenu) > 0);
