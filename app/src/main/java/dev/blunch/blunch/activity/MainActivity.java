@@ -247,7 +247,7 @@ public class MainActivity extends AppCompatActivity
                 menuList.addAll(menuService.getMyMenusOrderedByDate()); ///////////////////////
                 break;
             case "Menús con mi participación":
-                menuList.addAll(menuService.getMenusOrderedByDate()); ///////////////////////
+                menuList.addAll(menuService.getPMenusOrderedByDate()); ///////////////////////
                 break;
             case "Colaborativo":
                 menuList.addAll(menuService.getCollaborativeMenusOrderedByDate());
@@ -256,7 +256,7 @@ public class MainActivity extends AppCompatActivity
                 menuList.addAll(menuService.getMyOutMenusOrderedByDate()); ////////////////
                 break;
             case "Participación en menús colaborativos":
-                menuList.addAll(menuService.getCollaborativeMenusOrderedByDate()); ////////////////
+                menuList.addAll(menuService.getPCollaborativeMenusOrderedByDate()); ////////////////
                 break;
             case "De pago":
                 menuList.addAll(menuService.getPaymentMenusOrderedByDate());
@@ -265,7 +265,7 @@ public class MainActivity extends AppCompatActivity
                 menuList.addAll(menuService.getMyCurrentMenusOrderedByDate()); ///////////////
                 break;
             case "Participación en menús de pago":
-                menuList.addAll(menuService.getPaymentMenusOrderedByDate()); ///////////////
+                menuList.addAll(menuService.getPPaymentMenusOrderedByDate()); ///////////////
                 break;
             default:
                 menuList.addAll(menuService.getMenusOrderedByDate());

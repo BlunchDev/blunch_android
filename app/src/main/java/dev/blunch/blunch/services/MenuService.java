@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 import dev.blunch.blunch.domain.CollaborativeMenu;
+import dev.blunch.blunch.domain.InverseMenuComparator;
 import dev.blunch.blunch.domain.Menu;
 import dev.blunch.blunch.domain.MenuComparator;
 import dev.blunch.blunch.domain.PaymentMenu;
@@ -64,18 +65,12 @@ public class MenuService extends Service<CollaborativeMenu> {
         return menus;
     }
 
-    public List<Menu> getMyMenus() {
-        List<Menu> menus = new ArrayList<>();
-        menus.addAll(repository.all());
-        Preferences.getCurrentUserEmail().
-        menus.addAll(paymentMenuRepository.all());
-        List<Menu> myMenus = new ArrayList<>();
-        for (Menu menu : menus) {
-            if (menu.getAuthor().compareTo(Preferences.getCurrentUserEmail()) == 0 ) {
-                myMenus.add(menu);
-            }
-        }
-        return myMenus;
+    public List<Menu> getMyMenu() {
+        List<Menu> menuList = new ArrayList<>();
+        User user = findUserByEmail(Preferences.getCurrentUserEmail());
+        Set<String> myMenus = user.getMyMenus().keySet();
+        for (String k : myMenus) menuList.add(getMenu(k));
+        return menuList;
     }
 
     public List<CollaborativeMenu> getCollaborativeMenusOrderedByDate() {
@@ -115,56 +110,68 @@ public class MenuService extends Service<CollaborativeMenu> {
     }
 
     public List<Menu> getMyMenusOrderedByDate() {
-        List<Menu> menus = getMyMenus();
-        Collections.sort(menus, new MenuComparator());
+        List<Menu> menus = getMyMenu();
+        Collections.sort(menus, new InverseMenuComparator());
         return menus;
     }
 
     public List<Menu> getMyOutMenusOrderedByDate() {
-        List<Menu> menus = getMyMenus();
+        List<Menu> menus = getMyMenu();
         List<Menu> result = new ArrayList<>();
         for (Menu menu : menus) {
             if (menu.getDateEnd().compareTo(Calendar.getInstance().getTime()) < 0) {
                 result.add(menu);
             }
         }
-        Collections.sort(result, new MenuComparator());
+        Collections.sort(result, new InverseMenuComparator());
         return result;
     }
 
     public List<Menu> getMyCurrentMenusOrderedByDate() {
-        List<Menu> menus = getMyMenus();
+        List<Menu> menus = getMyMenu();
         List<Menu> result = new ArrayList<>();
         for (Menu menu : menus) {
             if (menu.getDateEnd().compareTo(Calendar.getInstance().getTime()) > 0) {
                 result.add(menu);
             }
         }
-        Collections.sort(result, new MenuComparator());
+        Collections.sort(result, new InverseMenuComparator());
         return result;
     }
 
-    public List<CollaborativeMenu> getCollaborativeMenusOrderedByDate() {
-        List<CollaborativeMenu> menus = repository.all();
-        List<CollaborativeMenu> result = new ArrayList<>();
-        for (CollaborativeMenu menu : menus) {
+    public List<Menu> getPMenusOrderedByDate() {
+        List<Menu> menus = getCollaboratedMenusOf(Preferences.getCurrentUserEmail());
+        List<Menu> result = new ArrayList<>();
+        for (Menu menu : menus) {
             if (menu.getDateEnd().compareTo(Calendar.getInstance().getTime()) > 0) {
                 result.add(menu);
             }
         }
-        Collections.sort(result, new MenuComparator());
+        Collections.sort(result, new InverseMenuComparator());
         return result;
     }
 
-    public List<PaymentMenu> getPaymentMenusOrderedByDate() {
-        List<PaymentMenu> menus = paymentMenuRepository.all();
-        List<PaymentMenu> result = new ArrayList<>();
-        for (PaymentMenu menu : menus) {
-            if (menu.getDateEnd().compareTo(Calendar.getInstance().getTime()) > 0) {
+    public List<Menu> getPCollaborativeMenusOrderedByDate() {
+        List<Menu> menusC = getCollaboratedMenusOf(Preferences.getCurrentUserEmail());
+        List<Menu> result = new ArrayList<>();
+        for (Menu menu : menusC) {
+            if (menu.getDateEnd().compareTo(Calendar.getInstance().getTime()) > 0 && (menu instanceof CollaborativeMenu)) {
                 result.add(menu);
             }
         }
-        Collections.sort(result, new MenuComparator());
+        Collections.sort(result, new InverseMenuComparator());
+        return result;
+    }
+
+    public List<Menu> getPPaymentMenusOrderedByDate() {
+        List<Menu> menusC = getCollaboratedMenusOf(Preferences.getCurrentUserEmail());
+        List<Menu> result = new ArrayList<>();
+        for (Menu menu : menusC) {
+            if (menu.getDateEnd().compareTo(Calendar.getInstance().getTime()) > 0 && (menu instanceof PaymentMenu)) {
+                result.add(menu);
+            }
+        }
+        Collections.sort(result, new InverseMenuComparator());
         return result;
     }
 
@@ -245,14 +252,10 @@ public class MenuService extends Service<CollaborativeMenu> {
 
     public List<Menu> getCollaboratedMenusOf(String currentUser) {
         List<Menu> menuList = new ArrayList<>();
-
         User user = findUserByEmail(currentUser);
         Set<String> collaboratedMenus = user.getParticipatedMenus().keySet();
-
         for (String k : collaboratedMenus) menuList.add(getMenu(k));
-
         Collections.sort(menuList, new MenuComparator());
-
         return menuList;
     }
 
