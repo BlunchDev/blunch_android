@@ -137,6 +137,14 @@ public class MenuServiceTest {
 
         assertTrue(service.getUsers().size() == 0);
         service.createNewUser(new User(NAME, EMAIL, IMAGE));
+        service.createNewUser(new User("Victor", "victorpm5@hotmail", IMAGE));
 
+        assertNotNull(service.getNonValuedCollaboratedMenusOf(EMAIL));
+        assertNotNull(service.getValuedCollaboratedMenusOf(EMAIL));
+        assertNotNull(service.getCollaboratedMenusOf(EMAIL));
+
+        service.value(collaborativeMenu.getId(), 3.0, "Molt bo", "victorpm5@hotmail", EMAIL);
+        assertTrue(service.isValuedBy(collaborativeMenu.getId(), EMAIL));
+        assertNotNull(service.getValoration(collaborativeMenu.getId(), EMAIL));
     }
 }

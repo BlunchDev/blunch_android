@@ -116,13 +116,6 @@ public class PaymentMenuService extends Service<PaymentMenu> {
         return dishes;
     }
 
-
-    public void setPaymentMenuAnswerListener(Repository.OnChangedListener listener) {
-        if (answerRepository != null) {
-            answerRepository.setOnChangedListener(listener);
-        }
-    }
-
     @Override
     public void setOnChangedListener(final Repository.OnChangedListener listener) {
         repository.setOnChangedListener(new Repository.OnChangedListener() {
