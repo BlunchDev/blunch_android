@@ -41,7 +41,7 @@
     <string name="menus_participo">Menús en los que participo</string>
     <string name="valoracion_menus">Valoración de menús</string>
     <string name="valorationTitle">Valoración</string>
-    <string name="firstTextValoration">Valore al anfitrión</string>
+    <string name="firstTextValoration">Valore al usuario</string>
     <string name="addValorationComment">Añade un comentario:</string>
     <string name="valoration_text_Et_hint">Escriba el comentario aquí</string>
     <string name="title_activity_log_in">LogInActivity</string>
