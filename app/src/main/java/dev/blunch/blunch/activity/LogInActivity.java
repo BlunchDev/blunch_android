@@ -114,6 +114,8 @@ public class LogInActivity extends AppCompatActivity {
                                         try {
                                             email = object.getString("email");
                                             Preferences.setCurrentUserEmail(email);
+                                            String[] split = email.split("@");
+                                            email = split[0] + "@" + split[1].split("\\.")[0];
                                             name = object.getString("name");
                                             graph = true;
                                             if (prof && graph) createUser();

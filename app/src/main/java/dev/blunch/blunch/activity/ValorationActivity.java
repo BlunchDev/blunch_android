@@ -20,8 +20,11 @@ public class ValorationActivity extends AppCompatActivity {
     private EditText comment;
     private ImageButton done;
 
-    private String guest = "alsumo95@gmail";
-    private String menuId;
+    public static final String USER_ID = "userId";
+    public static final String MENU_ID = "menuId";
+
+    private String idMenu;
+    private String guest;
 
     private MenuService menuService;
 
@@ -36,8 +39,8 @@ public class ValorationActivity extends AppCompatActivity {
         comment = (EditText) findViewById(R.id.valorationComment);
         done = (ImageButton) findViewById(R.id.valorationDone);
 
-        //menuId = getIntent().getStringExtra("menuId");
-        menuId = "-KGvSGZm_46FBifCELs4";
+        idMenu = getIntent().getStringExtra(MENU_ID);
+        guest = getIntent().getStringExtra(USER_ID);
 
         done.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,9 +56,10 @@ public class ValorationActivity extends AppCompatActivity {
                     .setAction("Action", null).show();
         }
         else {
-            Menu m = menuService.getMenu(menuId);
-            menuService.value(menuId, valoration.getRating(), comment.getText().toString(), m.getAuthor(), guest);
+            Menu m = menuService.getMenu(idMenu);
+            menuService.value(idMenu, valoration.getRating(), comment.getText().toString(), m.getAuthor(), guest);
             Toast.makeText(this, "Valoración realizada",Toast.LENGTH_LONG).show();
+            finish();
         }
     }
 }

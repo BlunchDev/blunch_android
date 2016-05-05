@@ -23,6 +23,11 @@
         <item>Colaborativo</item>
         <item>De pago</item>
     </string-array>
+    <string-array name="old_menu_types">
+        <item>No valorados</item>
+        <item>Valorados</item>
+        <item>Todos</item>
+    </string-array>
     <string name="title_activity_payment_petitions_list">PaymentPetitionsListActivity</string>
     <string name="title_activity_new_collaborative_menu_reviewed">NewCollaborativeMenuReviewed
     </string>
