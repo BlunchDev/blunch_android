@@ -9,10 +9,12 @@ import org.robolectric.annotation.Config;
 import dev.blunch.blunch.BuildConfig;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * Created by pere on 4/25/16.
  */
+@SuppressWarnings("all")
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class)
 public class PaymentMenuAnswerRepositoryTest {
@@ -21,4 +23,11 @@ public class PaymentMenuAnswerRepositoryTest {
         PaymentMenuAnswerRepository repository = new PaymentMenuAnswerRepository(RuntimeEnvironment.application);
         assertEquals(repository.getObjectReference(),"paymentMenuAnswer");
     }
+
+    @Test
+    public void check_null_dataSnapshot(){
+        PaymentMenuAnswerRepository repository = new PaymentMenuAnswerRepository(RuntimeEnvironment.application);
+        assertNull(repository.convert(null));
+    }
+
 }

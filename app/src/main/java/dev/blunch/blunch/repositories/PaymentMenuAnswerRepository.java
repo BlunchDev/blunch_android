@@ -15,6 +15,7 @@ import dev.blunch.blunch.utils.FirebaseRepository;
  *
  * @author casassg
  */
+@SuppressWarnings("all")
 public class PaymentMenuAnswerRepository extends FirebaseRepository<PaymentMenuAnswer> {
     /**
      * Constructor class
@@ -32,6 +33,8 @@ public class PaymentMenuAnswerRepository extends FirebaseRepository<PaymentMenuA
 
     @Override
     protected PaymentMenuAnswer convert(DataSnapshot data) {
+        if (data == null) return null;
+
         PaymentMenuAnswer answer = new PaymentMenuAnswer();
         answer.setId(data.getKey());
         for (DataSnapshot d : data.getChildren()) {

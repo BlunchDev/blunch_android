@@ -22,6 +22,7 @@ public class ServiceFactoryTest {
     public void test() throws Exception {
         assertNotNull(ServiceFactory.getCollaborativeMenuService(RuntimeEnvironment.application));
         assertNotNull(ServiceFactory.getPaymentMenuService(RuntimeEnvironment.application));
+        assertNotNull(ServiceFactory.getMenuService(RuntimeEnvironment.application));
     }
 
 }

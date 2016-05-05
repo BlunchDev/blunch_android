@@ -13,12 +13,15 @@ import dev.blunch.blunch.utils.FirebaseRepository;
 /**
  * Created by jmotger on 3/05/16.
  */
+@SuppressWarnings("all")
 public class UserRepository extends FirebaseRepository<User> {
 
     public UserRepository(Context context) { super(context);}
 
     @Override
     protected User convert(DataSnapshot dataSnapshot) {
+        if (dataSnapshot == null) return null;
+
         User user = new User();
         user.setId(dataSnapshot.getKey());
         for (DataSnapshot d : dataSnapshot.getChildren()) {
