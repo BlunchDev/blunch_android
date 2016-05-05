@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.domain.Menu;
@@ -11,6 +12,7 @@ import dev.blunch.blunch.domain.MenuComparator;
 import dev.blunch.blunch.domain.PaymentMenu;
 import dev.blunch.blunch.domain.User;
 import dev.blunch.blunch.domain.Valoration;
+import dev.blunch.blunch.utils.Preferences;
 import dev.blunch.blunch.utils.Repository;
 import dev.blunch.blunch.utils.Service;
 
@@ -142,11 +144,25 @@ public class MenuService extends Service<CollaborativeMenu> {
     public List<Menu> getNonValuedCollaboratedMenusOf(String currentUser) {
         List<Menu> menuList = new ArrayList<>();
 
+        User user = findUserByEmail(currentUser);
+        Set<String> collaboratedMenus = user.getParticipatedMenus().keySet();
+
+        for (Menu m : getValuedCollaboratedMenusOf(currentUser)) {
+            if (!collaboratedMenus.contains(m.getId())) menuList.add(m);
+        }
+
         return menuList;
     }
 
     public List<Menu> getValuedCollaboratedMenusOf(String currentUser) {
         List<Menu> menuList = new ArrayList<>();
+
+        User user = findUserByEmail(currentUser);
+        Set<String> collaboratedMenus = user.getParticipatedMenus().keySet();
+
+        for (Valoration v : valorationRepository.all()) {
+            if (collaboratedMenus.contains(v.getMenu()) && !menuList.contains(getMenu(v.getMenu()))) menuList.add(getMenu(v.getMenu()));
+        }
 
         return menuList;
     }
@@ -154,6 +170,11 @@ public class MenuService extends Service<CollaborativeMenu> {
 
     public List<Menu> getCollaboratedMenusOf(String currentUser) {
         List<Menu> menuList = new ArrayList<>();
+
+        User user = findUserByEmail(currentUser);
+        Set<String> collaboratedMenus = user.getParticipatedMenus().keySet();
+
+        for (String k : collaboratedMenus) menuList.add(getMenu(k));
 
         return menuList;
     }
