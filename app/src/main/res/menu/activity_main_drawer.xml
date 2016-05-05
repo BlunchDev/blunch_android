@@ -15,7 +15,7 @@
             android:icon="@android:drawable/ic_menu_compass"
             android:title="@string/menus_participo" />
         <item
-            android:id="@+id/payment_menus"
+            android:id="@+id/old_menus"
             android:icon="@drawable/ic_menu_manage"
             android:title="@string/valoracion_menus" />
     </group>
