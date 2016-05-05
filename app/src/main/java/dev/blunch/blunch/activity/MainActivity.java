@@ -204,6 +204,8 @@ public class MainActivity extends AppCompatActivity
 
     private void initializeSearchMenus() {
 
+        setTitle("Buscar menús");
+
         Spinner spinner = (Spinner) findViewById(R.id.menu_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.menu_types, R.layout.spinner_item);
@@ -384,6 +386,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        init("Todos");
+        if (getTitle().equals("Buscar menús")) init("Todos");
+        else if (getTitle().equals("Valoración de menus")) initOldMenus("No valorados");
     }
 }
