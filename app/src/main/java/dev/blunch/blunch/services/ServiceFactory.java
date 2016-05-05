@@ -3,12 +3,13 @@ package dev.blunch.blunch.services;
 
 import android.content.Context;
 
-import dev.blunch.blunch.domain.PaymentMenu;
 import dev.blunch.blunch.repositories.CollaborativeMenuAnswerRepository;
 import dev.blunch.blunch.repositories.CollaborativeMenuRepository;
 import dev.blunch.blunch.repositories.DishRepository;
 import dev.blunch.blunch.repositories.PaymentMenuAnswerRepository;
 import dev.blunch.blunch.repositories.PaymentMenuRepository;
+import dev.blunch.blunch.repositories.UserRepository;
+import dev.blunch.blunch.repositories.ValorationRepository;
 
 /**
  * Created by casassg on 17/04/16.
@@ -26,7 +27,8 @@ public final class ServiceFactory {
             collaborativeMenuService = new CollaborativeMenuService(
                     new CollaborativeMenuRepository(context),
                     new DishRepository(context),
-                    new CollaborativeMenuAnswerRepository(context));
+                    new CollaborativeMenuAnswerRepository(context),
+                    new UserRepository(context));
         return collaborativeMenuService;
     }
 
@@ -35,7 +37,8 @@ public final class ServiceFactory {
             paymentMenuService = new PaymentMenuService(
                     new PaymentMenuRepository(context),
                     new DishRepository(context),
-                    new PaymentMenuAnswerRepository(context));
+                    new PaymentMenuAnswerRepository(context),
+                    new UserRepository(context));
         return paymentMenuService;
     }
 
@@ -43,7 +46,9 @@ public final class ServiceFactory {
         if (menuService == null)
             menuService = new MenuService(
                     new CollaborativeMenuRepository(context),
-                    new PaymentMenuRepository(context));
+                    new PaymentMenuRepository(context),
+                    new ValorationRepository(context),
+                    new UserRepository(context));
         return menuService;
     }
 

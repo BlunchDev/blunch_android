@@ -1,40 +1,58 @@
 package dev.blunch.blunch.services;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.domain.Menu;
 import dev.blunch.blunch.domain.MenuComparator;
 import dev.blunch.blunch.domain.PaymentMenu;
+import dev.blunch.blunch.domain.User;
+import dev.blunch.blunch.domain.Valoration;
+import dev.blunch.blunch.utils.Preferences;
 import dev.blunch.blunch.utils.Repository;
 import dev.blunch.blunch.utils.Service;
 
 /**
  * Created by jmotger on 26/04/16.
  */
+@SuppressWarnings("all")
 public class MenuService extends Service<CollaborativeMenu> {
 
-    private final Repository<PaymentMenu> paymentMenuRepository;
+    private Repository<PaymentMenu> paymentMenuRepository;
+    private Repository<User> userRepository;
+    private Repository<Valoration> valorationRepository;
     int loadNeed = 1;
     int loaded = 0;
 
 
-    public MenuService(Repository<CollaborativeMenu> repository, Repository<PaymentMenu> paymentMenuRepository) {
+    public MenuService(Repository<CollaborativeMenu> repository, Repository<PaymentMenu> paymentMenuRepository, Repository<Valoration> valorationRepository,Repository<User> userRepository) {
         super(repository);
         this.paymentMenuRepository = paymentMenuRepository;
+        this.valorationRepository = valorationRepository;
+        this.userRepository = userRepository;
     }
 
     public List<CollaborativeMenu> getCollaborativeMenus() {
-        return repository.all();
+        return this.repository.all();
     }
 
-    public List<PaymentMenu> getPaymentMenus() {
-        return paymentMenuRepository.all();
+    public List<PaymentMenu> getPaymentMenus(){
+            List<PaymentMenu> a = this.paymentMenuRepository.all();
+        return a;
+    }
+
+    public List<User> getUsers() { return this.userRepository.all(); }
+
+    public User findUserByEmail(String email) {
+        return userRepository.get(email);
+    }
+
+    public User createNewUser(User user) {
+        return userRepository.update(user);
     }
 
     public List<Menu> getMenus() {
@@ -97,6 +115,15 @@ public class MenuService extends Service<CollaborativeMenu> {
                 }
             });
         }
+        if (userRepository != null) {
+            loadNeed += 1;
+            userRepository.setOnChangedListener(new Repository.OnChangedListener() {
+                @Override
+                public void onChanged(EventType type) {
+                    triggerListener(listener, type);
+                }
+            });
+        }
     }
 
     private void triggerListener(Repository.OnChangedListener listener, Repository.OnChangedListener.EventType type) {
@@ -111,5 +138,95 @@ public class MenuService extends Service<CollaborativeMenu> {
             }
             listener.onChanged(type);
         }
+    }
+
+    public List<Menu> getNonValuedCollaboratedMenusOf(String currentUser) {
+        List<Menu> menuList = new ArrayList<>();
+
+        User user = findUserByEmail(currentUser);
+        Set<String> collaboratedMenus = user.getParticipatedMenus().keySet();
+
+        for (String k : collaboratedMenus) {
+            if (!isValuedBy(k, currentUser)) menuList.add(getMenu(k));
+        }
+
+        Collections.sort(menuList, new MenuComparator());
+
+        return menuList;
+    }
+
+    public List<Menu> getValuedCollaboratedMenusOf(String currentUser) {
+        List<Menu> menuList = new ArrayList<>();
+
+        User user = findUserByEmail(currentUser);
+        Set<String> collaboratedMenus = user.getParticipatedMenus().keySet();
+
+        for (String k : collaboratedMenus) {
+            if (isValuedBy(k, currentUser)) menuList.add(getMenu(k));
+        }
+
+        Collections.sort(menuList, new MenuComparator());
+
+        return menuList;
+    }
+
+
+    public List<Menu> getCollaboratedMenusOf(String currentUser) {
+        List<Menu> menuList = new ArrayList<>();
+
+        User user = findUserByEmail(currentUser);
+        Set<String> collaboratedMenus = user.getParticipatedMenus().keySet();
+
+        for (String k : collaboratedMenus) menuList.add(getMenu(k));
+
+        Collections.sort(menuList, new MenuComparator());
+
+        return menuList;
+    }
+
+    public boolean isValuedBy(String menuId, String user) {
+        for (Valoration v : valorationRepository.all()) {
+            if (v.getMenu().equals(menuId) && v.getGuest().equals(user)) return true;
+        }
+        return false;
+    }
+
+    public Valoration getValoration(String menuId, String user) {
+        for (Valoration v : valorationRepository.all()) {
+            if (v.getMenu().equals(menuId) && v.getGuest().equals(user)) return valorationRepository.get(v.getId());
+        }
+        return null;
+    }
+
+    public Valoration value(String menu, double points, String comment, String host, String guest){
+        Valoration valoration = new Valoration();
+        valoration.setMenu(menu);
+        valoration.setPoints(points);
+        valoration.setComment(comment);
+        valoration.setGuest(guest);
+        valoration.setHost(host);
+
+        valoration = valorationRepository.insert(valoration);
+
+        User hostUser = findUserByEmail(host);
+        if (hostUser != null) {
+            Double percent = Double.valueOf(hostUser.getValorationNumber()) / Double.valueOf(hostUser.getValorationNumber() + 1);
+            hostUser.setValorationNumber(hostUser.getValorationNumber() + 1);
+            hostUser.setValorationAverage(hostUser.getValorationAverage() * percent +
+                    points * (1 - percent));
+            userRepository.update(hostUser);
+        }
+
+        return valoration;
+    }
+
+    public Menu getMenu(String menuId) {
+        
+        Menu m = paymentMenuRepository.get(menuId);
+        if(m == null){
+            m = repository.get(menuId);
+        }
+        
+        return m;
     }
 }

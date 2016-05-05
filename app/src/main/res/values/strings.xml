@@ -23,6 +23,11 @@
         <item>Colaborativo</item>
         <item>De pago</item>
     </string-array>
+    <string-array name="old_menu_types">
+        <item>No valorados</item>
+        <item>Valorados</item>
+        <item>Todos</item>
+    </string-array>
     <string name="title_activity_payment_petitions_list">PaymentPetitionsListActivity</string>
     <string name="title_activity_new_collaborative_menu_reviewed">NewCollaborativeMenuReviewed
     </string>
@@ -41,4 +46,11 @@
     <string name="menus_participo">Menús en los que participo</string>
     <string name="valoracion_menus">Valoración de menús</string>
     <string name="title_activity_chat">ChatActivity</string>
+    <string name="valorationTitle">Valoración</string>
+    <string name="firstTextValoration">Valore al usuario</string>
+    <string name="addValorationComment">Añade un comentario:</string>
+    <string name="valoration_text_Et_hint">Escriba el comentario aquí</string>
+    <string name="title_activity_log_in">LogInActivity</string>
+    <string name="logout">Log out</string>
+    <string name="facebook_app_id">1004661026291848</string>
 </resources>

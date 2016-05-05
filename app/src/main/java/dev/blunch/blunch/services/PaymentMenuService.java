@@ -6,6 +6,7 @@ import java.util.List;
 import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.domain.PaymentMenu;
 import dev.blunch.blunch.domain.PaymentMenuAnswer;
+import dev.blunch.blunch.domain.User;
 import dev.blunch.blunch.utils.Repository;
 import dev.blunch.blunch.utils.Service;
 
@@ -20,25 +21,35 @@ public class PaymentMenuService extends Service<PaymentMenu> {
     private int loaded = 0;
     private int loadNeed = 1;
     private final Repository<PaymentMenuAnswer> answerRepository;
+    private final Repository<User> userRepository;
 
     public PaymentMenuService(Repository<PaymentMenu> repository) {
         super(repository);
         dishesRepository = null;
         answerRepository = null;
+        this.userRepository = null;
     }
 
-    public PaymentMenuService(Repository<PaymentMenu> repository,Repository<Dish> dishRepository, Repository<PaymentMenuAnswer> answerRep) {
+    public PaymentMenuService(Repository<PaymentMenu> repository,Repository<Dish> dishRepository,
+                              Repository<PaymentMenuAnswer> answerRep, Repository<User> userRepository) {
         super(repository);
         dishesRepository = dishRepository;
         answerRepository = answerRep;
+        this.userRepository = userRepository;
     }
 
     public PaymentMenuService(Repository<PaymentMenu> repository, Repository<Dish> dishRepository) {
         super(repository);
         dishesRepository = dishRepository;
         answerRepository = null;
+        this.userRepository = null;
     }
 
+    public List<User> getUsers() { return userRepository.all(); }
+
+    public User findUserByEmail(String email) {
+        return userRepository.get(email);
+    }
 
     public PaymentMenu save(PaymentMenu item, List<Dish> dishes) {
         if (dishesRepository == null) {
@@ -48,7 +59,13 @@ public class PaymentMenuService extends Service<PaymentMenu> {
             dishesRepository.insert(dish);
             item.addDish(dish.getId());
         }
-        return repository.insert(item);
+        PaymentMenu menu =  repository.insert(item);
+        if (userRepository.exists(menu.getAuthor())) {
+            User user = userRepository.get(menu.getAuthor());
+            user.addNewMyMenu(menu);
+            userRepository.update(user);
+        }
+        return menu;
     }
 
     public List<Dish> getDishes(String key) {
@@ -71,7 +88,12 @@ public class PaymentMenuService extends Service<PaymentMenu> {
 
     public void answer(String menuKey, PaymentMenuAnswer answer) {
         answer.setIdMenu(menuKey);
-        answerRepository.insert(answer);
+        PaymentMenuAnswer paymentMenuAnswer = answerRepository.insert(answer);
+        if (userRepository.exists(paymentMenuAnswer.getGuest())) {
+            User user = userRepository.get(paymentMenuAnswer.getGuest());
+            user.addNewParticipatedMenu(repository.get(menuKey));
+            userRepository.update(user);
+        }
     }
 
     public List<PaymentMenuAnswer> getAnswers(String menuKey){
@@ -92,13 +114,6 @@ public class PaymentMenuService extends Service<PaymentMenu> {
             dishes.add(dishesRepository.get(key));
         }
         return dishes;
-    }
-
-
-    public void setPaymentMenuAnswerListener(Repository.OnChangedListener listener) {
-        if (answerRepository != null) {
-            answerRepository.setOnChangedListener(listener);
-        }
     }
 
     @Override
@@ -124,6 +139,15 @@ public class PaymentMenuService extends Service<PaymentMenu> {
                 @Override
                 public void onChanged(EventType type) {
                     triggerListener(listener,type);
+                }
+            });
+        }
+        if (userRepository != null) {
+            loadNeed += 1;
+            userRepository.setOnChangedListener(new Repository.OnChangedListener() {
+                @Override
+                public void onChanged(EventType type) {
+                    triggerListener(listener, type);
                 }
             });
         }

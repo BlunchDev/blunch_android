@@ -12,21 +12,22 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 /**
- * Created by pere on 4/25/16.
+ * Created by jmotger on 3/05/16.
  */
 @SuppressWarnings("all")
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class)
-public class PaymentMenuAnswerRepositoryTest {
+public class UserRepositoryTest {
+
     @Test
     public void check_object_reference(){
-        PaymentMenuAnswerRepository repository = new PaymentMenuAnswerRepository(RuntimeEnvironment.application);
-        assertEquals(repository.getObjectReference(),"paymentMenuAnswer");
+        UserRepository repository = new UserRepository(RuntimeEnvironment.application);
+        assertEquals(repository.getObjectReference(), "user");
     }
 
     @Test
     public void check_null_dataSnapshot(){
-        PaymentMenuAnswerRepository repository = new PaymentMenuAnswerRepository(RuntimeEnvironment.application);
+        UserRepository repository = new UserRepository(RuntimeEnvironment.application);
         assertNull(repository.convert(null));
     }
 

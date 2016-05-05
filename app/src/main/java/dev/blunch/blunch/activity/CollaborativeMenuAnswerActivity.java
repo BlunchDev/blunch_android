@@ -1,17 +1,12 @@
 package dev.blunch.blunch.activity;
 
-import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Gravity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -27,12 +22,9 @@ import dev.blunch.blunch.R;
 import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.domain.CollaborativeMenuAnswer;
 import dev.blunch.blunch.domain.Dish;
-import dev.blunch.blunch.repositories.CollaborativeMenuAnswerRepository;
-import dev.blunch.blunch.repositories.CollaborativeMenuRepository;
-import dev.blunch.blunch.repositories.DishRepository;
 import dev.blunch.blunch.services.CollaborativeMenuService;
 import dev.blunch.blunch.services.ServiceFactory;
-import dev.blunch.blunch.utils.Repository;
+import dev.blunch.blunch.utils.Preferences;
 
 public class CollaborativeMenuAnswerActivity extends AppCompatActivity {
 
@@ -76,7 +68,8 @@ public class CollaborativeMenuAnswerActivity extends AppCompatActivity {
 
                         for (String s : guestNewSuggestions) newSuggestions.add(new Dish(s, 0.));
 
-                        collaborativeMenuService.reply(new CollaborativeMenuAnswer(FAKE_GUEST, menuID,
+                        collaborativeMenuService.reply(new CollaborativeMenuAnswer(
+                                Preferences.getCurrentUserEmail(), menuID,
                                 Calendar.getInstance().getTime(), guestSuggestions), newSuggestions);
 
                         Snackbar.make(view, "Petición creada", Snackbar.LENGTH_LONG)

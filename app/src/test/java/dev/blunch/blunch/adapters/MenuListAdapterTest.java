@@ -19,6 +19,7 @@ import dev.blunch.blunch.BuildConfig;
 import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.domain.Menu;
 import dev.blunch.blunch.domain.PaymentMenu;
+import dev.blunch.blunch.domain.User;
 import dev.blunch.blunch.utils.dummy.EmptyActivity;
 
 import static org.junit.Assert.assertEquals;
@@ -59,7 +60,7 @@ public class MenuListAdapterTest {
         data.add(secondMenu);
         data.add(thirdMenu);
         data.add(fourthMenu);
-        menuListAdapter = new MenuListAdapter(mockActivity.getApplicationContext(), data);
+        menuListAdapter = new MenuListAdapter(mockActivity.getApplicationContext(), data, new ArrayList<User>());
     }
 
     @Test
@@ -74,11 +75,7 @@ public class MenuListAdapterTest {
     public void getItemTest() throws Exception {
         assertEquals(menuListAdapter.getItem(0).getName(), firstMenu.getName());
         assertEquals(menuListAdapter.getItem(2).getAuthor(), thirdMenu.getAuthor());
-    }
-
-    @Test
-    public void getViewShouldNotBeNull() throws Exception {
-        assertNotNull(menuListAdapter.getView(0, null, null));
+        assertNotNull(menuListAdapter.getItemId(0));
     }
 
     private Date toDate(Integer hour, Integer minute) {

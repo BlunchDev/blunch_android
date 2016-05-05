@@ -1,5 +1,6 @@
 package dev.blunch.blunch.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,6 +19,7 @@ import dev.blunch.blunch.R;
 import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.domain.PaymentMenu;
 import dev.blunch.blunch.domain.PaymentMenuAnswer;
+import dev.blunch.blunch.domain.User;
 import dev.blunch.blunch.services.PaymentMenuService;
 import dev.blunch.blunch.services.ServiceFactory;
 
@@ -61,16 +63,23 @@ public class PaymentPetitionsListActivity extends AppCompatActivity {
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView, String id) {
         List<PaymentMenuAnswer> petitions = service.getAnswers(id);
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(petitions));
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(getApplicationContext(),
+                petitions, service.getUsers()));
     }
 
     public class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
         private final List<PaymentMenuAnswer> mValues;
+        private final List<User> users;
+        private final Context context;
 
-        public SimpleItemRecyclerViewAdapter(List<PaymentMenuAnswer> items) {
+        public SimpleItemRecyclerViewAdapter(Context context,
+                                             List<PaymentMenuAnswer> items,
+                                             List<User> users) {
             mValues = items;
+            this.users = users;
+            this.context = context;
         }
 
         @Override
@@ -95,7 +104,16 @@ public class PaymentPetitionsListActivity extends AppCompatActivity {
             if (position == mValues.size() - 1) holder.divider.setVisibility(View.GONE);
             holder.mContentView.setText(result);
             holder.totalView.setText(String.valueOf(total));
-            holder.commentView.setText("Petición de "+holder.mItem.getGuest());
+
+            User user = null;
+            for(User u : users) if (u.getId().equals(holder.mItem.getGuest())) user = u;
+
+            holder.commentView.setText("Petición de "+ user.getName());
+            try {
+                holder.profilePic.setImageDrawable(user.getImageRounded(context.getResources()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         private void removeItem(int position) {
