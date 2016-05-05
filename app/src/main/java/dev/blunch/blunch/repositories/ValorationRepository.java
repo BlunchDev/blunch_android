@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.firebase.client.DataSnapshot;
 
-import dev.blunch.blunch.domain.Menu;
 import dev.blunch.blunch.domain.Valoration;
 import dev.blunch.blunch.utils.FirebaseRepository;
 

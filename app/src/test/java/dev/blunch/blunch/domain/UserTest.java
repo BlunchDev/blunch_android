@@ -17,7 +17,6 @@ import dev.blunch.blunch.BuildConfig;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Created by jmotger on 3/05/16.

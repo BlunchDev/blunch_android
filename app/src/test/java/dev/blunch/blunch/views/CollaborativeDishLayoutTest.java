@@ -13,7 +13,6 @@ import dev.blunch.blunch.BuildConfig;
 import dev.blunch.blunch.view.CollaborativeDishLayout;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Collaborative Dish Layout Test

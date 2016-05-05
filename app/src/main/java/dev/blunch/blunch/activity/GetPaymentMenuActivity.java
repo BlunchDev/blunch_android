@@ -4,10 +4,8 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -25,13 +23,9 @@ import dev.blunch.blunch.R;
 import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.domain.PaymentMenu;
 import dev.blunch.blunch.domain.PaymentMenuAnswer;
-import dev.blunch.blunch.repositories.DishRepository;
-import dev.blunch.blunch.repositories.PaymentMenuAnswerRepository;
-import dev.blunch.blunch.repositories.PaymentMenuRepository;
 import dev.blunch.blunch.services.PaymentMenuService;
 import dev.blunch.blunch.services.ServiceFactory;
 import dev.blunch.blunch.utils.Preferences;
-import dev.blunch.blunch.utils.Repository;
 import dev.blunch.blunch.view.SelectPaymentDishLayout;
 
 @SuppressWarnings("all")

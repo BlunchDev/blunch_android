@@ -1,9 +1,8 @@
 package dev.blunch.blunch.activity;
 
-import android.content.res.ColorStateList;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -14,7 +13,6 @@ import dev.blunch.blunch.R;
 import dev.blunch.blunch.domain.Menu;
 import dev.blunch.blunch.services.MenuService;
 import dev.blunch.blunch.services.ServiceFactory;
-import dev.blunch.blunch.utils.Preferences;
 
 public class ValorationActivity extends AppCompatActivity {
 

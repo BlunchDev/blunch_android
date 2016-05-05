@@ -7,6 +7,7 @@ import dev.blunch.blunch.utils.Entity;
  */
 public class Valoration implements Entity {
 
+    private String id;
     private double points;
     private String comment;
     private String menu;
@@ -68,11 +69,11 @@ public class Valoration implements Entity {
 
     @Override
     public String getId() {
-        return null;
+        return id;
     }
 
     @Override
     public void setId(String id) {
-
+        this.id = id;
     }
 }

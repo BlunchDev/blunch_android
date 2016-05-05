@@ -1,9 +1,5 @@
 package dev.blunch.blunch.services;
 
-import android.util.Log;
-
-import com.firebase.client.core.Repo;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -13,8 +9,8 @@ import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.domain.Menu;
 import dev.blunch.blunch.domain.MenuComparator;
 import dev.blunch.blunch.domain.PaymentMenu;
-import dev.blunch.blunch.domain.Valoration;
 import dev.blunch.blunch.domain.User;
+import dev.blunch.blunch.domain.Valoration;
 import dev.blunch.blunch.utils.Repository;
 import dev.blunch.blunch.utils.Service;
 
