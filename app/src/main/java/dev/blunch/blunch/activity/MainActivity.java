@@ -169,12 +169,12 @@ public class MainActivity extends AppCompatActivity
             initializeSearchMenus();
         }
         else if (id == R.id.my_menus) {
-            initFragment(-1);
+            initFragment(R.layout.content_list_menus);
             Toast.makeText(getApplicationContext(), "My menus", Toast.LENGTH_SHORT).show();
             initializeMyMenus();
         }
         else if (id == R.id.collaborating_menus) {
-            initFragment(-1);
+            initFragment(R.layout.content_list_menus);
             Toast.makeText(getApplicationContext(), "Collaborating menus", Toast.LENGTH_SHORT).show();
             initializeCollaboratingMenus();
         }
@@ -238,11 +238,29 @@ public class MainActivity extends AppCompatActivity
             case "Todos":
                 menuList.addAll(menuService.getMenusOrderedByDate());
                 break;
+            case "Todos mis menús":
+                menuList.addAll(menuService.getMyMenusOrderedByDate()); ///////////////////////
+                break;
+            case "Menús con mi participación":
+                menuList.addAll(menuService.getMenusOrderedByDate()); ///////////////////////
+                break;
             case "Colaborativo":
                 menuList.addAll(menuService.getCollaborativeMenusOrderedByDate());
                 break;
+            case "Mis menús antiguos":
+                menuList.addAll(menuService.getMyOutMenusOrderedByDate()); ////////////////
+                break;
+            case "Participación en menús colaborativos":
+                menuList.addAll(menuService.getCollaborativeMenusOrderedByDate()); ////////////////
+                break;
             case "De pago":
                 menuList.addAll(menuService.getPaymentMenusOrderedByDate());
+                break;
+            case "Mis menús activos":
+                menuList.addAll(menuService.getMyCurrentMenusOrderedByDate()); ///////////////
+                break;
+            case "Participación en menús de pago":
+                menuList.addAll(menuService.getPaymentMenusOrderedByDate()); ///////////////
                 break;
             default:
                 menuList.addAll(menuService.getMenusOrderedByDate());
@@ -284,8 +302,34 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void initializeCollaboratingMenus() {
-        //TODO fill view
         setTitle("Menús en colaboración");
+        Spinner spinner = (Spinner) findViewById(R.id.menu_spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.collaborative_menu_types, R.layout.spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                init(parent.getItemAtPosition(position).toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        menuService.setOnChangedListener(new Repository.OnChangedListener() {
+            @Override
+            public void onChanged(EventType type) {
+                if (type.equals(EventType.Full)) {
+                    init("Menús con mi participación");
+                }
+            }
+        });
     }
 
     private void initializePaymentmenus() {
@@ -294,8 +338,33 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void initializeMyMenus() {
-        //TODO fill view
-        setTitle("Mis menús");
+        Spinner spinner = (Spinner) findViewById(R.id.menu_spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.my_menu_types, R.layout.spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                init(parent.getItemAtPosition(position).toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        menuService.setOnChangedListener(new Repository.OnChangedListener() {
+            @Override
+            public void onChanged(EventType type) {
+                if (type.equals(EventType.Full)) {
+                    init("Todos mis menús");
+                }
+            }
+        });
     }
 
     @Override

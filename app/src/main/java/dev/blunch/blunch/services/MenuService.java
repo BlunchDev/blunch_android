@@ -1,5 +1,7 @@
 package dev.blunch.blunch.services;
 
+import com.facebook.FacebookSdk;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -11,6 +13,7 @@ import dev.blunch.blunch.domain.MenuComparator;
 import dev.blunch.blunch.domain.PaymentMenu;
 import dev.blunch.blunch.domain.User;
 import dev.blunch.blunch.domain.Valoration;
+import dev.blunch.blunch.utils.Preferences;
 import dev.blunch.blunch.utils.Repository;
 import dev.blunch.blunch.utils.Service;
 
@@ -90,6 +93,42 @@ public class MenuService extends Service<CollaborativeMenu> {
         List<Menu> result = new ArrayList<>();
         for (Menu menu : menus) {
             if (menu.getDateEnd().compareTo(Calendar.getInstance().getTime()) > 0) {
+                result.add(menu);
+            }
+        }
+        Collections.sort(result, new MenuComparator());
+        return result;
+    }
+
+    public List<Menu> getMyMenusOrderedByDate() {
+        List<Menu> menus = getMenus();
+        List<Menu> result = new ArrayList<>();
+        for (Menu menu : menus) {
+            if (menu.getAuthor().compareTo(Preferences.getCurrentUserEmail()) == 0 ) {
+                result.add(menu);
+            }
+        }
+        Collections.sort(result, new MenuComparator());
+        return result;
+    }
+
+    public List<Menu> getMyOutMenusOrderedByDate() {
+        List<Menu> menus = getMenus();
+        List<Menu> result = new ArrayList<>();
+        for (Menu menu : menus) {
+            if (menu.getAuthor().compareTo(Preferences.getCurrentUserEmail()) == 0 && menu.getDateEnd().compareTo(Calendar.getInstance().getTime()) < 0) {
+                result.add(menu);
+            }
+        }
+        Collections.sort(result, new MenuComparator());
+        return result;
+    }
+
+    public List<Menu> getMyCurrentMenusOrderedByDate() {
+        List<Menu> menus = getMenus();
+        List<Menu> result = new ArrayList<>();
+        for (Menu menu : menus) {
+            if (menu.getAuthor().compareTo(Preferences.getCurrentUserEmail()) == 0 && menu.getDateEnd().compareTo(Calendar.getInstance().getTime()) > 0) {
                 result.add(menu);
             }
         }

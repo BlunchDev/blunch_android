@@ -23,6 +23,16 @@
         <item>Colaborativo</item>
         <item>De pago</item>
     </string-array>
+    <string-array name="my_menu_types">
+        <item>Todos mis menús</item>
+        <item>Mis menús antiguos</item>
+        <item>Mis menús activos</item>
+    </string-array>
+    <string-array name="collaborative_menu_types">
+        <item>Menús con mi participación</item>
+        <item>Participación en menús colaborativos</item>
+        <item>Participación en menús de pago</item>
+    </string-array>
     <string name="title_activity_payment_petitions_list">PaymentPetitionsListActivity</string>
     <string name="title_activity_new_collaborative_menu_reviewed">NewCollaborativeMenuReviewed
     </string>
