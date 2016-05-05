@@ -14,12 +14,15 @@ import dev.blunch.blunch.utils.FirebaseRepository;
 /**
  * Created by jmotger
  */
+@SuppressWarnings("all")
 public class CollaborativeMenuRepository extends FirebaseRepository<CollaborativeMenu> {
 
     public CollaborativeMenuRepository(Context context) { super(context);}
 
     @Override
     protected CollaborativeMenu convert(DataSnapshot data) {
+        if (data == null) return null;
+
         CollaborativeMenu collaborativeMenu = new CollaborativeMenu();
         collaborativeMenu.setId(data.getKey());
         for (DataSnapshot d : data.getChildren()) {

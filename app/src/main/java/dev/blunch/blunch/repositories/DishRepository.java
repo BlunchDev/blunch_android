@@ -10,6 +10,7 @@ import dev.blunch.blunch.utils.FirebaseRepository;
 /**
  * Created by jmotger
  */
+@SuppressWarnings("all")
 public class DishRepository extends FirebaseRepository<Dish> {
 
     public DishRepository(Context context) {
@@ -18,6 +19,8 @@ public class DishRepository extends FirebaseRepository<Dish> {
 
     @Override
     protected Dish convert(DataSnapshot data) {
+        if (data == null) return null;
+
         Dish dish = new Dish();
         dish.setId(data.getKey());
         for (DataSnapshot d : data.getChildren()) {
