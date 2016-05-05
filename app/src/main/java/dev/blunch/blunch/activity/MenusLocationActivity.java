@@ -1,10 +1,14 @@
 package dev.blunch.blunch.activity;
 
 import android.content.ContentResolver;
+import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -18,6 +22,7 @@ import dev.blunch.blunch.R;
 public class MenusLocationActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    Location localizacion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,19 +32,28 @@ public class MenusLocationActivity extends FragmentActivity implements OnMapRead
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        localizacion = null;
     }
     
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        if (gpsEnabled()){
+            LatLng posicion = new LatLng(localizacion.getLatitude(),localizacion.getLongitude());
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(posicion));
+        }
+        else {
+            // Add a marker in Sydney and move the camera
+            LatLng sydney = new LatLng(-34, 151);
+            mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+            Toast.makeText(this, "GPS no conectado!",
+                    Toast.LENGTH_LONG).show();
+        }
     }
 
 
-    private Boolean displayGpsStatus() {
+    private Boolean gpsEnabled() {
         ContentResolver contentResolver = getBaseContext()
                 .getContentResolver();
         boolean gpsStatus = Settings.Secure
@@ -48,4 +62,30 @@ public class MenusLocationActivity extends FragmentActivity implements OnMapRead
 
         return gpsStatus;
     }
-}
+
+    private class MyLocationListener implements LocationListener {
+
+        @Override
+        public void onLocationChanged(Location loc) {
+           if(loc != null) {
+               localizacion = loc;
+               LatLng posicion = new LatLng(localizacion.getLatitude(), localizacion.getLongitude());
+               mMap.moveCamera(CameraUpdateFactory.newLatLng(posicion));
+           }
+        }
+        @Override
+        public void onProviderDisabled(String provider) {
+            // TODO Auto-generated method stub
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+            // TODO Auto-generated method stub
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+            // TODO Auto-generated method stub
+        }
+    }
+    }
