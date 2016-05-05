@@ -23,6 +23,7 @@ import dev.blunch.blunch.domain.User;
 import dev.blunch.blunch.utils.dummy.EmptyActivity;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Menu List Adapter Test
