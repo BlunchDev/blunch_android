@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.domain.Menu;
@@ -53,7 +54,6 @@ public class MenuService extends Service<CollaborativeMenu> {
     }
 
     public User createNewUser(User user) {
-        user.setId(user.getId().split("\\.")[0]);
         return userRepository.update(user);
     }
 
@@ -212,6 +212,64 @@ public class MenuService extends Service<CollaborativeMenu> {
         }
     }
 
+    public List<Menu> getNonValuedCollaboratedMenusOf(String currentUser) {
+        List<Menu> menuList = new ArrayList<>();
+
+        User user = findUserByEmail(currentUser);
+        Set<String> collaboratedMenus = user.getParticipatedMenus().keySet();
+
+        for (String k : collaboratedMenus) {
+            if (!isValuedBy(k, currentUser)) menuList.add(getMenu(k));
+        }
+
+        Collections.sort(menuList, new MenuComparator());
+
+        return menuList;
+    }
+
+    public List<Menu> getValuedCollaboratedMenusOf(String currentUser) {
+        List<Menu> menuList = new ArrayList<>();
+
+        User user = findUserByEmail(currentUser);
+        Set<String> collaboratedMenus = user.getParticipatedMenus().keySet();
+
+        for (String k : collaboratedMenus) {
+            if (isValuedBy(k, currentUser)) menuList.add(getMenu(k));
+        }
+
+        Collections.sort(menuList, new MenuComparator());
+
+        return menuList;
+    }
+
+
+    public List<Menu> getCollaboratedMenusOf(String currentUser) {
+        List<Menu> menuList = new ArrayList<>();
+
+        User user = findUserByEmail(currentUser);
+        Set<String> collaboratedMenus = user.getParticipatedMenus().keySet();
+
+        for (String k : collaboratedMenus) menuList.add(getMenu(k));
+
+        Collections.sort(menuList, new MenuComparator());
+
+        return menuList;
+    }
+
+    public boolean isValuedBy(String menuId, String user) {
+        for (Valoration v : valorationRepository.all()) {
+            if (v.getMenu().equals(menuId) && v.getGuest().equals(user)) return true;
+        }
+        return false;
+    }
+
+    public Valoration getValoration(String menuId, String user) {
+        for (Valoration v : valorationRepository.all()) {
+            if (v.getMenu().equals(menuId) && v.getGuest().equals(user)) return valorationRepository.get(v.getId());
+        }
+        return null;
+    }
+
     public Valoration value(String menu, double points, String comment, String host, String guest){
         Valoration valoration = new Valoration();
         valoration.setMenu(menu);
@@ -243,6 +301,4 @@ public class MenuService extends Service<CollaborativeMenu> {
         
         return m;
     }
-
-
 }

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -33,6 +34,7 @@ import java.util.List;
 import dev.blunch.blunch.R;
 import dev.blunch.blunch.adapters.MenuListAdapter;
 import dev.blunch.blunch.domain.User;
+import dev.blunch.blunch.domain.Valoration;
 import dev.blunch.blunch.services.CollaborativeMenuService;
 import dev.blunch.blunch.services.MenuService;
 import dev.blunch.blunch.services.PaymentMenuService;
@@ -40,6 +42,7 @@ import dev.blunch.blunch.services.ServiceFactory;
 import dev.blunch.blunch.utils.Preferences;
 import dev.blunch.blunch.utils.Repository;
 
+@SuppressWarnings("all")
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -178,10 +181,10 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(getApplicationContext(), "Collaborating menus", Toast.LENGTH_SHORT).show();
             initializeCollaboratingMenus();
         }
-        else if (id == R.id.payment_menus) {
-            initFragment(-1);
-            Toast.makeText(getApplicationContext(), "Payed menus", Toast.LENGTH_SHORT).show();
-            initializePaymentmenus();
+        else if (id == R.id.old_menus) {
+            initFragment(R.layout.content_list_old_menus);
+            Toast.makeText(getApplicationContext(), "Valoración de menus", Toast.LENGTH_SHORT).show();
+            initializeOldMenus();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -200,6 +203,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void initializeSearchMenus() {
+
+        setTitle("Buscar menús");
 
         Spinner spinner = (Spinner) findViewById(R.id.menu_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -332,9 +337,89 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    private void initializePaymentmenus() {
-        //TODO fill view
-        setTitle("Menús comprados");
+    private void initializeOldMenus() {
+
+        setTitle("Valoración de menus");
+
+        Spinner spinner = (Spinner) findViewById(R.id.menu_spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.old_menu_types, R.layout.spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                initOldMenus(parent.getItemAtPosition(position).toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        menuService.setOnChangedListener(new Repository.OnChangedListener() {
+            @Override
+            public void onChanged(EventType type) {
+                if (type.equals(EventType.Full)) {
+                    initOldMenus("No valorados");
+                }
+            }
+        });
+    }
+
+    private void initOldMenus(String filter) {
+        List<dev.blunch.blunch.domain.Menu> menuList = new ArrayList<>();
+
+        switch (filter) {
+            case "No valorados":
+                menuList.addAll(menuService.getNonValuedCollaboratedMenusOf(email));
+                break;
+            case "Valorados":
+                menuList.addAll(menuService.getValuedCollaboratedMenusOf(email));
+                break;
+            case "Todos":
+                menuList.addAll(menuService.getCollaboratedMenusOf(email));
+                break;
+            default:
+                menuList.addAll(menuService.getNonValuedCollaboratedMenusOf(email));
+                break;
+        }
+
+        final MenuListAdapter menuListAdapter = new MenuListAdapter(
+                getApplicationContext(),
+                menuList,
+                menuService.getUsers());
+
+        ListView listView = (ListView) findViewById(R.id.menu_list);
+        listView.setAdapter(menuListAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                dev.blunch.blunch.domain.Menu menu = menuListAdapter.getItem(position);
+
+                String menuId = menu.getId();
+                String userId = Preferences.getCurrentUserEmail();
+
+                if (!menuService.isValuedBy(menuId, userId)) {
+                    Intent intent = new Intent(MainActivity.this, ValorationActivity.class);
+                    intent.putExtra(ValorationActivity.MENU_ID, menuId);
+                    intent.putExtra(ValorationActivity.USER_ID, userId);
+                    startActivity(intent);
+                }
+                else {
+                    Valoration v = menuService.getValoration(menuId, userId);
+                    boolean decimal = ((int) v.getPoints() < v.getPoints());
+                    Snackbar.make(view, "Este menú ya fue valorado en " +
+                                        (decimal ? (int)v.getPoints() + " estrellas." : (int)v.getPoints() + " estrellas y media."),
+                                        Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+            }
+        });
     }
 
     private void initializeMyMenus() {
@@ -370,6 +455,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        init("Todos");
+        if (getTitle().equals("Buscar menús")) init("Todos");
+        else if (getTitle().equals("Valoración de menus")) initOldMenus("No valorados");
     }
 }

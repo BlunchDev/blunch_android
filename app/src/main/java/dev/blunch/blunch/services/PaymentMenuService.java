@@ -91,7 +91,7 @@ public class PaymentMenuService extends Service<PaymentMenu> {
         PaymentMenuAnswer paymentMenuAnswer = answerRepository.insert(answer);
         if (userRepository.exists(paymentMenuAnswer.getGuest())) {
             User user = userRepository.get(paymentMenuAnswer.getGuest());
-            user.addNewParticipatedMenu(repository.get(answer.getIdMenu()));
+            user.addNewParticipatedMenu(repository.get(menuKey));
             userRepository.update(user);
         }
     }

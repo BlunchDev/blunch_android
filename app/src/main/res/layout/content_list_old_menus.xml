@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:id="@+id/menu_list_layout"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".activity.ListMenusActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentTop="true"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:background="#e6e6e6"
+        android:id="@+id/filter">
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:id="@+id/filter_tag"
+            android:text="Filtra por:"
+            android:gravity="center_vertical"/>
+
+        <Spinner
+            android:id="@+id/menu_spinner"
+            android:layout_toRightOf="@+id/filter_tag"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="right"/>
+
+    </RelativeLayout>
+
+
+    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/menu_list"
+        android:layout_below="@+id/filter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:divider="@drawable/custom_divider"/>
+
+</RelativeLayout>
