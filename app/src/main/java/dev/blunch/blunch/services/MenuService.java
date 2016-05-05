@@ -147,9 +147,11 @@ public class MenuService extends Service<CollaborativeMenu> {
         User user = findUserByEmail(currentUser);
         Set<String> collaboratedMenus = user.getParticipatedMenus().keySet();
 
-        for (Menu m : getValuedCollaboratedMenusOf(currentUser)) {
-            if (!collaboratedMenus.contains(m.getId())) menuList.add(m);
+        for (String k : collaboratedMenus) {
+            if (!isValuedBy(k, currentUser)) menuList.add(getMenu(k));
         }
+
+        Collections.sort(menuList, new MenuComparator());
 
         return menuList;
     }
@@ -160,9 +162,11 @@ public class MenuService extends Service<CollaborativeMenu> {
         User user = findUserByEmail(currentUser);
         Set<String> collaboratedMenus = user.getParticipatedMenus().keySet();
 
-        for (Valoration v : valorationRepository.all()) {
-            if (collaboratedMenus.contains(v.getMenu()) && !menuList.contains(getMenu(v.getMenu()))) menuList.add(getMenu(v.getMenu()));
+        for (String k : collaboratedMenus) {
+            if (isValuedBy(k, currentUser)) menuList.add(getMenu(k));
         }
+
+        Collections.sort(menuList, new MenuComparator());
 
         return menuList;
     }
@@ -176,7 +180,23 @@ public class MenuService extends Service<CollaborativeMenu> {
 
         for (String k : collaboratedMenus) menuList.add(getMenu(k));
 
+        Collections.sort(menuList, new MenuComparator());
+
         return menuList;
+    }
+
+    public boolean isValuedBy(String menuId, String user) {
+        for (Valoration v : valorationRepository.all()) {
+            if (v.getMenu().equals(menuId) && v.getGuest().equals(user)) return true;
+        }
+        return false;
+    }
+
+    public Valoration getValoration(String menuId, String user) {
+        for (Valoration v : valorationRepository.all()) {
+            if (v.getMenu().equals(menuId) && v.getGuest().equals(user)) return valorationRepository.get(v.getId());
+        }
+        return null;
     }
 
     public Valoration value(String menu, double points, String comment, String host, String guest){

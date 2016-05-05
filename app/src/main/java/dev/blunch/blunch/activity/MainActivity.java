@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -33,6 +34,7 @@ import java.util.List;
 import dev.blunch.blunch.R;
 import dev.blunch.blunch.adapters.MenuListAdapter;
 import dev.blunch.blunch.domain.User;
+import dev.blunch.blunch.domain.Valoration;
 import dev.blunch.blunch.services.CollaborativeMenuService;
 import dev.blunch.blunch.services.MenuService;
 import dev.blunch.blunch.services.PaymentMenuService;
@@ -316,7 +318,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onChanged(EventType type) {
                 if (type.equals(EventType.Full)) {
-                    initOldMenus("All");
+                    initOldMenus("No valorados");
                 }
             }
         });
@@ -353,26 +355,22 @@ public class MainActivity extends AppCompatActivity
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 dev.blunch.blunch.domain.Menu menu = menuListAdapter.getItem(position);
 
-                // TODO Access to valorations repositories and search if menu was valorated by current user
                 String menuId = menu.getId();
-                String s = "";
+                String userId = Preferences.getCurrentUserEmail();
 
-                // TODO Split Menus between NonValued and Valued.
-                // Valued -> On click: Valoration Activity
-                // NonValued -> On click: SnackBar notifying that Menu has already valorated.
-                switch (s) {
-                    case "CollaborativeMenu":
-                        Intent intent = new Intent(MainActivity.this, GetCollaborativeMenuActivity.class);
-                        intent.putExtra(GetCollaborativeMenuActivity.MENU_ID_KEY, menu.getId());
-                        startActivity(intent);
-                        break;
-                    case "PaymentMenu":
-                        Intent intent2 = new Intent(MainActivity.this, GetPaymentMenuActivity.class);
-                        intent2.putExtra(GetPaymentMenuActivity.MENU_ID_KEY, menu.getId());
-                        startActivity(intent2);
-                        break;
-                    default:
-                        break;
+                if (!menuService.isValuedBy(menuId, userId)) {
+                    Intent intent = new Intent(MainActivity.this, ValorationActivity.class);
+                    intent.putExtra(ValorationActivity.MENU_ID, menuId);
+                    intent.putExtra(ValorationActivity.USER_ID, userId);
+                    startActivity(intent);
+                }
+                else {
+                    Valoration v = menuService.getValoration(menuId, userId);
+                    boolean decimal = ((int) v.getPoints() < v.getPoints());
+                    Snackbar.make(view, "Este menú ya fue valorado en " +
+                                        (decimal ? (int)v.getPoints() + " estrellas." : (int)v.getPoints() + " estrellas y media."),
+                                        Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
                 }
             }
         });
