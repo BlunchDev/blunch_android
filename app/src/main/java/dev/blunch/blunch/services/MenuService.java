@@ -17,6 +17,7 @@ import dev.blunch.blunch.utils.Service;
 /**
  * Created by jmotger on 26/04/16.
  */
+@SuppressWarnings("all")
 public class MenuService extends Service<CollaborativeMenu> {
 
     private Repository<PaymentMenu> paymentMenuRepository;
@@ -146,7 +147,18 @@ public class MenuService extends Service<CollaborativeMenu> {
         valoration.setGuest(guest);
         valoration.setHost(host);
 
-        return valorationRepository.insert(valoration);
+        valoration = valorationRepository.insert(valoration);
+
+        User hostUser = findUserByEmail(host);
+        if (hostUser != null) {
+            Double percent = Double.valueOf(hostUser.getValorationNumber()) / Double.valueOf(hostUser.getValorationNumber() + 1);
+            hostUser.setValorationNumber(hostUser.getValorationNumber() + 1);
+            hostUser.setValorationAverage(hostUser.getValorationAverage() * percent +
+                    points * (1 - percent));
+            userRepository.update(hostUser);
+        }
+
+        return valoration;
     }
 
     public Menu getMenu(String menuId) {
