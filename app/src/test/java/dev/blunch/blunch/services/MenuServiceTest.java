@@ -18,10 +18,12 @@ import dev.blunch.blunch.utils.Repository;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by jmotger on 26/04/16.
  */
+@SuppressWarnings("all")
 public class MenuServiceTest {
 
     private MenuService service;
@@ -96,6 +98,13 @@ public class MenuServiceTest {
                 assertEquals("Menu del vertex", menu.getName());
         }
         assertEquals(service.getMenu(firstID).getName(), "Menu del vertex");
+
+        assertTrue(2 >= service.getMenusOrderedByDate().size());
+        assertTrue(1 >= service.getCollaborativeMenusOrderedByDate().size());
+        assertTrue(1 >= service.getPaymentMenusOrderedByDate().size());
+
+        assertNotNull(service.getMenu(firstID));
+
     }
 
     @Test
@@ -106,5 +115,36 @@ public class MenuServiceTest {
         String guest = "victorpm5@hotmail";
         String host = "alsumo95@gmail";
         assertNotNull(service.value(menuID, points, comment, host, guest));
+    }
+
+    @Test
+    public void getUsersTest() {
+        final String EMAIL = "alsumo95@gmail";
+        final String NAME = "Albert";
+        final String IMAGE = "";
+
+        assertTrue(service.getUsers().size() == 0);
+        service.createNewUser(new User(NAME, EMAIL, IMAGE));
+        assertEquals(service.findUserByEmail(EMAIL).getName(), NAME);
+        assertEquals(service.findUserByEmail(EMAIL).getImageFile(), IMAGE);
+    }
+
+    @Test
+    public void valorationTest() {
+        final String EMAIL = "alsumo95@gmail";
+        final String NAME = "Albert";
+        final String IMAGE = "";
+
+        assertTrue(service.getUsers().size() == 0);
+        service.createNewUser(new User(NAME, EMAIL, IMAGE));
+        service.createNewUser(new User("Victor", "victorpm5@hotmail", IMAGE));
+
+        assertNotNull(service.getNonValuedCollaboratedMenusOf(EMAIL));
+        assertNotNull(service.getValuedCollaboratedMenusOf(EMAIL));
+        assertNotNull(service.getCollaboratedMenusOf(EMAIL));
+
+        service.value(collaborativeMenu.getId(), 3.0, "Molt bo", "victorpm5@hotmail", EMAIL);
+        assertTrue(service.isValuedBy(collaborativeMenu.getId(), EMAIL));
+        assertNotNull(service.getValoration(collaborativeMenu.getId(), EMAIL));
     }
 }

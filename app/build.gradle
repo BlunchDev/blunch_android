@@ -53,6 +53,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-ads:8.4.0'
     compile 'com.google.android.gms:play-services-identity:8.4.0'
     compile 'com.google.android.gms:play-services-gcm:8.4.0'
+    compile 'com.firebaseui:firebase-ui:0.3.1'
 }
 
 tasks.withType(Test) {

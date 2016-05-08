@@ -14,6 +14,7 @@ import dev.blunch.blunch.utils.FirebaseRepository;
 /**
  * Created by jmotger
  */
+@SuppressWarnings("all")
 public class CollaborativeMenuAnswerRepository extends FirebaseRepository<CollaborativeMenuAnswer> {
 
     public CollaborativeMenuAnswerRepository(Context context) {
@@ -22,6 +23,8 @@ public class CollaborativeMenuAnswerRepository extends FirebaseRepository<Collab
 
     @Override
     protected CollaborativeMenuAnswer convert(DataSnapshot data) {
+        if (data == null) return null;
+
         CollaborativeMenuAnswer collaborativeMenuAnswer = new CollaborativeMenuAnswer();
         collaborativeMenuAnswer.setId(data.getKey());
 

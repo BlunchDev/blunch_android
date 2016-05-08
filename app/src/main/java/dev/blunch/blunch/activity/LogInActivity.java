@@ -112,15 +112,18 @@ public class LogInActivity extends AppCompatActivity {
                                     public void onCompleted(JSONObject object, GraphResponse response) {
                                         Log.v("LoginActivity", response.toString());
                                         try {
-                                            email = object.getString("email");
+                                            String s = object.getString("email");
+                                            s = s.replaceAll("\\.", "@");
+                                            email = s;
+                                            Log.d("email", s);
                                             Preferences.setCurrentUserEmail(email);
-                                            String[] split = email.split("@");
-                                            email = split[0] + "@" + split[1].split("\\.")[0];
                                             name = object.getString("name");
                                             graph = true;
-                                            if (prof && graph) createUser();
                                         } catch (JSONException e) {
                                             e.printStackTrace();
+                                        }
+                                        if (prof && graph) {
+                                            createUser();
                                         }
                                     }
                                 });
@@ -146,7 +149,10 @@ public class LogInActivity extends AppCompatActivity {
                             mProfileTracker.startTracking();
                         }
                         else {
-                            initApp();
+                            prof = true;
+                            if (prof && graph) {
+                                createUser();
+                            }
                         }
                     }
 
@@ -188,7 +194,7 @@ public class LogInActivity extends AppCompatActivity {
 
         if (Profile.getCurrentProfile() != null) {
             logIn = true;
-            email = Preferences.getCurrentUserEmail();
+            email = Preferences.getCurrentUserEmail().replaceAll("\\.", "@");
             RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.splash_screen);
             relativeLayout.findViewById(R.id.login_button).setVisibility(View.GONE);
         } else {
