@@ -112,16 +112,14 @@ public class LogInActivity extends AppCompatActivity {
                                     public void onCompleted(JSONObject object, GraphResponse response) {
                                         Log.v("LoginActivity", response.toString());
                                         try {
-                                            email = object.getString("email");
+                                            email = object.getString("email").replace("\\.", "@");
                                             Preferences.setCurrentUserEmail(email);
-                                            String[] split = email.split("@");
-                                            email = split[0] + "@" + split[1].split("\\.")[0];
                                             name = object.getString("name");
                                             graph = true;
-                                            if (prof && graph) createUser();
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
+                                        if (prof && graph) createUser();
                                     }
                                 });
                         Bundle parameters = new Bundle();
