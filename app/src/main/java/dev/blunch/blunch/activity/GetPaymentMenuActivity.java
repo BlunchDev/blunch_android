@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +31,7 @@ import dev.blunch.blunch.domain.User;
 import dev.blunch.blunch.services.PaymentMenuService;
 import dev.blunch.blunch.services.ServiceFactory;
 import dev.blunch.blunch.utils.Preferences;
+import dev.blunch.blunch.view.PaymentDishLayout;
 import dev.blunch.blunch.view.SelectPaymentDishLayout;
 
 @SuppressWarnings("all")
@@ -48,7 +50,8 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
     private Button join;
     private Toolbar toolbar;
     private LinearLayout dishesLayout;
-    private TextView precio;
+    private TextView precio, valueCount;
+    private RatingBar ratingBar;
     private ArrayList<SelectPaymentDishLayout> paymentDishesLayoutList;
     private List<Dish> answerDishes;
 
@@ -84,6 +87,9 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
         dishesLayout.removeAllViews();
         precio = (TextView) findViewById(R.id.precio);
         userPic = (ImageView) findViewById(R.id.user_icon);
+        ratingBar = (RatingBar) findViewById(R.id.getValue);
+        valueCount = (TextView) findViewById(R.id.valueCount);
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
         if(guest() || host()) {
@@ -105,6 +111,7 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
         localization.setText(obtainAddress() + ", " + obtainCity());
         description.setText(obtainDescription());
         hour.setText(obtainHour());
+        setRating();
 
         if(host()){
             join.setOnClickListener(new View.OnClickListener() {
@@ -130,6 +137,7 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
 
                         Toast.makeText(v.getContext(), "Menú solicitado correctamente!", Toast.LENGTH_LONG).show();
                         answerDishes = new ArrayList<Dish>();
+                        onRestart();
                     }
                 }
             });
@@ -170,6 +178,12 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    private void setRating() {
+        User user = paymentMenuService.findUserByEmail(paymentMenu.getAuthor());
+        ratingBar.setRating( (float) user.getValorationAverage() );
+        valueCount.setText("(" + user.getValorationNumber() + " valoraciones)");
     }
 
     private boolean host() {

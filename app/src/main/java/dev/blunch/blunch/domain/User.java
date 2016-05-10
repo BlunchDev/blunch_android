@@ -23,7 +23,7 @@ public class User implements Entity {
     private String id;
     private String name;
     private String imageFile;
-    private Double valorationAverage;
+    private double valorationAverage;
     private Integer valorationNumber;
     private Map<String, Object> myMenus;
     private Map<String, Object> participatedMenus;
@@ -90,7 +90,7 @@ public class User implements Entity {
             this.participatedMenus.put(s, true);
     }
 
-    public Double getValorationAverage() {
+    public double getValorationAverage() {
         return valorationAverage;
     }
 
