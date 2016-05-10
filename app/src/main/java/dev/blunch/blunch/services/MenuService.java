@@ -226,7 +226,8 @@ public class MenuService extends Service<CollaborativeMenu> {
         Set<String> collaboratedMenus = user.getParticipatedMenus().keySet();
 
         for (String k : collaboratedMenus) {
-            if (!isValuedBy(k, currentUser)) menuList.add(getMenu(k));
+            if (!isValuedBy(k, currentUser) &&
+                    getMenu(k).getDateEnd().compareTo(Calendar.getInstance().getTime()) < 0) menuList.add(getMenu(k));
         }
 
         Collections.sort(menuList, new MenuComparator());
@@ -241,7 +242,8 @@ public class MenuService extends Service<CollaborativeMenu> {
         Set<String> collaboratedMenus = user.getParticipatedMenus().keySet();
 
         for (String k : collaboratedMenus) {
-            if (isValuedBy(k, currentUser)) menuList.add(getMenu(k));
+            if (isValuedBy(k, currentUser) &&
+                    getMenu(k).getDateEnd().compareTo(Calendar.getInstance().getTime()) < 0) menuList.add(getMenu(k));
         }
 
         Collections.sort(menuList, new MenuComparator());
@@ -255,6 +257,17 @@ public class MenuService extends Service<CollaborativeMenu> {
         User user = findUserByEmail(currentUser);
         Set<String> collaboratedMenus = user.getParticipatedMenus().keySet();
         for (String k : collaboratedMenus) menuList.add(getMenu(k));
+        Collections.sort(menuList, new MenuComparator());
+        return menuList;
+    }
+
+    public List<Menu> getCaducatedCollaboratedMenusOf(String currentUser) {
+        List<Menu> menuList = new ArrayList<>();
+        User user = findUserByEmail(currentUser);
+        Set<String> collaboratedMenus = user.getParticipatedMenus().keySet();
+        for (String k : collaboratedMenus) {
+            if (getMenu(k).getDateEnd().compareTo(Calendar.getInstance().getTime()) < 0) menuList.add(getMenu(k));
+        }
         Collections.sort(menuList, new MenuComparator());
         return menuList;
     }
