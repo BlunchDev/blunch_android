@@ -76,28 +76,49 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
         join = (Button) findViewById(R.id.join_getCollaborative);
         userPic = (ImageView) findViewById(R.id.user_icon);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(GetCollaborativeMenuActivity.this, ChatActivity.class);
-                intent.putExtra(ChatActivity.MENU_ID, menuId);
-                startActivity(intent);
-            }
-        });
+        if(guest()) {
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(GetCollaborativeMenuActivity.this, ChatActivity.class);
+                    intent.putExtra(ChatActivity.MENU_ID, menuId);
+                    startActivity(intent);
+                }
+            });
+        }
+        else{
+            fab.setVisibility(View.GONE);
+        }
         userName.setText(obtainUserName());
         localization.setText(obtainAddress() + ", " + obtainCity());
         hostDishes.setText(obtainOfferedDishSingleString());
         suggestions.setText(obtainSuggestedDishSingleString());
         description.setText(obtainDescription());
         hour.setText(obtainHour());
-        join.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(GetCollaborativeMenuActivity.this, CollaborativeMenuAnswerActivity.class);
-                intent.putExtra("menuId", menuId);
-                startActivity(intent);
-            }
-        });
+        if(!guest()) {
+            join.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(GetCollaborativeMenuActivity.this, CollaborativeMenuAnswerActivity.class);
+                    intent.putExtra("menuId", menuId);
+                    startActivity(intent);
+                }
+            });
+        }
+        else if(host()){
+            join.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(GetCollaborativeMenuActivity.this, CollaborativePetitionsListActivity.class);
+                    intent.putExtra("menuId", menuId);
+                    startActivity(intent);
+                }
+            });
+            join.setText("Peticiones");
+        }
+        else{
+            join.setVisibility(View.GONE);
+        }
         userPic.setImageDrawable(getUserPic());
         //
 
@@ -105,6 +126,10 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
         // TODO Set user image: toolbar.setLogo();
         setSupportActionBar(toolbar);
     }
+
+    private boolean host() { return collaborativeMenuService.imHost(collaborativeMenu.getId()); }
+
+    private boolean guest() { return collaborativeMenuService.imGuest(collaborativeMenu.getId()); }
 
     private Drawable getUserPic() {
         try {

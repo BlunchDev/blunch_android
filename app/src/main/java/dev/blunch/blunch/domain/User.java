@@ -126,4 +126,6 @@ public class User implements Entity {
     public boolean imGuest(String idMenu){
         return participatedMenus.containsKey(idMenu);
     }
+
+    public boolean imHost(String idMenu) { return myMenus.containsKey(idMenu);}
 }

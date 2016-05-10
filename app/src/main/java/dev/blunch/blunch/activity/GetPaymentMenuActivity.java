@@ -123,6 +123,17 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
                 }
             });
         }
+        else if(host()){
+            join.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(GetPaymentMenuActivity.this, PaymentPetitionsListActivity.class);
+                    intent.putExtra(PaymentPetitionsListActivity.ID_PAYMENT_MENU_KEY, menuId);
+                    startActivity(intent);
+                }
+            });
+            join.setText("Peticiones");
+        }
         else{
             join.setVisibility(View.GONE);
         }
@@ -159,6 +170,10 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    private boolean host() {
+        return paymentMenuService.imHost(paymentMenu.getId());
     }
 
     private boolean guest() {

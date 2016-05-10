@@ -171,4 +171,8 @@ public class PaymentMenuService extends Service<PaymentMenu> {
     public boolean imGuest(String idMenu) {
         return findUserByEmail(Preferences.getCurrentUserEmail()).imGuest(idMenu);
     }
+
+    public boolean imHost(String idMenu) {
+        return findUserByEmail(Preferences.getCurrentUserEmail()).imHost(idMenu);
+    }
 }
