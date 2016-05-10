@@ -76,7 +76,7 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
         join = (Button) findViewById(R.id.join_getCollaborative);
         userPic = (ImageView) findViewById(R.id.user_icon);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        if(guest()) {
+        if(guest() || host()) {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -95,17 +95,7 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
         suggestions.setText(obtainSuggestedDishSingleString());
         description.setText(obtainDescription());
         hour.setText(obtainHour());
-        if(!guest()) {
-            join.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(GetCollaborativeMenuActivity.this, CollaborativeMenuAnswerActivity.class);
-                    intent.putExtra("menuId", menuId);
-                    startActivity(intent);
-                }
-            });
-        }
-        else if(host()){
+        if(host()){
             join.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -115,6 +105,16 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
                 }
             });
             join.setText("Peticiones");
+        }
+        else if(!guest()) {
+            join.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(GetCollaborativeMenuActivity.this, CollaborativeMenuAnswerActivity.class);
+                    intent.putExtra("menuId", menuId);
+                    startActivity(intent);
+                }
+            });
         }
         else{
             join.setVisibility(View.GONE);

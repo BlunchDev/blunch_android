@@ -86,7 +86,7 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
         userPic = (ImageView) findViewById(R.id.user_icon);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
-        if(guest()) {
+        if(guest() || host()) {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -106,7 +106,18 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
         description.setText(obtainDescription());
         hour.setText(obtainHour());
 
-        if(!guest()) {
+        if(host()){
+            join.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(GetPaymentMenuActivity.this, PaymentPetitionsListActivity.class);
+                    intent.putExtra(PaymentPetitionsListActivity.ID_PAYMENT_MENU_KEY, menuId);
+                    startActivity(intent);
+                }
+            });
+            join.setText("Peticiones");
+        }
+        else if(!guest()) {
             join.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -122,17 +133,6 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
                     }
                 }
             });
-        }
-        else if(host()){
-            join.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(GetPaymentMenuActivity.this, PaymentPetitionsListActivity.class);
-                    intent.putExtra(PaymentPetitionsListActivity.ID_PAYMENT_MENU_KEY, menuId);
-                    startActivity(intent);
-                }
-            });
-            join.setText("Peticiones");
         }
         else{
             join.setVisibility(View.GONE);
