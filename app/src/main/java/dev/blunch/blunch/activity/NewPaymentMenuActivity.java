@@ -243,6 +243,12 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
         String menuNameString = menuNameEditText.getText().toString();
         String description = descriptionEditText.getText().toString();
 
+        boolean incorrectDishes = false;
+        if (myDishes.isEmpty()) incorrectDishes = true;
+        for (PaymentDishLayout p : myDishes) {
+            if (p.getDishName().isEmpty() || p.getDishPrice() == 0 || p.getDishName().equals(" ")) incorrectDishes = true;
+        }
+
         if(isIncomplete(address, city, menuNameString, description)){
             String s = "";
             boolean added = false;
@@ -293,24 +299,28 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
 
             List<Dish> dishes = new ArrayList<>();
 
+            if (incorrectDishes)
+                Toast.makeText(this, "Platos incorrectos", Toast.LENGTH_LONG).show();
 
-            for (PaymentDishLayout d : myDishes) {
-                if (!d.getDishName().equals("")) {
-                    Dish dish = new Dish(d.getDishName(), d.getDishPrice());
-                    dishes.add(dish);
+            else {
+                for (PaymentDishLayout d : myDishes) {
+                    if (!d.getDishName().equals("")) {
+                        Dish dish = new Dish(d.getDishName(), d.getDishPrice());
+                        dishes.add(dish);
+                    }
                 }
-            }
 
-            PaymentMenu paymentMenu = new PaymentMenu(  menuNameString,
-                    Preferences.getCurrentUserEmail(),
-                    description,
-                    localization,
-                    start,
-                    finish);
-            paymentMenuService.save(paymentMenu, dishes);
-            Toast.makeText(this, "Menu de pago creado correctamente!",
-                    Toast.LENGTH_LONG).show();
-            finish();
+                PaymentMenu paymentMenu = new PaymentMenu(menuNameString,
+                        Preferences.getCurrentUserEmail(),
+                        description,
+                        localization,
+                        start,
+                        finish);
+                paymentMenuService.save(paymentMenu, dishes);
+                Toast.makeText(this, "Menu de pago creado correctamente!",
+                        Toast.LENGTH_LONG).show();
+                finish();
+            }
         }
     }
 
