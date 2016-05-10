@@ -20,11 +20,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import dev.blunch.blunch.R;
 import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.domain.PaymentMenu;
 import dev.blunch.blunch.domain.PaymentMenuAnswer;
+import dev.blunch.blunch.domain.User;
 import dev.blunch.blunch.services.PaymentMenuService;
 import dev.blunch.blunch.services.ServiceFactory;
 import dev.blunch.blunch.utils.Preferences;
@@ -82,36 +84,60 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
         dishesLayout.removeAllViews();
         precio = (TextView) findViewById(R.id.precio);
         userPic = (ImageView) findViewById(R.id.user_icon);
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(GetPaymentMenuActivity.this, ChatActivity.class);
-                intent.putExtra(ChatActivity.MENU_ID, menuId);
-                startActivity(intent);
-            }
-        });
+
+        if(guest() || host()) {
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(GetPaymentMenuActivity.this, ChatActivity.class);
+                    intent.putExtra(ChatActivity.MENU_ID, menuId);
+                    startActivity(intent);
+                }
+            });
+        }
+        else{
+            fab.setVisibility(View.GONE);
+        }
+
         userPic.setImageDrawable(obtainUserPic());
         userName.setText(obtainUserName());
         localization.setText(obtainAddress() + ", " + obtainCity());
         description.setText(obtainDescription());
         hour.setText(obtainHour());
-        join.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (answerDishes.size() == 0) {
-                    Toast.makeText(getApplicationContext(), "Debes seleccionar al menos un plato para realizar el pedido", Toast.LENGTH_SHORT).show();
-                } else {
-                    paymentMenuAnswer = new PaymentMenuAnswer(paymentMenu.getId(), Preferences.getCurrentUserEmail(),
-                            Calendar.getInstance().getTime(), answerDishes);
-                    paymentMenuService.answer(paymentMenu.getId(), paymentMenuAnswer);
 
-                    Toast.makeText(v.getContext(), "Menú solicitado correctamente!", Toast.LENGTH_LONG).show();
-                    answerDishes = new ArrayList<Dish>();
+        if(host()){
+            join.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(GetPaymentMenuActivity.this, PaymentPetitionsListActivity.class);
+                    intent.putExtra(PaymentPetitionsListActivity.ID_PAYMENT_MENU_KEY, menuId);
+                    startActivity(intent);
                 }
-            }
-        });
+            });
+            join.setText("Peticiones");
+        }
+        else if(!guest()) {
+            join.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (answerDishes.size() == 0) {
+                        Toast.makeText(getApplicationContext(), "Debes seleccionar al menos un plato para realizar el pedido", Toast.LENGTH_SHORT).show();
+                    } else {
+                        paymentMenuAnswer = new PaymentMenuAnswer(paymentMenu.getId(), Preferences.getCurrentUserEmail(),
+                                Calendar.getInstance().getTime(), answerDishes);
+                        paymentMenuService.answer(paymentMenu.getId(), paymentMenuAnswer);
+
+                        Toast.makeText(v.getContext(), "Menú solicitado correctamente!", Toast.LENGTH_LONG).show();
+                        answerDishes = new ArrayList<Dish>();
+                    }
+                }
+            });
+        }
+        else{
+            join.setVisibility(View.GONE);
+        }
+
         precio.setText("0 €");
 
         toolbar.setTitle(obtainTitle());
@@ -144,6 +170,14 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    private boolean host() {
+        return paymentMenuService.imHost(paymentMenu.getId());
+    }
+
+    private boolean guest() {
+        return paymentMenuService.imGuest(paymentMenu.getId());
     }
 
     private Drawable obtainUserPic() {
@@ -225,29 +259,6 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
         super.onRestart();
         finish();
         startActivity(getIntent());
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_get_payment_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_payment_petitions) {
-            Intent intent = new Intent(GetPaymentMenuActivity.this, PaymentPetitionsListActivity.class);
-            intent.putExtra(MENU_ID_KEY, menuId);
-            startActivity(intent);
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
 }
