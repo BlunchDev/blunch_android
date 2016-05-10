@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import java.util.Calendar;
@@ -22,6 +23,7 @@ import java.util.List;
 import dev.blunch.blunch.R;
 import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.domain.Dish;
+import dev.blunch.blunch.domain.User;
 import dev.blunch.blunch.services.CollaborativeMenuService;
 import dev.blunch.blunch.services.ServiceFactory;
 
@@ -29,6 +31,7 @@ import dev.blunch.blunch.services.ServiceFactory;
  * GetMenuCollaborative Activity
  * @author albert
  */
+@SuppressWarnings("all")
 public class GetCollaborativeMenuActivity extends AppCompatActivity {
 
     public static final String MENU_ID_KEY = "menuId";
@@ -37,9 +40,10 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
     private List<Dish> suggestedDishes;
     private List<Dish> offeredDishes;
     private final String COMA = ",";
-    private TextView userName, localization, hostDishes, suggestions, description, hour;
+    private TextView userName, localization, hostDishes, suggestions, description, hour, valueCount;
     private ImageView userPic;
     private Button join;
+    private RatingBar ratingBar;
     private Toolbar toolbar;
 
     private static String menuId;
@@ -65,7 +69,6 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
         initialize();
     }
 
-    @SuppressWarnings("all")
     private void initialize() {
         userName = (TextView) findViewById(R.id.hostName_getCollaborative);
         localization = (TextView) findViewById(R.id.hostLocalization_getCollaborative);
@@ -75,29 +78,55 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
         hour = (TextView) findViewById(R.id.hour_getCollaborative);
         join = (Button) findViewById(R.id.join_getCollaborative);
         userPic = (ImageView) findViewById(R.id.user_icon);
+        ratingBar = (RatingBar) findViewById(R.id.getValue);
+        valueCount = (TextView) findViewById(R.id.valueCount);
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(GetCollaborativeMenuActivity.this, ChatActivity.class);
-                intent.putExtra(ChatActivity.MENU_ID, menuId);
-                startActivity(intent);
-            }
-        });
+        if(guest() || host()) {
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(GetCollaborativeMenuActivity.this, ChatActivity.class);
+                    intent.putExtra(ChatActivity.MENU_ID, menuId);
+                    startActivity(intent);
+                }
+            });
+        }
+        else{
+            fab.setVisibility(View.GONE);
+        }
         userName.setText(obtainUserName());
         localization.setText(obtainAddress() + ", " + obtainCity());
         hostDishes.setText(obtainOfferedDishSingleString());
         suggestions.setText(obtainSuggestedDishSingleString());
         description.setText(obtainDescription());
         hour.setText(obtainHour());
-        join.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(GetCollaborativeMenuActivity.this, CollaborativeMenuAnswerActivity.class);
-                intent.putExtra("menuId", menuId);
-                startActivity(intent);
-            }
-        });
+        setRating();
+
+        if(host()){
+            join.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(GetCollaborativeMenuActivity.this, CollaborativePetitionsListActivity.class);
+                    intent.putExtra("menuId", menuId);
+                    startActivity(intent);
+                }
+            });
+            join.setText("Peticiones");
+        }
+        else if(!guest()) {
+            join.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(GetCollaborativeMenuActivity.this, CollaborativeMenuAnswerActivity.class);
+                    intent.putExtra("menuId", menuId);
+                    startActivity(intent);
+                }
+            });
+        }
+        else{
+            join.setVisibility(View.GONE);
+        }
         userPic.setImageDrawable(getUserPic());
         //
 
@@ -105,6 +134,18 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
         // TODO Set user image: toolbar.setLogo();
         setSupportActionBar(toolbar);
     }
+
+    private void setRating() {
+        User user = collaborativeMenuService.findUserByEmail(collaborativeMenu.getAuthor());
+        ratingBar.setRating((float) user.getValorationAverage());
+        Integer valueCount = user.getValorationNumber();
+        if (valueCount == 1) this.valueCount.setText("(" + valueCount + " valoración)");
+        else this.valueCount.setText("(" + valueCount + " valoraciones)");
+    }
+
+    private boolean host() { return collaborativeMenuService.imHost(collaborativeMenu.getId()); }
+
+    private boolean guest() { return collaborativeMenuService.imGuest(collaborativeMenu.getId()); }
 
     private Drawable getUserPic() {
         try {
@@ -215,28 +256,5 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
         super.onRestart();
         finish();
         startActivity(getIntent());
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_get_collaborative_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_accept_proposals) {
-            Intent intent = new Intent(GetCollaborativeMenuActivity.this, CollaborativePetitionsListActivity.class);
-            intent.putExtra(MENU_ID_KEY, menuId);
-            startActivity(intent);
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }
