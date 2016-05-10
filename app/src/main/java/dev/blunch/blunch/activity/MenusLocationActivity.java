@@ -10,23 +10,36 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.location.*;
 
 import dev.blunch.blunch.R;
 
-public class MenusLocationActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MenusLocationActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     private GoogleMap mMap;
     Location localizacion;
+    private GoogleApiClient gapiClient;
+
+    protected synchronized void buildGoogleApiClient(){
+        gapiClient = new GoogleApiClient.Builder(getApplicationContext())
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        buildGoogleApiClient();
         setContentView(R.layout.activity_menus_location);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -63,7 +76,7 @@ public class MenusLocationActivity extends FragmentActivity implements OnMapRead
         return gpsStatus;
     }
 
-    private class MyLocationListener implements LocationListener {
+
 
         @Override
         public void onLocationChanged(Location loc) {
@@ -87,5 +100,19 @@ public class MenusLocationActivity extends FragmentActivity implements OnMapRead
         public void onStatusChanged(String provider, int status, Bundle extras) {
             // TODO Auto-generated method stub
         }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+
     }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
     }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
+    }
+}
