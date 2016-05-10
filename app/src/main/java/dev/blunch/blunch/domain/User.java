@@ -122,4 +122,8 @@ public class User implements Entity {
         dr.setCornerRadius(Math.max(bp.getWidth(), bp.getHeight()) / 2.0f);
         return dr;
     }
+
+    public boolean imGuest(String idMenu){
+        return participatedMenus.containsKey(idMenu);
+    }
 }

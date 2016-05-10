@@ -20,11 +20,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import dev.blunch.blunch.R;
 import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.domain.PaymentMenu;
 import dev.blunch.blunch.domain.PaymentMenuAnswer;
+import dev.blunch.blunch.domain.User;
 import dev.blunch.blunch.services.PaymentMenuService;
 import dev.blunch.blunch.services.ServiceFactory;
 import dev.blunch.blunch.utils.Preferences;
@@ -82,36 +84,49 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
         dishesLayout.removeAllViews();
         precio = (TextView) findViewById(R.id.precio);
         userPic = (ImageView) findViewById(R.id.user_icon);
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(GetPaymentMenuActivity.this, ChatActivity.class);
-                intent.putExtra(ChatActivity.MENU_ID, menuId);
-                startActivity(intent);
-            }
-        });
+
+        if(guest()) {
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(GetPaymentMenuActivity.this, ChatActivity.class);
+                    intent.putExtra(ChatActivity.MENU_ID, menuId);
+                    startActivity(intent);
+                }
+            });
+        }
+        else{
+            fab.setVisibility(View.GONE);
+        }
+
         userPic.setImageDrawable(obtainUserPic());
         userName.setText(obtainUserName());
         localization.setText(obtainAddress() + ", " + obtainCity());
         description.setText(obtainDescription());
         hour.setText(obtainHour());
-        join.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (answerDishes.size() == 0) {
-                    Toast.makeText(getApplicationContext(), "Debes seleccionar al menos un plato para realizar el pedido", Toast.LENGTH_SHORT).show();
-                } else {
-                    paymentMenuAnswer = new PaymentMenuAnswer(paymentMenu.getId(), Preferences.getCurrentUserEmail(),
-                            Calendar.getInstance().getTime(), answerDishes);
-                    paymentMenuService.answer(paymentMenu.getId(), paymentMenuAnswer);
 
-                    Toast.makeText(v.getContext(), "Menú solicitado correctamente!", Toast.LENGTH_LONG).show();
-                    answerDishes = new ArrayList<Dish>();
+        if(!guest()) {
+            join.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (answerDishes.size() == 0) {
+                        Toast.makeText(getApplicationContext(), "Debes seleccionar al menos un plato para realizar el pedido", Toast.LENGTH_SHORT).show();
+                    } else {
+                        paymentMenuAnswer = new PaymentMenuAnswer(paymentMenu.getId(), Preferences.getCurrentUserEmail(),
+                                Calendar.getInstance().getTime(), answerDishes);
+                        paymentMenuService.answer(paymentMenu.getId(), paymentMenuAnswer);
+
+                        Toast.makeText(v.getContext(), "Menú solicitado correctamente!", Toast.LENGTH_LONG).show();
+                        answerDishes = new ArrayList<Dish>();
+                    }
                 }
-            }
-        });
+            });
+        }
+        else{
+            join.setVisibility(View.GONE);
+        }
+
         precio.setText("0 €");
 
         toolbar.setTitle(obtainTitle());
@@ -144,6 +159,10 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    private boolean guest() {
+        return paymentMenuService.imGuest(paymentMenu.getId());
     }
 
     private Drawable obtainUserPic() {
