@@ -1,7 +1,5 @@
 package dev.blunch.blunch.services;
 
-import com.facebook.FacebookSdk;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -9,7 +7,6 @@ import java.util.List;
 import java.util.Set;
 
 import dev.blunch.blunch.domain.CollaborativeMenu;
-import dev.blunch.blunch.domain.InverseMenuComparator;
 import dev.blunch.blunch.domain.Menu;
 import dev.blunch.blunch.domain.MenuComparator;
 import dev.blunch.blunch.domain.PaymentMenu;
@@ -111,7 +108,7 @@ public class MenuService extends Service<CollaborativeMenu> {
 
     public List<Menu> getMyMenusOrderedByDate() {
         List<Menu> menus = getMyMenu();
-        Collections.sort(menus, new InverseMenuComparator());
+        Collections.sort(menus, new MenuComparator());
         return menus;
     }
 
@@ -123,7 +120,7 @@ public class MenuService extends Service<CollaborativeMenu> {
                 result.add(menu);
             }
         }
-        Collections.sort(result, new InverseMenuComparator());
+        Collections.sort(result, new MenuComparator());
         return result;
     }
 
@@ -135,7 +132,7 @@ public class MenuService extends Service<CollaborativeMenu> {
                 result.add(menu);
             }
         }
-        Collections.sort(result, new InverseMenuComparator());
+        Collections.sort(result, new MenuComparator());
         return result;
     }
 
@@ -147,7 +144,7 @@ public class MenuService extends Service<CollaborativeMenu> {
                 result.add(menu);
             }
         }
-        Collections.sort(result, new InverseMenuComparator());
+        Collections.sort(result, new MenuComparator());
         return result;
     }
 
@@ -159,7 +156,7 @@ public class MenuService extends Service<CollaborativeMenu> {
                 result.add(menu);
             }
         }
-        Collections.sort(result, new InverseMenuComparator());
+        Collections.sort(result, new MenuComparator());
         return result;
     }
 
@@ -171,7 +168,7 @@ public class MenuService extends Service<CollaborativeMenu> {
                 result.add(menu);
             }
         }
-        Collections.sort(result, new InverseMenuComparator());
+        Collections.sort(result, new MenuComparator());
         return result;
     }
 

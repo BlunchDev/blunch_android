@@ -275,6 +275,14 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
                 }
                 else s += ", descripción";
             }
+            if(myDishes.isEmpty()) {
+                if (!added) {
+                    s += "Lista de platos";
+                    added = true;
+                }
+                else s += ", lista de platos";
+            }
+
             Toast.makeText(this, s + " incompleta", Toast.LENGTH_LONG).show();
         }
         else if(start.getTime()>=finish.getTime()){
@@ -310,7 +318,8 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
         return menuNameString.equals("") || address.equals("")
                 || address.equals("") || address.equals("Tu dirección")
                 || city.equals("") || city.equals("Tu ciudad")
-                || description.equals("") || description.equals("descripción");
+                || description.equals("") || description.equals("descripción")
+                || myDishes.isEmpty();
     }
 
 }
