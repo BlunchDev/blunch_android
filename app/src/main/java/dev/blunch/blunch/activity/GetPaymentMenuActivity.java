@@ -173,7 +173,8 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
                         double a = Double.parseDouble(price);
                         a -= d.getPrice();
                         precio.setText(String.valueOf(a) + " €");
-                        removeDish(d.getId());
+                        //removeDish(d.getId());
+                        answerDishes.remove(d);
                     }
                 }
             });
