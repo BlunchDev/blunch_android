@@ -377,7 +377,7 @@ public class MainActivity extends AppCompatActivity
                 menuList.addAll(menuService.getValuedCollaboratedMenusOf(email));
                 break;
             case "Todos":
-                menuList.addAll(menuService.getCollaboratedMenusOf(email));
+                menuList.addAll(menuService.getCaducatedCollaboratedMenusOf(email));
                 break;
             default:
                 menuList.addAll(menuService.getNonValuedCollaboratedMenusOf(email));
