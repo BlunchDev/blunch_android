@@ -241,27 +241,4 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
         finish();
         startActivity(getIntent());
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_get_collaborative_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_accept_proposals) {
-            Intent intent = new Intent(GetCollaborativeMenuActivity.this, CollaborativePetitionsListActivity.class);
-            intent.putExtra(MENU_ID_KEY, menuId);
-            startActivity(intent);
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 }
