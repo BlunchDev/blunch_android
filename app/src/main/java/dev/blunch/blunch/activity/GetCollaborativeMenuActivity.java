@@ -81,6 +81,15 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
         ratingBar = (RatingBar) findViewById(R.id.getValue);
         valueCount = (TextView) findViewById(R.id.valueCount);
 
+        findViewById(R.id.valueLayout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GetCollaborativeMenuActivity.this, ValorationListActivity.class);
+                intent.putExtra(ValorationListActivity.USER_ID, collaborativeMenu.getAuthor());
+                startActivity(intent);
+            }
+        });
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         if(guest() || host()) {
             fab.setOnClickListener(new View.OnClickListener() {

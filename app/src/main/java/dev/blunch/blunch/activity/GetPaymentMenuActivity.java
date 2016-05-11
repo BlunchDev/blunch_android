@@ -90,6 +90,15 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
         ratingBar = (RatingBar) findViewById(R.id.getValue);
         valueCount = (TextView) findViewById(R.id.valueCount);
 
+        findViewById(R.id.valueLayout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GetPaymentMenuActivity.this, ValorationListActivity.class);
+                intent.putExtra(ValorationListActivity.USER_ID, paymentMenu.getAuthor());
+                startActivity(intent);
+            }
+        });
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
         if(guest() || host()) {
@@ -184,7 +193,9 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
     private void setRating() {
         User user = paymentMenuService.findUserByEmail(paymentMenu.getAuthor());
         ratingBar.setRating( (float) user.getValorationAverage() );
-        valueCount.setText("(" + user.getValorationNumber() + " valoraciones)");
+        Integer valueCount = user.getValorationNumber();
+        if (valueCount == 1) this.valueCount.setText("(" + valueCount + " valoración)");
+        else this.valueCount.setText("(" + valueCount + " valoraciones)");
     }
 
     private boolean host() {

@@ -2,13 +2,13 @@
 <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/petitions_list"
-    android:name="dev.blunch.blunch.activity.ProposalListFragment"
+    android:id="@+id/valoration_list"
+    android:name="dev.blunch.blunch.activity.ValorationListFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ECEFF1"
     app:layoutManager="LinearLayoutManager"
-    tools:context=".activity.CollaborativePetitionsListActivity"
-    tools:listitem="@layout/petitions_list_content">
+    tools:context=".activity.ValorationListActivity"
+    tools:listitem="@layout/valoration_list_content">
 
 </android.support.v7.widget.RecyclerView>
