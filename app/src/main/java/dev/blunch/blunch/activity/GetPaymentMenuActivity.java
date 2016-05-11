@@ -17,11 +17,13 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import dev.blunch.blunch.R;
 import dev.blunch.blunch.domain.Dish;
@@ -31,6 +33,8 @@ import dev.blunch.blunch.domain.User;
 import dev.blunch.blunch.services.PaymentMenuService;
 import dev.blunch.blunch.services.ServiceFactory;
 import dev.blunch.blunch.utils.Preferences;
+import dev.blunch.blunch.view.GuestPaymentDishLayout;
+import dev.blunch.blunch.view.HostPaymentDishLayout;
 import dev.blunch.blunch.view.PaymentDishLayout;
 import dev.blunch.blunch.view.SelectPaymentDishLayout;
 
@@ -53,6 +57,8 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
     private TextView precio, valueCount;
     private RatingBar ratingBar;
     private ArrayList<SelectPaymentDishLayout> paymentDishesLayoutList;
+    private ArrayList<HostPaymentDishLayout> hostPaymentDishLayoutList;
+    private ArrayList<GuestPaymentDishLayout> guestPaymentDishLayoutList;
     private List<Dish> answerDishes;
 
     private static String menuId;
@@ -123,6 +129,7 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
                 }
             });
             join.setText("Peticiones");
+            //dishesLayout.setVisibility(View.GONE);
         }
         else if(!guest()) {
             join.setOnClickListener(new View.OnClickListener() {
@@ -153,31 +160,52 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         paymentDishesLayoutList = new ArrayList<>();
+        hostPaymentDishLayoutList = new ArrayList<>();
         answerDishes = new ArrayList<Dish>();
-        for (final Dish d : dishes){
-            SelectPaymentDishLayout n = new SelectPaymentDishLayout(getApplicationContext(), d.getName(), d.getPrice());
-            dishesLayout.addView(n);
-            paymentDishesLayoutList.add(n);
-            n.getCheckBox().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if(isChecked) {
-                        String price = precio.getText().toString().split(" ")[0];
-                        double a = Double.parseDouble(price);
-                        a += d.getPrice();
-                        precio.setText(String.valueOf(a) + " €");
-                        answerDishes.add(d);
+        if(!host()&& !guest()) {
+            for (final Dish d : dishes) {
+                SelectPaymentDishLayout n = new SelectPaymentDishLayout(getApplicationContext(), d.getName(), d.getPrice());
+                dishesLayout.addView(n);
+                paymentDishesLayoutList.add(n);
+                n.getCheckBox().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if (isChecked) {
+                            String price = precio.getText().toString().split(" ")[0];
+                            double a = Double.parseDouble(price);
+                            a += d.getPrice();
+                            precio.setText(String.valueOf(a) + " €");
+                            answerDishes.add(d);
+                        } else {
+                            String price = precio.getText().toString().split(" ")[0];
+                            double a = Double.parseDouble(price);
+                            a -= d.getPrice();
+                            precio.setText(String.valueOf(a) + " €");
+                            //removeDish(d.getId());
+                            answerDishes.remove(d);
+                        }
                     }
-                    else {
-                        String price = precio.getText().toString().split(" ")[0];
-                        double a = Double.parseDouble(price);
-                        a -= d.getPrice();
-                        precio.setText(String.valueOf(a) + " €");
-                        //removeDish(d.getId());
-                        answerDishes.remove(d);
-                    }
-                }
-            });
+                });
+            }
+        }
+        else if(host()){
+            for (final Dish d : dishes) {
+                HostPaymentDishLayout n = new HostPaymentDishLayout(getApplicationContext(), d.getName(), d.getPrice());
+                dishesLayout.addView(n);
+                hostPaymentDishLayoutList.add(n);
+            }
+        }
+        else{
+            Double myTotalPrice = 0.0;
+            ArrayList<Object> m = (ArrayList<Object>) paymentMenuService.getMySelectedDishes(paymentMenu.getId());
+            for (Object d :  m) {
+                Dish a  = (Dish) d;
+                GuestPaymentDishLayout n = new GuestPaymentDishLayout(getApplicationContext(), a.getName(), a.getPrice());
+                dishesLayout.addView(n);
+                guestPaymentDishLayoutList.add(n);
+                myTotalPrice+=a.getPrice();
+            }
+            precio.setText(myTotalPrice+" €");
         }
     }
 

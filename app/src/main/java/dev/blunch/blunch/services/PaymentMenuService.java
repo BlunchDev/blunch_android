@@ -1,7 +1,11 @@
 package dev.blunch.blunch.services;
 
+import android.app.Dialog;
+
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.domain.PaymentMenu;
@@ -174,5 +178,10 @@ public class PaymentMenuService extends Service<PaymentMenu> {
 
     public boolean imHost(String idMenu) {
         return findUserByEmail(Preferences.getCurrentUserEmail()).imHost(idMenu);
+    }
+
+    public Collection<Object> getMySelectedDishes(String idMenu) {
+        PaymentMenu m = (PaymentMenu) findUserByEmail(Preferences.getCurrentUserEmail()).getMyMenu(idMenu);
+        return m.getDishes().values();
     }
 }

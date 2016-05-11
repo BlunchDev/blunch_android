@@ -128,4 +128,8 @@ public class User implements Entity {
     }
 
     public boolean imHost(String idMenu) { return myMenus.containsKey(idMenu);}
+
+    public Menu getMyMenu(String idMenu) {
+        return (Menu) myMenus.get(idMenu);
+    }
 }
