@@ -283,6 +283,14 @@ public class MenuService extends Service<CollaborativeMenu> {
         return null;
     }
 
+    public List<Valoration> getValorationsTo(String user) {
+        List<Valoration> list = new ArrayList<>();
+        for (Valoration v : valorationRepository.all()) {
+            if (v.getHost().equals(user)) list.add(v);
+        }
+        return list;
+    }
+
     public Valoration value(String menu, double points, String comment, String host, String guest){
         Valoration valoration = new Valoration();
         valoration.setMenu(menu);
