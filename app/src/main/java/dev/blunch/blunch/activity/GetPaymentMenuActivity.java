@@ -57,8 +57,6 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
     private TextView precio, valueCount;
     private RatingBar ratingBar;
     private ArrayList<SelectPaymentDishLayout> paymentDishesLayoutList;
-    private ArrayList<HostPaymentDishLayout> hostPaymentDishLayoutList;
-    private ArrayList<GuestPaymentDishLayout> guestPaymentDishLayoutList;
     private List<Dish> answerDishes;
 
     private static String menuId;
@@ -153,16 +151,21 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
             join.setVisibility(View.GONE);
         }
 
-        precio.setText("0 €");
+        if(!host()){
+            precio.setText("0 €");
+        }
+        else{
+            TextView pt = (TextView) findViewById(R.id.precioTotal);
+            pt.setVisibility(View.GONE);
+        }
 
         toolbar.setTitle(obtainTitle());
         // TODO Set user image: toolbar.setLogo();
         setSupportActionBar(toolbar);
 
         paymentDishesLayoutList = new ArrayList<>();
-        hostPaymentDishLayoutList = new ArrayList<>();
         answerDishes = new ArrayList<Dish>();
-        if(!host()&& !guest()) {
+        if(!host() && !guest()) {
             for (final Dish d : dishes) {
                 SelectPaymentDishLayout n = new SelectPaymentDishLayout(getApplicationContext(), d.getName(), d.getPrice());
                 dishesLayout.addView(n);
@@ -192,16 +195,15 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
             for (final Dish d : dishes) {
                 HostPaymentDishLayout n = new HostPaymentDishLayout(getApplicationContext(), d.getName(), d.getPrice());
                 dishesLayout.addView(n);
-                hostPaymentDishLayoutList.add(n);
+                precio.setVisibility(View.GONE);
             }
         }
-        else{
+        else if (guest()){
             Double myTotalPrice = 0.0;
             Collection<Dish> m = paymentMenuService.getMySelectedDishes(paymentMenu.getId());
             for (Dish d :  m) {
                 GuestPaymentDishLayout n = new GuestPaymentDishLayout(getApplicationContext(), d.getName(), d.getPrice());
                 dishesLayout.addView(n);
-                guestPaymentDishLayoutList.add(n);
                 myTotalPrice+=d.getPrice();
             }
             precio.setText(myTotalPrice+" €");
