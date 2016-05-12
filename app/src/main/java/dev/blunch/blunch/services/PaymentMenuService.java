@@ -181,7 +181,13 @@ public class PaymentMenuService extends Service<PaymentMenu> {
     }
 
     public Collection<Object> getMySelectedDishes(String idMenu) {
-        PaymentMenu m = (PaymentMenu) findUserByEmail(Preferences.getCurrentUserEmail()).getMyMenu(idMenu);
-        return m.getDishes().values();
+        for(PaymentMenuAnswer m: answerRepository.all()){
+            if(m.getGuest().equals(Preferences.getCurrentUserEmail()) && m.getIdMenu().equals(idMenu)){
+                return m.getChoosenDishes().values();
+            }
+        }
+        return null;
     }
+
+
 }

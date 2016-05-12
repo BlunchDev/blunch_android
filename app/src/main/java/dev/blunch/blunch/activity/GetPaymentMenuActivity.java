@@ -40,8 +40,6 @@ import dev.blunch.blunch.view.SelectPaymentDishLayout;
 
 @SuppressWarnings("all")
 public class GetPaymentMenuActivity extends AppCompatActivity {
-
-
     public static final String MENU_ID_KEY = "menuId";
     private PaymentMenuService paymentMenuService;
     private PaymentMenu paymentMenu;
