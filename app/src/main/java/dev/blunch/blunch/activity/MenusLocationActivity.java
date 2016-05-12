@@ -17,6 +17,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.location.*;
@@ -69,7 +70,11 @@ public class MenusLocationActivity extends FragmentActivity implements OnMapRead
             LatLng FIB = getLocationFromAddress("C/Jordi Girona Salgado, 1-3, 08034 Barcelona");
             if(FIB != null) {
                 mMap.addMarker(new MarkerOptions().position(FIB).title("DA FIB"));
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(FIB));
+                CameraPosition cameraPosition = new CameraPosition.Builder()
+                        .target(FIB)      // Sets the center to DA FIB
+                        .zoom(17)         // we set the zoom
+                        .build();
+                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition),5000,null);
             }
             else {
                 Toast.makeText(this, "DA FIB DOESN'T EXIST ON EARTH!",
