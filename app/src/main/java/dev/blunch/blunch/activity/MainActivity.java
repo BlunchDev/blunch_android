@@ -157,6 +157,11 @@ public class MainActivity extends AppCompatActivity
             startActivity(intent);
         }
 
+        if (id == R.id.go_to_maps) {
+            Intent intent = new Intent(MainActivity.this,MenusLocationActivity.class);
+            startActivity(intent);
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
