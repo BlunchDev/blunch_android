@@ -188,7 +188,7 @@ public class PaymentMenuService extends Service<PaymentMenu> {
                  a = m.getChoosenDishes().keySet();
             }
         }
-        Collection<Dish> dishes = null;
+        Collection<Dish> dishes = new ArrayList<>();
         for(String d : a){
             dishes.add(dishesRepository.get(d));
         }
