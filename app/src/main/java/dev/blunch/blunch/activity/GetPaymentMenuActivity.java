@@ -25,6 +25,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 import dev.blunch.blunch.R;
 import dev.blunch.blunch.domain.Dish;
@@ -196,13 +197,12 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
         }
         else{
             Double myTotalPrice = 0.0;
-            Collection<Object> m = paymentMenuService.getMySelectedDishes(paymentMenu.getId());
-            for (Object d :  m) {
-                Dish a  = (Dish) d;
-                GuestPaymentDishLayout n = new GuestPaymentDishLayout(getApplicationContext(), a.getName(), a.getPrice());
+            Collection<Dish> m = paymentMenuService.getMySelectedDishes(paymentMenu.getId());
+            for (Dish d :  m) {
+                GuestPaymentDishLayout n = new GuestPaymentDishLayout(getApplicationContext(), d.getName(), d.getPrice());
                 dishesLayout.addView(n);
                 guestPaymentDishLayoutList.add(n);
-                myTotalPrice+=a.getPrice();
+                myTotalPrice+=d.getPrice();
             }
             precio.setText(myTotalPrice+" €");
         }

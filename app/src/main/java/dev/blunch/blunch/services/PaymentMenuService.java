@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.domain.PaymentMenu;
@@ -180,13 +181,18 @@ public class PaymentMenuService extends Service<PaymentMenu> {
         return findUserByEmail(Preferences.getCurrentUserEmail()).imHost(idMenu);
     }
 
-    public Collection<Object> getMySelectedDishes(String idMenu) {
+    public Collection<Dish> getMySelectedDishes(String idMenu) {
+        Set<String> a = null;
         for(PaymentMenuAnswer m: answerRepository.all()){
             if(m.getGuest().equals(Preferences.getCurrentUserEmail()) && m.getIdMenu().equals(idMenu)){
-                return m.getChoosenDishes().values();
+                 a = m.getChoosenDishes().keySet();
             }
         }
-        return null;
+        Collection<Dish> dishes = null;
+        for(String d : a){
+            dishes.add(dishesRepository.get(d));
+        }
+        return dishes;
     }
 
 
