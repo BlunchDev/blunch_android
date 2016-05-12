@@ -1,7 +1,5 @@
 package dev.blunch.blunch.services;
 
-import com.facebook.FacebookSdk;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -9,7 +7,6 @@ import java.util.List;
 import java.util.Set;
 
 import dev.blunch.blunch.domain.CollaborativeMenu;
-import dev.blunch.blunch.domain.InverseMenuComparator;
 import dev.blunch.blunch.domain.Menu;
 import dev.blunch.blunch.domain.MenuComparator;
 import dev.blunch.blunch.domain.PaymentMenu;
@@ -111,7 +108,7 @@ public class MenuService extends Service<CollaborativeMenu> {
 
     public List<Menu> getMyMenusOrderedByDate() {
         List<Menu> menus = getMyMenu();
-        Collections.sort(menus, new InverseMenuComparator());
+        Collections.sort(menus, new MenuComparator());
         return menus;
     }
 
@@ -123,7 +120,7 @@ public class MenuService extends Service<CollaborativeMenu> {
                 result.add(menu);
             }
         }
-        Collections.sort(result, new InverseMenuComparator());
+        Collections.sort(result, new MenuComparator());
         return result;
     }
 
@@ -135,7 +132,7 @@ public class MenuService extends Service<CollaborativeMenu> {
                 result.add(menu);
             }
         }
-        Collections.sort(result, new InverseMenuComparator());
+        Collections.sort(result, new MenuComparator());
         return result;
     }
 
@@ -147,7 +144,7 @@ public class MenuService extends Service<CollaborativeMenu> {
                 result.add(menu);
             }
         }
-        Collections.sort(result, new InverseMenuComparator());
+        Collections.sort(result, new MenuComparator());
         return result;
     }
 
@@ -159,7 +156,7 @@ public class MenuService extends Service<CollaborativeMenu> {
                 result.add(menu);
             }
         }
-        Collections.sort(result, new InverseMenuComparator());
+        Collections.sort(result, new MenuComparator());
         return result;
     }
 
@@ -171,7 +168,7 @@ public class MenuService extends Service<CollaborativeMenu> {
                 result.add(menu);
             }
         }
-        Collections.sort(result, new InverseMenuComparator());
+        Collections.sort(result, new MenuComparator());
         return result;
     }
 
@@ -226,7 +223,8 @@ public class MenuService extends Service<CollaborativeMenu> {
         Set<String> collaboratedMenus = user.getParticipatedMenus().keySet();
 
         for (String k : collaboratedMenus) {
-            if (!isValuedBy(k, currentUser)) menuList.add(getMenu(k));
+            if (!isValuedBy(k, currentUser) &&
+                    getMenu(k).getDateEnd().compareTo(Calendar.getInstance().getTime()) < 0) menuList.add(getMenu(k));
         }
 
         Collections.sort(menuList, new MenuComparator());
@@ -241,7 +239,8 @@ public class MenuService extends Service<CollaborativeMenu> {
         Set<String> collaboratedMenus = user.getParticipatedMenus().keySet();
 
         for (String k : collaboratedMenus) {
-            if (isValuedBy(k, currentUser)) menuList.add(getMenu(k));
+            if (isValuedBy(k, currentUser) &&
+                    getMenu(k).getDateEnd().compareTo(Calendar.getInstance().getTime()) < 0) menuList.add(getMenu(k));
         }
 
         Collections.sort(menuList, new MenuComparator());
@@ -259,6 +258,17 @@ public class MenuService extends Service<CollaborativeMenu> {
         return menuList;
     }
 
+    public List<Menu> getCaducatedCollaboratedMenusOf(String currentUser) {
+        List<Menu> menuList = new ArrayList<>();
+        User user = findUserByEmail(currentUser);
+        Set<String> collaboratedMenus = user.getParticipatedMenus().keySet();
+        for (String k : collaboratedMenus) {
+            if (getMenu(k).getDateEnd().compareTo(Calendar.getInstance().getTime()) < 0) menuList.add(getMenu(k));
+        }
+        Collections.sort(menuList, new MenuComparator());
+        return menuList;
+    }
+
     public boolean isValuedBy(String menuId, String user) {
         for (Valoration v : valorationRepository.all()) {
             if (v.getMenu().equals(menuId) && v.getGuest().equals(user)) return true;
@@ -271,6 +281,14 @@ public class MenuService extends Service<CollaborativeMenu> {
             if (v.getMenu().equals(menuId) && v.getGuest().equals(user)) return valorationRepository.get(v.getId());
         }
         return null;
+    }
+
+    public List<Valoration> getValorationsTo(String user) {
+        List<Valoration> list = new ArrayList<>();
+        for (Valoration v : valorationRepository.all()) {
+            if (v.getHost().equals(user)) list.add(v);
+        }
+        return list;
     }
 
     public Valoration value(String menu, double points, String comment, String host, String guest){
