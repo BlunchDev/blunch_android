@@ -20,6 +20,7 @@ import android.widget.Toast;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -195,7 +196,7 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
         }
         else{
             Double myTotalPrice = 0.0;
-            ArrayList<Object> m = (ArrayList<Object>) paymentMenuService.getMySelectedDishes(paymentMenu.getId());
+            Collection<Object> m = paymentMenuService.getMySelectedDishes(paymentMenu.getId());
             for (Object d :  m) {
                 Dish a  = (Dish) d;
                 GuestPaymentDishLayout n = new GuestPaymentDishLayout(getApplicationContext(), a.getName(), a.getPrice());
