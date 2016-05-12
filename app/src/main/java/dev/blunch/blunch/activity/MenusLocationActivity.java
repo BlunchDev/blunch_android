@@ -57,37 +57,32 @@ public class MenusLocationActivity extends FragmentActivity implements OnMapRead
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        if (gpsEnabled()){
+        if (gpsEnabled() && localizacion != null){
             LatLng posicion = new LatLng(localizacion.getLatitude(),localizacion.getLongitude());
             mMap.moveCamera(CameraUpdateFactory.newLatLng(posicion));
         }
         else {
-            // Add a marker in Sydney and move the camera
-            LatLng sydney = new LatLng(-34, 151);
-            mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
             Toast.makeText(this, "GPS no conectado!",
                     Toast.LENGTH_LONG).show();
 
-            GeoPoint posicio = getLocationFromAddress("C/Jordi Girona Salgado, 1-3, 08034 Barcelona");
-            if(posicio != null) {
-                LatLng FIB = new LatLng(posicio.lat, posicio.lng);
+            //we search for the fib
+            LatLng FIB = getLocationFromAddress("C/Jordi Girona Salgado, 1-3, 08034 Barcelona");
+            if(FIB != null) {
                 mMap.addMarker(new MarkerOptions().position(FIB).title("DA FIB"));
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(FIB));
             }
-            else{
+            else {
                 Toast.makeText(this, "DA FIB DOESN'T EXIST ON EARTH!",
                         Toast.LENGTH_LONG).show();
             }
-
         }
     }
 
-    public GeoPoint getLocationFromAddress(String strAddress) {
+    public LatLng getLocationFromAddress(String strAddress) {
 
         Geocoder coder = new Geocoder(this);
         List<Address> address = null;
-        GeoPoint p1 = null;
-
+        LatLng coordenades = null;
         try {
             try {
                 address = coder.getFromLocationName(strAddress, 5);
@@ -98,15 +93,11 @@ public class MenusLocationActivity extends FragmentActivity implements OnMapRead
                 return null;
             }
             Address location = address.get(0);
-            location.getLatitude();
-            location.getLongitude();
-
-            p1 = new GeoPoint(0, (int) (location.getLatitude() * 1E6),
-                    (int) (location.getLongitude() * 1E6));
+            coordenades = new LatLng(location.getLatitude(), location.getLongitude());
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return p1;
+        return coordenades;
     }
 
 
