@@ -3,6 +3,7 @@ package dev.blunch.blunch.services;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -163,6 +164,7 @@ public class CollaborativeMenuService extends Service<CollaborativeMenu> {
         if (userRepository.exists(answer.getGuest())) {
             User user = userRepository.get(answer.getGuest());
             user.addNewParticipatedMenu(repository.get(answer.getMenuId()));
+            user.setChat(answer.getMenuId(), new Date(0));
             userRepository.update(user);
         }
     }

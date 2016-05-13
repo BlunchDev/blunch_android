@@ -3,6 +3,7 @@ package dev.blunch.blunch.services;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -322,4 +323,14 @@ public class MenuService extends Service<CollaborativeMenu> {
         
         return m;
     }
+
+    public int getPendingMessagesCount(String id) {
+        Date lastAccess = (java.util.Date) findUserByEmail(Preferences.getCurrentUserEmail()).getMyChats().get(id);
+        int count = 0;
+
+        // TODO Chat
+
+        return count;
+    }
+
 }

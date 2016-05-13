@@ -1,6 +1,7 @@
 package dev.blunch.blunch.services;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import dev.blunch.blunch.domain.Dish;
@@ -93,6 +94,7 @@ public class PaymentMenuService extends Service<PaymentMenu> {
         if (userRepository.exists(paymentMenuAnswer.getGuest())) {
             User user = userRepository.get(paymentMenuAnswer.getGuest());
             user.addNewParticipatedMenu(repository.get(menuKey));
+            user.setChat(menuKey, new Date(0));
             userRepository.update(user);
         }
     }

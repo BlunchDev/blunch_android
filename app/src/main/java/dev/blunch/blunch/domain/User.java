@@ -8,6 +8,7 @@ import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 
 import com.firebase.client.utilities.Base64;
 
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -140,4 +141,9 @@ public class User implements Entity {
     }
 
     public boolean imHost(String idMenu) { return myMenus.containsKey(idMenu);}
+
+    public void setChat(String key, Date value) {
+        this.myChats.put(key, value);
+    }
+
 }
