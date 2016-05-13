@@ -57,7 +57,7 @@ public class ValorationActivity extends AppCompatActivity {
         }
         else {
             Menu m = menuService.getMenu(idMenu);
-            menuService.value(idMenu, valoration.getRating(), comment.getText().toString(), m.getAuthor(), guest);
+            menuService.value(idMenu, valoration.getRating(), comment.getText().toString().trim(), m.getAuthor(), guest);
             Toast.makeText(this, "Valoración realizada",Toast.LENGTH_LONG).show();
             finish();
         }

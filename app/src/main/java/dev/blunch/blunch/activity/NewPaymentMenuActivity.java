@@ -236,12 +236,12 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
         EditText menuNameEditText = (EditText) findViewById(R.id.nomMenu);
 
         final String author = "Admin";
-        String address = adressEditText.getText().toString();
-        String city = cityEditText.getText().toString();
+        String address = adressEditText.getText().toString().trim();
+        String city = cityEditText.getText().toString().trim();
         final String localization = address + ", " + city;
 
-        String menuNameString = menuNameEditText.getText().toString();
-        String description = descriptionEditText.getText().toString();
+        String menuNameString = menuNameEditText.getText().toString().trim();
+        String description = descriptionEditText.getText().toString().trim();
 
         boolean incorrectDishes = false;
         if (myDishes.isEmpty()) incorrectDishes = true;
@@ -252,14 +252,14 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
         if(isIncomplete(address, city, menuNameString, description)){
             String s = "";
             boolean added = false;
-            if(address.equals("") || address.equals("Tu dirección") ) {
+            if(address.length() > 0 || address.equals("Tu dirección") ) {
                 if (!added) {
                     s += "Dirección";
                     added = true;
                 }
                 else s += ", dirección";
             }
-            if(city.equals("") || city.equals("Tu ciudad")){
+            if(city.length() > 0 || city.equals("Tu ciudad")){
                 if (!added) {
                     s += "Ciudad";
                     added = true;
@@ -267,14 +267,14 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
                 else s += ", ciudad";
             }
 
-            if(menuNameString.equals("") || menuNameString.equals("MENÚ") ){
+            if(menuNameString.length() > 0 || menuNameString.equals("MENÚ") ){
                 if (!added) {
                     s += "Nombre del menú";
                     added = true;
                 }
                 else s += ", nombre del menú";
             }
-            if(description.equals("") || description.equals("Descripción")) {
+            if(description.length() > 0 || description.equals("Descripción")) {
                 if (!added) {
                     s += "Descripción";
                     added = true;
@@ -325,10 +325,10 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
     }
 
     private boolean isIncomplete(String address, String city, String menuNameString, String description) {
-        return menuNameString.equals("") || address.equals("")
-                || address.equals("") || address.equals("Tu dirección")
-                || city.equals("") || city.equals("Tu ciudad")
-                || description.equals("") || description.equals("descripción")
+        return menuNameString.length() > 0 || menuNameString.equals("MENÚ")
+                || address.length() > 0 || address.equals("Tu dirección")
+                || city.length() > 0 || city.equals("Tu ciudad")
+                || description.length() > 0 || description.equals("descripción")
                 || myDishes.isEmpty();
     }
 

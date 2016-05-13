@@ -128,8 +128,8 @@ public class CollaborativeMenuAnswerActivity extends AppCompatActivity {
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.CollaborativeMenuAnswerGuestSuggestions);
         linearLayout.setHorizontalGravity(LinearLayout.TEXT_ALIGNMENT_CENTER);
         EditText editText = (EditText) findViewById(R.id.CollaborativeMenuAnswerEt);
-        if (editText != null && linearLayout != null) {
-            String suggestion = editText.getText().toString();
+        if (editText.getText().toString().trim().length() > 0 && linearLayout != null) {
+            String suggestion = editText.getText().toString().trim();
             boolean exists = false;
             for (Dish d : guestSuggestions) {
                 if (suggestion.equals(d.getName())) {
