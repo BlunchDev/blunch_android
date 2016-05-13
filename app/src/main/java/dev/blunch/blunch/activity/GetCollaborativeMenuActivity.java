@@ -27,6 +27,7 @@ import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.domain.User;
 import dev.blunch.blunch.services.CollaborativeMenuService;
+import dev.blunch.blunch.services.MenuService;
 import dev.blunch.blunch.services.ServiceFactory;
 
 /**
@@ -38,6 +39,7 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
 
     public static final String MENU_ID_KEY = "menuId";
     private CollaborativeMenuService collaborativeMenuService;
+    private MenuService menuService;
     private CollaborativeMenu collaborativeMenu;
     private List<Dish> suggestedDishes;
     private List<Dish> offeredDishes;
@@ -64,6 +66,7 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
         if (getIntent().getStringExtra(MENU_ID_KEY) != null) this.menuId = getIntent().getStringExtra(MENU_ID_KEY);
 
         collaborativeMenuService = ServiceFactory.getCollaborativeMenuService(getApplicationContext());
+        menuService = ServiceFactory.getMenuService(getApplicationContext());
 
         collaborativeMenu = collaborativeMenuService.get(GetCollaborativeMenuActivity.this.menuId);
         suggestedDishes = collaborativeMenuService.getSuggestedDishes(collaborativeMenu.getId());
@@ -93,7 +96,14 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
         });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        TextView messageCount = (TextView) findViewById(R.id.messagesCount);
         if(guest() || host()) {
+            int count = menuService.getPendingMessagesCount(this.menuId);
+            if (count > 0) {
+                if (count < 100) messageCount.setText(String.valueOf(count));
+                else messageCount.setText("+99");
+            }
+            else messageCount.setVisibility(View.GONE);
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

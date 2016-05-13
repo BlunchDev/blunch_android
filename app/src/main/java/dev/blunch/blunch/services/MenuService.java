@@ -1,5 +1,7 @@
 package dev.blunch.blunch.services;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -328,10 +330,11 @@ public class MenuService extends Service<CollaborativeMenu> {
     }
 
     public int getPendingMessagesCount(String id) {
-        Date lastAccess = (java.util.Date) findUserByEmail(Preferences.getCurrentUserEmail()).getMyChats().get(id);
+        Long lastAccess = (long) findUserByEmail(Preferences.getCurrentUserEmail()).getMyChats().get(id);
         int count = 0;
         for (ChatMessage chatMessage : chatMessageRepository.all()) {
-            if (chatMessage.getCreatedAt() > lastAccess.getTime()) ++count;
+            Log.d("JAJAJAJAJAJAJA", chatMessage.getId());
+            if (chatMessage.getCreatedAt() > lastAccess) ++count;
         }
         return count;
     }
