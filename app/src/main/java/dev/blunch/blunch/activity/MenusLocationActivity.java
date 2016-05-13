@@ -9,6 +9,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.widget.Toast;
@@ -30,7 +31,7 @@ import dev.blunch.blunch.domain.Menu;
 import dev.blunch.blunch.services.MenuService;
 import dev.blunch.blunch.services.ServiceFactory;
 
-public class MenusLocationActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MenusLocationActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener {
 
     private GoogleMap mMap;
     Location localizacion;
@@ -52,6 +53,7 @@ public class MenusLocationActivity extends FragmentActivity implements OnMapRead
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.setOnMyLocationButtonClickListener(this);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -60,25 +62,14 @@ public class MenusLocationActivity extends FragmentActivity implements OnMapRead
             // Show rationale and request permission.
         }
 
-//        if (gpsEnabled() && localizacion != null){
-//            LatLng posicion = new LatLng(localizacion.getLatitude(),localizacion.getLongitude());
-//            mMap.moveCamera(CameraUpdateFactory.newLatLng(posicion));
-//        }
-//        else {
-
             //we search for the fib
-            LatLng FIB = getLocationFromAddress("C/Jordi Girona Salgado, 1-3, 08034 Barcelona");
-            if(FIB != null) {
-                mMap.addMarker(new MarkerOptions().position(FIB).title("DA FIB"));
+            LatLng BCN = getLocationFromAddress("Barcelona");
+            if(BCN != null) {
                 CameraPosition cameraPosition = new CameraPosition.Builder()
-                        .target(FIB)      // Sets the center to DA FIB
-                        .zoom(17)         // we set the zoom
+                        .target(BCN)      // Sets the center to DA FIB
+                        .zoom(10)         // we set the zoom
                         .build();
                 mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition),5000,null);
-            }
-            else {
-                Toast.makeText(this, "DA FIB DOESN'T EXIST ON EARTH!",
-                        Toast.LENGTH_LONG).show();
             }
             situaMenus();
         }
@@ -116,5 +107,22 @@ public class MenusLocationActivity extends FragmentActivity implements OnMapRead
             e.printStackTrace();
         }
         return coordenades;
+    }
+
+    private Boolean gpsEnabled() {
+        ContentResolver contentResolver = getBaseContext()
+                .getContentResolver();
+        boolean gpsStatus = Settings.Secure
+                .isLocationProviderEnabled(contentResolver,
+                LocationManager.GPS_PROVIDER);
+         return gpsStatus;
+    }
+
+    @Override
+    public boolean onMyLocationButtonClick() {
+        if(gpsEnabled()) return false;
+        Toast.makeText(this, "GPS not enabled",
+                Toast.LENGTH_LONG).show();
+        return false;
     }
 }
