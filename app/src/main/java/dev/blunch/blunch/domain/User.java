@@ -8,6 +8,7 @@ import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 
 import com.firebase.client.utilities.Base64;
 
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,9 +29,12 @@ public class User implements Entity {
     private Map<String, Object> myMenus;
     private Map<String, Object> participatedMenus;
 
+    private Map<String, Object> myChats;
+
     public User(){
         myMenus = new LinkedHashMap<>();
         participatedMenus = new LinkedHashMap<>();
+        myChats = new LinkedHashMap<>();
         this.valorationAverage = 0.0;
         this.valorationNumber = 0;
     }
@@ -43,6 +47,7 @@ public class User implements Entity {
         this.valorationNumber = 0;
         myMenus = new LinkedHashMap<>();
         participatedMenus = new LinkedHashMap<>();
+        myChats = new LinkedHashMap<>();
     }
 
     @Override
@@ -68,6 +73,14 @@ public class User implements Entity {
 
     public void setImageFile(String imageFile) {
         this.imageFile = imageFile;
+    }
+
+    public Map<String, Object> getMyChats() {
+        return myChats;
+    }
+
+    public void setMyChats(Map<String, Object> myChats) {
+        this.myChats = myChats;
     }
 
     public Map<String, Object> getMyMenus() {
@@ -114,6 +127,10 @@ public class User implements Entity {
         participatedMenus.put(menu.getId(), true);
     }
 
+    public void addNewParticipatedMenuById(String id){
+        participatedMenus.put(id, true);
+    }
+
     public RoundedBitmapDrawable getImageRounded(Resources res) throws Exception{
         byte[] imageAsBytes = Base64.decode(imageFile.getBytes());
         Bitmap bp = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
@@ -128,4 +145,12 @@ public class User implements Entity {
     }
 
     public boolean imHost(String idMenu) { return myMenus.containsKey(idMenu);}
+
+    public void setChat(String key, Date value) {
+        this.myChats.put(key, value);
+    }
+
+    public Menu getMyMenu(String idMenu) {
+        return (Menu) myMenus.get(idMenu);
+    }
 }

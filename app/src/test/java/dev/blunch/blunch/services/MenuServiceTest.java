@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import dev.blunch.blunch.domain.ChatMessage;
 import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.domain.Menu;
@@ -37,7 +38,7 @@ public class MenuServiceTest {
     public void setUp() {
         collaborativeMenuMockRepository = new MockRepository<>();
         paymentMenuMockRepository = new MockRepository<>();
-        service = new MenuService(collaborativeMenuMockRepository, paymentMenuMockRepository, new MockRepository<Valoration>(), new MockRepository<User>());
+        service = new MenuService(collaborativeMenuMockRepository, paymentMenuMockRepository, new MockRepository<Valoration>(), new MockRepository<User>(), new MockRepository<ChatMessage>());
         collaborativeMenu = new CollaborativeMenu(
                 "Menu de micro de la FIB",
                 "Encarna", "És un menu de micro de la FIB",

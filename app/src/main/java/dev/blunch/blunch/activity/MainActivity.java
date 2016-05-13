@@ -3,17 +3,20 @@ package dev.blunch.blunch.activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -82,6 +85,10 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(0).setChecked(true);
 
+        TextView oldMenus;
+        oldMenus = (TextView) MenuItemCompat.getActionView(navigationView.getMenu().findItem(R.id.old_menus));
+        initializeCountDrawer(oldMenus);
+
         setUserInfo(navigationView);
 
         initFragment(R.layout.content_list_menus);
@@ -111,6 +118,15 @@ public class MainActivity extends AppCompatActivity
         });
 
         initializeSearchMenus();
+    }
+
+    private void initializeCountDrawer(TextView oldMenus) {
+
+        oldMenus.setGravity(Gravity.CENTER_VERTICAL);
+        oldMenus.setTypeface(null, Typeface.BOLD);
+        oldMenus.setTextColor(getResources().getColor(R.color.colorAccent));
+        int count = menuService.getNonValuedCollaboratedMenusOf(email).size();
+        if (count > 0) oldMenus.setText(String.valueOf(count));
     }
 
     private void setUserInfo(NavigationView navigationView) {
