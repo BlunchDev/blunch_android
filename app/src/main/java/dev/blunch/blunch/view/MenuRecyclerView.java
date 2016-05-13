@@ -1,6 +1,7 @@
 package dev.blunch.blunch.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,8 +16,10 @@ import java.util.Date;
 import java.util.List;
 
 import dev.blunch.blunch.R;
+import dev.blunch.blunch.activity.GetCollaborativeMenuActivity;
+import dev.blunch.blunch.activity.GetPaymentMenuActivity;
+import dev.blunch.blunch.activity.MainActivity;
 import dev.blunch.blunch.domain.CollaborativeMenu;
-import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.domain.Menu;
 import dev.blunch.blunch.domain.User;
 
@@ -46,6 +49,7 @@ public class MenuRecyclerView extends RecyclerView.Adapter<MenuRecyclerView.View
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
+
         holder.mItem = mValues.get(position);
         holder.menuName.setText(holder.mItem.getName());
         holder.menuLocation.setText(holder.mItem.getLocalization());
@@ -100,6 +104,29 @@ public class MenuRecyclerView extends RecyclerView.Adapter<MenuRecyclerView.View
         public ViewHolder(View view) {
             super(view);
             mView = view;
+            mView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String menuId = mItem.getId();
+
+                    String s = mItem.getClass().getSimpleName();
+
+                    switch (s) {
+                        case "CollaborativeMenu":
+                            Intent intent = new Intent(v.getContext(), GetCollaborativeMenuActivity.class);
+                            intent.putExtra(GetCollaborativeMenuActivity.MENU_ID_KEY, menuId);
+                            v.getContext().startActivity(intent);
+                            break;
+                        case "PaymentMenu":
+                            Intent intent2 = new Intent(v.getContext(), GetPaymentMenuActivity.class);
+                            intent2.putExtra(GetPaymentMenuActivity.MENU_ID_KEY, menuId);
+                            v.getContext().startActivity(intent2);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            });
 
             userIcon = (ImageView) view.findViewById(R.id.user_icon);
             menuType = (ImageView) view.findViewById(R.id.menu_type);

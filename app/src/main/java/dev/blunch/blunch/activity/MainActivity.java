@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -11,10 +12,12 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -41,6 +44,7 @@ import dev.blunch.blunch.services.PaymentMenuService;
 import dev.blunch.blunch.services.ServiceFactory;
 import dev.blunch.blunch.utils.Preferences;
 import dev.blunch.blunch.utils.Repository;
+import dev.blunch.blunch.view.MenuRecyclerView;
 
 @SuppressWarnings("all")
 public class MainActivity extends AppCompatActivity
@@ -268,38 +272,15 @@ public class MainActivity extends AppCompatActivity
                 break;
         }
 
-        final MenuListAdapter menuListAdapter = new MenuListAdapter(
-                getApplicationContext(),
-                menuList,
-                menuService.getUsers());
+        View recyclerView2 = findViewById(R.id.menu_list);
+        assert recyclerView2 != null;
+        setupRecyclerView((RecyclerView) recyclerView2, menuList);
 
-        ListView listView = (ListView) findViewById(R.id.menu_list);
-        listView.setAdapter(menuListAdapter);
+    }
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                dev.blunch.blunch.domain.Menu menu = menuListAdapter.getItem(position);
-
-                String s = menu.getClass().getSimpleName();
-
-                switch (s) {
-                    case "CollaborativeMenu":
-                        Intent intent = new Intent(MainActivity.this, GetCollaborativeMenuActivity.class);
-                        intent.putExtra(GetCollaborativeMenuActivity.MENU_ID_KEY, menu.getId());
-                        startActivity(intent);
-                        break;
-                    case "PaymentMenu":
-                        Intent intent2 = new Intent(MainActivity.this, GetPaymentMenuActivity.class);
-                        intent2.putExtra(GetPaymentMenuActivity.MENU_ID_KEY, menu.getId());
-                        startActivity(intent2);
-                        break;
-                    default:
-                        break;
-                }
-            }
-        });
-
+    private void setupRecyclerView(@NonNull RecyclerView recyclerView, List<dev.blunch.blunch.domain.Menu> menus) {
+        recyclerView.setAdapter(new MenuRecyclerView(getApplicationContext(),
+                menus, menuService.getUsers()));
     }
 
     private void initializeCollaboratingMenus() {
@@ -384,7 +365,13 @@ public class MainActivity extends AppCompatActivity
                 break;
         }
 
-        final MenuListAdapter menuListAdapter = new MenuListAdapter(
+        //TODO  open valoration detail
+
+        View recyclerView2 = findViewById(R.id.menu_list);
+        assert recyclerView2 != null;
+        setupRecyclerView((RecyclerView) recyclerView2, menuList);
+
+        /*final MenuListAdapter menuListAdapter = new MenuListAdapter(
                 getApplicationContext(),
                 menuList,
                 menuService.getUsers());
@@ -415,7 +402,7 @@ public class MainActivity extends AppCompatActivity
                             .setAction("Action", null).show();
                 }
             }
-        });
+        });*/
     }
 
     private void initializeMyMenus() {
