@@ -60,13 +60,11 @@ public class MenusLocationActivity extends FragmentActivity implements OnMapRead
             // Show rationale and request permission.
         }
 
-        if (gpsEnabled() && localizacion != null){
-            LatLng posicion = new LatLng(localizacion.getLatitude(),localizacion.getLongitude());
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(posicion));
-        }
-        else {
-            Toast.makeText(this, "GPS no conectado!",
-                    Toast.LENGTH_LONG).show();
+//        if (gpsEnabled() && localizacion != null){
+//            LatLng posicion = new LatLng(localizacion.getLatitude(),localizacion.getLongitude());
+//            mMap.moveCamera(CameraUpdateFactory.newLatLng(posicion));
+//        }
+//        else {
 
             //we search for the fib
             LatLng FIB = getLocationFromAddress("C/Jordi Girona Salgado, 1-3, 08034 Barcelona");
@@ -84,7 +82,7 @@ public class MenusLocationActivity extends FragmentActivity implements OnMapRead
             }
             situaMenus();
         }
-    }
+//    }
 
     public void situaMenus(){
         List<Menu> menus = menuService.getMenus();
@@ -119,18 +117,4 @@ public class MenusLocationActivity extends FragmentActivity implements OnMapRead
         }
         return coordenades;
     }
-
-
-    private Boolean gpsEnabled() {
-        ContentResolver contentResolver = getBaseContext()
-                .getContentResolver();
-        boolean gpsStatus = Settings.Secure
-                .isLocationProviderEnabled(contentResolver,
-                        LocationManager.GPS_PROVIDER);
-
-        return gpsStatus;
-    }
-
-
-
 }
