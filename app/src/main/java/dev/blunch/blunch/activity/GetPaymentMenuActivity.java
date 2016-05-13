@@ -93,6 +93,11 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
         if(guest() || host()) {
+            int count = 1;
+            if(count > 0) {
+                fab.setColorFilter(R.color.colorPrimary);
+                fab.setImageResource(R.drawable.ic_email_open_outline_white_18dp);
+            }
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
