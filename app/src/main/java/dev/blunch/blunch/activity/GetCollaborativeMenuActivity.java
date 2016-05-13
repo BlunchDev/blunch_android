@@ -12,10 +12,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -81,6 +83,15 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
         ratingBar = (RatingBar) findViewById(R.id.getValue);
         valueCount = (TextView) findViewById(R.id.valueCount);
 
+        findViewById(R.id.valueLayout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GetCollaborativeMenuActivity.this, ValorationListActivity.class);
+                intent.putExtra(ValorationListActivity.USER_ID, collaborativeMenu.getAuthor());
+                startActivity(intent);
+            }
+        });
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         if(guest() || host()) {
             fab.setOnClickListener(new View.OnClickListener() {
@@ -98,7 +109,22 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
         userName.setText(obtainUserName());
         localization.setText(obtainAddress() + ", " + obtainCity());
         hostDishes.setText(obtainOfferedDishSingleString());
-        suggestions.setText(obtainSuggestedDishSingleString());
+        if(!host() && !guest()){
+            suggestions.setText(obtainSuggestedDishSingleString());}
+        else if(guest()) {
+            suggestions.setVisibility(View.GONE);
+            LinearLayout sug = (LinearLayout) findViewById(R.id.SeSugiere);
+            sug.setVisibility(View.GONE);
+            TextView p = (TextView) findViewById(R.id.offeredTitle_getCollaborative);
+            p.setText("Platos");
+
+            Collection<Dish> m = collaborativeMenuService.getMySuggestedDishes(collaborativeMenu.getId());
+            String sd = "";
+            for (Dish d : m){
+                sd += d.getName() + "\n";
+            }
+            hostDishes.setText(sd);
+        }
         description.setText(obtainDescription());
         hour.setText(obtainHour());
         setRating();

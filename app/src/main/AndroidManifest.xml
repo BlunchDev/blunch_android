@@ -50,6 +50,10 @@
             android:parentActivityName=".activity.GetPaymentMenuActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".activity.ValorationListActivity"
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".activity.ValorationActivity"
             android:parentActivityName=".activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">

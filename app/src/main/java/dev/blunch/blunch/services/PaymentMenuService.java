@@ -1,8 +1,13 @@
 package dev.blunch.blunch.services;
 
+import android.app.Dialog;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Collection;
 import java.util.List;
-
+import java.util.Map;
+import java.util.Set;
 import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.domain.PaymentMenu;
 import dev.blunch.blunch.domain.PaymentMenuAnswer;
@@ -93,6 +98,7 @@ public class PaymentMenuService extends Service<PaymentMenu> {
         if (userRepository.exists(paymentMenuAnswer.getGuest())) {
             User user = userRepository.get(paymentMenuAnswer.getGuest());
             user.addNewParticipatedMenu(repository.get(menuKey));
+            user.setChat(menuKey, new Date(0));
             userRepository.update(user);
         }
     }
@@ -175,4 +181,25 @@ public class PaymentMenuService extends Service<PaymentMenu> {
     public boolean imHost(String idMenu) {
         return findUserByEmail(Preferences.getCurrentUserEmail()).imHost(idMenu);
     }
+
+    public void setActualDateToMenuChat(String id) {
+        User user = findUserByEmail(Preferences.getCurrentUserEmail());
+        user.setChat(id, Calendar.getInstance().getTime());
+        userRepository.update(user);
+    }
+
+    public Collection<Dish> getMySelectedDishes(String idMenu) {
+        Set<String> a = null;
+        for(PaymentMenuAnswer m: answerRepository.all()){
+            if(m.getGuest().equals(Preferences.getCurrentUserEmail()) && m.getIdMenu().equals(idMenu)){
+                 a = m.getChoosenDishes().keySet();
+            }
+        }
+        Collection<Dish> dishes = new ArrayList<>();
+        for(String d : a){
+            dishes.add(dishesRepository.get(d));
+        }
+        return dishes;
+    }
+
 }

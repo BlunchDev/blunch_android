@@ -39,29 +39,37 @@
                     android:id="@+id/user_icon"
                     android:src="@drawable/user"/>
 
-                <RatingBar
-                    android:id="@+id/getValue"
+                <RelativeLayout
+                    android:id="@+id/valueLayout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/user_icon"
-                    android:isIndicator="true"
-                    android:transformPivotX="0dp"
-                    android:transformPivotY="0dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginStart="5dp"
-                    android:foregroundGravity="center"
-                    android:rating="5"
-                    style="?android:attr/ratingBarStyleSmall" />
+                    android:gravity="center">
 
-                <TextView
-                    android:id="@+id/valueCount"
-                    android:layout_width="90dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/getValue"
-                    android:layout_marginTop="3dp"
-                    android:textSize="12sp"
-                    android:gravity="center"
-                    android:text="@string/exampleValueCount"/>
+                    <RatingBar
+                        android:id="@+id/getValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:isIndicator="true"
+                        android:transformPivotX="0dp"
+                        android:transformPivotY="0dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginStart="5dp"
+                        android:foregroundGravity="center"
+                        android:rating="5"
+                        style="?android:attr/ratingBarStyleSmall" />
+
+                    <TextView
+                        android:id="@+id/valueCount"
+                        android:layout_width="90dp"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/getValue"
+                        android:layout_marginTop="3dp"
+                        android:textSize="12sp"
+                        android:gravity="center"
+                        android:text="@string/exampleValueCount"/>
+
+                </RelativeLayout>
 
             </RelativeLayout>
 
@@ -201,7 +209,8 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center">
+                android:gravity="center"
+                android:id="@+id/SeSugiere">
 
 
                 <LinearLayout

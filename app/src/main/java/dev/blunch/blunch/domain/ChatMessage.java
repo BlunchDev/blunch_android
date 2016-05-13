@@ -2,12 +2,16 @@ package dev.blunch.blunch.domain;
 
 import java.util.Date;
 
+import dev.blunch.blunch.utils.Entity;
+
 /**
  * Created by casassg on 03/05/16.
  *
  * @author casassg
  */
-public class ChatMessage {
+public class ChatMessage implements Entity {
+
+    private String id;
     private String author;
     private String content;
     private Long createdAt;
@@ -56,6 +60,16 @@ public class ChatMessage {
 
     public Date createdAt(){
         return new Date(createdAt);
+    }
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(String id) {
+        this.id = id;
     }
 }
 

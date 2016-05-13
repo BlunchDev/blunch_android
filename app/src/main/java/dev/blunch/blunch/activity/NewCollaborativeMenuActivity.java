@@ -315,6 +315,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
                 collaborativeMenuService.save(collaborativeMenu, offeredDish, suggestedDish);
                 Toast.makeText(this, "Menú colaborativo creado correctamente!",
                         Toast.LENGTH_LONG).show();
+                collaborativeMenuService.setActualDateToMenuChat(collaborativeMenu.getId());
                 finish();
             }
         }

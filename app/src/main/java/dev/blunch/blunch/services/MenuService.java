@@ -3,9 +3,11 @@ package dev.blunch.blunch.services;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import dev.blunch.blunch.domain.ChatMessage;
 import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.domain.Menu;
 import dev.blunch.blunch.domain.MenuComparator;
@@ -25,15 +27,17 @@ public class MenuService extends Service<CollaborativeMenu> {
     private Repository<PaymentMenu> paymentMenuRepository;
     private Repository<User> userRepository;
     private Repository<Valoration> valorationRepository;
+    private Repository<ChatMessage> chatMessageRepository;
     int loadNeed = 1;
     int loaded = 0;
 
 
-    public MenuService(Repository<CollaborativeMenu> repository, Repository<PaymentMenu> paymentMenuRepository, Repository<Valoration> valorationRepository,Repository<User> userRepository) {
+    public MenuService(Repository<CollaborativeMenu> repository, Repository<PaymentMenu> paymentMenuRepository, Repository<Valoration> valorationRepository,Repository<User> userRepository, Repository<ChatMessage> chatMessageRepository) {
         super(repository);
         this.paymentMenuRepository = paymentMenuRepository;
         this.valorationRepository = valorationRepository;
         this.userRepository = userRepository;
+        this.chatMessageRepository = chatMessageRepository;
     }
 
     public List<CollaborativeMenu> getCollaborativeMenus() {
@@ -283,6 +287,14 @@ public class MenuService extends Service<CollaborativeMenu> {
         return null;
     }
 
+    public List<Valoration> getValorationsTo(String user) {
+        List<Valoration> list = new ArrayList<>();
+        for (Valoration v : valorationRepository.all()) {
+            if (v.getHost().equals(user)) list.add(v);
+        }
+        return list;
+    }
+
     public Valoration value(String menu, double points, String comment, String host, String guest){
         Valoration valoration = new Valoration();
         valoration.setMenu(menu);
@@ -314,4 +326,20 @@ public class MenuService extends Service<CollaborativeMenu> {
         
         return m;
     }
+
+    public int getPendingMessagesCount(String id) {
+        Date lastAccess = (java.util.Date) findUserByEmail(Preferences.getCurrentUserEmail()).getMyChats().get(id);
+        int count = 0;
+        for (ChatMessage chatMessage : chatMessageRepository.all()) {
+            if (chatMessage.getCreatedAt() > lastAccess.getTime()) ++count;
+        }
+        return count;
+    }
+
+    public void setActualDateToMenuChat(String id) {
+        User user = findUserByEmail(Preferences.getCurrentUserEmail());
+        user.setChat(id, Calendar.getInstance().getTime());
+        userRepository.update(user);
+    }
+
 }
