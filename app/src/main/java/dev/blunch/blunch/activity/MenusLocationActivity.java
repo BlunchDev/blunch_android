@@ -24,10 +24,9 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.location.*;
-import com.google.android.gms.vision.barcode.Barcode;
-import com.google.android.gms.vision.barcode.Barcode.GeoPoint;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import dev.blunch.blunch.R;
@@ -103,9 +102,11 @@ public class MenusLocationActivity extends FragmentActivity implements OnMapRead
     public void situaMenus(){
         List<Menu> menus = menuService.getMenus();
         for(Menu m : menus){
-            LatLng posicion = getLocationFromAddress(m.getLocalization());
-            if(posicion != null) {
-                mMap.addMarker(new MarkerOptions().position(posicion).title(m.getName()));
+            if(m.getDateEnd().after(new Date())) {
+                LatLng posicion = getLocationFromAddress(m.getLocalization());
+                if (posicion != null) {
+                    mMap.addMarker(new MarkerOptions().position(posicion).title(m.getName()));
+                }
             }
         }
     }
