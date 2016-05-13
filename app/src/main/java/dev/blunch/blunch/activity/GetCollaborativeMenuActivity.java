@@ -109,9 +109,9 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
         userName.setText(obtainUserName());
         localization.setText(obtainAddress() + ", " + obtainCity());
         hostDishes.setText(obtainOfferedDishSingleString());
-        if(!host() && !guest()){
+        if (!guest()){
             suggestions.setText(obtainSuggestedDishSingleString());}
-        else if(guest()) {
+        else {
             suggestions.setVisibility(View.GONE);
             LinearLayout sug = (LinearLayout) findViewById(R.id.SeSugiere);
             sug.setVisibility(View.GONE);
