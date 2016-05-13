@@ -2,14 +2,13 @@ package dev.blunch.blunch.view;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -18,28 +17,34 @@ import java.util.List;
 import dev.blunch.blunch.R;
 import dev.blunch.blunch.activity.GetCollaborativeMenuActivity;
 import dev.blunch.blunch.activity.GetPaymentMenuActivity;
-import dev.blunch.blunch.activity.MainActivity;
+import dev.blunch.blunch.activity.ValorationActivity;
 import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.domain.Menu;
 import dev.blunch.blunch.domain.User;
+import dev.blunch.blunch.domain.Valoration;
+import dev.blunch.blunch.services.MenuService;
+import dev.blunch.blunch.utils.Preferences;
 
 /**
  * Created by jmotger on 13/05/16.
  */
-public class MenuRecyclerView extends RecyclerView.Adapter<MenuRecyclerView.ViewHolder> {
+public class MenuRateRecyclerView extends RecyclerView.Adapter<MenuRateRecyclerView.ViewHolder> {
 
     private final List<Menu> mValues;
     private final List<User> users;
     private final Context context;
+    private final MenuService menuService;
 
     public ViewHolder holder;
 
-    public MenuRecyclerView(Context context,
-                                         List<Menu> items,
-                                         List<User> users) {
+    public MenuRateRecyclerView(Context context,
+                            List<Menu> items,
+                            List<User> users,
+                            MenuService menuService) {
         mValues = items;
         this.users = users;
         this.context = context;
+        this.menuService = menuService;
     }
 
     @Override
@@ -106,21 +111,21 @@ public class MenuRecyclerView extends RecyclerView.Adapter<MenuRecyclerView.View
                 @Override
                 public void onClick(View v) {
                     String menuId = mItem.getId();
-                    String s = mItem.getClass().getSimpleName();
+                    String userId = Preferences.getCurrentUserEmail();
 
-                    switch (s) {
-                        case "CollaborativeMenu":
-                            Intent intent = new Intent(v.getContext(), GetCollaborativeMenuActivity.class);
-                            intent.putExtra(GetCollaborativeMenuActivity.MENU_ID_KEY, menuId);
-                            v.getContext().startActivity(intent);
-                            break;
-                        case "PaymentMenu":
-                            Intent intent2 = new Intent(v.getContext(), GetPaymentMenuActivity.class);
-                            intent2.putExtra(GetPaymentMenuActivity.MENU_ID_KEY, menuId);
-                            v.getContext().startActivity(intent2);
-                            break;
-                        default:
-                            break;
+                    if (!menuService.isValuedBy(menuId, userId)) {
+                        Intent intent = new Intent(v.getContext(), ValorationActivity.class);
+                        intent.putExtra(ValorationActivity.MENU_ID, menuId);
+                        intent.putExtra(ValorationActivity.USER_ID, userId);
+                        v.getContext().startActivity(intent);
+                    }
+                    else {
+                        Valoration val = menuService.getValoration(menuId, userId);
+                        boolean decimal = ((int) val.getPoints() < val.getPoints());
+                        Snackbar.make(v.getRootView(), "Este menú ya fue valorado en " +
+                                        (decimal ? (int) val.getPoints() + " estrellas." : (int) val.getPoints() + " estrellas y media."),
+                                Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
                     }
                 }
             });
