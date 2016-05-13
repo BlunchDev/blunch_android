@@ -127,6 +127,10 @@ public class User implements Entity {
         participatedMenus.put(menu.getId(), true);
     }
 
+    public void addNewParticipatedMenuById(String id){
+        participatedMenus.put(id, true);
+    }
+
     public RoundedBitmapDrawable getImageRounded(Resources res) throws Exception{
         byte[] imageAsBytes = Base64.decode(imageFile.getBytes());
         Bitmap bp = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
@@ -146,4 +150,7 @@ public class User implements Entity {
         this.myChats.put(key, value);
     }
 
+    public Menu getMyMenu(String idMenu) {
+        return (Menu) myMenus.get(idMenu);
+    }
 }

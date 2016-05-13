@@ -1,10 +1,13 @@
 package dev.blunch.blunch.services;
 
+import android.app.Dialog;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Collection;
 import java.util.List;
-
+import java.util.Map;
+import java.util.Set;
 import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.domain.PaymentMenu;
 import dev.blunch.blunch.domain.PaymentMenuAnswer;
@@ -183,6 +186,20 @@ public class PaymentMenuService extends Service<PaymentMenu> {
         User user = findUserByEmail(Preferences.getCurrentUserEmail());
         user.setChat(id, Calendar.getInstance().getTime());
         userRepository.update(user);
+    }
+
+    public Collection<Dish> getMySelectedDishes(String idMenu) {
+        Set<String> a = null;
+        for(PaymentMenuAnswer m: answerRepository.all()){
+            if(m.getGuest().equals(Preferences.getCurrentUserEmail()) && m.getIdMenu().equals(idMenu)){
+                 a = m.getChoosenDishes().keySet();
+            }
+        }
+        Collection<Dish> dishes = new ArrayList<>();
+        for(String d : a){
+            dishes.add(dishesRepository.get(d));
+        }
+        return dishes;
     }
 
 }
