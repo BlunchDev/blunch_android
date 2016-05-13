@@ -99,7 +99,6 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
         recycler.setAdapter(mAdapter);
-
         setupSendAction(mRef);
     }
 
