@@ -248,18 +248,17 @@ public class CollaborativeMenuService extends Service<CollaborativeMenu> {
     }
 
     public Collection<Dish> getMySuggestedDishes(String idMenu) {
-            Set<String> a = null;
-            for(CollaborativeMenuAnswer m: collaborativeMenuAnswerRepository.all()){
-                if(m.getGuest().equals(Preferences.getCurrentUserEmail()) && m.getId().equals(idMenu)){
-                    a = m.getOfferedDishes().keySet();
-                }
+        List<CollaborativeMenu> m = getAll();
+        Set<String> dishes = null;
+        List<Dish> d = null;
+        for(CollaborativeMenu cm:m){
+            if(cm.getId().equals(idMenu)){
+                dishes = cm.getOfferedDishes().keySet();
             }
-            Collection<Dish> dishes = new ArrayList<>();
-            for(String d : a){
-                if(dishesRepository.exists(d)) {
-                    dishes.add(dishesRepository.get(d));
-                }
-            }
-            return dishes;
+        }
+        for(String idDish: dishes){
+            d.add(dishesRepository.get(idDish));
+        }
+        return d;
     }
 }
