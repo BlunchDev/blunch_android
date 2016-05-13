@@ -20,6 +20,7 @@ import com.firebase.ui.FirebaseRecyclerAdapter;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import dev.blunch.blunch.R;
 import dev.blunch.blunch.domain.ChatMessage;
@@ -29,7 +30,11 @@ import dev.blunch.blunch.services.MenuService;
 import dev.blunch.blunch.services.ServiceFactory;
 import dev.blunch.blunch.utils.Preferences;
 
+@SuppressWarnings("all")
 public class ChatActivity extends AppCompatActivity {
+
+    private MenuService menuService;
+    private String menuId;
 
     private FirebaseRecyclerAdapter<ChatMessage, ChatMessageViewHolder> mAdapter;
     public static final String MENU_ID = "menu_id";
@@ -41,20 +46,21 @@ public class ChatActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        String menuId = "GLOBAL";
+        menuService = ServiceFactory.getMenuService(getApplicationContext());
+
+        menuId = "GLOBAL";
         if (getIntent().getStringExtra(MENU_ID) != null) menuId = getIntent().getStringExtra(MENU_ID);
-        final MenuService menuService = ServiceFactory.getMenuService(getApplicationContext());
         if (!"GLOBAL".equals(menuId)){
             Menu menu = menuService.getMenu(menuId);
-            setTitle("Chat "+menu.getName());
+            setTitle("Chat " + menu.getName());
         }
 
-
+        menuService.setActualDateToMenuChat(menuId);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         final RecyclerView recycler = (RecyclerView) findViewById(R.id.chat_list);
-        assert recycler!=null;
+        assert recycler != null;
         recycler.setHasFixedSize(true);
         LinearLayoutManager layout = new LinearLayoutManager(this);
         recycler.setLayoutManager(layout);
@@ -93,8 +99,6 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
         recycler.setAdapter(mAdapter);
-
-
         setupSendAction(mRef);
     }
 
@@ -143,5 +147,11 @@ public class ChatActivity extends AppCompatActivity {
             dateText = (TextView)itemView.findViewById(R.id.date);
             authorImage = (ImageView) itemView.findViewById(R.id.user_icon);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        menuService.setActualDateToMenuChat(menuId);
     }
 }
