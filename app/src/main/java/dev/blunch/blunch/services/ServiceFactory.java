@@ -3,6 +3,7 @@ package dev.blunch.blunch.services;
 
 import android.content.Context;
 
+import dev.blunch.blunch.repositories.ChatMessageRepository;
 import dev.blunch.blunch.repositories.CollaborativeMenuAnswerRepository;
 import dev.blunch.blunch.repositories.CollaborativeMenuRepository;
 import dev.blunch.blunch.repositories.DishRepository;
@@ -48,7 +49,8 @@ public final class ServiceFactory {
                     new CollaborativeMenuRepository(context),
                     new PaymentMenuRepository(context),
                     new ValorationRepository(context),
-                    new UserRepository(context));
+                    new UserRepository(context),
+                    new ChatMessageRepository(context));
         return menuService;
     }
 

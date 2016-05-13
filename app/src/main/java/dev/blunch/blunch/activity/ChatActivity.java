@@ -41,6 +41,8 @@ public class ChatActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // TODO Create service
+
         String menuId = "GLOBAL";
         if (getIntent().getStringExtra(MENU_ID) != null) menuId = getIntent().getStringExtra(MENU_ID);
         final MenuService menuService = ServiceFactory.getMenuService(getApplicationContext());

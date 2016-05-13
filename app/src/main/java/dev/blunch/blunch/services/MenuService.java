@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import dev.blunch.blunch.domain.ChatMessage;
 import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.domain.Menu;
 import dev.blunch.blunch.domain.MenuComparator;
@@ -26,15 +27,17 @@ public class MenuService extends Service<CollaborativeMenu> {
     private Repository<PaymentMenu> paymentMenuRepository;
     private Repository<User> userRepository;
     private Repository<Valoration> valorationRepository;
+    private Repository<ChatMessage> chatMessageRepository;
     int loadNeed = 1;
     int loaded = 0;
 
 
-    public MenuService(Repository<CollaborativeMenu> repository, Repository<PaymentMenu> paymentMenuRepository, Repository<Valoration> valorationRepository,Repository<User> userRepository) {
+    public MenuService(Repository<CollaborativeMenu> repository, Repository<PaymentMenu> paymentMenuRepository, Repository<Valoration> valorationRepository,Repository<User> userRepository, Repository<ChatMessage> chatMessageRepository) {
         super(repository);
         this.paymentMenuRepository = paymentMenuRepository;
         this.valorationRepository = valorationRepository;
         this.userRepository = userRepository;
+        this.chatMessageRepository = chatMessageRepository;
     }
 
     public List<CollaborativeMenu> getCollaborativeMenus() {
@@ -327,9 +330,9 @@ public class MenuService extends Service<CollaborativeMenu> {
     public int getPendingMessagesCount(String id) {
         Date lastAccess = (java.util.Date) findUserByEmail(Preferences.getCurrentUserEmail()).getMyChats().get(id);
         int count = 0;
-
-        // TODO Chat
-
+        for (ChatMessage chatMessage : chatMessageRepository.all()) {
+            if (chatMessage.getCreatedAt() > lastAccess.getTime()) ++count;
+        }
         return count;
     }
 
