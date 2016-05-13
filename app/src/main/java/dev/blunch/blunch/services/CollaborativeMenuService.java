@@ -3,6 +3,7 @@ package dev.blunch.blunch.services;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -245,4 +246,11 @@ public class CollaborativeMenuService extends Service<CollaborativeMenu> {
     public boolean imGuest(String idMenu) {
         return findUserByEmail(Preferences.getCurrentUserEmail()).imGuest(idMenu);
     }
+
+    public void setActualDateToMenuChat(String id) {
+        User user = findUserByEmail(Preferences.getCurrentUserEmail());
+        user.setChat(id, Calendar.getInstance().getTime());
+        userRepository.update(user);
+    }
+
 }

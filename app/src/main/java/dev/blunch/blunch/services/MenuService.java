@@ -336,4 +336,10 @@ public class MenuService extends Service<CollaborativeMenu> {
         return count;
     }
 
+    public void setActualDateToMenuChat(String id) {
+        User user = findUserByEmail(Preferences.getCurrentUserEmail());
+        user.setChat(id, Calendar.getInstance().getTime());
+        userRepository.update(user);
+    }
+
 }

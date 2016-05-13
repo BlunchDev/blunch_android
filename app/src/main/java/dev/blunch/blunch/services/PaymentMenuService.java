@@ -1,6 +1,7 @@
 package dev.blunch.blunch.services;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -177,4 +178,11 @@ public class PaymentMenuService extends Service<PaymentMenu> {
     public boolean imHost(String idMenu) {
         return findUserByEmail(Preferences.getCurrentUserEmail()).imHost(idMenu);
     }
+
+    public void setActualDateToMenuChat(String id) {
+        User user = findUserByEmail(Preferences.getCurrentUserEmail());
+        user.setChat(id, Calendar.getInstance().getTime());
+        userRepository.update(user);
+    }
+
 }
