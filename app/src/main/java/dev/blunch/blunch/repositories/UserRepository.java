@@ -5,7 +5,10 @@ import android.content.Context;
 import com.firebase.client.DataSnapshot;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import dev.blunch.blunch.domain.User;
 import dev.blunch.blunch.utils.FirebaseRepository;
@@ -45,6 +48,12 @@ public class UserRepository extends FirebaseRepository<User> {
                     menus.add(menu.getKey());
                 }
                 user.setParticipatedMenus(menus);
+            } else if (d.getKey().equals("myChats")) {
+                Map<String, Object> chats = new LinkedHashMap<>();
+                for (DataSnapshot chat : d.getChildren()) {
+                    chats.put(chat.getKey(), chat.getValue());
+                }
+                user.setMyChats(chats);
             }
         }
         return user;
