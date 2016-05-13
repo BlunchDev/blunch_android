@@ -245,4 +245,10 @@ public class LogInActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed()
+    {
+        finishAffinity();
+    }
+
 }
