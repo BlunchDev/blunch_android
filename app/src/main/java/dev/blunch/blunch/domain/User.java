@@ -28,9 +28,12 @@ public class User implements Entity {
     private Map<String, Object> myMenus;
     private Map<String, Object> participatedMenus;
 
+    private Map<String, Object> myChats;
+
     public User(){
         myMenus = new LinkedHashMap<>();
         participatedMenus = new LinkedHashMap<>();
+        myChats = new LinkedHashMap<>();
         this.valorationAverage = 0.0;
         this.valorationNumber = 0;
     }
@@ -43,6 +46,7 @@ public class User implements Entity {
         this.valorationNumber = 0;
         myMenus = new LinkedHashMap<>();
         participatedMenus = new LinkedHashMap<>();
+        myChats = new LinkedHashMap<>();
     }
 
     @Override
@@ -68,6 +72,14 @@ public class User implements Entity {
 
     public void setImageFile(String imageFile) {
         this.imageFile = imageFile;
+    }
+
+    public Map<String, Object> getMyChats() {
+        return myChats;
+    }
+
+    public void setMyChats(Map<String, Object> myChats) {
+        this.myChats = myChats;
     }
 
     public Map<String, Object> getMyMenus() {
