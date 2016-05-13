@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -13,11 +14,13 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -44,6 +47,8 @@ import dev.blunch.blunch.services.PaymentMenuService;
 import dev.blunch.blunch.services.ServiceFactory;
 import dev.blunch.blunch.utils.Preferences;
 import dev.blunch.blunch.utils.Repository;
+import dev.blunch.blunch.view.MenuRateRecyclerView;
+import dev.blunch.blunch.view.MenuRecyclerView;
 
 @SuppressWarnings("all")
 public class MainActivity extends AppCompatActivity
@@ -52,6 +57,9 @@ public class MainActivity extends AppCompatActivity
     MenuService menuService;
     CollaborativeMenuService collaborativeMenuService;
     PaymentMenuService paymentMenuService;
+
+
+    NavigationView navigationView;
 
     private String email;
 
@@ -77,7 +85,7 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(0).setChecked(true);
 
@@ -123,6 +131,7 @@ public class MainActivity extends AppCompatActivity
         oldMenus.setTextColor(getResources().getColor(R.color.colorAccent));
         int count = menuService.getNonValuedCollaboratedMenusOf(email).size();
         if (count > 0) oldMenus.setText(String.valueOf(count));
+        else oldMenus.setText("");
     }
 
     private void setUserInfo(NavigationView navigationView) {
@@ -284,38 +293,19 @@ public class MainActivity extends AppCompatActivity
                 break;
         }
 
-        final MenuListAdapter menuListAdapter = new MenuListAdapter(
-                getApplicationContext(),
-                menuList,
-                menuService.getUsers());
+        View recyclerView2 = findViewById(R.id.menu_list);
+        assert recyclerView2 != null;
+        MenuRecyclerView menuRecyclerView = new MenuRecyclerView(getApplicationContext(),
+                menuList, menuService.getUsers());
+        ((RecyclerView) recyclerView2).setAdapter(menuRecyclerView);
 
-        ListView listView = (ListView) findViewById(R.id.menu_list);
-        listView.setAdapter(menuListAdapter);
+    }
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                dev.blunch.blunch.domain.Menu menu = menuListAdapter.getItem(position);
-
-                String s = menu.getClass().getSimpleName();
-
-                switch (s) {
-                    case "CollaborativeMenu":
-                        Intent intent = new Intent(MainActivity.this, GetCollaborativeMenuActivity.class);
-                        intent.putExtra(GetCollaborativeMenuActivity.MENU_ID_KEY, menu.getId());
-                        startActivity(intent);
-                        break;
-                    case "PaymentMenu":
-                        Intent intent2 = new Intent(MainActivity.this, GetPaymentMenuActivity.class);
-                        intent2.putExtra(GetPaymentMenuActivity.MENU_ID_KEY, menu.getId());
-                        startActivity(intent2);
-                        break;
-                    default:
-                        break;
-                }
-            }
-        });
-
+    private MenuRecyclerView setupRecyclerView(@NonNull RecyclerView recyclerView, List<dev.blunch.blunch.domain.Menu> menus) {
+        MenuRecyclerView menuRecyclerView = new MenuRecyclerView(getApplicationContext(),
+                menus, menuService.getUsers());
+        recyclerView.setAdapter(menuRecyclerView);
+        return menuRecyclerView;
     }
 
     private void initializeCollaboratingMenus() {
@@ -400,38 +390,12 @@ public class MainActivity extends AppCompatActivity
                 break;
         }
 
-        final MenuListAdapter menuListAdapter = new MenuListAdapter(
-                getApplicationContext(),
-                menuList,
-                menuService.getUsers());
+        View recyclerView2 = findViewById(R.id.menu_list);
+        assert recyclerView2 != null;
+        MenuRateRecyclerView menuRecyclerView = new MenuRateRecyclerView(getApplicationContext(),
+                menuList, menuService.getUsers(), menuService);
+        ((RecyclerView) recyclerView2).setAdapter(menuRecyclerView);
 
-        ListView listView = (ListView) findViewById(R.id.menu_list);
-        listView.setAdapter(menuListAdapter);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                dev.blunch.blunch.domain.Menu menu = menuListAdapter.getItem(position);
-
-                String menuId = menu.getId();
-                String userId = Preferences.getCurrentUserEmail();
-
-                if (!menuService.isValuedBy(menuId, userId)) {
-                    Intent intent = new Intent(MainActivity.this, ValorationActivity.class);
-                    intent.putExtra(ValorationActivity.MENU_ID, menuId);
-                    intent.putExtra(ValorationActivity.USER_ID, userId);
-                    startActivity(intent);
-                }
-                else {
-                    Valoration v = menuService.getValoration(menuId, userId);
-                    boolean decimal = ((int) v.getPoints() < v.getPoints());
-                    Snackbar.make(view, "Este menú ya fue valorado en " +
-                                        (decimal ? (int)v.getPoints() + " estrellas." : (int)v.getPoints() + " estrellas y media."),
-                                        Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                }
-            }
-        });
     }
 
     private void initializeMyMenus() {
@@ -471,5 +435,8 @@ public class MainActivity extends AppCompatActivity
         super.onResume();
         if (getTitle().equals("Buscar menús")) init("Todos");
         else if (getTitle().equals("Valoración de menus")) initOldMenus("No valorados");
+        TextView oldMenus;
+        oldMenus = (TextView) MenuItemCompat.getActionView(navigationView.getMenu().findItem(R.id.old_menus));
+        initializeCountDrawer(oldMenus);
     }
 }
