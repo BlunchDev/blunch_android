@@ -3,8 +3,10 @@ package dev.blunch.blunch.services;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.domain.CollaborativeMenuAnswer;
@@ -115,6 +117,7 @@ public class CollaborativeMenuService extends Service<CollaborativeMenu> {
             collaborativeMenuAnswer.addOfferedDish(d.getId());
         }
         CollaborativeMenuAnswer answer = collaborativeMenuAnswerRepository.insert(collaborativeMenuAnswer);
+
         return answer;
     }
 
@@ -242,5 +245,13 @@ public class CollaborativeMenuService extends Service<CollaborativeMenu> {
 
     public boolean imGuest(String idMenu) {
         return findUserByEmail(Preferences.getCurrentUserEmail()).imGuest(idMenu);
+    }
+
+    public Collection<Dish> getMySuggestedDishes(String idMenu) {
+        List<Dish> d = new ArrayList<>();
+        for(String idDish: get(idMenu).getOfferedDishes().keySet()){
+            d.add(dishesRepository.get(idDish));
+        }
+        return d;
     }
 }
