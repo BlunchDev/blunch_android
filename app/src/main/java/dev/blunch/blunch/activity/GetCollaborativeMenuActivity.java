@@ -98,7 +98,7 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         TextView messageCount = (TextView) findViewById(R.id.messagesCount);
         if(guest() || host()) {
-            int count = menuService.getPendingMessagesCount(this.menuId);
+            long count = menuService.getPendingMessagesCount(this.menuId);
             if (count > 0) {
                 if (count < 100) messageCount.setText(String.valueOf(count));
                 else messageCount.setText("+99");

@@ -325,8 +325,8 @@ public class MenuService extends Service<CollaborativeMenu> {
         return m;
     }
 
-    public int getPendingMessagesCount(String id) {
-        return (Integer) findUserByEmail(Preferences.getCurrentUserEmail()).getMyChats().get(id);
+    public long getPendingMessagesCount(String id) {
+        return (long) findUserByEmail(Preferences.getCurrentUserEmail()).getMyChats().get(id);
     }
 
     public void resetMessageCountToActualUser(String id) {
