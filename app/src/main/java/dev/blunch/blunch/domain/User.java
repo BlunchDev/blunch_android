@@ -28,7 +28,6 @@ public class User implements Entity {
     private Integer valorationNumber;
     private Map<String, Object> myMenus;
     private Map<String, Object> participatedMenus;
-
     private Map<String, Object> myChats;
 
     public User(){
@@ -146,8 +145,14 @@ public class User implements Entity {
 
     public boolean imHost(String idMenu) { return myMenus.containsKey(idMenu);}
 
-    public void setChat(String key, Date value) {
-        this.myChats.put(key, value);
+    public void resetMessageCount(String key) {
+        this.myChats.put(key, 0);
+    }
+
+    public void increaseMessageCount(String key) {
+        Integer actualCount = (Integer) this.myChats.get(key);
+        ++actualCount;
+        this.myChats.put(key, actualCount);
     }
 
     public Menu getMyMenu(String idMenu) {

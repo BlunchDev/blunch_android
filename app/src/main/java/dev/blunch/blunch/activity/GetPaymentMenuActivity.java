@@ -146,7 +146,6 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
                 }
             });
             join.setText("Peticiones");
-            //dishesLayout.setVisibility(View.GONE);
         }
         else if(!guest()) {
             join.setOnClickListener(new View.OnClickListener() {

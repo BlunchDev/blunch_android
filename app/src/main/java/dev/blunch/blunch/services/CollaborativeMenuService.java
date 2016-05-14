@@ -3,12 +3,9 @@ package dev.blunch.blunch.services;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.domain.CollaborativeMenuAnswer;
@@ -168,7 +165,7 @@ public class CollaborativeMenuService extends Service<CollaborativeMenu> {
         if (userRepository.exists(answer.getGuest())) {
             User user = userRepository.get(answer.getGuest());
             user.addNewParticipatedMenu(repository.get(answer.getMenuId()));
-            user.setChat(answer.getMenuId(), new Date(0));
+            user.resetMessageCount(answer.getMenuId());
             userRepository.update(user);
         }
     }
@@ -250,17 +247,17 @@ public class CollaborativeMenuService extends Service<CollaborativeMenu> {
         return findUserByEmail(Preferences.getCurrentUserEmail()).imGuest(idMenu);
     }
 
-    public void setActualDateToMenuChat(String id) {
-        User user = findUserByEmail(Preferences.getCurrentUserEmail());
-        user.setChat(id, Calendar.getInstance().getTime());
-        userRepository.update(user);
-    }
-
     public Collection<Dish> getMySuggestedDishes(String idMenu) {
         List<Dish> d = new ArrayList<>();
         for(String idDish: get(idMenu).getOfferedDishes().keySet()){
             d.add(dishesRepository.get(idDish));
         }
         return d;
+    }
+
+    public void resetMessageCountToActualUser(String id) {
+        User user = findUserByEmail(Preferences.getCurrentUserEmail());
+        user.resetMessageCount(id);
+        userRepository.update(user);
     }
 }

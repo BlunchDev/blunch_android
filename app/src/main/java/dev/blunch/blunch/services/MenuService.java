@@ -29,17 +29,15 @@ public class MenuService extends Service<CollaborativeMenu> {
     private Repository<PaymentMenu> paymentMenuRepository;
     private Repository<User> userRepository;
     private Repository<Valoration> valorationRepository;
-    private Repository<ChatMessage> chatMessageRepository;
     int loadNeed = 1;
     int loaded = 0;
 
 
-    public MenuService(Repository<CollaborativeMenu> repository, Repository<PaymentMenu> paymentMenuRepository, Repository<Valoration> valorationRepository,Repository<User> userRepository, Repository<ChatMessage> chatMessageRepository) {
+    public MenuService(Repository<CollaborativeMenu> repository, Repository<PaymentMenu> paymentMenuRepository, Repository<Valoration> valorationRepository,Repository<User> userRepository) {
         super(repository);
         this.paymentMenuRepository = paymentMenuRepository;
         this.valorationRepository = valorationRepository;
         this.userRepository = userRepository;
-        this.chatMessageRepository = chatMessageRepository;
     }
 
     public List<CollaborativeMenu> getCollaborativeMenus() {
@@ -320,29 +318,29 @@ public class MenuService extends Service<CollaborativeMenu> {
     }
 
     public Menu getMenu(String menuId) {
-        
         Menu m = paymentMenuRepository.get(menuId);
         if(m == null){
             m = repository.get(menuId);
         }
-        
         return m;
     }
 
     public int getPendingMessagesCount(String id) {
-        Long lastAccess = (long) findUserByEmail(Preferences.getCurrentUserEmail()).getMyChats().get(id);
-        int count = 0;
-        for (ChatMessage chatMessage : chatMessageRepository.all()) {
-            Log.d("JAJAJAJAJAJAJA", chatMessage.getId());
-            if (chatMessage.getCreatedAt() > lastAccess) ++count;
-        }
-        return count;
+        return (Integer) findUserByEmail(Preferences.getCurrentUserEmail()).getMyChats().get(id);
     }
 
-    public void setActualDateToMenuChat(String id) {
+    public void resetMessageCountToActualUser(String id) {
         User user = findUserByEmail(Preferences.getCurrentUserEmail());
-        user.setChat(id, Calendar.getInstance().getTime());
+        user.resetMessageCount(id);
         userRepository.update(user);
     }
 
+    public void increaseMessageCountToOtherUsers(String menuId) {
+        for (User user : userRepository.all()) {
+            if (!user.getId().equals(Preferences.getCurrentUserEmail()) && user.getMyChats().containsKey(menuId)) {
+                user.increaseMessageCount(menuId);
+                userRepository.update(user);
+            }
+        }
+    }
 }

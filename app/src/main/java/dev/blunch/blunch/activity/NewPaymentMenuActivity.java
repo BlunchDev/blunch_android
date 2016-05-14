@@ -317,9 +317,9 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
                         start,
                         finish);
                 paymentMenuService.save(paymentMenu, dishes);
+                paymentMenuService.resetMessageCountToActualUser(paymentMenu.getId());
                 Toast.makeText(this, "Menu de pago creado correctamente!",
                         Toast.LENGTH_LONG).show();
-                paymentMenuService.setActualDateToMenuChat(paymentMenu.getId());
                 finish();
             }
         }

@@ -38,7 +38,7 @@ public class MenuServiceTest {
     public void setUp() {
         collaborativeMenuMockRepository = new MockRepository<>();
         paymentMenuMockRepository = new MockRepository<>();
-        service = new MenuService(collaborativeMenuMockRepository, paymentMenuMockRepository, new MockRepository<Valoration>(), new MockRepository<User>(), new MockRepository<ChatMessage>());
+        service = new MenuService(collaborativeMenuMockRepository, paymentMenuMockRepository, new MockRepository<Valoration>(), new MockRepository<User>());
         collaborativeMenu = new CollaborativeMenu(
                 "Menu de micro de la FIB",
                 "Encarna", "És un menu de micro de la FIB",
