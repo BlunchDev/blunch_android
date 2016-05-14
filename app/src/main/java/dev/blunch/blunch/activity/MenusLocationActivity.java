@@ -2,6 +2,7 @@ package dev.blunch.blunch.activity;
 
 import android.Manifest;
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -18,8 +19,10 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
@@ -28,10 +31,13 @@ import java.util.List;
 
 import dev.blunch.blunch.R;
 import dev.blunch.blunch.domain.Menu;
+import dev.blunch.blunch.domain.PaymentMenu;
 import dev.blunch.blunch.services.MenuService;
 import dev.blunch.blunch.services.ServiceFactory;
+import dev.blunch.blunch.utils.IntentUtils;
 
-public class MenusLocationActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener {
+public class MenusLocationActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener,
+        GoogleMap.OnInfoWindowClickListener,GoogleMap.OnMarkerClickListener {
 
     private GoogleMap mMap;
     Location localizacion;
@@ -54,6 +60,8 @@ public class MenusLocationActivity extends FragmentActivity implements OnMapRead
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setOnMyLocationButtonClickListener(this);
+        //mMap.setOnInfoWindowClickListener(this);
+        mMap.setOnMarkerClickListener(this);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -81,7 +89,12 @@ public class MenusLocationActivity extends FragmentActivity implements OnMapRead
             if(m.getDateEnd().after(new Date())) {
                 LatLng posicion = getLocationFromAddress(m.getLocalization());
                 if (posicion != null) {
-                    mMap.addMarker(new MarkerOptions().position(posicion).title(m.getName()));
+                    MarkerOptions marcador = new MarkerOptions()
+                            .position(posicion)
+                            .title(m.getId())
+                            .snippet("Finalización: " + m.getDateEnd());
+                    if (m instanceof PaymentMenu) marcador.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+                    mMap.addMarker(marcador);
                 }
             }
         }
@@ -124,5 +137,23 @@ public class MenusLocationActivity extends FragmentActivity implements OnMapRead
         Toast.makeText(this, "GPS not enabled",
                 Toast.LENGTH_LONG).show();
         return false;
+    }
+
+    //TO delete if not needed
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        Menu m = menuService.getMenu(marker.getTitle());
+        Intent intent = IntentUtils.getMenuDetailIntent(m,getApplicationContext());
+        intent.putExtra("menuId", m.getId());
+        startActivity(intent);
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        Menu m = menuService.getMenu(marker.getTitle());
+        Intent intent = IntentUtils.getMenuDetailIntent(m,getApplicationContext());
+        intent.putExtra("menuId", m.getId());
+        startActivity(intent);
+        return true;
     }
 }
