@@ -127,6 +127,7 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
         }
         else{
             fab.setVisibility(View.GONE);
+            messageCount.setVisibility(View.GONE);
         }
 
         userPic.setImageDrawable(obtainUserPic());

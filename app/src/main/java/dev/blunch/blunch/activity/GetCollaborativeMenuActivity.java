@@ -115,6 +115,7 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
         }
         else{
             fab.setVisibility(View.GONE);
+            messageCount.setVisibility(View.GONE);
         }
         userName.setText(obtainUserName());
         localization.setText(obtainAddress() + ", " + obtainCity());

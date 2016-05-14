@@ -150,7 +150,7 @@ public class User implements Entity {
     }
 
     public void increaseMessageCount(String key) {
-        Integer actualCount = (Integer) this.myChats.get(key);
+        long actualCount = (long) this.myChats.get(key);
         ++actualCount;
         this.myChats.put(key, actualCount);
     }
