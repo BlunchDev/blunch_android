@@ -55,9 +55,9 @@ public class ChatActivity extends AppCompatActivity {
             setTitle("Chat " + menu.getName());
         }
 
-        menuService.setActualDateToMenuChat(menuId);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        menuService.resetMessageCountToActualUser(menuId);
 
         final RecyclerView recycler = (RecyclerView) findViewById(R.id.chat_list);
         assert recycler != null;
@@ -113,6 +113,7 @@ public class ChatActivity extends AppCompatActivity {
                 ChatMessage message = new ChatMessage(Preferences.getCurrentUserEmail(),messageText.getText().toString());
                 mRef.push().setValue(message);
                 messageText.setText("");
+                menuService.increaseMessageCountToOtherUsers(menuId);
             }
         });
     }
@@ -152,6 +153,6 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        menuService.setActualDateToMenuChat(menuId);
+        menuService.resetMessageCountToActualUser(menuId);
     }
 }
