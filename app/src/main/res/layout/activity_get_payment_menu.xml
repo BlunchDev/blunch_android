@@ -48,13 +48,35 @@
             android:background="@color/colorPrimary"/>
     </LinearLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+    <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_dialog_email"
         app:layout_anchor="@id/app_bar"
-        app:layout_anchorGravity="bottom|end" />
+        app:layout_anchorGravity="bottom|end" >
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_dialog_email"
+            app:borderWidth="0dp"
+            android:elevation="0dp"
+            app:fabSize="normal" />
+
+        <TextView
+            android:id="@+id/messagesCount"
+            android:layout_width="25dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorAccent"
+            android:background="@drawable/white_circle"
+            android:gravity="center"
+            android:textSize="12sp"
+            android:text="+99"
+            android:elevation="7dp" />
+
+    </FrameLayout>
+
+
 
 </android.support.design.widget.CoordinatorLayout>
