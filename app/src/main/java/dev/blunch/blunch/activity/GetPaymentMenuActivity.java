@@ -32,6 +32,7 @@ import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.domain.PaymentMenu;
 import dev.blunch.blunch.domain.PaymentMenuAnswer;
 import dev.blunch.blunch.domain.User;
+import dev.blunch.blunch.services.MenuService;
 import dev.blunch.blunch.services.PaymentMenuService;
 import dev.blunch.blunch.services.ServiceFactory;
 import dev.blunch.blunch.utils.Preferences;
@@ -44,6 +45,7 @@ import dev.blunch.blunch.view.SelectPaymentDishLayout;
 public class GetPaymentMenuActivity extends AppCompatActivity {
     public static final String MENU_ID_KEY = "menuId";
     private PaymentMenuService paymentMenuService;
+    private MenuService menuService;
     private PaymentMenu paymentMenu;
     private PaymentMenuAnswer paymentMenuAnswer;
     private List<Dish> dishes;
@@ -76,6 +78,7 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
         if (getIntent().getStringExtra(MENU_ID_KEY) != null) this.menuId = getIntent().getStringExtra(MENU_ID_KEY);
 
         paymentMenuService = ServiceFactory.getPaymentMenuService(getApplicationContext());
+        menuService = ServiceFactory.getMenuService(getApplicationContext());
         paymentMenu = paymentMenuService.get(menuId);
         dishes = paymentMenuService.getDishes(paymentMenu.getId());
         initialize();
@@ -104,8 +107,15 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
         });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        TextView messageCount = (TextView) findViewById(R.id.messagesCount);
 
         if(guest() || host()) {
+            long count = menuService.getPendingMessagesCount(this.menuId);
+            if (count > 0) {
+                if (count < 100) messageCount.setText(String.valueOf(count));
+                else messageCount.setText("+99");
+            }
+            else messageCount.setVisibility(View.GONE);
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -117,6 +127,7 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
         }
         else{
             fab.setVisibility(View.GONE);
+            messageCount.setVisibility(View.GONE);
         }
 
         userPic.setImageDrawable(obtainUserPic());
@@ -136,7 +147,6 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
                 }
             });
             join.setText("Peticiones");
-            //dishesLayout.setVisibility(View.GONE);
         }
         else if(!guest()) {
             join.setOnClickListener(new View.OnClickListener() {

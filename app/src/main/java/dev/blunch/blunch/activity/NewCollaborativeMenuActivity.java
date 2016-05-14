@@ -36,11 +36,11 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
     private int day,month,year;
 
     private int     iHour,
-            iMinute,
-            fHour,
-            fMinute;
-    private Date start,
-            finish;
+                    iMinute,
+                    fHour,
+                    fMinute;
+    private Date    start,
+                    finish;
     protected ArrayList<CollaborativeDishLayout> myDishes = new ArrayList<>();
     protected ArrayList<CollaborativeDishLayout> suggestedDishes = new ArrayList<>();
 
@@ -78,18 +78,6 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         final ImageButton moreSuggestedDishes = (ImageButton) findViewById(R.id.moreSuggestdDishes);
         final LinearLayout moreDishesLayout = (LinearLayout) findViewById(R.id.dishesLayout);
         final LinearLayout moreSuggestedDishesLayout = (LinearLayout) findViewById(R.id.suggestedDishesLayout);
-        /*final CollaborativeDishLayout menu = new CollaborativeDishLayout(getApplicationContext());
-        myDishes.add(menu);
-        moreDishesLayout.addView(menu);
-        menu.getClose().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (myDishes.size() > 1) {
-                    moreDishesLayout.removeView(menu);
-                    myDishes.remove(menu);
-                }
-            }
-        });*/
 
         moreDishes.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -265,7 +253,6 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         EditText descriptionEditText = (EditText) findViewById(R.id.description);
         EditText menuNameEditText = (EditText) findViewById(R.id.nomMenu);
 
-        final String author = "Admin";
         String address = adressEditText.getText().toString().trim();
         String city = cityEditText.getText().toString().trim();
         final String localization = address + ", " + city;
@@ -313,9 +300,9 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
                         start,
                         finish);
                 collaborativeMenuService.save(collaborativeMenu, offeredDish, suggestedDish);
+                collaborativeMenuService.resetMessageCountToActualUser(collaborativeMenu.getId());
                 Toast.makeText(this, "Menú colaborativo creado correctamente!",
                         Toast.LENGTH_LONG).show();
-                collaborativeMenuService.setActualDateToMenuChat(collaborativeMenu.getId());
                 finish();
             }
         }
