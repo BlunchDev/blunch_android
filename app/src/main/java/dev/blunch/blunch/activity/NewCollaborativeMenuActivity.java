@@ -15,6 +15,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -26,6 +28,7 @@ import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.services.CollaborativeMenuService;
 import dev.blunch.blunch.services.ServiceFactory;
 import dev.blunch.blunch.utils.Preferences;
+import dev.blunch.blunch.utils.Utils;
 import dev.blunch.blunch.view.CollaborativeDishLayout;
 
 @SuppressWarnings("all")
@@ -260,6 +263,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
 
         String menuNameString = menuNameEditText.getText().toString();
         String description = descriptionEditText.getText().toString();
+        LatLng posicion = Utils.getLocationFromAddress(localization,getApplicationContext());
 
         if(isIncomplete(address, city, menuNameString, description)){
             Toast.makeText(this, "Campos incompletos",
@@ -267,6 +271,10 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         }
         else if(start.getTime()>=finish.getTime()){
             Toast.makeText(this, "Hora de inicio más pequeña o igual que hora final",
+                    Toast.LENGTH_LONG).show();
+        }
+        else if (posicion == null){
+            Toast.makeText(this, "La dirección no es correcta",
                     Toast.LENGTH_LONG).show();
         }
         else {

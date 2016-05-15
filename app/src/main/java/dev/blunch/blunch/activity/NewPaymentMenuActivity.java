@@ -15,6 +15,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -26,6 +28,7 @@ import dev.blunch.blunch.domain.PaymentMenu;
 import dev.blunch.blunch.services.PaymentMenuService;
 import dev.blunch.blunch.services.ServiceFactory;
 import dev.blunch.blunch.utils.Preferences;
+import dev.blunch.blunch.utils.Utils;
 import dev.blunch.blunch.view.PaymentDishLayout;
 
 @SuppressWarnings("all")
@@ -249,6 +252,8 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
             if (p.getDishName().isEmpty() || p.getDishPrice() == 0 || p.getDishName().equals(" ")) incorrectDishes = true;
         }
 
+        LatLng posicion = Utils.getLocationFromAddress(localization,getApplicationContext());
+
         if(isIncomplete(address, city, menuNameString, description)){
             String s = "";
             boolean added = false;
@@ -290,6 +295,10 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
             }
 
             Toast.makeText(this, s + " incompleta", Toast.LENGTH_LONG).show();
+        }
+        else if(posicion == null){
+            Toast.makeText(this, "La dirección no es correcta",
+                    Toast.LENGTH_LONG).show();
         }
         else if(start.getTime()>=finish.getTime()){
             Toast.makeText(this, "Hora de inicio más pequeña o igual que hora final",
