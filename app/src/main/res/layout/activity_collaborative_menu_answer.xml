@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/CollaborativeMenuAnswerLayout"
-    android:windowSoftInputMode="adjustResize"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,59 +8,43 @@
     tools:context=".activity.NewCollaborativeMenuActivity">
 
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay"
-        android:id="@+id/toolbar">
+        android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Sugerencias"
-                android:gravity="left"
-                android:textSize="24dp"
-                android:textStyle="bold"/>
-
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="?attr/actionBarSize"
-                android:src="@drawable/check"
-                android:tint="@color/white"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:id="@+id/CollaborativeMenuAnswerBtnEnd"
-                android:layout_gravity="right"
-                android:textColor="@color/white"
-                android:background="@color/colorPrimary"
-                android:layout_alignParentBottom="true"/>
-
-        </android.support.v7.widget.Toolbar>
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
 
-    <ScrollView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:baselineAligned="false">
+                android:baselineAligned="false"
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/collaborative_menu_answer_host_suggest"
+                    android:layout_gravity="bottom"
                     android:layout_marginStart="15dp"
                     android:layout_marginTop="20sp"
-                    android:textSize="20sp"
-                    android:layout_gravity="bottom" />
+                    android:text="@string/collaborative_menu_answer_host_suggest"
+                    android:textSize="20sp" />
 
                 <Space
                     android:layout_width="match_parent"
@@ -72,44 +54,43 @@
                     android:id="@+id/CollaborativeMenuAnswerHostSuggestions"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20sp"
                     android:layout_marginEnd="20sp"
-                    android:orientation="vertical">
-                </LinearLayout>
+                    android:layout_marginTop="20sp"
+                    android:orientation="vertical"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/collaborative_menu_answer_guest_suggest"
                     android:layout_marginStart="15dp"
                     android:layout_marginTop="30dp"
-                    android:textSize="20sp"/>
+                    android:text="@string/collaborative_menu_answer_guest_suggest"
+                    android:textSize="20sp" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="20sp"
                     android:layout_marginStart="15dp"
                     android:layout_marginTop="20sp"
-                    android:layout_marginEnd="20sp"
                     android:orientation="horizontal">
 
                     <EditText
                         android:id="@+id/CollaborativeMenuAnswerEt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="textCapSentences"
                         android:layout_toStartOf="@+id/CollaborativeMenuAnswerBtn"
-                        android:hint="@string/collaborative_menu_answer_Et_hint"/>
+                        android:hint="@string/collaborative_menu_answer_Et_hint"
+                        android:inputType="textCapSentences" />
 
                     <Button
                         android:id="@+id/CollaborativeMenuAnswerBtn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:text="@string/collaborative_menu_answer_Btn_add"
-                        android:onClick="addSuggestion"
                         android:background="@color/colorPrimary"
-                        android:textColor="@color/background"/>
+                        android:onClick="addSuggestion"
+                        android:text="@string/collaborative_menu_answer_Btn_add"
+                        android:textColor="@color/background" />
 
                 </RelativeLayout>
 
@@ -117,14 +98,13 @@
                     android:id="@+id/CollaborativeMenuAnswerGuestSuggestions"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="20sp"
                     android:layout_marginStart="15dp"
                     android:layout_marginTop="20sp"
-                    android:layout_marginEnd="20sp"
-                    android:orientation="vertical">
-                </LinearLayout>
+                    android:orientation="vertical"/>
             </LinearLayout>
-    </ScrollView>
+        </ScrollView>
 
 
-
-</RelativeLayout>
+    </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>
