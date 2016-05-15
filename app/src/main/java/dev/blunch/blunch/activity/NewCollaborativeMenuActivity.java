@@ -269,6 +269,14 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
             Toast.makeText(this, "Campos incompletos",
                     Toast.LENGTH_LONG).show();
         }
+        else if (start.before(new Date())){
+            Toast.makeText(this, "Fecha de inicio anterior a fecha actual",
+                    Toast.LENGTH_LONG).show();
+        }
+        else if (finish.before(new Date())){
+            Toast.makeText(this, "Fecha de finalización anterior a fecha actual",
+                    Toast.LENGTH_LONG).show();
+        }
         else if(start.getTime()>=finish.getTime()){
             Toast.makeText(this, "Hora de inicio más pequeña o igual que hora final",
                     Toast.LENGTH_LONG).show();
