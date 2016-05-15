@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:id="@+id/chat_layout"
     tools:context="dev.blunch.blunch.activity.ChatActivity">
 
     <android.support.design.widget.AppBarLayout
