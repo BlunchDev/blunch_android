@@ -52,10 +52,10 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="mis_menus">Mis menús</string>
-    <string name="buscar_menus">Buscar menús</string>
-    <string name="mapa_menus">Mapa de menús</string>
+    <string name="buscar_menus">Buscar</string>
+    <string name="mapa_menus">Mapa</string>
     <string name="menus_participo">Menús en los que participo</string>
-    <string name="valoracion_menus">Valoración de menús</string>
+    <string name="valoracion_menus">Valoración</string>
     <string name="title_activity_chat">ChatActivity</string>
     <string name="valorationTitle">Valoración</string>
     <string name="firstTextValoration">Valore al usuario</string>
