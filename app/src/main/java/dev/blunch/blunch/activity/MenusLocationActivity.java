@@ -10,7 +10,6 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.widget.Toast;
@@ -134,7 +133,7 @@ public class MenusLocationActivity extends FragmentActivity implements OnMapRead
     @Override
     public boolean onMyLocationButtonClick() {
         if(gpsEnabled()) return false;
-        Toast.makeText(this, "GPS not enabled",
+        Toast.makeText(this, "GPS no conectado",
                 Toast.LENGTH_LONG).show();
         return false;
     }
