@@ -11,6 +11,10 @@
         android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <provider android:authorities="com.facebook.app.FacebookContentProvider1004661026291848"
+            android:name="com.facebook.FacebookContentProvider"
+            android:exported="true" />
         <activity
             android:name=".activity.MainActivity"
             android:label="@string/title_activity_main"
@@ -84,8 +88,6 @@
         </activity>
     </application>
 
-    <provider android:authorities="com.facebook.app.FacebookContentProvider1004661026291848"
-        android:name="com.facebook.FacebookContentProvider"
-        android:exported="true" />
+
 
 </manifest>
