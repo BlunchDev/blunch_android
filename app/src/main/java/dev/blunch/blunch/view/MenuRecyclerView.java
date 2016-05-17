@@ -9,8 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -18,7 +16,6 @@ import java.util.List;
 import dev.blunch.blunch.R;
 import dev.blunch.blunch.activity.GetCollaborativeMenuActivity;
 import dev.blunch.blunch.activity.GetPaymentMenuActivity;
-import dev.blunch.blunch.activity.MainActivity;
 import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.domain.Menu;
 import dev.blunch.blunch.domain.User;
@@ -77,9 +74,9 @@ public class MenuRecyclerView extends RecyclerView.Adapter<MenuRecyclerView.View
         }
 
         if (CollaborativeMenu.class.isAssignableFrom(holder.mItem.getClass())) {
-            holder.menuType.setImageResource(R.drawable.group);
+            holder.menuType.setImageResource(R.mipmap.collaborativeicon);
         } else {
-            holder.menuType.setImageResource(R.drawable.euro);
+            holder.menuType.setImageResource(R.mipmap.paymenticon);
         }
     }
 
