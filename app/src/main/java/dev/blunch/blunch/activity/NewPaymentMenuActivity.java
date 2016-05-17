@@ -245,9 +245,9 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
 
         boolean incorrectDishes = false;
         if (myDishes.isEmpty()) incorrectDishes = true;
-        for (PaymentDishLayout p : myDishes) {
+        for (PaymentDishLayout p : myDishes)
             if (p.getDishName().isEmpty() || p.getDishPrice() == 0 || p.getDishName().equals(" ")) incorrectDishes = true;
-        }
+
 
         if(isIncomplete(address, city, menuNameString, description)){
             String s = "";
