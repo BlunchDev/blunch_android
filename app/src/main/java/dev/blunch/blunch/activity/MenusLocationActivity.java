@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -69,7 +70,7 @@ public class MenusLocationActivity extends FragmentActivity implements OnMapRead
         LatLng BCN = getLocationFromAddress("Barcelona");
         if (BCN != null) {
             CameraPosition cameraPosition = new CameraPosition.Builder()
-                    .target(BCN)      // Sets the center to DA FIB
+                    .target(BCN)      // Sets the center to BCN
                     .zoom(10)         // we set the zoom
                     .build();
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), 5000, null);
@@ -112,7 +113,9 @@ public class MenusLocationActivity extends FragmentActivity implements OnMapRead
     @Override
     public boolean onMyLocationButtonClick() {
         if (gpsEnabled()) return false;
-        Utils.showLocationDialog(getApplicationContext());
+        //Utils.showLocationDialog(getApplicationContext());
+        Toast.makeText(this, "GPS no activado",
+                Toast.LENGTH_LONG).show();
         return false;
     }
 
