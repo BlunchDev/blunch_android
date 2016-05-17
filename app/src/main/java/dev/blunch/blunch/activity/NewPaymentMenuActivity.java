@@ -5,6 +5,7 @@ import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -236,12 +237,13 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
         EditText menuNameEditText = (EditText) findViewById(R.id.nomMenu);
 
         final String author = "Admin";
-        String address = adressEditText.getText().toString().trim();
-        String city = cityEditText.getText().toString().trim();
+        String address = adressEditText.getText().toString();//.trim();
+        String city = cityEditText.getText().toString();//.trim();
         final String localization = address + ", " + city;
 
-        String menuNameString = menuNameEditText.getText().toString().trim();
-        String description = descriptionEditText.getText().toString().trim();
+        String menuNameString = menuNameEditText.getText().toString();//.trim();
+        String description = descriptionEditText.getText().toString();//.trim();
+        Log.d("dados: ", description);
 
         boolean incorrectDishes = false;
         if (myDishes.isEmpty()) incorrectDishes = true;
@@ -252,14 +254,14 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
         if(isIncomplete(address, city, menuNameString, description)){
             String s = "";
             boolean added = false;
-            if(address.length() > 0 || address.equals("Tu dirección") ) {
+            if(address.trim().length() > 0 || address.equals("Tu dirección") ) {
                 if (!added) {
                     s += "Dirección";
                     added = true;
                 }
                 else s += ", dirección";
             }
-            if(city.length() > 0 || city.equals("Tu ciudad")){
+            if(city.trim().length() > 0 || city.equals("Tu ciudad")){
                 if (!added) {
                     s += "Ciudad";
                     added = true;
@@ -267,14 +269,14 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
                 else s += ", ciudad";
             }
 
-            if(menuNameString.length() > 0 || menuNameString.equals("MENÚ") ){
+            if(menuNameString.trim().length() > 0 || menuNameString.equals("MENÚ") ){
                 if (!added) {
                     s += "Nombre del menú";
                     added = true;
                 }
                 else s += ", nombre del menú";
             }
-            if(description.length() > 0 || description.equals("Descripción")) {
+            if(description.trim().length() > 0 || description.equals("Descripción")) {
                 if (!added) {
                     s += "Descripción";
                     added = true;
