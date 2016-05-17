@@ -5,7 +5,6 @@ import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -243,7 +242,6 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
 
         String menuNameString = menuNameEditText.getText().toString().trim();
         String description = descriptionEditText.getText().toString().trim();
-        Log.d("dados: ", description);
 
         boolean incorrectDishes = false;
         if (myDishes.isEmpty()) incorrectDishes = true;
