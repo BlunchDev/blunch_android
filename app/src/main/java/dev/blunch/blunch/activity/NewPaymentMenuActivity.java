@@ -252,7 +252,7 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
                 }
                 else s += ", dirección";
             }
-            if(city.length() == 0 || city.equals("Tu ciudad")){
+            if( city.length() == 0 || city.equals("Tu ciudad") ){
                 if (!added) {
                     s += "Ciudad";
                     added = true;
