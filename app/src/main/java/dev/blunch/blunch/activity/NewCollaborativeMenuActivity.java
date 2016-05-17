@@ -309,10 +309,10 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
     }
 
     private boolean isIncomplete(String address, String city, String menuNameString, String description) {
-        return menuNameString.length() > 0 || menuNameString.equals("MENÚ")
-                || address.length() > 0 || address.equals("Tu dirección")
-                || city.length() > 0 || city.equals("Tu ciudad")
-                || description.length() > 0 || description.equals("descripción");
+        return menuNameString.length() == 0 || menuNameString.equals("MENÚ")
+                || address.length() == 0 || address.equals("Tu dirección")
+                || city.length() == 0 || city.equals("Tu ciudad")
+                || description.length() == 0 || description.equals("descripción");
     }
 
 }
