@@ -15,6 +15,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -26,6 +28,7 @@ import dev.blunch.blunch.domain.PaymentMenu;
 import dev.blunch.blunch.services.PaymentMenuService;
 import dev.blunch.blunch.services.ServiceFactory;
 import dev.blunch.blunch.utils.Preferences;
+import dev.blunch.blunch.utils.Utils;
 import dev.blunch.blunch.view.PaymentDishLayout;
 
 @SuppressWarnings("all")
@@ -242,43 +245,55 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
 
         String menuNameString = menuNameEditText.getText().toString().trim();
         String description = descriptionEditText.getText().toString().trim();
+        LatLng posicion = Utils.getLocationFromAddress(localization,getApplicationContext());
 
-            String s = "";
-            boolean added = false;
-            if(address.length() == 0 || address.equals("Tu dirección") ) {
-                if (!added) {
-                    s += "Dirección";
-                    added = true;
-                }
-                else s += ", dirección";
+        String s = "";
+        boolean added = false;
+        if(address.length() == 0 || address.equals("Tu dirección") ) {
+            if (!added) {
+                s += "Dirección";
+                added = true;
             }
-            if( city.length() == 0 || city.equals("Tu ciudad") ){
-                if (!added) {
-                    s += "Ciudad";
-                    added = true;
-                }
-                else s += ", ciudad";
+            else s += ", dirección";
+        }
+        if( city.length() == 0 || city.equals("Tu ciudad") ){
+            if (!added) {
+                s += "Ciudad";
+                added = true;
             }
+            else s += ", ciudad";
+        }
 
-            if(menuNameString.length() == 0 || menuNameString.equals("MENÚ") ){
-                if (!added) {
-                    s += "Nombre del menú";
-                    added = true;
-                }
-                else s += ", nombre del menú";
+        if(menuNameString.length() == 0 || menuNameString.equals("MENÚ") ){
+            if (!added) {
+                s += "Nombre del menú";
+                added = true;
             }
-            if(description.length() == 0 || description.equals("Descripción")) {
-                if (!added) {
-                    s += "Descripción";
-                    added = true;
-                }
-                else s += ", descripción";
+            else s += ", nombre del menú";
+        }
+        if(description.length() == 0 || description.equals("Descripción")) {
+            if (!added) {
+                s += "Descripción";
+                added = true;
             }
+            else s += ", descripción";
+        }
 
         if (!s.isEmpty()){
             Toast.makeText(this, s + " incompleta", Toast.LENGTH_LONG).show();
         }
-
+        else if(posicion == null){
+            Toast.makeText(this, "La dirección no es correcta",
+                    Toast.LENGTH_LONG).show();
+        }
+        else if (start.before(new Date())){
+            Toast.makeText(this, "Fecha de inicio anterior a fecha actual",
+                    Toast.LENGTH_LONG).show();
+        }
+        else if (finish.before(new Date())){
+            Toast.makeText(this, "Fecha de finalización anterior a fecha actual",
+                    Toast.LENGTH_LONG).show();
+        }
         else if(start.getTime()>=finish.getTime()){
             Toast.makeText(this, "Hora de inicio más pequeña o igual que hora final",
                     Toast.LENGTH_LONG).show();

@@ -3,9 +3,10 @@ package dev.blunch.blunch.activity;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
@@ -18,7 +19,6 @@ public class ValorationActivity extends AppCompatActivity {
 
     private RatingBar valoration;
     private EditText comment;
-    private ImageButton done;
 
     public static final String USER_ID = "userId";
     public static final String MENU_ID = "menuId";
@@ -33,33 +33,58 @@ public class ValorationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_valoration);
 
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        assert toolbar != null;
+        toolbar.setTitle("Valoracion");
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         menuService = ServiceFactory.getMenuService(getApplicationContext());
 
         valoration = (RatingBar) findViewById(R.id.ratingBar);
         comment = (EditText) findViewById(R.id.valorationComment);
-        done = (ImageButton) findViewById(R.id.valorationDone);
 
         idMenu = getIntent().getStringExtra(MENU_ID);
         guest = getIntent().getStringExtra(USER_ID);
 
-        done.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                click();
-            }
-        });
     }
 
-    private void click(){
-        if(valoration.getRating() == 0){
-            Snackbar.make(findViewById(R.id.valorationDone), "Puntúa para finalizar", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
+    @Override
+    public boolean onCreateOptionsMenu(android.view.Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_answer, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.answer_menu) {
+            try {
+                click();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    private void click() {
+        if (valoration.getRating() == 0) {
+            Snackbar.make(findViewById(R.id.coordinator_layout), "Puntúa para finalizar", Snackbar.LENGTH_LONG).show();
+            return;
         }
         else {
-            Menu m = menuService.getMenu(idMenu);
-            menuService.value(idMenu, valoration.getRating(), comment.getText().toString().trim(), m.getAuthor(), guest);
-            Toast.makeText(this, "Valoración realizada",Toast.LENGTH_LONG).show();
-            finish();
+            createMenu();
         }
+    }
+
+    private void createMenu() {
+        Menu m = menuService.getMenu(idMenu);
+        menuService.value(idMenu, valoration.getRating(), comment.getText().toString().trim(), m.getAuthor(), guest);
+        Toast.makeText(this, "Valoración realizada", Toast.LENGTH_LONG).show();
+        finish();
     }
 }

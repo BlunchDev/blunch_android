@@ -52,9 +52,10 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="mis_menus">Mis menús</string>
-    <string name="buscar_menus">Buscar menús</string>
+    <string name="buscar_menus">Buscar</string>
+    <string name="mapa_menus">Mapa</string>
     <string name="menus_participo">Menús en los que participo</string>
-    <string name="valoracion_menus">Valoración de menús</string>
+    <string name="valoracion_menus">Valoración</string>
     <string name="title_activity_chat">ChatActivity</string>
     <string name="valorationTitle">Valoración</string>
     <string name="firstTextValoration">Valore al usuario</string>
@@ -63,9 +64,13 @@
     <string name="title_activity_log_in">LogInActivity</string>
     <string name="logout">Log out</string>
     <string name="facebook_app_id">1004661026291848</string>
+    <string name="title_activity_menus_location">Map</string>
     <string name="action_accept_proposals">Revisar propuestas</string>
     <string name="action_payment_petitions">Peticions de pago</string>
     <string name="write_something">Escribe algo...</string>
     <string name="send">Enviar</string>
     <string name="exampleValueCount">(0 valoraciones)</string>
+    <string name="location_request_title">Habilitar geolocalizacion</string>
+    <string name="location_request_message">Para ver tu localización en el mapa debes habilitar el GPS en tu telefono. Deseas continuar?</string>
+    <string name="answer_menu">Responder menu</string>
 </resources>

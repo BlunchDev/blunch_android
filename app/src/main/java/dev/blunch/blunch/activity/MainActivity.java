@@ -181,7 +181,6 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(MainActivity.this, LogInActivity.class);
             startActivity(intent);
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -194,6 +193,10 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.search_menus) {
             initFragment(R.layout.content_list_menus);
             initializeSearchMenus();
+        }
+        else if (id == R.id.map) {
+            Intent intent = new Intent(MainActivity.this,MenusLocationActivity.class);
+            startActivity(intent);
         }
         else if (id == R.id.my_menus) {
             initFragment(R.layout.content_list_menus);

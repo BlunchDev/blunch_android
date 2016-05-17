@@ -5,19 +5,23 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/search_menus"
-            android:icon="@android:drawable/ic_dialog_info"
+            android:icon="@android:drawable/ic_menu_search"
             android:title="@string/buscar_menus" />
         <item
+            android:id="@+id/map"
+            android:icon="@android:drawable/ic_dialog_map"
+            android:title="@string/mapa_menus" />
+        <item
             android:id="@+id/my_menus"
-            android:icon="@android:drawable/ic_menu_agenda"
+            android:icon="@android:drawable/ic_menu_edit"
             android:title="@string/mis_menus" />
         <item
             android:id="@+id/collaborating_menus"
-            android:icon="@android:drawable/ic_menu_compass"
+            android:icon="@android:drawable/ic_menu_myplaces"
             android:title="@string/menus_participo" />
         <item
             android:id="@+id/old_menus"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@android:drawable/btn_star"
             android:title="@string/valoracion_menus"
             app:actionViewClass="android.widget.TextView"/>
     </group>
