@@ -243,23 +243,16 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
         String menuNameString = menuNameEditText.getText().toString().trim();
         String description = descriptionEditText.getText().toString().trim();
 
-        boolean incorrectDishes = false;
-        if (myDishes.isEmpty()) incorrectDishes = true;
-        for (PaymentDishLayout p : myDishes) {
-            if (p.getDishName().isEmpty() || p.getDishPrice() == 0 || p.getDishName().equals(" ")) incorrectDishes = true;
-        }
-
-        if(isIncomplete(address, city, menuNameString, description)){
             String s = "";
             boolean added = false;
-            if(address.length() > 0 || address.equals("Tu dirección") ) {
+            if(address.length() == 0 || address.equals("Tu dirección") ) {
                 if (!added) {
                     s += "Dirección";
                     added = true;
                 }
                 else s += ", dirección";
             }
-            if(city.length() > 0 || city.equals("Tu ciudad")){
+            if(city.length() == 0 || city.equals("Tu ciudad")){
                 if (!added) {
                     s += "Ciudad";
                     added = true;
@@ -267,44 +260,46 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
                 else s += ", ciudad";
             }
 
-            if(menuNameString.length() > 0 || menuNameString.equals("MENÚ") ){
+            if(menuNameString.length() == 0 || menuNameString.equals("MENÚ") ){
                 if (!added) {
                     s += "Nombre del menú";
                     added = true;
                 }
                 else s += ", nombre del menú";
             }
-            if(description.length() > 0 || description.equals("Descripción")) {
+            if(description.length() == 0 || description.equals("Descripción")) {
                 if (!added) {
                     s += "Descripción";
                     added = true;
                 }
                 else s += ", descripción";
             }
-            if(myDishes.isEmpty()) {
-                if (!added) {
-                    s += "Lista de platos";
-                    added = true;
-                }
-                else s += ", lista de platos";
-            }
 
+        if (!s.isEmpty()){
             Toast.makeText(this, s + " incompleta", Toast.LENGTH_LONG).show();
         }
+
         else if(start.getTime()>=finish.getTime()){
             Toast.makeText(this, "Hora de inicio más pequeña o igual que hora final",
                     Toast.LENGTH_LONG).show();
         }
+
         else {
 
             List<Dish> dishes = new ArrayList<>();
 
+            boolean incorrectDishes = false;
+            if (myDishes.isEmpty()) incorrectDishes = true;
+            for (PaymentDishLayout p : myDishes) {
+                if (p.getDishName().isEmpty() || p.getDishPrice() == 0 || p.getDishName().trim().length() == 0) incorrectDishes = true;
+            }
+
             if (incorrectDishes)
-                Toast.makeText(this, "Platos incorrectos", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Falta añadir un plato o está vacio!", Toast.LENGTH_LONG).show();
 
             else {
                 for (PaymentDishLayout d : myDishes) {
-                    if (!d.getDishName().equals("")) {
+                    if (d.getDishName().trim().length() > 0) {
                         Dish dish = new Dish(d.getDishName(), d.getDishPrice());
                         dishes.add(dish);
                     }
@@ -324,13 +319,4 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
             }
         }
     }
-
-    private boolean isIncomplete(String address, String city, String menuNameString, String description) {
-        return menuNameString.length() > 0 || menuNameString.equals("MENÚ")
-                || address.length() > 0 || address.equals("Tu dirección")
-                || city.length() > 0 || city.equals("Tu ciudad")
-                || description.length() > 0 || description.equals("descripción")
-                || myDishes.isEmpty();
-    }
-
 }
