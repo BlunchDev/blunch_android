@@ -76,22 +76,14 @@ public class ValorationActivity extends AppCompatActivity {
             Snackbar.make(findViewById(R.id.coordinator_layout), "Puntúa para finalizar", Snackbar.LENGTH_LONG).show();
             return;
         }
-        if (comment.getText().length() == 0) {
-            Snackbar.make(findViewById(R.id.coordinator_layout), "Estas seguro que quieres valorar sin comentarios?", Snackbar.LENGTH_LONG).setAction("SI", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    createMenu();
-                }
-            }).show();
-
-        } else {
+        else {
             createMenu();
         }
     }
 
     private void createMenu() {
         Menu m = menuService.getMenu(idMenu);
-        menuService.value(idMenu, valoration.getRating(), comment.getText().toString(), m.getAuthor(), guest);
+        menuService.value(idMenu, valoration.getRating(), comment.getText().toString().trim(), m.getAuthor(), guest);
         Toast.makeText(this, "Valoración realizada", Toast.LENGTH_LONG).show();
         finish();
     }

@@ -21,6 +21,8 @@ public class PaymentDishLayout extends LinearLayout{
     private ImageButton close;
     private TextView eur;
 
+    private TextView eur1;
+
     public PaymentDishLayout(Context context) {
         super(context);
         setOrientation(VERTICAL);

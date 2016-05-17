@@ -39,11 +39,11 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
     private int day,month,year;
 
     private int     iHour,
-                    iMinute,
-                    fHour,
-                    fMinute;
+            iMinute,
+            fHour,
+            fMinute;
     private Date    start,
-                    finish;
+            finish;
     protected ArrayList<CollaborativeDishLayout> myDishes = new ArrayList<>();
     protected ArrayList<CollaborativeDishLayout> suggestedDishes = new ArrayList<>();
 
@@ -256,17 +256,25 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         EditText descriptionEditText = (EditText) findViewById(R.id.description);
         EditText menuNameEditText = (EditText) findViewById(R.id.nomMenu);
 
-        String address = adressEditText.getText().toString();
-        String city = cityEditText.getText().toString();
+        String address = adressEditText.getText().toString().trim();
+        String city = cityEditText.getText().toString().trim();
         final String localization = address + ", " + city;
 
 
-        String menuNameString = menuNameEditText.getText().toString();
-        String description = descriptionEditText.getText().toString();
+        String menuNameString = menuNameEditText.getText().toString().trim();
+        String description = descriptionEditText.getText().toString().trim();
         LatLng posicion = Utils.getLocationFromAddress(localization,getApplicationContext());
 
-        if(isIncomplete(address, city, menuNameString, description)){
-            Toast.makeText(this, "Campos incompletos",
+        if(menuNameString == null || menuNameString.isEmpty()){
+            Toast.makeText(this, "Nombre de menú incorrecto",
+                    Toast.LENGTH_LONG).show();
+        }
+        else if(description == null || description.isEmpty()){
+            Toast.makeText(this, "Descripción de menú incorrecta",
+                    Toast.LENGTH_LONG).show();
+        }
+        else if(posicion == null){
+            Toast.makeText(this, "La dirección no es correcta",
                     Toast.LENGTH_LONG).show();
         }
         else if (start.before(new Date())){
@@ -281,31 +289,28 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
             Toast.makeText(this, "Hora de inicio más pequeña o igual que hora final",
                     Toast.LENGTH_LONG).show();
         }
-        else if (posicion == null){
-            Toast.makeText(this, "La dirección no es correcta",
-                    Toast.LENGTH_LONG).show();
-        }
         else {
 
             List<Dish> offeredDish = new ArrayList<>();
             List<Dish> suggestedDish = new ArrayList<>();
 
             for (CollaborativeDishLayout dishLayout : myDishes) {
-                if (!dishLayout.getDishName().equals("")) {
+                if (!dishLayout.getDishName().trim().isEmpty()) {
                     Dish dish = new Dish(dishLayout.getDishName());
                     offeredDish.add(dish);
                 }
             }
 
             for (CollaborativeDishLayout dishLayout : suggestedDishes) {
-                if (!dishLayout.getDishName().equals("")) {
+                if (!dishLayout.getDishName().trim().isEmpty()) {
                     Dish dish = new Dish(dishLayout.getDishName());
                     suggestedDish.add(dish);
                 }
             }
 
-            if (offeredDish.size() == 0) {
-                Toast.makeText(getApplicationContext(), "Debes ofrecer al menos un plato!", Toast.LENGTH_SHORT).show();
+            if (offeredDish.isEmpty() || suggestedDish.isEmpty()) {
+                Toast.makeText(this, "Platos incorrectos",
+                        Toast.LENGTH_LONG).show();
             }
 
             else {
@@ -322,13 +327,6 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
                 finish();
             }
         }
-    }
-
-    private boolean isIncomplete(String address, String city, String menuNameString, String description) {
-        return menuNameString.equals("") || address.equals("")
-                || address.equals("") || address.equals("Tu dirección")
-                || city.equals("") || city.equals("Tu ciudad")
-                || description.equals("") || description.equals("descripción");
     }
 
 }
