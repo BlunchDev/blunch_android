@@ -15,8 +15,6 @@ import java.util.Date;
 import java.util.List;
 
 import dev.blunch.blunch.R;
-import dev.blunch.blunch.activity.GetCollaborativeMenuActivity;
-import dev.blunch.blunch.activity.GetPaymentMenuActivity;
 import dev.blunch.blunch.activity.ValorationActivity;
 import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.domain.Menu;
@@ -82,9 +80,9 @@ public class MenuRateRecyclerView extends RecyclerView.Adapter<MenuRateRecyclerV
         }
 
         if (CollaborativeMenu.class.isAssignableFrom(holder.mItem.getClass())) {
-            holder.menuType.setImageResource(R.mipmap.collaborativeIcon);
+            holder.menuType.setImageResource(R.mipmap.collaborativeicon);
         } else {
-            holder.menuType.setImageResource(R.mipmap.paymentIcon);
+            holder.menuType.setImageResource(R.mipmap.paymenticon);
         }
     }
 
