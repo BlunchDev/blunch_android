@@ -52,6 +52,7 @@ dependencies {
     compile 'com.facebook.android:facebook-android-sdk:4.+'
     compile 'com.google.android.gms:play-services:8.4.0'
     compile 'com.firebaseui:firebase-ui:0.3.1'
+    compile 'com.android.support:multidex:1.0.1'
 }
 
 tasks.withType(Test) {
