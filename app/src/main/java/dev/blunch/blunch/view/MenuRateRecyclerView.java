@@ -82,9 +82,9 @@ public class MenuRateRecyclerView extends RecyclerView.Adapter<MenuRateRecyclerV
         }
 
         if (CollaborativeMenu.class.isAssignableFrom(holder.mItem.getClass())) {
-            holder.menuType.setImageResource(R.drawable.group);
+            holder.menuType.setImageResource(R.mipmap.collaborativeIcon);
         } else {
-            holder.menuType.setImageResource(R.drawable.euro);
+            holder.menuType.setImageResource(R.mipmap.paymentIcon);
         }
     }
 
