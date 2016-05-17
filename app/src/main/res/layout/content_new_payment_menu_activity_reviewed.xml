@@ -35,6 +35,7 @@
                     android:layout_gravity="center"
                     android:textColor="@color/black"
                     android:textColorHint="@color/gray"
+                    android:inputType="textCapSentences"
                     android:gravity="center" />
                 <Space
                     android:layout_width="match_parent"
@@ -54,6 +55,7 @@
                         android:hint="Descripción"
                         android:maxLength="140"
                         android:gravity="top"
+                        android:inputType="textCapSentences"
                         android:textColorHint="@color/gray"
                         android:textColor="@color/black"
                         android:layout_gravity="center" />
@@ -64,6 +66,7 @@
                         android:layout_below="@+id/description"
                         android:hint="Tu dirección"
                         android:textColorHint="@color/gray"
+                        android:inputType="textCapSentences"
                         android:textColor="@color/black"
                         android:id="@+id/adress" />
 
@@ -73,6 +76,7 @@
                         android:layout_below="@id/adress"
                         android:hint="Tu ciudad"
                         android:textColorHint="@color/gray"
+                        android:inputType="textCapSentences"
                         android:textColor="@color/black"
                         android:id="@+id/city" />
 
