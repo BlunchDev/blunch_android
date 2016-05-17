@@ -39,11 +39,11 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
     private int day,month,year;
 
     private int     iHour,
-                    iMinute,
-                    fHour,
-                    fMinute;
+            iMinute,
+            fHour,
+            fMinute;
     private Date    start,
-                    finish;
+            finish;
     protected ArrayList<CollaborativeDishLayout> myDishes = new ArrayList<>();
     protected ArrayList<CollaborativeDishLayout> suggestedDishes = new ArrayList<>();
 
@@ -260,46 +260,23 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         String city = cityEditText.getText().toString().trim();
         final String localization = address + ", " + city;
 
+
         String menuNameString = menuNameEditText.getText().toString().trim();
         String description = descriptionEditText.getText().toString().trim();
-        LatLng posicion = Utils.getLocationFromAddress(localization, getApplicationContext());
+        LatLng posicion = Utils.getLocationFromAddress(localization,getApplicationContext());
 
-        String s = "";
-        boolean added = false;
-        if(address.length() == 0 || address.equals("Tu dirección") ) {
-            if (!added) {
-                s += "Dirección";
-                added = true;
-            }
-            else s += ", dirección";
+        if(menuNameString == null || menuNameString.isEmpty()){
+            Toast.makeText(this, "Nombre de menú incorrecto",
+                    Toast.LENGTH_LONG).show();
         }
-        if( city.length() == 0 || city.equals("Tu ciudad") ){
-            if (!added) {
-                s += "Ciudad";
-                added = true;
-            }
-            else s += ", ciudad";
+        else if(description == null || description.isEmpty()){
+            Toast.makeText(this, "Descripción de menú incorrecta",
+                    Toast.LENGTH_LONG).show();
         }
-
-        if(menuNameString.length() == 0 || menuNameString.equals("MENÚ") ){
-            if (!added) {
-                s += "Nombre del menú";
-                added = true;
-            }
-            else s += ", nombre del menú";
+        else if(posicion == null){
+            Toast.makeText(this, "La dirección no es correcta",
+                    Toast.LENGTH_LONG).show();
         }
-        if(description.length() == 0 || description.equals("Descripción")) {
-            if (!added) {
-                s += "Descripción";
-                added = true;
-            }
-            else s += ", descripción";
-        }
-
-        if (!s.isEmpty()){
-            Toast.makeText(this, s + " incompleta", Toast.LENGTH_LONG).show();
-        }
-
         else if (start.before(new Date())){
             Toast.makeText(this, "Fecha de inicio anterior a fecha actual",
                     Toast.LENGTH_LONG).show();
@@ -312,58 +289,44 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
             Toast.makeText(this, "Hora de inicio más pequeña o igual que hora final",
                     Toast.LENGTH_LONG).show();
         }
-        else if (posicion == null){
-            Toast.makeText(this, "La dirección no es correcta",
-                    Toast.LENGTH_LONG).show();
-        }
         else {
 
             List<Dish> offeredDish = new ArrayList<>();
             List<Dish> suggestedDish = new ArrayList<>();
 
-            boolean incorrectDishes = false;
-            if (myDishes.isEmpty()) incorrectDishes = true;
-            for (CollaborativeDishLayout p : myDishes) {
-                if (p.getDishName().isEmpty() || p.getDishName().trim().length() == 0) incorrectDishes = true;
+            for (CollaborativeDishLayout dishLayout : myDishes) {
+                if (!dishLayout.getDishName().trim().isEmpty()) {
+                    Dish dish = new Dish(dishLayout.getDishName());
+                    offeredDish.add(dish);
+                }
             }
 
-            if (suggestedDishes.isEmpty()) incorrectDishes = true;
-            for (CollaborativeDishLayout p : suggestedDishes) {
-                if (p.getDishName().isEmpty()  || p.getDishName().trim().length() == 0) incorrectDishes = true;
+            for (CollaborativeDishLayout dishLayout : suggestedDishes) {
+                if (!dishLayout.getDishName().trim().isEmpty()) {
+                    Dish dish = new Dish(dishLayout.getDishName());
+                    suggestedDish.add(dish);
+                }
             }
 
-            if (incorrectDishes)
-                Toast.makeText(this, "Falta añadir un plato o te falta ofrecer como mínimo un plato!", Toast.LENGTH_LONG).show();
+            if (offeredDish.isEmpty() || suggestedDish.isEmpty()) {
+                Toast.makeText(this, "Platos incorrectos",
+                        Toast.LENGTH_LONG).show();
+            }
 
             else {
-
-                for (CollaborativeDishLayout dishLayout : myDishes) {
-                    if (dishLayout.getDishName().trim().length() > 0) {
-                        Dish dish = new Dish(dishLayout.getDishName());
-                        offeredDish.add(dish);
-                    }
-                }
-
-                for (CollaborativeDishLayout dishLayout : suggestedDishes) {
-                    if (dishLayout.getDishName().trim().length() > 0) {
-                        Dish dish = new Dish(dishLayout.getDishName());
-                        suggestedDish.add(dish);
-                    }
-                }
-
-                    CollaborativeMenu collaborativeMenu = new CollaborativeMenu(menuNameString,
-                            Preferences.getCurrentUserEmail(),
-                            description,
-                            localization,
-                            start,
-                            finish);
-                    collaborativeMenuService.save(collaborativeMenu, offeredDish, suggestedDish);
-                    collaborativeMenuService.resetMessageCountToActualUser(collaborativeMenu.getId());
-                    Toast.makeText(this, "Menú colaborativo creado correctamente!",
-                            Toast.LENGTH_LONG).show();
-                    finish();
-
+                CollaborativeMenu collaborativeMenu = new CollaborativeMenu(menuNameString,
+                        Preferences.getCurrentUserEmail(),
+                        description,
+                        localization,
+                        start,
+                        finish);
+                collaborativeMenuService.save(collaborativeMenu, offeredDish, suggestedDish);
+                collaborativeMenuService.resetMessageCountToActualUser(collaborativeMenu.getId());
+                Toast.makeText(this, "Menú colaborativo creado correctamente!",
+                        Toast.LENGTH_LONG).show();
+                finish();
             }
         }
     }
+
 }
