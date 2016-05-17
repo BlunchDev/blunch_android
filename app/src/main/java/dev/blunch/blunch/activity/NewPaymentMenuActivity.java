@@ -286,7 +286,7 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
 
         else {
 
-            List<Dish> dishes = new ArrayList<>();
+            //List<Dish> dishes = new ArrayList<>();
 
             boolean incorrectDishes = false;
             if (myDishes.isEmpty()) incorrectDishes = true;
