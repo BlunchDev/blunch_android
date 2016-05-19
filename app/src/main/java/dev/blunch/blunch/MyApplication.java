@@ -11,8 +11,12 @@ public class MyApplication extends Application{
 
     @Override
     protected void attachBaseContext(Context base) {
-        super.attachBaseContext(base);
-        MultiDex.install(this);
+        try {
+            super.attachBaseContext(base);
+            MultiDex.install(this);
+        } catch (RuntimeException ignored) {
+            // Multidex support doesn't play well with Robolectric yet
+        }
     }
 
 }

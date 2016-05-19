@@ -38,9 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dev.blunch.blunch.R;
-import dev.blunch.blunch.adapters.MenuListAdapter;
 import dev.blunch.blunch.domain.User;
-import dev.blunch.blunch.domain.Valoration;
 import dev.blunch.blunch.services.CollaborativeMenuService;
 import dev.blunch.blunch.services.MenuService;
 import dev.blunch.blunch.services.PaymentMenuService;
