@@ -93,7 +93,7 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         moreDishesLayout.removeView(a);
-                            myDishes.remove(a);
+                        myDishes.remove(a);
                     }
                 });
             }
@@ -238,63 +238,38 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
         EditText descriptionEditText = (EditText) findViewById(R.id.description);
         EditText menuNameEditText = (EditText) findViewById(R.id.nomMenu);
 
-        final String author = "Admin";
-        String address = adressEditText.getText().toString();
-        String city = cityEditText.getText().toString();
+        String address = adressEditText.getText().toString().trim();
+        String city = cityEditText.getText().toString().trim();
         final String localization = address + ", " + city;
 
-        String menuNameString = menuNameEditText.getText().toString();
-        String description = descriptionEditText.getText().toString();
+        String menuNameString = menuNameEditText.getText().toString().trim();
+        String description = descriptionEditText.getText().toString().trim();
+
+        List<Dish> dishes = new ArrayList<>();
 
         boolean incorrectDishes = false;
         if (myDishes.isEmpty()) incorrectDishes = true;
         for (PaymentDishLayout p : myDishes) {
-            if (p.getDishName().isEmpty() || p.getDishPrice() == 0 || p.getDishName().equals(" ")) incorrectDishes = true;
+            if (p.getDishName().isEmpty() || p.getDishPrice().toString().isEmpty() || p.getDishPrice() == 0) incorrectDishes = true;
+            else {
+                Dish dish = new Dish(p.getDishName(), p.getDishPrice());
+                dishes.add(dish);
+            }
         }
 
         LatLng posicion = Utils.getLocationFromAddress(localization,getApplicationContext());
 
-        if(isIncomplete(address, city, menuNameString, description)){
-            String s = "";
-            boolean added = false;
-            if(address.equals("") || address.equals("Tu dirección") ) {
-                if (!added) {
-                    s += "Dirección";
-                    added = true;
-                }
-                else s += ", dirección";
-            }
-            if(city.equals("") || city.equals("Tu ciudad")){
-                if (!added) {
-                    s += "Ciudad";
-                    added = true;
-                }
-                else s += ", ciudad";
-            }
-
-            if(menuNameString.equals("") || menuNameString.equals("MENÚ") ){
-                if (!added) {
-                    s += "Nombre del menú";
-                    added = true;
-                }
-                else s += ", nombre del menú";
-            }
-            if(description.equals("") || description.equals("Descripción")) {
-                if (!added) {
-                    s += "Descripción";
-                    added = true;
-                }
-                else s += ", descripción";
-            }
-            if(myDishes.isEmpty()) {
-                if (!added) {
-                    s += "Lista de platos";
-                    added = true;
-                }
-                else s += ", lista de platos";
-            }
-
-            Toast.makeText(this, s + " incompleta", Toast.LENGTH_LONG).show();
+        if (incorrectDishes){
+            Toast.makeText(this, "Platos incorrectos",
+                    Toast.LENGTH_LONG).show();
+        }
+        else if(menuNameString == null || menuNameString.isEmpty()){
+            Toast.makeText(this, "Nombre de menú incorrecto",
+                    Toast.LENGTH_LONG).show();
+        }
+        else if(description == null || description.isEmpty()){
+            Toast.makeText(this, "Descripción de menú incorrecta",
+                    Toast.LENGTH_LONG).show();
         }
         else if(posicion == null){
             Toast.makeText(this, "La dirección no es correcta",
@@ -314,40 +289,18 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
         }
         else {
 
-            List<Dish> dishes = new ArrayList<>();
-
-            if (incorrectDishes)
-                Toast.makeText(this, "Platos incorrectos", Toast.LENGTH_LONG).show();
-
-            else {
-                for (PaymentDishLayout d : myDishes) {
-                    if (!d.getDishName().equals("")) {
-                        Dish dish = new Dish(d.getDishName(), d.getDishPrice());
-                        dishes.add(dish);
-                    }
-                }
-
-                PaymentMenu paymentMenu = new PaymentMenu(menuNameString,
-                        Preferences.getCurrentUserEmail(),
-                        description,
-                        localization,
-                        start,
-                        finish);
-                paymentMenuService.save(paymentMenu, dishes);
-                paymentMenuService.resetMessageCountToActualUser(paymentMenu.getId());
-                Toast.makeText(this, "Menu de pago creado correctamente!",
-                        Toast.LENGTH_LONG).show();
-                finish();
-            }
+            PaymentMenu paymentMenu = new PaymentMenu(menuNameString,
+                    Preferences.getCurrentUserEmail(),
+                    description,
+                    localization,
+                    start,
+                    finish);
+            paymentMenuService.save(paymentMenu, dishes);
+            paymentMenuService.resetMessageCountToActualUser(paymentMenu.getId());
+            Toast.makeText(this, "Menu de pago creado correctamente!",
+                    Toast.LENGTH_LONG).show();
+            finish();
         }
-    }
-
-    private boolean isIncomplete(String address, String city, String menuNameString, String description) {
-        return menuNameString.equals("") || address.equals("")
-                || address.equals("") || address.equals("Tu dirección")
-                || city.equals("") || city.equals("Tu ciudad")
-                || description.equals("") || description.equals("descripción")
-                || myDishes.isEmpty();
     }
 
 }
