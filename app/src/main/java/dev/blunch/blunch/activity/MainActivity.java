@@ -383,7 +383,7 @@ public class MainActivity extends AppCompatActivity
             case "Valorados":
                 menuList.addAll(menuService.getValuedCollaboratedMenusOf(email));
                 break;
-            case "Todos":
+            case "Todos los menús":
                 menuList.addAll(menuService.getCaducatedCollaboratedMenusOf(email));
                 break;
             default:

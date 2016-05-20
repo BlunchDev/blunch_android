@@ -263,14 +263,15 @@ public class MenuService extends Service<CollaborativeMenu> {
     }
 
     public List<Menu> getCaducatedCollaboratedMenusOf(String currentUser) {
-        List<Menu> menuList = new ArrayList<>();
-        User user = findUserByEmail(currentUser);
-        Set<String> collaboratedMenus = user.getParticipatedMenus().keySet();
-        for (String k : collaboratedMenus) {
-            if (getMenu(k).getDateEnd().compareTo(Calendar.getInstance().getTime()) < 0) menuList.add(getMenu(k));
+        List<Menu> menus = getCollaboratedMenusOf(Preferences.getCurrentUserEmail());
+        List<Menu> result = new ArrayList<>();
+        for (Menu menu : menus) {
+            if (menu.getDateEnd().compareTo(Calendar.getInstance().getTime()) < 0) {
+                result.add(menu);
+            }
         }
-        Collections.sort(menuList, new MenuComparator());
-        return menuList;
+        Collections.sort(result, new MenuComparator());
+        return result;
     }
 
     public boolean isValuedBy(String menuId, String user) {
