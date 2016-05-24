@@ -253,6 +253,7 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
             if (p.getDishName().isEmpty() || p.getDishPrice().toString().isEmpty() || p.getDishPrice() == 0) incorrectDishes = true;
             else {
                 Dish dish = new Dish(p.getDishName(), p.getDishPrice());
+                dish.setAuthor(Preferences.getCurrentUserEmail());
                 dishes.add(dish);
             }
         }
