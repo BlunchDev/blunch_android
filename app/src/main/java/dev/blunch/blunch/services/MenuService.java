@@ -74,6 +74,20 @@ public class MenuService extends Service<CollaborativeMenu> {
         return menuList;
     }
 
+    /**
+     * Permet obtenir els menus d'un determinat usuari
+     * @param userId -> identificador de l'usuari a consultar
+     * @return -> llista de menus
+     */
+    public List<Menu> getMenusByUser(String userId) {
+        List<Menu> menuList = new ArrayList<>();
+        User user = findUserByEmail(userId);
+        Set<String> myMenus = user.getMyMenus().keySet();
+        for (String k : myMenus) menuList.add(getMenu(k));
+        Collections.sort(menuList, new MenuComparator());
+        return menuList;
+    }
+
     public List<CollaborativeMenu> getCollaborativeMenusOrderedByDate() {
         List<CollaborativeMenu> menus = repository.all();
         List<CollaborativeMenu> result = new ArrayList<>();
