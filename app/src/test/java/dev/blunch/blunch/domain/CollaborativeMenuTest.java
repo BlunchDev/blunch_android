@@ -49,6 +49,7 @@ public class CollaborativeMenuTest {
                                                     LOCALIZATION, DATE_START, DATE_END,
                                                     SUGGESTED_DISHES, OFFERED_DISHES);
         collaborativeMenu.setId(ID);
+        collaborativeMenu.setDietTagsString("VEGETARIAN");
     }
 
     @Test
@@ -63,6 +64,7 @@ public class CollaborativeMenuTest {
         assertEquals(collaborativeMenu.getDateEnd(), DATE_END);
         assertEquals(collaborativeMenu.getSuggestedDishes().size(), 0);
         assertEquals(collaborativeMenu.getOfferedDishes().size(), 0);
+        assertEquals(collaborativeMenu.getDietTagsString(), "VEGETARIAN");
     }
 
     @Test

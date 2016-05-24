@@ -1,6 +1,7 @@
 package dev.blunch.blunch.domain;
 
 import java.util.Date;
+import java.util.Map;
 
 import dev.blunch.blunch.utils.Entity;
 
@@ -10,13 +11,14 @@ import dev.blunch.blunch.utils.Entity;
  */
 public abstract class Menu implements Entity {
 
-    private String      id;
-    private String      name;
-    private String      author;
-    private String      description;
-    private String      localization;
-    private Date        dateStart;
-    private Date        dateEnd;
+    private String              id;
+    private String              name;
+    private String              author;
+    private String              description;
+    private String              localization;
+    private Date                dateStart;
+    private Date                dateEnd;
+    private String              dietTags;
 
     public Menu() {}
 
@@ -28,7 +30,12 @@ public abstract class Menu implements Entity {
         this.localization = localization;
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
+        this.dietTags = "";
     }
+
+    public String getDietTagsString() { return dietTags; }
+
+    public void setDietTagsString(String dietTags) { this.dietTags = dietTags; }
 
     public String getName() {
         return name;
