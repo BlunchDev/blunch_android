@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "684609874541",
+    "firebase_url": "https://blunch.firebaseio.com",
+    "project_id": "project-7937146495122712374",
+    "storage_bucket": "project-7937146495122712374.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:684609874541:android:66226d157b66c786",
+        "android_client_info": {
+          "package_name": "dev.blunch.blunch"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "684609874541-qhuho6j00qjpts22js3lmi4om6c2r2er.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmqQWDedjzMLAFIHo7TOWAMiLszHrDVnc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
