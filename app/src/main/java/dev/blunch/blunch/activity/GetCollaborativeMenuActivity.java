@@ -133,7 +133,7 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
             String sd = "";
             for (Dish d : m){
                 sd += d.getName();
-                if (d.getAuthor() != null || !d.getAuthor().isEmpty()) sd += " (" + d.getAuthor() + ")";
+                if (d.getAuthor() != null || !d.getAuthor().isEmpty()) sd += " (" + menuService.findUserByEmail(d.getAuthor()).getName().split(" ")[0] + ")";
                 sd += "\n";
             }
             hostDishes.setText(sd);
@@ -242,7 +242,7 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
         List<String> list = new LinkedList<>();
         for (Dish dish : offeredDishes) {
             String s = dish.getName();
-            if (dish.getAuthor() != null || !dish.getAuthor().isEmpty()) s += " (" + dish.getAuthor() + ")";
+            if (dish.getAuthor() != null || !dish.getAuthor().isEmpty()) s += " (" + menuService.findUserByEmail(dish.getAuthor()).getName().split(" ")[0] + ")";
             list.add(s);
         }
         return list;
