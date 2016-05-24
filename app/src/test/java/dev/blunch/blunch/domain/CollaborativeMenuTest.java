@@ -56,6 +56,7 @@ public class CollaborativeMenuTest {
     public void create_correctly_without_dishes() throws Exception {
         CollaborativeMenu collaborativeMenu = new CollaborativeMenu(NAME, AUTHOR, DESCRIPTION,
                                                                     LOCALIZATION, DATE_START, DATE_END);
+        collaborativeMenu.setDietTagsString("VEGETARIAN");
         assertEquals(collaborativeMenu.getName(), NAME);
         assertEquals(collaborativeMenu.getAuthor(), AUTHOR);
         assertEquals(collaborativeMenu.getDescription(), DESCRIPTION);
