@@ -79,7 +79,11 @@ public class CollaborativeMenuAnswerActivity extends AppCompatActivity {
 
                 List<Dish> newSuggestions = new ArrayList<>();
 
-                for (String s : guestNewSuggestions) newSuggestions.add(new Dish(s, 0.));
+                for (String s : guestNewSuggestions) {
+                    Dish dish = new Dish(s, 0.);
+                    dish.setAuthor(Preferences.getCurrentUserEmail());
+                    newSuggestions.add(dish);
+                }
 
                 collaborativeMenuService.reply(new CollaborativeMenuAnswer(
                         Preferences.getCurrentUserEmail(), menuID,

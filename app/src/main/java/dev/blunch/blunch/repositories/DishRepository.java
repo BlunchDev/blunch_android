@@ -28,6 +28,8 @@ public class DishRepository extends FirebaseRepository<Dish> {
                 dish.setName(d.getValue(String.class));
             } else if (d.getKey().equals("price")) {
                 dish.setPrice(d.getValue(Double.class));
+            } else if (d.getKey().equals("author")) {
+                dish.setAuthor(d.getValue(String.class));
             }
         }
         return dish;
