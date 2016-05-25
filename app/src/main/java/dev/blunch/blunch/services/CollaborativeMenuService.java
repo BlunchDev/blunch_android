@@ -111,6 +111,11 @@ public class CollaborativeMenuService extends Service<CollaborativeMenu> {
         if (!exists) throw new Exception("El menu seleccionat no existeix");
         else if (collaborativeMenuAnswer.getOfferedDishes().size() == 0 && newOfferedDishes.size() == 0)
             throw new Exception("No s'han afegit plats a l'oferta de participació");
+        for (String dishKey : collaborativeMenuAnswer.getOfferedDishes().keySet()) {
+            Dish dish = dishesRepository.get(dishKey);
+            dish.setAuthor(Preferences.getCurrentUserEmail());
+            dishesRepository.update(dish);
+        }
         for (Dish dish : newOfferedDishes) {
             Dish d = dishesRepository.insert(dish);
             collaborativeMenuAnswer.addOfferedDish(d.getId());
