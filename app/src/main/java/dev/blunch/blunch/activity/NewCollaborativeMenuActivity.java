@@ -297,6 +297,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
             for (CollaborativeDishLayout dishLayout : myDishes) {
                 if (!dishLayout.getDishName().trim().isEmpty()) {
                     Dish dish = new Dish(dishLayout.getDishName());
+                    dish.setAuthor(Preferences.getCurrentUserEmail());
                     offeredDish.add(dish);
                 }
             }
@@ -304,6 +305,7 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
             for (CollaborativeDishLayout dishLayout : suggestedDishes) {
                 if (!dishLayout.getDishName().trim().isEmpty()) {
                     Dish dish = new Dish(dishLayout.getDishName());
+                    dish.setAuthor(Preferences.getCurrentUserEmail());
                     suggestedDish.add(dish);
                 }
             }
