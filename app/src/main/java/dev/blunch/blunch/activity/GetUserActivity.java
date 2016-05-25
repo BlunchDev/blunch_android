@@ -1,9 +1,11 @@
 package dev.blunch.blunch.activity;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -19,6 +21,8 @@ public class GetUserActivity extends AppCompatActivity {
     private RatingBar userValoration;
 
     public static final String USER_ID = "userId";
+
+    public String userId;
 
     private MenuService menuService;
 
@@ -37,16 +41,29 @@ public class GetUserActivity extends AppCompatActivity {
         userName = (TextView) findViewById(R.id.user_name_get);
         userValoration = (RatingBar) findViewById(R.id.user_rating_get);
 
-        User user = menuService.findUserByEmail(getIntent().getStringExtra(USER_ID));
+        Intent intent = getIntent();
+        if(intent.hasExtra(USER_ID))
+        userId = intent.getStringExtra(USER_ID);
+
+
+        User user = menuService.findUserByEmail(getIntent().getStringExtra(userId));
 
         userImage.setImageDrawable(getUserPic());
         userName.setText(user.getName());
         userValoration.setRating((float) user.getValorationAverage());
+        userValoration.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GetUserActivity.this, ValorationListActivity.class);
+                intent.putExtra(ValorationListActivity.USER_ID, userId);
+                startActivity(intent);
+            }
+        });
     }
 
     private Drawable getUserPic() {
         try {
-            return menuService.findUserByEmail(getIntent().getStringExtra(USER_ID)).getImageRounded(getResources());
+            return menuService.findUserByEmail(getIntent().getStringExtra(userId)).getImageRounded(getResources());
         } catch (Exception e) {
             e.printStackTrace();
         }

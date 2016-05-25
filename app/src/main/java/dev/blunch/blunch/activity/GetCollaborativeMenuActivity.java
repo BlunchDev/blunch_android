@@ -165,6 +165,14 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
             join.setVisibility(View.GONE);
         }
         userPic.setImageDrawable(getUserPic());
+        userPic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GetCollaborativeMenuActivity.this, GetUserActivity.class);
+                intent.putExtra(GetUserActivity.USER_ID, collaborativeMenu.getAuthor());
+                startActivity(intent);
+            }
+        });
         //
 
         toolbar.setTitle(obtainTitle());
