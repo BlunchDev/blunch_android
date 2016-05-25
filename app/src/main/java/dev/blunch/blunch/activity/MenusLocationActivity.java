@@ -90,9 +90,9 @@ public class MenusLocationActivity extends FragmentActivity implements OnMapRead
                             .title(m.getId())
                             .snippet("Finalización: " + sdf.format(m.getDateEnd()));
                     if (m instanceof PaymentMenu)
-                        marcador.icon(BitmapDescriptorFactory.fromResource(R.mipmap.payment_maps));
+                        marcador.icon(BitmapDescriptorFactory.fromResource(R.drawable.payment_maps));
                     else
-                        marcador.icon(BitmapDescriptorFactory.fromResource(R.mipmap.collaborative_maps));
+                        marcador.icon(BitmapDescriptorFactory.fromResource(R.drawable.collaborative_maps));
 
                     mMap.addMarker(marcador);
                 }
