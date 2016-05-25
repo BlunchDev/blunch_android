@@ -13,6 +13,7 @@ import android.widget.TextView;
 import dev.blunch.blunch.R;
 import dev.blunch.blunch.domain.User;
 import dev.blunch.blunch.services.MenuService;
+import dev.blunch.blunch.services.ServiceFactory;
 
 public class GetUserActivity extends AppCompatActivity {
 
@@ -40,11 +41,11 @@ public class GetUserActivity extends AppCompatActivity {
         userImage = (ImageView) findViewById(R.id.user_picture_get);
         userName = (TextView) findViewById(R.id.user_name_get);
         userValoration = (RatingBar) findViewById(R.id.user_rating_get);
+        menuService = ServiceFactory.getMenuService(getApplicationContext());
 
         Intent intent = getIntent();
         if(intent.hasExtra(USER_ID))
         userId = intent.getStringExtra(USER_ID);
-
 
         User user = menuService.findUserByEmail(getIntent().getStringExtra(userId));
 
