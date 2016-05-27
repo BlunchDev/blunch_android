@@ -13,44 +13,80 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <Space
-            android:layout_width="20px"
-            android:layout_height="20px" />
-
-       <ImageView
-           android:layout_width="match_parent"
-           android:layout_height="300dp"
-           android:id="@+id/user_picture_get"
-           android:src="@mipmap/ic_logo"
-           android:layout_gravity="center"
-           android:scaleType="fitCenter"
-           android:scaleX="3.0"
-           android:scaleY="3.0"/>
-
-        <Space
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="40px" />
+            android:layout_height="wrap_content">
 
-        <TextView
+            <Space
+                android:layout_width="20px"
+                android:layout_height="20px" />
+
+            <ImageView
+               android:layout_width="wrap_content"
+               android:layout_height="250dp"
+               android:id="@+id/user_picture_get"
+               android:src="@mipmap/ic_logo"
+               android:layout_gravity="center"
+               android:scaleType="fitCenter"
+               android:scaleX="3.0"
+               android:scaleY="3.0"
+                android:nestedScrollingEnabled="false" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="40px" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/user_name_get"
+                android:text="irina shayk"
+                android:layout_gravity="center"
+                android:textSize="32dp"
+                android:textStyle="bold" />
+
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/user_rating_get"
+                android:numStars="5"
+                android:rating="2.5"
+                android:layout_gravity="center" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/user_name_get"
-            android:text="irina shayk"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:textSize="32dp"
-            android:textStyle="bold" />
+            android:gravity="bottom">
 
-        <Space
-            android:layout_width="20px"
-            android:layout_height="40px" />
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="?attr/actionBarSize"
+                android:text="Valoraciones"
+                android:id="@+id/myValorations"
+                android:background="@color/colorPrimary" />
 
-        <RatingBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/user_rating_get"
-            android:numStars="5"
-            android:rating="2.5"
-            android:layout_gravity="center" />
+            <Space
+                android:layout_width="30dp"
+                android:layout_height="match_parent" />
+
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="?attr/actionBarSize"
+                android:text="Menús"
+                android:id="@+id/myMenus"
+                android:background="@color/colorPrimary" />
+
+        </LinearLayout>
 
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>
