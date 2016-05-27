@@ -84,6 +84,9 @@ public class CollaborativeMenuTest {
 
     @Test
     public void create_correctly_a_collaborative_menu() throws Exception {
+        List<DietTags> dietTags = new ArrayList<>();
+        dietTags.add(DietTags.GLUTEN_FREE);
+        collaborativeMenu.addDietTags(dietTags);
         assertEquals(collaborativeMenu.getId(), ID);
         assertEquals(collaborativeMenu.getName(), NAME);
         assertEquals(collaborativeMenu.getAuthor(), AUTHOR);
@@ -91,6 +94,8 @@ public class CollaborativeMenuTest {
         assertEquals(collaborativeMenu.getLocalization(), LOCALIZATION);
         assertEquals(collaborativeMenu.getDateStart(), DATE_START);
         assertEquals(collaborativeMenu.getDateEnd(), DATE_END);
+        collaborativeMenu.getDietTags();
+        assertEquals(collaborativeMenu.getDietTagsString(), "VEGETARIAN&GLUTEN_FREE");
     }
 
     @Test

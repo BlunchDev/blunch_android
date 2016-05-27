@@ -1,6 +1,8 @@
 package dev.blunch.blunch.domain;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import dev.blunch.blunch.utils.Entity;
@@ -36,6 +38,22 @@ public abstract class Menu implements Entity {
     public String getDietTagsString() { return dietTags; }
 
     public void setDietTagsString(String dietTags) { this.dietTags = dietTags; }
+
+    public void addDietTags(List<DietTags> dietTags) {
+        for (DietTags dietTag : dietTags) {
+            if (dietTag.equals("")) this.dietTags += dietTag.toString();
+            else this.dietTags += "&" + dietTag.toString();
+        }
+    }
+
+    public List<DietTags> getDietTags() {
+        String[] stringDietTags = this.dietTags.split("&");
+        List<DietTags> dietTags = new ArrayList<>();
+        for (String s : stringDietTags) {
+            dietTags.add(DietTags.valueOf(s));
+        }
+        return dietTags;
+    }
 
     public String getName() {
         return name;
