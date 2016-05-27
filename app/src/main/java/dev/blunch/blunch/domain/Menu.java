@@ -41,7 +41,7 @@ public abstract class Menu implements Entity {
 
     public void addDietTags(List<DietTags> dietTags) {
         for (DietTags dietTag : dietTags) {
-            if (dietTag.equals("")) this.dietTags += dietTag.toString();
+            if (this.dietTags.equals("")) this.dietTags += dietTag.toString();
             else this.dietTags += "&" + dietTag.toString();
         }
     }
