@@ -2,6 +2,7 @@ package dev.blunch.blunch.activity;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -10,7 +11,9 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -23,6 +26,7 @@ import java.util.Date;
 import java.util.List;
 
 import dev.blunch.blunch.R;
+import dev.blunch.blunch.domain.DietTags;
 import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.domain.PaymentMenu;
 import dev.blunch.blunch.services.PaymentMenuService;
@@ -35,6 +39,8 @@ import dev.blunch.blunch.view.PaymentDishLayout;
 public class NewPaymentMenuActivity extends AppCompatActivity {
 
     private int day,month,year;
+
+    private boolean vegetarianSelected, veganSelected, glutenfreeSelected;
 
     private int iHour,
             iMinute,
@@ -96,6 +102,63 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
                         myDishes.remove(a);
                     }
                 });
+            }
+        });
+
+        final ImageView vegetarian = (ImageView) findViewById(R.id.vegetarianIcon);
+        final ImageView vegan = (ImageView) findViewById(R.id.veganIcon);
+        final ImageView glutenfree = (ImageView) findViewById(R.id.glutenfreeIcon);
+
+        final TextView vegetarianTag = (TextView) findViewById(R.id.vegetarianTag);
+        final TextView veganTag = (TextView) findViewById(R.id.veganTag);
+        final TextView glutenfreeTag = (TextView) findViewById(R.id.glutenfreeTag);
+
+        final RelativeLayout vegetarianLayout = (RelativeLayout) findViewById(R.id.vegetarianLayout);
+        final RelativeLayout veganLayout = (RelativeLayout) findViewById(R.id.veganLayout);
+        final RelativeLayout glutenfreeLayout = (RelativeLayout) findViewById(R.id.glutenfreeLayout);
+
+        vegetarianSelected = veganSelected = glutenfreeSelected = false;
+
+        vegetarianLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!vegetarianSelected) {
+                    vegetarian.setImageDrawable(getResources().getDrawable(R.drawable.test_vegetarian));
+                    vegetarianTag.setTextColor(Color.RED);
+                    vegetarianSelected = true;
+                } else {
+                    vegetarian.setImageDrawable(getResources().getDrawable(R.drawable.test_vegetarian_unselect));
+                    vegetarianTag.setTextColor(Color.GRAY);
+                    vegetarianSelected = false;
+                }
+            }
+        });
+        veganLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!veganSelected) {
+                    vegan.setImageDrawable(getResources().getDrawable(R.drawable.test_vegan));
+                    veganTag.setTextColor(Color.RED);
+                    veganSelected = true;
+                } else {
+                    vegan.setImageDrawable(getResources().getDrawable(R.drawable.test_vegan_unselect));
+                    veganTag.setTextColor(Color.GRAY);
+                    veganSelected = false;
+                }
+            }
+        });
+        glutenfreeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!glutenfreeSelected) {
+                    glutenfree.setImageDrawable(getResources().getDrawable(R.drawable.test_glutenfree));
+                    glutenfreeTag.setTextColor(Color.RED);
+                    glutenfreeSelected = true;
+                } else {
+                    glutenfree.setImageDrawable(getResources().getDrawable(R.drawable.test_glutenfree_unselect));
+                    glutenfreeTag.setTextColor(Color.GRAY);
+                    glutenfreeSelected = false;
+                }
             }
         });
 
@@ -296,8 +359,15 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
                     localization,
                     start,
                     finish);
-            paymentMenuService.save(paymentMenu, dishes);
+            PaymentMenu saved = paymentMenuService.save(paymentMenu, dishes);
             paymentMenuService.resetMessageCountToActualUser(paymentMenu.getId());
+
+            List<DietTags> dietTags = new ArrayList<>();
+            if (vegetarianSelected) dietTags.add(DietTags.VEGETARIAN);
+            if (veganSelected) dietTags.add(DietTags.VEGAN);
+            if (glutenfreeSelected) dietTags.add(DietTags.GLUTEN_FREE);
+            if (!dietTags.isEmpty()) paymentMenuService.addTags(saved, dietTags);
+
             Toast.makeText(this, "Menu de pago creado correctamente!",
                     Toast.LENGTH_LONG).show();
             finish();
