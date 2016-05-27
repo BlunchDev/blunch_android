@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+
+import dev.blunch.blunch.domain.DietTags;
 import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.domain.PaymentMenu;
 import dev.blunch.blunch.domain.PaymentMenuAnswer;
@@ -45,6 +47,11 @@ public class PaymentMenuService extends Service<PaymentMenu> {
         dishesRepository = dishRepository;
         answerRepository = null;
         this.userRepository = null;
+    }
+
+    public PaymentMenu addTags(PaymentMenu item, List<DietTags> dietTags) {
+        item.addDietTags(dietTags);
+        return repository.update(item);
     }
 
     public List<User> getUsers() { return userRepository.all(); }
