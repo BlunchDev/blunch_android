@@ -136,6 +136,14 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
         description.setText(obtainDescription());
         hour.setText(obtainHour());
         setRating();
+        userPic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GetPaymentMenuActivity.this, GetUserActivity.class);
+                intent.putExtra(GetUserActivity.USER_ID, paymentMenu.getAuthor());
+                startActivity(intent);
+            }
+        });
 
         if(host()){
             join.setOnClickListener(new View.OnClickListener() {
