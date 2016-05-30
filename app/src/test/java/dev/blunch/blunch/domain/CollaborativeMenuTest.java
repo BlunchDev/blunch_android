@@ -65,7 +65,7 @@ public class CollaborativeMenuTest {
         assertEquals(collaborativeMenu.getDateEnd(), DATE_END);
         assertEquals(collaborativeMenu.getSuggestedDishes().size(), 0);
         assertEquals(collaborativeMenu.getOfferedDishes().size(), 0);
-        assertEquals(collaborativeMenu.getDietTagsString(), "VEGETARIAN");
+        assertEquals(collaborativeMenu.getDietTags(), "VEGETARIAN");
     }
 
     @Test
@@ -94,8 +94,7 @@ public class CollaborativeMenuTest {
         assertEquals(collaborativeMenu.getLocalization(), LOCALIZATION);
         assertEquals(collaborativeMenu.getDateStart(), DATE_START);
         assertEquals(collaborativeMenu.getDateEnd(), DATE_END);
-        collaborativeMenu.getDietTags();
-        assertEquals(collaborativeMenu.getDietTagsString(), "VEGETARIAN&GLUTEN_FREE");
+        assertEquals(collaborativeMenu.getDietTags(), "VEGETARIAN&GLUTEN_FREE");
     }
 
     @Test

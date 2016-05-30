@@ -148,9 +148,95 @@
             android:layout_marginLeft="18dp"
             android:layout_marginRight="18dp"/>
 
-        <Space
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="25dp" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="18dp"
+            android:paddingTop="8dp"
+            android:gravity="center"
+            android:id="@+id/dietTags"
+            android:layout_below="@+id/new_menu_info"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_weight="1.2"
+                android:layout_height="match_parent"
+                android:id="@+id/vegetarianLayout">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:id="@+id/vegetarianIcon"
+                    android:src="@mipmap/test_vegetarian"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/vegetarianTag"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_toRightOf="@+id/vegetarianIcon"
+                    android:text="Vegetariano"
+                    android:gravity="center"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:id="@+id/veganLayout">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:id="@+id/veganIcon"
+                    android:layout_marginLeft="10dp"
+                    android:src="@mipmap/test_vegan"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textSize="14dp"
+                    android:layout_marginLeft="8dp"
+                    android:textColor="@color/colorPrimary"
+                    android:id="@+id/veganTag"
+                    android:layout_toRightOf="@+id/veganIcon"
+                    android:text="Vegano"
+                    android:gravity="center"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_weight="1.2"
+                android:layout_height="match_parent"
+                android:id="@+id/glutenfreeLayout">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:id="@+id/glutenfreeIcon"
+                    android:layout_marginLeft="10dp"
+                    android:src="@mipmap/test_glutenfree"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textSize="14dp"
+                    android:layout_marginLeft="8dp"
+                    android:id="@+id/glutenfreeTag"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_toRightOf="@+id/glutenfreeIcon"
+                    android:text="Sin gluten"
+                    android:gravity="center"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
 
         <LinearLayout
             android:orientation="vertical"

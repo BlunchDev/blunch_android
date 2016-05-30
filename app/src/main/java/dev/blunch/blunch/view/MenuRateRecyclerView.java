@@ -4,10 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.Calendar;
@@ -17,6 +19,7 @@ import java.util.List;
 import dev.blunch.blunch.R;
 import dev.blunch.blunch.activity.ValorationActivity;
 import dev.blunch.blunch.domain.CollaborativeMenu;
+import dev.blunch.blunch.domain.DietTags;
 import dev.blunch.blunch.domain.Menu;
 import dev.blunch.blunch.domain.User;
 import dev.blunch.blunch.domain.Valoration;
@@ -84,6 +87,34 @@ public class MenuRateRecyclerView extends RecyclerView.Adapter<MenuRateRecyclerV
         } else {
             holder.menuType.setImageResource(R.drawable.payment_icon);
         }
+
+        //Place diet tags
+        List<DietTags> dietTagsList = holder.mItem.retrievArrayOfTags();
+        int i = 0;
+        if (dietTagsList != null) {
+            for (DietTags tag : dietTagsList) {
+                Log.d("DietTags", "Adding " + tag.toString() + " to " + this.holder.mItem.getName());
+                ImageView icon = new ImageView(this.context);
+                switch (tag.toString()) {
+                    case "VEGETARIAN":
+                        icon.setImageResource(R.mipmap.test_vegetarian);
+                        break;
+                    case "GLUTEN_FREE":
+                        icon.setImageResource(R.mipmap.test_glutenfree);
+                        break;
+                    case "VEGAN":
+                        icon.setImageResource(R.mipmap.test_vegan);
+                        break;
+                    default:
+                        break;
+                }
+                //TODO resize icons
+                this.holder.linearLayout.addView(icon);
+                this.holder.linearLayout.getChildAt(i).getLayoutParams().width = 50;
+                this.holder.linearLayout.getChildAt(i).getLayoutParams().height = 50;
+                ++i;
+            }
+        }
     }
 
     @Override
@@ -101,6 +132,7 @@ public class MenuRateRecyclerView extends RecyclerView.Adapter<MenuRateRecyclerV
         public TextView menuLocation;
         public TextView menuDate;
         public TextView menuTime;
+        public LinearLayout linearLayout;
 
         public ViewHolder(View view) {
             super(view);
@@ -135,6 +167,7 @@ public class MenuRateRecyclerView extends RecyclerView.Adapter<MenuRateRecyclerV
             menuLocation = (TextView) view.findViewById(R.id.menu_loc);
             menuDate = (TextView) view.findViewById(R.id.menu_date);
             menuTime = (TextView) view.findViewById(R.id.menu_time);
+            linearLayout = (LinearLayout) view.findViewById(R.id.dietTags);
 
         }
 

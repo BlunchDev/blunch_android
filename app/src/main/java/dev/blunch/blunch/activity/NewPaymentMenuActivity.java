@@ -123,11 +123,11 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!vegetarianSelected) {
-                    vegetarian.setImageDrawable(getResources().getDrawable(R.drawable.test_vegetarian));
+                    vegetarian.setImageDrawable(getResources().getDrawable(R.mipmap.test_vegetarian));
                     vegetarianTag.setTextColor(Color.RED);
                     vegetarianSelected = true;
                 } else {
-                    vegetarian.setImageDrawable(getResources().getDrawable(R.drawable.test_vegetarian_unselect));
+                    vegetarian.setImageDrawable(getResources().getDrawable(R.mipmap.test_vegetarian_unselect));
                     vegetarianTag.setTextColor(Color.GRAY);
                     vegetarianSelected = false;
                 }
@@ -137,11 +137,11 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!veganSelected) {
-                    vegan.setImageDrawable(getResources().getDrawable(R.drawable.test_vegan));
+                    vegan.setImageDrawable(getResources().getDrawable(R.mipmap.test_vegan));
                     veganTag.setTextColor(Color.RED);
                     veganSelected = true;
                 } else {
-                    vegan.setImageDrawable(getResources().getDrawable(R.drawable.test_vegan_unselect));
+                    vegan.setImageDrawable(getResources().getDrawable(R.mipmap.test_vegan_unselect));
                     veganTag.setTextColor(Color.GRAY);
                     veganSelected = false;
                 }
@@ -151,11 +151,11 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!glutenfreeSelected) {
-                    glutenfree.setImageDrawable(getResources().getDrawable(R.drawable.test_glutenfree));
+                    glutenfree.setImageDrawable(getResources().getDrawable(R.mipmap.test_glutenfree));
                     glutenfreeTag.setTextColor(Color.RED);
                     glutenfreeSelected = true;
                 } else {
-                    glutenfree.setImageDrawable(getResources().getDrawable(R.drawable.test_glutenfree_unselect));
+                    glutenfree.setImageDrawable(getResources().getDrawable(R.mipmap.test_glutenfree_unselect));
                     glutenfreeTag.setTextColor(Color.GRAY);
                     glutenfreeSelected = false;
                 }

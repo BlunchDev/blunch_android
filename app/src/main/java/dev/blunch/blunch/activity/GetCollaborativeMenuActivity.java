@@ -7,13 +7,13 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.Calendar;
@@ -24,6 +24,7 @@ import java.util.List;
 
 import dev.blunch.blunch.R;
 import dev.blunch.blunch.domain.CollaborativeMenu;
+import dev.blunch.blunch.domain.DietTags;
 import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.domain.User;
 import dev.blunch.blunch.services.CollaborativeMenuService;
@@ -168,6 +169,38 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
         }
         userPic.setImageDrawable(getUserPic());
         //
+
+        RelativeLayout vegetarianLayout = (RelativeLayout) findViewById(R.id.vegetarianLayout);
+        RelativeLayout veganLayout = (RelativeLayout) findViewById(R.id.veganLayout);
+        RelativeLayout glutenfreeLayout = (RelativeLayout) findViewById(R.id.glutenfreeLayout);
+
+        boolean vegt, vegn, glutenfree;
+        vegt = vegn = glutenfree = false;
+
+        if (collaborativeMenu.retrievArrayOfTags() != null) {
+            for (DietTags dietTags : collaborativeMenu.retrievArrayOfTags()) {
+                switch(dietTags.toString()) {
+                    case "VEGETARIAN":
+                        vegt = true;
+                        break;
+                    case "VEGAN":
+                        vegn = true;
+                        break;
+                    case "GLUTEN_FREE":
+                        glutenfree = true;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            if (!vegt) ((ViewManager)vegetarianLayout.getParent()).removeView(vegetarianLayout);
+            if (!vegn) ((ViewManager)veganLayout.getParent()).removeView(veganLayout);
+            if (!glutenfree) ((ViewManager)glutenfreeLayout.getParent()).removeView(glutenfreeLayout);
+        } else  {
+            ((ViewManager)vegetarianLayout.getParent()).removeView(vegetarianLayout);
+            ((ViewManager)veganLayout.getParent()).removeView(veganLayout);
+            ((ViewManager)glutenfreeLayout.getParent()).removeView(glutenfreeLayout);
+        }
 
         toolbar.setTitle(obtainTitle());
         // TODO Set user image: toolbar.setLogo();

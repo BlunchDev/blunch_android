@@ -88,7 +88,7 @@ public class PaymentMenuServiceTest {
         dietTags.add(DietTags.VEGAN);
         service.addTags(newMenu, dietTags);
         PaymentMenu menu = service.get(newMenu.getId());
-        assertEquals(menu.getDietTagsString(), "VEGETARIAN&VEGAN");
+        assertEquals(menu.getDietTags(), "VEGETARIAN&VEGAN");
     }
 
     @Test

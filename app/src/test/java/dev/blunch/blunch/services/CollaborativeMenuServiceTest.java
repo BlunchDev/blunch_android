@@ -80,7 +80,7 @@ public class CollaborativeMenuServiceTest {
         dietTags.add(DietTags.VEGAN);
         service.addTags(newMenu, dietTags);
         CollaborativeMenu menu = service.get(newMenu.getId());
-        assertEquals(menu.getDietTagsString(), "VEGETARIAN&VEGAN");
+        assertEquals(menu.getDietTags(), "VEGETARIAN&VEGAN");
     }
 
     public List<CollaborativeMenu> generatDummyData(int seed, int size) {
