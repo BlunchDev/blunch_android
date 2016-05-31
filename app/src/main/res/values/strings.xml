@@ -73,4 +73,5 @@
     <string name="location_request_title">Habilitar geolocalizacion</string>
     <string name="location_request_message">Para ver tu localización en el mapa debes habilitar el GPS en tu telefono. Deseas continuar?</string>
     <string name="answer_menu">Responder menu</string>
+    <string name="title_activity_list_menus_by_user">ListMenusByUserActivity</string>
 </resources>

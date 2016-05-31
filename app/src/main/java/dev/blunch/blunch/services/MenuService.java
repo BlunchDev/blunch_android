@@ -88,6 +88,32 @@ public class MenuService extends Service<CollaborativeMenu> {
         return menuList;
     }
 
+    public List<Menu> getCollaborativeMenusByUser(String userId) {
+        List<Menu> menuList = new ArrayList<>();
+        User user = findUserByEmail(userId);
+        Set<String> myMenus = user.getMyMenus().keySet();
+        for (String k : myMenus){
+            Menu m = getMenu(k);
+            if (m instanceof CollaborativeMenu)
+                menuList.add(getMenu(k));
+        }
+        Collections.sort(menuList, new MenuComparator());
+        return menuList;
+    }
+
+    public List<Menu> getPaymentMenusByUser(String userId) {
+        List<Menu> menuList = new ArrayList<>();
+        User user = findUserByEmail(userId);
+        Set<String> myMenus = user.getMyMenus().keySet();
+        for (String k : myMenus){
+            Menu m = getMenu(k);
+            if (m instanceof PaymentMenu)
+                menuList.add(getMenu(k));
+        }
+        Collections.sort(menuList, new MenuComparator());
+        return menuList;
+    }
+
     public List<CollaborativeMenu> getCollaborativeMenusOrderedByDate() {
         List<CollaborativeMenu> menus = repository.all();
         List<CollaborativeMenu> result = new ArrayList<>();
