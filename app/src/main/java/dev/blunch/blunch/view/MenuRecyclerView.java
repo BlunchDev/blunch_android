@@ -56,6 +56,7 @@ public class MenuRecyclerView extends RecyclerView.Adapter<MenuRecyclerView.View
         holder.mItem = mValues.get(position);
         holder.menuName.setText(holder.mItem.getName());
         holder.menuLocation.setText(holder.mItem.getLocalization());
+        holder.linearLayout.removeAllViews();
 
         String dateString = getDateString(holder.mItem.getDateStart());
         String timeString = getTimeString(holder.mItem.getDateStart(),
@@ -87,7 +88,7 @@ public class MenuRecyclerView extends RecyclerView.Adapter<MenuRecyclerView.View
         int i = 0;
         if (dietTagsList != null && !dietTagsList.equals("")) {
             for (DietTags tag : dietTagsList) {
-                Log.d("DietTags", "Adding " + tag.toString() + " to " + this.holder.mItem.getName());
+                Log.d("DietTags", "Adding " + tag.toString() + " to " + holder.mItem.getName());
                 ImageView icon = new ImageView(this.context);
                 switch (tag.toString()) {
                     case "VEGETARIAN":
@@ -103,9 +104,9 @@ public class MenuRecyclerView extends RecyclerView.Adapter<MenuRecyclerView.View
                         break;
                 }
                 //TODO resize icons
-                this.holder.linearLayout.addView(icon);
-                this.holder.linearLayout.getChildAt(i).getLayoutParams().width = 50;
-                this.holder.linearLayout.getChildAt(i).getLayoutParams().height = 50;
+                holder.linearLayout.addView(icon);
+                holder.linearLayout.getChildAt(i).getLayoutParams().width = 50;
+                holder.linearLayout.getChildAt(i).getLayoutParams().height = 50;
                 ++i;
             }
         }

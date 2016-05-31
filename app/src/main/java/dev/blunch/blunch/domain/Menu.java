@@ -48,7 +48,7 @@ public abstract class Menu implements Entity {
     }
 
     public List<DietTags> retrievArrayOfTags() {
-        if (!this.dietTagsSingleString.equals("") && this.dietTagsSingleString != null) {
+        if (this.dietTagsSingleString != null && !this.dietTagsSingleString.equals("")) {
             String[] stringDietTags = this.dietTagsSingleString.split("&");
             List<DietTags> dietTags = new ArrayList<>();
             for (String s : stringDietTags) {

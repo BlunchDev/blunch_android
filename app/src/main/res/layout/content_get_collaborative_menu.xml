@@ -163,6 +163,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="1.2"
                 android:layout_height="match_parent"
+                android:gravity="center"
                 android:id="@+id/vegetarianLayout">
 
                 <ImageView
@@ -188,6 +189,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="match_parent"
+                android:gravity="center"
                 android:id="@+id/veganLayout">
 
                 <ImageView
@@ -214,6 +216,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="1.2"
                 android:layout_height="match_parent"
+                android:gravity="center"
                 android:id="@+id/glutenfreeLayout">
 
                 <ImageView
