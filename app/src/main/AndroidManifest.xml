@@ -112,7 +112,12 @@
         <activity
             android:name=".activity.GetUserActivity"
             android:label="@string/title_activity_get_user"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity
+            android:name=".activity.ListMenusByUserActivity"
+            android:label="@string/title_activity_list_menus_by_user">
+        </activity>
     </application>
 
 </manifest>
