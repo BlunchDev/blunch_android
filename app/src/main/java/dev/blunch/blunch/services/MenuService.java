@@ -6,8 +6,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.Vector;
 
 import dev.blunch.blunch.domain.ChatMessage;
 import dev.blunch.blunch.domain.CollaborativeMenu;
@@ -316,6 +320,36 @@ public class MenuService extends Service<CollaborativeMenu> {
         }
 
         return valoration;
+    }
+
+    public List<Menu> getMenusOrderedByValoration(double points) {
+        List<User> users = getUsers();
+        List<Menu> result = new ArrayList<>();
+        Vector<Double> pointList = new Vector<Double>();
+        boolean firstInserted = false;
+        for (User user : users) {
+            Set<String> myMenus = user.getMyMenus().keySet();
+            for (String idMenu : myMenus){
+                String idUser = user.getId();
+                Valoration v = getValoration(idMenu, idUser);
+                double vpoints = v.getPoints();
+                if (vpoints >= points) {
+                    int position = 0;
+                    boolean found = false;
+                    if (!firstInserted){ pointList.add(vpoints); firstInserted = true;}
+                    else{
+                        while (position < pointList.size() && !found){
+                            if (pointList.get(position) <= v.getPoints()){
+                                found = true;
+                                pointList.add(vpoints);
+                            }
+                        }
+                    }
+                    result.add(position, user.getMyMenu(idMenu));
+                }
+            }
+        }
+        return result;
     }
 
     public Menu getMenu(String menuId) {
