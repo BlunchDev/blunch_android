@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -20,16 +19,13 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
@@ -401,6 +397,39 @@ public class MainActivity extends AppCompatActivity
 
     private void initializeMyMenus() {
         setTitle("Mis menús");
+
+        Spinner spinner = (Spinner) findViewById(R.id.menu_spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.my_menu_types, R.layout.spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                init(parent.getItemAtPosition(position).toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        menuService.setOnChangedListener(new Repository.OnChangedListener() {
+            @Override
+            public void onChanged(EventType type) {
+                if (type.equals(EventType.Full)) {
+                    init("Todos mis menús");
+                }
+            }
+        });
+    }
+
+
+    private void initializeValoration() {
+        setTitle("Menús por valoración");
 
         Spinner spinner = (Spinner) findViewById(R.id.menu_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
