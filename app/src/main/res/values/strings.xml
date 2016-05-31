@@ -38,6 +38,18 @@
         <item>Valorados</item>
         <item>Todos los menús</item>
     </string-array>
+    <double-array name="Valoration">
+        <item>0.5</item>
+        <item>1</item>
+        <item>1.5</item>
+        <item>2</item>
+        <item>2.5</item>
+        <item>3</item>
+        <item>3.5</item>
+        <item>4</item>
+        <item>4.5</item>
+        <item>5</item>
+    </double-array>
     <string name="title_activity_payment_petitions_list">PaymentPetitionsListActivity</string>
     <string name="title_activity_new_collaborative_menu_reviewed">NewCollaborativeMenuReviewed
     </string>
