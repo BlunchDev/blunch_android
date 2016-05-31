@@ -1,6 +1,10 @@
 package dev.blunch.blunch.domain;
 
+import android.util.Log;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import dev.blunch.blunch.utils.Entity;
 
@@ -10,13 +14,14 @@ import dev.blunch.blunch.utils.Entity;
  */
 public abstract class Menu implements Entity {
 
-    private String      id;
-    private String      name;
-    private String      author;
-    private String      description;
-    private String      localization;
-    private Date        dateStart;
-    private Date        dateEnd;
+    private String              id;
+    private String              name;
+    private String              author;
+    private String              description;
+    private String              localization;
+    private Date                dateStart;
+    private Date                dateEnd;
+    private String              dietTagsSingleString;
 
     public Menu() {}
 
@@ -28,6 +33,30 @@ public abstract class Menu implements Entity {
         this.localization = localization;
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
+        this.dietTagsSingleString = "";
+    }
+
+    public String getDietTags() { return dietTagsSingleString; }
+
+    public void setDietTagsString(String dietTags) { this.dietTagsSingleString = dietTags; }
+
+    public void addDietTags(List<DietTags> dietTags) {
+        for (DietTags dietTag : dietTags) {
+            if (this.dietTagsSingleString.equals("")) this.dietTagsSingleString += dietTag.toString();
+            else this.dietTagsSingleString += "&" + dietTag.toString();
+        }
+    }
+
+    public List<DietTags> retrievArrayOfTags() {
+        if (this.dietTagsSingleString != null && !this.dietTagsSingleString.equals("")) {
+            String[] stringDietTags = this.dietTagsSingleString.split("&");
+            List<DietTags> dietTags = new ArrayList<>();
+            for (String s : stringDietTags) {
+                Log.d(s, s);
+                dietTags.add(DietTags.valueOf(s));
+            }
+            return dietTags;
+        } else return null;
     }
 
     public String getName() {
