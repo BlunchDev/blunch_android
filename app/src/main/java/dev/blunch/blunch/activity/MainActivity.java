@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity
     CollaborativeMenuService collaborativeMenuService;
     PaymentMenuService paymentMenuService;
 
-
     NavigationView navigationView;
 
     private String email;
