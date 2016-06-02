@@ -293,8 +293,8 @@ public class MainActivity extends AppCompatActivity
             case "Participación en menús de pago":
                 menuList.addAll(menuService.getPPaymentMenusOrderedByDate());
                 break;
-            case "Menús por valoración":
-                menuList.addAll(menuService.getMenusOrderedByValoration(num));
+            case "0":
+                menuList.addAll(menuService.getMenusOrderedByValoration(0));
                 break;
             default:
                 menuList.addAll(menuService.getMenusOrderedByDate());
@@ -467,7 +467,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onChanged(EventType type) {
                 if (type.equals(EventType.Full)) {
-                    init("Menús por valoración");
+                    init("0");
                 }
             }
         });
