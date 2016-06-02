@@ -49,12 +49,14 @@ public class CollaborativeMenuTest {
                                                     LOCALIZATION, DATE_START, DATE_END,
                                                     SUGGESTED_DISHES, OFFERED_DISHES);
         collaborativeMenu.setId(ID);
+        collaborativeMenu.setDietTagsString("VEGETARIAN");
     }
 
     @Test
     public void create_correctly_without_dishes() throws Exception {
         CollaborativeMenu collaborativeMenu = new CollaborativeMenu(NAME, AUTHOR, DESCRIPTION,
                                                                     LOCALIZATION, DATE_START, DATE_END);
+        collaborativeMenu.setDietTagsString("VEGETARIAN");
         assertEquals(collaborativeMenu.getName(), NAME);
         assertEquals(collaborativeMenu.getAuthor(), AUTHOR);
         assertEquals(collaborativeMenu.getDescription(), DESCRIPTION);
@@ -63,6 +65,7 @@ public class CollaborativeMenuTest {
         assertEquals(collaborativeMenu.getDateEnd(), DATE_END);
         assertEquals(collaborativeMenu.getSuggestedDishes().size(), 0);
         assertEquals(collaborativeMenu.getOfferedDishes().size(), 0);
+        assertEquals(collaborativeMenu.getDietTags(), "VEGETARIAN");
     }
 
     @Test
@@ -81,6 +84,9 @@ public class CollaborativeMenuTest {
 
     @Test
     public void create_correctly_a_collaborative_menu() throws Exception {
+        List<DietTags> dietTags = new ArrayList<>();
+        dietTags.add(DietTags.GLUTEN_FREE);
+        collaborativeMenu.addDietTags(dietTags);
         assertEquals(collaborativeMenu.getId(), ID);
         assertEquals(collaborativeMenu.getName(), NAME);
         assertEquals(collaborativeMenu.getAuthor(), AUTHOR);
@@ -88,6 +94,7 @@ public class CollaborativeMenuTest {
         assertEquals(collaborativeMenu.getLocalization(), LOCALIZATION);
         assertEquals(collaborativeMenu.getDateStart(), DATE_START);
         assertEquals(collaborativeMenu.getDateEnd(), DATE_END);
+        assertEquals(collaborativeMenu.getDietTags(), "VEGETARIAN&GLUTEN_FREE");
     }
 
     @Test

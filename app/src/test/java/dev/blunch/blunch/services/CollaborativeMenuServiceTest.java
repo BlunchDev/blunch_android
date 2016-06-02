@@ -15,6 +15,7 @@ import java.util.Map;
 import dev.blunch.blunch.BuildConfig;
 import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.domain.CollaborativeMenuAnswer;
+import dev.blunch.blunch.domain.DietTags;
 import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.domain.User;
 import dev.blunch.blunch.utils.MockRepository;
@@ -70,6 +71,16 @@ public class CollaborativeMenuServiceTest {
                 lastChangedType = type;
             }
         });
+    }
+
+    @Test
+    public void addTags() {
+        List<DietTags> dietTags = new ArrayList<>();
+        dietTags.add(DietTags.VEGETARIAN);
+        dietTags.add(DietTags.VEGAN);
+        service.addTags(newMenu, dietTags);
+        CollaborativeMenu menu = service.get(newMenu.getId());
+        assertEquals(menu.getDietTags(), "VEGETARIAN&VEGAN");
     }
 
     public List<CollaborativeMenu> generatDummyData(int seed, int size) {

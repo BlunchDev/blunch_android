@@ -50,6 +50,8 @@ public class CollaborativeMenuRepository extends FirebaseRepository<Collaborativ
                     dishes.add(dish.getKey());
                 }
                 collaborativeMenu.setSuggestedDishesKeys(dishes);
+            } else if (d.getKey().equals("dietTags")) {
+                collaborativeMenu.setDietTagsString(d.getValue(String.class));
             }
         }
         return collaborativeMenu;

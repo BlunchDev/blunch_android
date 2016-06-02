@@ -9,6 +9,7 @@ import java.util.Map;
 
 import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.domain.CollaborativeMenuAnswer;
+import dev.blunch.blunch.domain.DietTags;
 import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.domain.User;
 import dev.blunch.blunch.utils.Preferences;
@@ -85,6 +86,11 @@ public class CollaborativeMenuService extends Service<CollaborativeMenu> {
             userRepository.update(user);
         }
         return menu;
+    }
+
+    public CollaborativeMenu addTags(CollaborativeMenu item, List<DietTags> dietTags) {
+        item.addDietTags(dietTags);
+        return repository.update(item);
     }
 
     public List<User> getUsers() { return userRepository.all(); }

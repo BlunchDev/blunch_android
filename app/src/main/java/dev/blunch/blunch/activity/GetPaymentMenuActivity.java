@@ -6,28 +6,25 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
 
 import dev.blunch.blunch.R;
+import dev.blunch.blunch.domain.DietTags;
 import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.domain.PaymentMenu;
 import dev.blunch.blunch.domain.PaymentMenuAnswer;
@@ -38,7 +35,6 @@ import dev.blunch.blunch.services.ServiceFactory;
 import dev.blunch.blunch.utils.Preferences;
 import dev.blunch.blunch.view.GuestPaymentDishLayout;
 import dev.blunch.blunch.view.HostPaymentDishLayout;
-import dev.blunch.blunch.view.PaymentDishLayout;
 import dev.blunch.blunch.view.SelectPaymentDishLayout;
 
 @SuppressWarnings("all")
@@ -234,6 +230,38 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
                 myTotalPrice+=d.getPrice();
             }
             precio.setText(myTotalPrice+" €");
+        }
+
+        RelativeLayout vegetarianLayout = (RelativeLayout) findViewById(R.id.vegetarianLayout);
+        RelativeLayout veganLayout = (RelativeLayout) findViewById(R.id.veganLayout);
+        RelativeLayout glutenfreeLayout = (RelativeLayout) findViewById(R.id.glutenfreeLayout);
+
+        boolean vegt, vegn, glutenfree;
+        vegt = vegn = glutenfree = false;
+
+        if (paymentMenu.retrievArrayOfTags() != null) {
+            for (DietTags dietTags : paymentMenu.retrievArrayOfTags()) {
+                switch(dietTags.toString()) {
+                    case "VEGETARIAN":
+                        vegt = true;
+                        break;
+                    case "VEGAN":
+                        vegn = true;
+                        break;
+                    case "GLUTEN_FREE":
+                        glutenfree = true;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            if (!vegt) ((ViewManager)vegetarianLayout.getParent()).removeView(vegetarianLayout);
+            if (!vegn) ((ViewManager)veganLayout.getParent()).removeView(veganLayout);
+            if (!glutenfree) ((ViewManager)glutenfreeLayout.getParent()).removeView(glutenfreeLayout);
+        } else  {
+            ((ViewManager)vegetarianLayout.getParent()).removeView(vegetarianLayout);
+            ((ViewManager)veganLayout.getParent()).removeView(veganLayout);
+            ((ViewManager)glutenfreeLayout.getParent()).removeView(glutenfreeLayout);
         }
     }
 
