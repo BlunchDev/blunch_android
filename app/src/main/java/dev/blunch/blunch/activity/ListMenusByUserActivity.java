@@ -30,10 +30,12 @@ public class ListMenusByUserActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_list_menus);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);*/
 
         if (getIntent().getStringExtra(USER_ID_KEY) != null) this.userId = getIntent().getStringExtra(USER_ID_KEY);
+
+        setTitle("Menús de " + menuService.findUserByEmail(this.userId));
 
         menuService = ServiceFactory.getMenuService(getApplicationContext());
 
@@ -43,6 +45,7 @@ public class ListMenusByUserActivity extends AppCompatActivity {
 
     private void setAdapter (){
         List<Menu> menuList = new ArrayList<>();
+        //TODO menuService.getCurrentMenusByUser(userId)
         menuList = menuService.getMenusByUser(userId);
 
         View recyclerView2 = findViewById(R.id.menu_list);

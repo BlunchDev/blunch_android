@@ -14,6 +14,7 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:layout_marginTop="36dp"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -66,12 +67,14 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:layout_marginTop="36dp"
             android:gravity="bottom">
 
             <Button
                 android:layout_width="150dp"
                 android:layout_height="?attr/actionBarSize"
                 android:text="Valoraciones"
+                android:textColor="@color/white"
                 android:id="@+id/myValorations"
                 android:background="@color/colorPrimary" />
 
@@ -82,6 +85,7 @@
             <Button
                 android:layout_width="150dp"
                 android:layout_height="?attr/actionBarSize"
+                android:textColor="@color/white"
                 android:text="Menús"
                 android:id="@+id/myMenus"
                 android:background="@color/colorPrimary" />

@@ -60,12 +60,27 @@ public class GetUserActivity extends AppCompatActivity {
 
         userImage.setImageDrawable(getUserPic());
         userName.setText(user.getName());
+        setTitle(user.getName());
         userValoration.setRating((float) user.getValorationAverage());
+        userValoration.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         myValorations.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(GetUserActivity.this, ValorationListActivity.class);
                 intent.putExtra(ValorationListActivity.USER_ID, userId);
+                startActivity(intent);
+            }
+        });
+        myMenus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GetUserActivity.this, ListMenusByUserActivity.class);
+                intent.putExtra(ListMenusByUserActivity.USER_ID_KEY, userId);
                 startActivity(intent);
             }
         });
