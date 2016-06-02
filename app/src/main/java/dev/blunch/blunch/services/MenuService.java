@@ -345,7 +345,7 @@ public class MenuService extends Service<CollaborativeMenu> {
                             }
                         }
                     }
-                    result.add(position, user.getMyMenu(idMenu));
+                    result.add(position, getMenu(idMenu));
                 }
             }
         }

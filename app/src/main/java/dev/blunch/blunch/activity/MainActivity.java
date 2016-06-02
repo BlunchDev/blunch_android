@@ -294,7 +294,7 @@ public class MainActivity extends AppCompatActivity
                 menuList.addAll(menuService.getPPaymentMenusOrderedByDate());
                 break;
             case "0":
-                menuList.addAll(menuService.getMenusOrderedByValoration(0));
+                menuList.addAll(menuService.getMenusOrderedByValoration(num));
                 break;
             default:
                 menuList.addAll(menuService.getMenusOrderedByDate());
