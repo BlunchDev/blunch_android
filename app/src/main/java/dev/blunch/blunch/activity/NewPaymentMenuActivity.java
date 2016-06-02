@@ -4,7 +4,6 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
@@ -31,12 +30,13 @@ import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.domain.PaymentMenu;
 import dev.blunch.blunch.services.PaymentMenuService;
 import dev.blunch.blunch.services.ServiceFactory;
+import dev.blunch.blunch.utils.BaseActivity;
 import dev.blunch.blunch.utils.Preferences;
 import dev.blunch.blunch.utils.Utils;
 import dev.blunch.blunch.view.PaymentDishLayout;
 
 @SuppressWarnings("all")
-public class NewPaymentMenuActivity extends AppCompatActivity {
+public class NewPaymentMenuActivity extends BaseActivity {
 
     private int day,month,year;
 
@@ -54,6 +54,7 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
     private PaymentMenuService paymentMenuService;
 
     protected ArrayList<PaymentDishLayout> myDishes = new ArrayList<>();
+
 
 
     @Override

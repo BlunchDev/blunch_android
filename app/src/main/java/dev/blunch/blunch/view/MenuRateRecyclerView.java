@@ -24,6 +24,7 @@ import dev.blunch.blunch.domain.Menu;
 import dev.blunch.blunch.domain.User;
 import dev.blunch.blunch.domain.Valoration;
 import dev.blunch.blunch.services.MenuService;
+import dev.blunch.blunch.services.ServiceFactory;
 import dev.blunch.blunch.utils.Preferences;
 
 /**
@@ -74,9 +75,13 @@ public class MenuRateRecyclerView extends RecyclerView.Adapter<MenuRateRecyclerV
         for (User u : users) {
             if (u.getId().equals(holder.mItem.getAuthor())) userEnt = u;
         }
+        if (userEnt == null){
+            MenuService menuService = ServiceFactory.getMenuService(context);
+            userEnt = menuService.findUserByEmail(holder.mItem.getAuthor());
+        }
 
-        holder.userName.setText(userEnt.getName().split(" ")[0]);
         try {
+            holder.userName.setText(userEnt.getName().split(" ")[0]);
             holder.userIcon.setImageDrawable(userEnt.getImageRounded(context.getResources()));
         } catch (Exception e) {
             e.printStackTrace();

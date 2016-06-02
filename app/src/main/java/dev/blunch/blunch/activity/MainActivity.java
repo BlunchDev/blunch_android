@@ -8,28 +8,23 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
@@ -43,13 +38,14 @@ import dev.blunch.blunch.services.CollaborativeMenuService;
 import dev.blunch.blunch.services.MenuService;
 import dev.blunch.blunch.services.PaymentMenuService;
 import dev.blunch.blunch.services.ServiceFactory;
+import dev.blunch.blunch.utils.BaseActivity;
 import dev.blunch.blunch.utils.Preferences;
 import dev.blunch.blunch.utils.Repository;
 import dev.blunch.blunch.view.MenuRateRecyclerView;
 import dev.blunch.blunch.view.MenuRecyclerView;
 
 @SuppressWarnings("all")
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     MenuService menuService;
@@ -62,6 +58,8 @@ public class MainActivity extends AppCompatActivity
     private String email;
 
     FloatingActionButton fab;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

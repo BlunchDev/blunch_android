@@ -22,6 +22,8 @@ import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.domain.DietTags;
 import dev.blunch.blunch.domain.Menu;
 import dev.blunch.blunch.domain.User;
+import dev.blunch.blunch.services.MenuService;
+import dev.blunch.blunch.services.ServiceFactory;
 
 /**
  * Created by jmotger on 13/05/16.
@@ -70,8 +72,13 @@ public class MenuRecyclerView extends RecyclerView.Adapter<MenuRecyclerView.View
             if (u.getId().equals(holder.mItem.getAuthor())) userEnt = u;
         }
 
-        holder.userName.setText(userEnt.getName().split(" ")[0]);
+        if (userEnt == null){
+            MenuService menuService = ServiceFactory.getMenuService(context);
+            userEnt = menuService.findUserByEmail(holder.mItem.getAuthor());
+        }
+
         try {
+            holder.userName.setText(userEnt.getName().split(" ")[0]);
             holder.userIcon.setImageDrawable(userEnt.getImageRounded(context.getResources()));
         } catch (Exception e) {
             e.printStackTrace();

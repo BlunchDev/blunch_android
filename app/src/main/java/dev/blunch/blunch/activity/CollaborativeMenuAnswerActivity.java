@@ -4,7 +4,6 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,9 +27,10 @@ import dev.blunch.blunch.domain.CollaborativeMenuAnswer;
 import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.services.CollaborativeMenuService;
 import dev.blunch.blunch.services.ServiceFactory;
+import dev.blunch.blunch.utils.BaseActivity;
 import dev.blunch.blunch.utils.Preferences;
 
-public class CollaborativeMenuAnswerActivity extends AppCompatActivity {
+public class CollaborativeMenuAnswerActivity extends BaseActivity {
 
     private CollaborativeMenuService collaborativeMenuService;
 
@@ -39,6 +39,7 @@ public class CollaborativeMenuAnswerActivity extends AppCompatActivity {
     private List<String> guestNewSuggestions;
 
     private String menuID;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

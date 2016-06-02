@@ -5,7 +5,6 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewManager;
@@ -30,13 +29,14 @@ import dev.blunch.blunch.domain.User;
 import dev.blunch.blunch.services.CollaborativeMenuService;
 import dev.blunch.blunch.services.MenuService;
 import dev.blunch.blunch.services.ServiceFactory;
+import dev.blunch.blunch.utils.BaseActivity;
 
 /**
  * GetMenuCollaborative Activity
  * @author albert
  */
 @SuppressWarnings("all")
-public class GetCollaborativeMenuActivity extends AppCompatActivity {
+public class GetCollaborativeMenuActivity extends BaseActivity {
 
     public static final String MENU_ID_KEY = "menuId";
     private CollaborativeMenuService collaborativeMenuService;

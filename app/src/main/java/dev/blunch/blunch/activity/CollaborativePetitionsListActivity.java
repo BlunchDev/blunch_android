@@ -3,7 +3,6 @@ package dev.blunch.blunch.activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -23,15 +22,18 @@ import dev.blunch.blunch.domain.CollaborativeMenuAnswer;
 import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.domain.User;
 import dev.blunch.blunch.services.CollaborativeMenuService;
+import dev.blunch.blunch.services.MenuService;
 import dev.blunch.blunch.services.ServiceFactory;
+import dev.blunch.blunch.utils.BaseActivity;
 
-public class CollaborativePetitionsListActivity extends AppCompatActivity {
+public class CollaborativePetitionsListActivity extends BaseActivity {
 
 
     public static final String MENU_ID_KEY = "menuId";
     private static final String TAG = CollaborativePetitionsListActivity.class.getSimpleName();
     private CollaborativeMenuService service;
     private String idMenu;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,8 +122,13 @@ public class CollaborativePetitionsListActivity extends AppCompatActivity {
             User user = null;
             for (User u : users) if (u.getId().equals(holder.mItem.getGuest())) user = u;
 
-            holder.titleView.setText("Propuesta de " + user.getName());
+            if (user == null){
+                MenuService menuService = ServiceFactory.getMenuService(context);
+                user = menuService.findUserByEmail(holder.mItem.getGuest());
+            }
+
             try {
+                holder.titleView.setText("Propuesta de " + user.getName());
                 holder.profilePic.setImageDrawable(user.getImageRounded(context.getResources()));
             } catch (Exception e) {
                 e.printStackTrace();
