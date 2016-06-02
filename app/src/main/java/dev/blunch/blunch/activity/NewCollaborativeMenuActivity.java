@@ -4,7 +4,6 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
@@ -31,12 +30,13 @@ import dev.blunch.blunch.domain.DietTags;
 import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.services.CollaborativeMenuService;
 import dev.blunch.blunch.services.ServiceFactory;
+import dev.blunch.blunch.utils.BaseActivity;
 import dev.blunch.blunch.utils.Preferences;
 import dev.blunch.blunch.utils.Utils;
 import dev.blunch.blunch.view.CollaborativeDishLayout;
 
 @SuppressWarnings("all")
-public class NewCollaborativeMenuActivity extends AppCompatActivity {
+public class NewCollaborativeMenuActivity extends BaseActivity {
 
     private final static String SERVICE = "CollaborativeMenuService";
 
@@ -56,12 +56,6 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
     protected ArrayList<CollaborativeDishLayout> suggestedDishes = new ArrayList<>();
 
     private CollaborativeMenuService collaborativeMenuService;
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Preferences.init(getApplicationContext());
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -3,7 +3,6 @@ package dev.blunch.blunch.activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
@@ -15,9 +14,9 @@ import dev.blunch.blunch.R;
 import dev.blunch.blunch.domain.User;
 import dev.blunch.blunch.services.MenuService;
 import dev.blunch.blunch.services.ServiceFactory;
-import dev.blunch.blunch.utils.Preferences;
+import dev.blunch.blunch.utils.BaseActivity;
 
-public class GetUserActivity extends AppCompatActivity {
+public class GetUserActivity extends BaseActivity {
 
     private ImageView userImage;
     private TextView userName;
@@ -31,11 +30,6 @@ public class GetUserActivity extends AppCompatActivity {
 
     private MenuService menuService;
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Preferences.init(getApplicationContext());
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,7 +1,6 @@
 package dev.blunch.blunch.activity;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,20 +14,15 @@ import dev.blunch.blunch.R;
 import dev.blunch.blunch.domain.Menu;
 import dev.blunch.blunch.services.MenuService;
 import dev.blunch.blunch.services.ServiceFactory;
-import dev.blunch.blunch.utils.Preferences;
+import dev.blunch.blunch.utils.BaseActivity;
 import dev.blunch.blunch.view.MenuRecyclerView;
 
-public class ListMenusByUserActivity extends AppCompatActivity {
+public class ListMenusByUserActivity extends BaseActivity {
 
     MenuService menuService;
     public static final String USER_ID_KEY = "userId";
     private static String userId;
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Preferences.init(getApplicationContext());
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

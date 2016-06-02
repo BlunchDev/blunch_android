@@ -2,7 +2,6 @@ package dev.blunch.blunch.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -28,10 +27,11 @@ import dev.blunch.blunch.domain.Menu;
 import dev.blunch.blunch.domain.User;
 import dev.blunch.blunch.services.MenuService;
 import dev.blunch.blunch.services.ServiceFactory;
+import dev.blunch.blunch.utils.BaseActivity;
 import dev.blunch.blunch.utils.Preferences;
 
 @SuppressWarnings("all")
-public class ChatActivity extends AppCompatActivity {
+public class ChatActivity extends BaseActivity {
 
     private MenuService menuService;
     private String menuId;
@@ -39,11 +39,6 @@ public class ChatActivity extends AppCompatActivity {
     private FirebaseRecyclerAdapter<ChatMessage, ChatMessageViewHolder> mAdapter;
     public static final String MENU_ID = "menu_id";
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Preferences.init(getApplicationContext());
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

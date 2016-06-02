@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewManager;
@@ -32,13 +31,14 @@ import dev.blunch.blunch.domain.User;
 import dev.blunch.blunch.services.MenuService;
 import dev.blunch.blunch.services.PaymentMenuService;
 import dev.blunch.blunch.services.ServiceFactory;
+import dev.blunch.blunch.utils.BaseActivity;
 import dev.blunch.blunch.utils.Preferences;
 import dev.blunch.blunch.view.GuestPaymentDishLayout;
 import dev.blunch.blunch.view.HostPaymentDishLayout;
 import dev.blunch.blunch.view.SelectPaymentDishLayout;
 
 @SuppressWarnings("all")
-public class GetPaymentMenuActivity extends AppCompatActivity {
+public class GetPaymentMenuActivity extends BaseActivity {
     public static final String MENU_ID_KEY = "menuId";
     private PaymentMenuService paymentMenuService;
     private MenuService menuService;
@@ -59,11 +59,6 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
 
     private static String menuId;
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Preferences.init(getApplicationContext());
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

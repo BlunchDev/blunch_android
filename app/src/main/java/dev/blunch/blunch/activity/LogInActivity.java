@@ -11,7 +11,6 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
@@ -43,11 +42,12 @@ import dev.blunch.blunch.R;
 import dev.blunch.blunch.domain.User;
 import dev.blunch.blunch.services.MenuService;
 import dev.blunch.blunch.services.ServiceFactory;
+import dev.blunch.blunch.utils.BaseActivity;
 import dev.blunch.blunch.utils.Preferences;
 import dev.blunch.blunch.utils.Repository;
 
 @SuppressWarnings("all")
-public class LogInActivity extends AppCompatActivity {
+public class LogInActivity extends BaseActivity {
 
     private CallbackManager callbackManager;
     private ProfileTracker mProfileTracker;
@@ -58,11 +58,6 @@ public class LogInActivity extends AppCompatActivity {
     private boolean prof;
     private boolean graph;
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Preferences.init(getApplicationContext());
-    }
 
     private FacebookCallback<LoginResult> loginResultFacebookCallback;
 

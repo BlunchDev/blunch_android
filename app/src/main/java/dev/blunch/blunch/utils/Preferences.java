@@ -25,7 +25,9 @@ public class Preferences {
     }
 
     public static void setCurrentUserEmail(String email) {
-        prefs.edit().putString(EMAIL_KEY, email.split("\\.")[0]).apply();
+        if (prefs != null){
+            prefs.edit().putString(EMAIL_KEY, email.split("\\.")[0]).apply();
+        }
     }
 
 }

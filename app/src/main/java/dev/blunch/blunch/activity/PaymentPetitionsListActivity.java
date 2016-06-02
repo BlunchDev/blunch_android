@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -20,22 +19,18 @@ import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.domain.PaymentMenu;
 import dev.blunch.blunch.domain.PaymentMenuAnswer;
 import dev.blunch.blunch.domain.User;
+import dev.blunch.blunch.services.MenuService;
 import dev.blunch.blunch.services.PaymentMenuService;
 import dev.blunch.blunch.services.ServiceFactory;
-import dev.blunch.blunch.utils.Preferences;
+import dev.blunch.blunch.utils.BaseActivity;
 
 @SuppressWarnings("all")
-public class PaymentPetitionsListActivity extends AppCompatActivity {
+public class PaymentPetitionsListActivity extends BaseActivity {
 
     public static final String ID_PAYMENT_MENU_KEY = "menuId";
     private PaymentMenuService service;
     private String idMenu;
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Preferences.init(getApplicationContext());
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,8 +110,13 @@ public class PaymentPetitionsListActivity extends AppCompatActivity {
             User user = null;
             for(User u : users) if (u.getId().equals(holder.mItem.getGuest())) user = u;
 
-            holder.commentView.setText("Petición de "+ user.getName());
+            if (user == null){
+                MenuService menuService = ServiceFactory.getMenuService(context);
+                user = menuService.findUserByEmail(holder.mItem.getGuest());
+            }
+
             try {
+                holder.commentView.setText("Petición de "+ user.getName());
                 holder.profilePic.setImageDrawable(user.getImageRounded(context.getResources()));
             } catch (Exception e) {
                 e.printStackTrace();
