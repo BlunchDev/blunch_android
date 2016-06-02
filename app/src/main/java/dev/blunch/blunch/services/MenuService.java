@@ -326,9 +326,9 @@ public class MenuService extends Service<CollaborativeMenu> {
         List<User> users = getUsers();
         List<Menu> result = new ArrayList<>();
         Vector<Double> pointList = new Vector<Double>();
-        boolean firstInserted = false;
         for (User user : users) {
             Set<String> myMenus = user.getMyMenus().keySet();
+            boolean firstInserted = false;
             for (String idMenu : myMenus){
                 String idUser = user.getId();
                 Valoration v = getValoration(idMenu, idUser);
@@ -339,7 +339,7 @@ public class MenuService extends Service<CollaborativeMenu> {
                     if (!firstInserted){ pointList.add(vpoints); firstInserted = true;}
                     else{
                         while (position < pointList.size() && !found){
-                            if (pointList.get(position) <= v.getPoints()){
+                            if (pointList.get(position) <= vpoints){
                                 found = true;
                                 pointList.add(vpoints);
                             }

@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity
     NavigationView navigationView;
 
     private String email;
+    private double num;
 
     FloatingActionButton fab;
 
@@ -199,6 +200,14 @@ public class MainActivity extends AppCompatActivity
             initFragment(R.layout.content_list_menus);
             initializeCollaboratingMenus();
         }
+        else if (id == R.id.collaborating_menus) {
+            initFragment(R.layout.content_list_menus);
+            initializeCollaboratingMenus();
+        }
+        else if (id == R.id.valoration_menus) {
+            initFragment(R.layout.content_list_menus);
+            initializeValoration();
+        }
         else if (id == R.id.old_menus) {
             initFragment(R.layout.content_list_old_menus);
             initializeOldMenus();
@@ -283,6 +292,9 @@ public class MainActivity extends AppCompatActivity
                 break;
             case "Participación en menús de pago":
                 menuList.addAll(menuService.getPPaymentMenusOrderedByDate());
+                break;
+            case "Menús por valoración":
+                menuList.addAll(menuService.getMenusOrderedByValoration(num));
                 break;
             default:
                 menuList.addAll(menuService.getMenusOrderedByDate());
@@ -428,7 +440,7 @@ public class MainActivity extends AppCompatActivity
 
 
     private void initializeValoration() {
-        setTitle("Menús por valoración");
+        setTitle("Menús filtrados por nota");
 
         Spinner spinner = (Spinner) findViewById(R.id.menu_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -440,6 +452,8 @@ public class MainActivity extends AppCompatActivity
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String val = parent.getItemAtPosition(position).toString();
+                num = Double.parseDouble(val);
                 init(parent.getItemAtPosition(position).toString());
             }
 
@@ -453,7 +467,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onChanged(EventType type) {
                 if (type.equals(EventType.Full)) {
-                    init("Todos mis menús");
+                    init("Menús por valoración");
                 }
             }
         });

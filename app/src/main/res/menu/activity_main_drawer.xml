@@ -20,6 +20,10 @@
             android:icon="@android:drawable/ic_menu_myplaces"
             android:title="@string/menus_participo" />
         <item
+            android:id="@+id/valoration_menus"
+            android:icon="@android:drawable/btn_star"
+            android:title="@string/menus_por_valoracion" />
+        <item
             android:id="@+id/old_menus"
             android:icon="@android:drawable/btn_star"
             android:title="@string/valoracion_menus"

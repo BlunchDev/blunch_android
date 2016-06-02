@@ -38,7 +38,8 @@
         <item>Valorados</item>
         <item>Todos los menús</item>
     </string-array>
-    <double-array name="Valoration">
+    <string-array name="Valoration">
+        <item>0</item>
         <item>0.5</item>
         <item>1</item>
         <item>1.5</item>
@@ -49,7 +50,7 @@
         <item>4</item>
         <item>4.5</item>
         <item>5</item>
-    </double-array>
+    </string-array>
     <string name="title_activity_payment_petitions_list">PaymentPetitionsListActivity</string>
     <string name="title_activity_new_collaborative_menu_reviewed">NewCollaborativeMenuReviewed
     </string>
@@ -67,6 +68,7 @@
     <string name="buscar_menus">Buscar</string>
     <string name="mapa_menus">Mapa</string>
     <string name="menus_participo">Menús en los que participo</string>
+    <string name="menus_por_valoracion">Menús filtrados por nota</string>
     <string name="valoracion_menus">Valoración</string>
     <string name="title_activity_chat">ChatActivity</string>
     <string name="valorationTitle">Valoración</string>
