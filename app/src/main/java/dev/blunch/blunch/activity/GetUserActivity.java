@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -16,6 +15,7 @@ import dev.blunch.blunch.R;
 import dev.blunch.blunch.domain.User;
 import dev.blunch.blunch.services.MenuService;
 import dev.blunch.blunch.services.ServiceFactory;
+import dev.blunch.blunch.utils.Preferences;
 
 public class GetUserActivity extends AppCompatActivity {
 
@@ -30,6 +30,12 @@ public class GetUserActivity extends AppCompatActivity {
     public String userId;
 
     private MenuService menuService;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Preferences.init(getApplicationContext());
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

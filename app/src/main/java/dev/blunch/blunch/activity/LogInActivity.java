@@ -1,6 +1,5 @@
 package dev.blunch.blunch.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -12,7 +11,6 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.support.multidex.MultiDex;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
@@ -59,6 +57,12 @@ public class LogInActivity extends AppCompatActivity {
 
     private boolean prof;
     private boolean graph;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Preferences.init(getApplicationContext());
+    }
 
     private FacebookCallback<LoginResult> loginResultFacebookCallback;
 

@@ -41,6 +41,12 @@ public class CollaborativeMenuAnswerActivity extends AppCompatActivity {
     private String menuID;
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        Preferences.init(getApplicationContext());
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_collaborative_menu_answer);

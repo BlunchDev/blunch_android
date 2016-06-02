@@ -18,7 +18,10 @@ public class Preferences {
     }
 
     public static String getCurrentUserEmail() {
-        return prefs.getString(EMAIL_KEY, new String());
+        if (prefs == null){
+            return "";
+        }
+        return prefs.getString(EMAIL_KEY, "");
     }
 
     public static void setCurrentUserEmail(String email) {

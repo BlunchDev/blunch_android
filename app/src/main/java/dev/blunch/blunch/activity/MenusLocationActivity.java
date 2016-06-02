@@ -32,6 +32,7 @@ import dev.blunch.blunch.domain.PaymentMenu;
 import dev.blunch.blunch.services.MenuService;
 import dev.blunch.blunch.services.ServiceFactory;
 import dev.blunch.blunch.utils.IntentUtils;
+import dev.blunch.blunch.utils.Preferences;
 import dev.blunch.blunch.utils.Utils;
 
 public class MenusLocationActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener,
@@ -39,6 +40,12 @@ public class MenusLocationActivity extends FragmentActivity implements OnMapRead
 
     private GoogleMap mMap;
     private MenuService menuService;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Preferences.init(getApplicationContext());
+    }
 
 
     @Override

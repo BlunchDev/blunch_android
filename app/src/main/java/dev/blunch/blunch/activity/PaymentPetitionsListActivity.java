@@ -22,6 +22,7 @@ import dev.blunch.blunch.domain.PaymentMenuAnswer;
 import dev.blunch.blunch.domain.User;
 import dev.blunch.blunch.services.PaymentMenuService;
 import dev.blunch.blunch.services.ServiceFactory;
+import dev.blunch.blunch.utils.Preferences;
 
 @SuppressWarnings("all")
 public class PaymentPetitionsListActivity extends AppCompatActivity {
@@ -29,6 +30,12 @@ public class PaymentPetitionsListActivity extends AppCompatActivity {
     public static final String ID_PAYMENT_MENU_KEY = "menuId";
     private PaymentMenuService service;
     private String idMenu;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Preferences.init(getApplicationContext());
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

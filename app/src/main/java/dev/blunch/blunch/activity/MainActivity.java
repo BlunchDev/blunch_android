@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -20,16 +19,13 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
@@ -62,6 +58,8 @@ public class MainActivity extends AppCompatActivity
     private String email;
 
     FloatingActionButton fab;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -439,5 +437,6 @@ public class MainActivity extends AppCompatActivity
         TextView oldMenus;
         oldMenus = (TextView) MenuItemCompat.getActionView(navigationView.getMenu().findItem(R.id.old_menus));
         initializeCountDrawer(oldMenus);
+        Preferences.init(getApplicationContext());
     }
 }

@@ -5,7 +5,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.Toast;
@@ -14,6 +13,7 @@ import dev.blunch.blunch.R;
 import dev.blunch.blunch.domain.Menu;
 import dev.blunch.blunch.services.MenuService;
 import dev.blunch.blunch.services.ServiceFactory;
+import dev.blunch.blunch.utils.Preferences;
 
 public class ValorationActivity extends AppCompatActivity {
 
@@ -27,6 +27,12 @@ public class ValorationActivity extends AppCompatActivity {
     private String guest;
 
     private MenuService menuService;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Preferences.init(getApplicationContext());
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

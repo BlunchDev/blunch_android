@@ -40,6 +40,12 @@ public class ChatActivity extends AppCompatActivity {
     public static final String MENU_ID = "menu_id";
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        Preferences.init(getApplicationContext());
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);

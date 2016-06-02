@@ -30,6 +30,7 @@ import dev.blunch.blunch.domain.User;
 import dev.blunch.blunch.services.CollaborativeMenuService;
 import dev.blunch.blunch.services.MenuService;
 import dev.blunch.blunch.services.ServiceFactory;
+import dev.blunch.blunch.utils.Preferences;
 
 /**
  * GetMenuCollaborative Activity
@@ -52,6 +53,12 @@ public class GetCollaborativeMenuActivity extends AppCompatActivity {
     private Toolbar toolbar;
 
     private static String menuId;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Preferences.init(getApplicationContext());
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

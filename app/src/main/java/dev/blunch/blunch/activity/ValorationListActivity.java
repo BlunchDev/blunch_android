@@ -13,12 +13,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+
 import java.util.List;
+
 import dev.blunch.blunch.R;
 import dev.blunch.blunch.domain.User;
 import dev.blunch.blunch.domain.Valoration;
 import dev.blunch.blunch.services.MenuService;
 import dev.blunch.blunch.services.ServiceFactory;
+import dev.blunch.blunch.utils.Preferences;
 
 /**
  * Valoration List Activity Class
@@ -30,6 +33,12 @@ public class ValorationListActivity extends AppCompatActivity {
     public static final String USER_ID = "userId";
     private MenuService service;
     private String userId;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Preferences.init(getApplicationContext());
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

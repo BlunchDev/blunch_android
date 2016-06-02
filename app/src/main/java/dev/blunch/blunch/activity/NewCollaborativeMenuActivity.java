@@ -20,8 +20,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -58,6 +56,12 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
     protected ArrayList<CollaborativeDishLayout> suggestedDishes = new ArrayList<>();
 
     private CollaborativeMenuService collaborativeMenuService;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Preferences.init(getApplicationContext());
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

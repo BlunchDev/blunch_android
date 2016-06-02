@@ -24,6 +24,7 @@ import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.domain.User;
 import dev.blunch.blunch.services.CollaborativeMenuService;
 import dev.blunch.blunch.services.ServiceFactory;
+import dev.blunch.blunch.utils.Preferences;
 
 public class CollaborativePetitionsListActivity extends AppCompatActivity {
 
@@ -32,6 +33,12 @@ public class CollaborativePetitionsListActivity extends AppCompatActivity {
     private static final String TAG = CollaborativePetitionsListActivity.class.getSimpleName();
     private CollaborativeMenuService service;
     private String idMenu;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Preferences.init(getApplicationContext());
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

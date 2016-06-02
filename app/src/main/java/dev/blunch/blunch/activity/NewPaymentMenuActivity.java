@@ -55,6 +55,12 @@ public class NewPaymentMenuActivity extends AppCompatActivity {
 
     protected ArrayList<PaymentDishLayout> myDishes = new ArrayList<>();
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Preferences.init(getApplicationContext());
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

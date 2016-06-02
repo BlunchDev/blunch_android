@@ -60,6 +60,12 @@ public class GetPaymentMenuActivity extends AppCompatActivity {
     private static String menuId;
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        Preferences.init(getApplicationContext());
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_get_payment_menu);
