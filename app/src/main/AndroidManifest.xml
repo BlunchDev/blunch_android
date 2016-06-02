@@ -4,10 +4,6 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <provider
-        android:name="com.facebook.FacebookContentProvider"
-        android:authorities="com.facebook.app.FacebookContentProvider1004661026291848"
-        android:exported="true" />
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
