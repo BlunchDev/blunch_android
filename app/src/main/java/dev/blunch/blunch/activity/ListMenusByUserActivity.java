@@ -35,9 +35,9 @@ public class ListMenusByUserActivity extends AppCompatActivity {
 
         if (getIntent().getStringExtra(USER_ID_KEY) != null) this.userId = getIntent().getStringExtra(USER_ID_KEY);
 
-        setTitle("Menús de " + menuService.findUserByEmail(this.userId));
-
         menuService = ServiceFactory.getMenuService(getApplicationContext());
+
+        setTitle("Menús de " + menuService.findUserByEmail(this.userId));
 
         init("Todos");
         setAdapter();

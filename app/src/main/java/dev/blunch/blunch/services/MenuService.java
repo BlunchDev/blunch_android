@@ -83,7 +83,11 @@ public class MenuService extends Service<CollaborativeMenu> {
         List<Menu> menuList = new ArrayList<>();
         User user = findUserByEmail(userId);
         Set<String> myMenus = user.getMyMenus().keySet();
-        for (String k : myMenus) menuList.add(getMenu(k));
+        for (String k : myMenus) {
+            if (getMenu(k).getDateEnd().compareTo(Calendar.getInstance().getTime()) > 0) {
+                menuList.add(getMenu(k));
+            }
+        }
         Collections.sort(menuList, new MenuComparator());
         return menuList;
     }
