@@ -261,6 +261,53 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
+    private void initVal(String filter) {
+        List<dev.blunch.blunch.domain.Menu> menuList = new ArrayList<>();
+        switch(filter){
+            case "0":
+                menuList.addAll(menuService.getMenusOrderedByValoration(num));
+                break;
+            case "0.5":
+                menuList.addAll(menuService.getMenusOrderedByValoration(num));
+                break;
+            case "1":
+                menuList.addAll(menuService.getMenusOrderedByValoration(num));
+                break;
+            case "1.5":
+                menuList.addAll(menuService.getMenusOrderedByValoration(num));
+                break;
+            case "2":
+                menuList.addAll(menuService.getMenusOrderedByValoration(num));
+                break;
+            case "2.5":
+                menuList.addAll(menuService.getMenusOrderedByValoration(num));
+                break;
+            case "3":
+                menuList.addAll(menuService.getMenusOrderedByValoration(num));
+                break;
+            case "3.5":
+                menuList.addAll(menuService.getMenusOrderedByValoration(num));
+                break;
+            case "4":
+                menuList.addAll(menuService.getMenusOrderedByValoration(num));
+                break;
+            case "4.5":
+                menuList.addAll(menuService.getMenusOrderedByValoration(num));
+                break;
+            case "5":
+                menuList.addAll(menuService.getMenusOrderedByValoration(num));
+                break;
+        }
+
+
+        View recyclerView2 = findViewById(R.id.menu_list);
+        assert recyclerView2 != null;
+        MenuRecyclerView menuRecyclerView = new MenuRecyclerView(getApplicationContext(),
+                menuList, menuService.getUsers());
+        ((RecyclerView) recyclerView2).setAdapter(menuRecyclerView);
+
+    }
+
     private void init(String filter) {
 
         List<dev.blunch.blunch.domain.Menu> menuList = new ArrayList<>();
@@ -292,9 +339,6 @@ public class MainActivity extends AppCompatActivity
                 break;
             case "Participación en menús de pago":
                 menuList.addAll(menuService.getPPaymentMenusOrderedByDate());
-                break;
-            case "0":
-                menuList.addAll(menuService.getMenusOrderedByValoration(num));
                 break;
             default:
                 menuList.addAll(menuService.getMenusOrderedByDate());
@@ -454,7 +498,7 @@ public class MainActivity extends AppCompatActivity
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String val = parent.getItemAtPosition(position).toString();
                 num = Double.parseDouble(val);
-                init(parent.getItemAtPosition(position).toString());
+                initVal(parent.getItemAtPosition(position).toString());
             }
 
             @Override
@@ -467,7 +511,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onChanged(EventType type) {
                 if (type.equals(EventType.Full)) {
-                    init("0");
+                    initVal(String.valueOf(num));
                 }
             }
         });
