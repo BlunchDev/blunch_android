@@ -292,6 +292,13 @@ public class MenuService extends Service<CollaborativeMenu> {
         return null;
     }
 
+    public Valoration getMyValoration(String menuId, String user) {
+        for (Valoration v : valorationRepository.all()) {
+            if (v.getMenu().equals(menuId) && v.getHost().equals(user)) return valorationRepository.get(v.getId());
+        }
+        return null;
+    }
+
     public List<Valoration> getValorationsTo(String user) {
         List<Valoration> list = new ArrayList<>();
         for (Valoration v : valorationRepository.all()) {
@@ -325,25 +332,27 @@ public class MenuService extends Service<CollaborativeMenu> {
     public List<Menu> getMenusOrderedByValoration(double points) {
         List<User> users = getUsers();
         List<Menu> result = new ArrayList<>();
-        Vector<Double> pointList = new Vector<Double>();
+        Vector<Double> pointList = new Vector<Double>(0);
         for (User user : users) {
             Set<String> myMenus = user.getMyMenus().keySet();
             boolean firstInserted = false;
             for (String idMenu : myMenus){
                 String idUser = user.getId();
-                Valoration v = getValoration(idMenu, idUser);
+                Valoration v = getMyValoration(idMenu, idUser);
                 double vpoints = v.getPoints();
                 if (vpoints >= points) {
                     int position = 0;
-                    boolean found = false;
                     if (!firstInserted){ pointList.add(vpoints); firstInserted = true;}
                     else{
+                        boolean found = false;
                         while (position < pointList.size() && !found){
                             if (pointList.get(position) <= vpoints){
                                 found = true;
                                 pointList.add(vpoints);
                             }
+                            else ++position;
                         }
+                        if (!found) pointList.add(vpoints);
                     }
                     result.add(position, getMenu(idMenu));
                 }
