@@ -13,6 +13,7 @@ import java.util.List;
 
 import dev.blunch.blunch.BuildConfig;
 import dev.blunch.blunch.domain.CollaborativeMenu;
+import dev.blunch.blunch.domain.DietTags;
 import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.domain.PaymentMenu;
 import dev.blunch.blunch.domain.PaymentMenuAnswer;
@@ -80,6 +81,15 @@ public class PaymentMenuServiceTest {
         return menus;
     }
 
+    @Test
+    public void addTags() {
+        List<DietTags> dietTags = new ArrayList<>();
+        dietTags.add(DietTags.VEGETARIAN);
+        dietTags.add(DietTags.VEGAN);
+        service.addTags(newMenu, dietTags);
+        PaymentMenu menu = service.get(newMenu.getId());
+        assertEquals(menu.getDietTags(), "VEGETARIAN&VEGAN");
+    }
 
     @Test
     public void onSave() {

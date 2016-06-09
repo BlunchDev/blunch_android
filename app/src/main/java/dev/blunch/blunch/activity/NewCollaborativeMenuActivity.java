@@ -2,15 +2,17 @@ package dev.blunch.blunch.activity;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -24,19 +26,25 @@ import java.util.List;
 
 import dev.blunch.blunch.R;
 import dev.blunch.blunch.domain.CollaborativeMenu;
+import dev.blunch.blunch.domain.DietTags;
 import dev.blunch.blunch.domain.Dish;
 import dev.blunch.blunch.services.CollaborativeMenuService;
 import dev.blunch.blunch.services.ServiceFactory;
+import dev.blunch.blunch.utils.BaseActivity;
 import dev.blunch.blunch.utils.Preferences;
 import dev.blunch.blunch.utils.Utils;
 import dev.blunch.blunch.view.CollaborativeDishLayout;
 
 @SuppressWarnings("all")
-public class NewCollaborativeMenuActivity extends AppCompatActivity {
+public class NewCollaborativeMenuActivity extends BaseActivity {
 
     private final static String SERVICE = "CollaborativeMenuService";
 
     private int day,month,year;
+
+    private boolean vegetarianSelected;
+    private boolean veganSelected;
+    private boolean glutenfreeSelected;
 
     private int     iHour,
             iMinute,
@@ -81,6 +89,63 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
         final ImageButton moreSuggestedDishes = (ImageButton) findViewById(R.id.moreSuggestdDishes);
         final LinearLayout moreDishesLayout = (LinearLayout) findViewById(R.id.dishesLayout);
         final LinearLayout moreSuggestedDishesLayout = (LinearLayout) findViewById(R.id.suggestedDishesLayout);
+
+        final ImageView vegetarian = (ImageView) findViewById(R.id.vegetarianIcon);
+        final ImageView vegan = (ImageView) findViewById(R.id.veganIcon);
+        final ImageView glutenfree = (ImageView) findViewById(R.id.glutenfreeIcon);
+
+        final TextView vegetarianTag = (TextView) findViewById(R.id.vegetarianTag);
+        final TextView veganTag = (TextView) findViewById(R.id.veganTag);
+        final TextView glutenfreeTag = (TextView) findViewById(R.id.glutenfreeTag);
+
+        final RelativeLayout vegetarianLayout = (RelativeLayout) findViewById(R.id.vegetarianLayout);
+        final RelativeLayout veganLayout = (RelativeLayout) findViewById(R.id.veganLayout);
+        final RelativeLayout glutenfreeLayout = (RelativeLayout) findViewById(R.id.glutenfreeLayout);
+
+        vegetarianSelected = veganSelected = glutenfreeSelected = false;
+
+        vegetarianLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!vegetarianSelected) {
+                    vegetarian.setImageDrawable(getResources().getDrawable(R.mipmap.test_vegetarian));
+                    vegetarianTag.setTextColor(Color.RED);
+                    vegetarianSelected = true;
+                } else {
+                    vegetarian.setImageDrawable(getResources().getDrawable(R.mipmap.test_vegetarian_unselect));
+                    vegetarianTag.setTextColor(Color.GRAY);
+                    vegetarianSelected = false;
+                }
+            }
+        });
+        veganLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!veganSelected) {
+                    vegan.setImageDrawable(getResources().getDrawable(R.mipmap.test_vegan));
+                    veganTag.setTextColor(Color.RED);
+                    veganSelected = true;
+                } else {
+                    vegan.setImageDrawable(getResources().getDrawable(R.mipmap.test_vegan_unselect));
+                    veganTag.setTextColor(Color.GRAY);
+                    veganSelected = false;
+                }
+            }
+        });
+        glutenfreeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!glutenfreeSelected) {
+                    glutenfree.setImageDrawable(getResources().getDrawable(R.mipmap.test_glutenfree));
+                    glutenfreeTag.setTextColor(Color.RED);
+                    glutenfreeSelected = true;
+                } else {
+                    glutenfree.setImageDrawable(getResources().getDrawable(R.mipmap.test_glutenfree_unselect));
+                    glutenfreeTag.setTextColor(Color.GRAY);
+                    glutenfreeSelected = false;
+                }
+            }
+        });
 
         moreDishes.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,6 +197,8 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
                 createCollaborativeMenu();
             }
         });
+
+
 
     }
 
@@ -322,8 +389,15 @@ public class NewCollaborativeMenuActivity extends AppCompatActivity {
                         localization,
                         start,
                         finish);
-                collaborativeMenuService.save(collaborativeMenu, offeredDish, suggestedDish);
+                CollaborativeMenu saved = collaborativeMenuService.save(collaborativeMenu, offeredDish, suggestedDish);
                 collaborativeMenuService.resetMessageCountToActualUser(collaborativeMenu.getId());
+
+                List<DietTags> dietTags = new ArrayList<>();
+                if (vegetarianSelected) dietTags.add(DietTags.VEGETARIAN);
+                if (veganSelected) dietTags.add(DietTags.VEGAN);
+                if (glutenfreeSelected) dietTags.add(DietTags.GLUTEN_FREE);
+                if (!dietTags.isEmpty()) collaborativeMenuService.addTags(saved, dietTags);
+
                 Toast.makeText(this, "Menú colaborativo creado correctamente!",
                         Toast.LENGTH_LONG).show();
                 finish();

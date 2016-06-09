@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="dev.blunch.blunch" >
+    package="dev.blunch.blunch">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <provider
-        android:name="com.facebook.FacebookContentProvider"
-        android:authorities="com.facebook.app.FacebookContentProvider1004661026291848"
-        android:exported="true" />
+
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
@@ -17,12 +14,12 @@
         android:label="@string/app_name"
         android:largeHeap="true"
         android:supportsRtl="true"
-
         android:theme="@style/AppTheme">
-
-        <provider android:authorities="com.facebook.app.FacebookContentProvider1004661026291848"
+        <provider
             android:name="com.facebook.FacebookContentProvider"
+            android:authorities="com.facebook.app.FacebookContentProvider1004661026291848"
             android:exported="true" />
+
         <activity
             android:name=".activity.MainActivity"
             android:label="@string/title_activity_main"
@@ -67,19 +64,18 @@
         <activity
             android:name=".activity.ValorationActivity"
             android:parentActivityName=".activity.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
-        android:name=".activity.ChatActivity"
-        android:label="@string/title_activity_chat"
-        android:parentActivityName=".activity.MainActivity"
-        android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:name=".activity.ChatActivity"
+            android:label="@string/title_activity_chat"
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -87,9 +83,10 @@
         <activity
             android:name=".activity.LogInActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -108,6 +105,15 @@
         <activity
             android:name=".activity.MenusLocationActivity"
             android:label="@string/title_activity_menus_location" />
+        <activity
+            android:name=".activity.GetUserActivity"
+            android:label="@string/title_activity_get_user"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity
+            android:name=".activity.ListMenusByUserActivity"
+            android:label="@string/title_activity_list_menus_by_user">
+        </activity>
     </application>
 
 </manifest>

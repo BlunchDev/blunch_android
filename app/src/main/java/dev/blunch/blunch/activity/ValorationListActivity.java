@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -13,23 +12,27 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+
 import java.util.List;
+
 import dev.blunch.blunch.R;
 import dev.blunch.blunch.domain.User;
 import dev.blunch.blunch.domain.Valoration;
 import dev.blunch.blunch.services.MenuService;
 import dev.blunch.blunch.services.ServiceFactory;
+import dev.blunch.blunch.utils.BaseActivity;
 
 /**
  * Valoration List Activity Class
  * @author albert
  */
 @SuppressWarnings("all")
-public class ValorationListActivity extends AppCompatActivity {
+public class ValorationListActivity extends BaseActivity {
 
     public static final String USER_ID = "userId";
     private MenuService service;
     private String userId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

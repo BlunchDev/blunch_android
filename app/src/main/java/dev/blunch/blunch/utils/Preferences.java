@@ -18,11 +18,16 @@ public class Preferences {
     }
 
     public static String getCurrentUserEmail() {
-        return prefs.getString(EMAIL_KEY, new String());
+        if (prefs == null){
+            return "";
+        }
+        return prefs.getString(EMAIL_KEY, "");
     }
 
     public static void setCurrentUserEmail(String email) {
-        prefs.edit().putString(EMAIL_KEY, email.split("\\.")[0]).apply();
+        if (prefs != null){
+            prefs.edit().putString(EMAIL_KEY, email.split("\\.")[0]).apply();
+        }
     }
 
 }

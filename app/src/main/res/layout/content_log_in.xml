@@ -2,31 +2,58 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
-    android:gravity="center"
+    android:background="@color/colorPrimary"
     android:id="@+id/splash_screen"
     tools:context="dev.blunch.blunch.activity.LogInActivity"
     tools:showIn="@layout/activity_log_in">
 
-    <com.facebook.login.widget.LoginButton
-        android:id="@+id/login_button"
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_centerInParent="true"/>
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true">
 
-    <RelativeLayout
-        android:id="@+id/loadingPanel"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center">
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:id="@+id/logo"
+            android:src="@drawable/logo_gran"
+            android:layout_gravity="center"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
 
-        <ProgressBar
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/login_button"
             android:layout_width="wrap_content"
-            android:id="@+id/progress_bar"
             android:layout_height="wrap_content"
-            android:indeterminate="true"
-            android:color="@color/white"/>
+            android:layout_marginTop="41dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_below="@+id/logo"
+            android:layout_centerHorizontal="true" />
+
+        <RelativeLayout
+            android:id="@+id/loadingPanel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/logo"
+            android:layout_marginTop="41dp"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:id="@+id/progress_bar"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:color="@color/white"
+                android:layout_centerHorizontal="true" />
+
+        </RelativeLayout>
+
     </RelativeLayout>
+
+
+
+
 
 </RelativeLayout>

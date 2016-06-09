@@ -46,6 +46,8 @@ public class PaymentMenuRepository extends FirebaseRepository<PaymentMenu> {
                     dishes.add(dish.getKey());
                 }
                 paymentMenu.setDishes(dishes);
+            } else if (d.getKey().equals("dietTags")) {
+                paymentMenu.setDietTagsString(d.getValue(String.class));
             }
         }
         return paymentMenu;
