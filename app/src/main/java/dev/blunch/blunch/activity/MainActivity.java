@@ -207,10 +207,6 @@ public class MainActivity extends BaseActivity
             initFragment(R.layout.content_list_menus);
             initializeCollaboratingMenus();
         }
-        else if (id == R.id.valoration_menus) {
-            initFragment(R.layout.content_list_menus);
-            initializeValoration();
-        }
         else if (id == R.id.old_menus) {
             initFragment(R.layout.content_list_old_menus);
             initializeOldMenus();
@@ -230,6 +226,9 @@ public class MainActivity extends BaseActivity
         frameLayout.removeAllViews();
         frameLayout.addView(v);
     }
+
+    double score = 0.;
+    String filter = "";
 
     private void initializeSearchMenus() {
 
@@ -264,7 +263,8 @@ public class MainActivity extends BaseActivity
         spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                //TODO FILTER
+                score = Double.parseDouble(parent.getItemAtPosition(position).toString());
+                init(filter);
             }
 
             @Override
@@ -333,10 +333,11 @@ public class MainActivity extends BaseActivity
     private void init(String filter) {
 
         List<dev.blunch.blunch.domain.Menu> menuList = new ArrayList<>();
+        this.filter = filter;
 
         switch (filter) {
             case "Todos":
-                menuList.addAll(menuService.getMenusOrderedByDate());
+                menuList.addAll(menuService.getMenusOrderedByDate(this.score));
                 break;
             case "Todos mis menús":
                 menuList.addAll(menuService.getMyMenusOrderedByDate());
@@ -345,7 +346,7 @@ public class MainActivity extends BaseActivity
                 menuList.addAll(menuService.getPMenusOrderedByDate());
                 break;
             case "Colaborativo":
-                menuList.addAll(menuService.getCollaborativeMenusOrderedByDate());
+                menuList.addAll(menuService.getCollaborativeMenusOrderedByDate(this.score));
                 break;
             case "Mis menús antiguos":
                 menuList.addAll(menuService.getMyOutMenusOrderedByDate());
@@ -354,7 +355,7 @@ public class MainActivity extends BaseActivity
                 menuList.addAll(menuService.getPCollaborativeMenusOrderedByDate());
                 break;
             case "De pago":
-                menuList.addAll(menuService.getPaymentMenusOrderedByDate());
+                menuList.addAll(menuService.getPaymentMenusOrderedByDate(this.score));
                 break;
             case "Mis menús activos":
                 menuList.addAll(menuService.getMyCurrentMenusOrderedByDate());
@@ -500,41 +501,6 @@ public class MainActivity extends BaseActivity
             public void onChanged(EventType type) {
                 if (type.equals(EventType.Full)) {
                     init("Todos mis menús");
-                }
-            }
-        });
-    }
-
-
-    private void initializeValoration() {
-        setTitle("Menús filtrados por nota");
-        ((RelativeLayout) findViewById(R.id.filterScore)).setVisibility(View.GONE);
-        Spinner spinner = (Spinner) findViewById(R.id.menu_spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.Valoration, R.layout.spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        spinner.setAdapter(adapter);
-
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String val = parent.getItemAtPosition(position).toString();
-                num = Double.parseDouble(val);
-                initVal(parent.getItemAtPosition(position).toString());
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        menuService.setOnChangedListener(new Repository.OnChangedListener() {
-            @Override
-            public void onChanged(EventType type) {
-                if (type.equals(EventType.Full)) {
-                    initVal(String.valueOf(num));
                 }
             }
         });

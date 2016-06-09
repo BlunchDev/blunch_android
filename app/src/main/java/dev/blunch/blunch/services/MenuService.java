@@ -127,11 +127,50 @@ public class MenuService extends Service<CollaborativeMenu> {
         return result;
     }
 
+    public List<CollaborativeMenu> getCollaborativeMenusOrderedByDate(double score) {
+        List<CollaborativeMenu> menus = repository.all();
+        List<CollaborativeMenu> result = new ArrayList<>();
+        for (CollaborativeMenu menu : menus) {
+            if (menu.getDateEnd().compareTo(Calendar.getInstance().getTime()) > 0
+                    && userRepository.get(menu.getAuthor()).getValorationAverage() >= score) {
+                result.add(menu);
+            }
+        }
+        Collections.sort(result, new MenuComparator());
+        return result;
+    }
+
     public List<PaymentMenu> getPaymentMenusOrderedByDate() {
         List<PaymentMenu> menus = paymentMenuRepository.all();
         List<PaymentMenu> result = new ArrayList<>();
         for (PaymentMenu menu : menus) {
             if (menu.getDateEnd().compareTo(Calendar.getInstance().getTime()) > 0) {
+                result.add(menu);
+            }
+        }
+        Collections.sort(result, new MenuComparator());
+        return result;
+    }
+
+    public List<PaymentMenu> getPaymentMenusOrderedByDate(double score) {
+        List<PaymentMenu> menus = paymentMenuRepository.all();
+        List<PaymentMenu> result = new ArrayList<>();
+        for (PaymentMenu menu : menus) {
+            if (menu.getDateEnd().compareTo(Calendar.getInstance().getTime()) > 0
+                    && userRepository.get(menu.getAuthor()).getValorationAverage() >= score) {
+                result.add(menu);
+            }
+        }
+        Collections.sort(result, new MenuComparator());
+        return result;
+    }
+
+    public List<Menu> getMenusOrderedByDate(double score) {
+        List<Menu> menus = getMenus();
+        List<Menu> result = new ArrayList<>();
+        for (Menu menu : menus) {
+            if (menu.getDateEnd().compareTo(Calendar.getInstance().getTime()) > 0
+                    && userRepository.get(menu.getAuthor()).getValorationAverage() >= score ) {
                 result.add(menu);
             }
         }
