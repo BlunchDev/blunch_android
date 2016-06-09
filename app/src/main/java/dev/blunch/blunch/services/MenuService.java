@@ -1,15 +1,12 @@
 package dev.blunch.blunch.services;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.Vector;
 
-import dev.blunch.blunch.domain.ChatMessage;
 import dev.blunch.blunch.domain.CollaborativeMenu;
 import dev.blunch.blunch.domain.Menu;
 import dev.blunch.blunch.domain.MenuComparator;
@@ -130,11 +127,50 @@ public class MenuService extends Service<CollaborativeMenu> {
         return result;
     }
 
+    public List<CollaborativeMenu> getCollaborativeMenusOrderedByDate(double score) {
+        List<CollaborativeMenu> menus = repository.all();
+        List<CollaborativeMenu> result = new ArrayList<>();
+        for (CollaborativeMenu menu : menus) {
+            if (menu.getDateEnd().compareTo(Calendar.getInstance().getTime()) > 0
+                    && userRepository.get(menu.getAuthor()).getValorationAverage() >= score) {
+                result.add(menu);
+            }
+        }
+        Collections.sort(result, new MenuComparator());
+        return result;
+    }
+
     public List<PaymentMenu> getPaymentMenusOrderedByDate() {
         List<PaymentMenu> menus = paymentMenuRepository.all();
         List<PaymentMenu> result = new ArrayList<>();
         for (PaymentMenu menu : menus) {
             if (menu.getDateEnd().compareTo(Calendar.getInstance().getTime()) > 0) {
+                result.add(menu);
+            }
+        }
+        Collections.sort(result, new MenuComparator());
+        return result;
+    }
+
+    public List<PaymentMenu> getPaymentMenusOrderedByDate(double score) {
+        List<PaymentMenu> menus = paymentMenuRepository.all();
+        List<PaymentMenu> result = new ArrayList<>();
+        for (PaymentMenu menu : menus) {
+            if (menu.getDateEnd().compareTo(Calendar.getInstance().getTime()) > 0
+                    && userRepository.get(menu.getAuthor()).getValorationAverage() >= score) {
+                result.add(menu);
+            }
+        }
+        Collections.sort(result, new MenuComparator());
+        return result;
+    }
+
+    public List<Menu> getMenusOrderedByDate(double score) {
+        List<Menu> menus = getMenus();
+        List<Menu> result = new ArrayList<>();
+        for (Menu menu : menus) {
+            if (menu.getDateEnd().compareTo(Calendar.getInstance().getTime()) > 0
+                    && userRepository.get(menu.getAuthor()).getValorationAverage() >= score ) {
                 result.add(menu);
             }
         }
@@ -332,12 +368,29 @@ public class MenuService extends Service<CollaborativeMenu> {
         return null;
     }
 
+    public Valoration getMyValoration(String menuId, String user) {
+        for (Valoration v : valorationRepository.all()) {
+            if (v.getMenu().equals(menuId) && v.getHost().equals(user)) return valorationRepository.get(v.getId());
+        }
+        return null;
+    }
+
     public List<Valoration> getValorationsTo(String user) {
         List<Valoration> list = new ArrayList<>();
         for (Valoration v : valorationRepository.all()) {
             if (v.getHost().equals(user)) list.add(v);
         }
         return list;
+    }
+
+    public double getValorationsResult(String user) {
+        double result = 0;
+        double cant = 0;
+        for (Valoration v : valorationRepository.all()) {
+            if (v.getHost().equals(user)) { result += v.getPoints(); ++cant; }
+        }
+        if (cant != 0) return result/cant;
+        else return -1;
     }
 
     public Valoration value(String menu, double points, String comment, String host, String guest){
@@ -360,6 +413,49 @@ public class MenuService extends Service<CollaborativeMenu> {
         }
 
         return valoration;
+    }
+
+    public List<Menu> getMenusOrderedByValoration(double points) {
+        List<User> users = getUsers();
+        List<Menu> result = new ArrayList<>();
+        Vector<Double> pointList = new Vector<Double>(0);
+        boolean firstInserted = false;
+        for (User user : users) {
+            String idUser = user.getId();
+            double vpoints = getValorationsResult(idUser);
+            Set<String> myMenus = user.getMyMenus().keySet();
+            List<Menu> ActiveMenus = new ArrayList<>();
+            for (String idMenu : myMenus) {
+                Menu menu = getMenu(idMenu);
+                if (menu != null && menu.getDateEnd().compareTo(Calendar.getInstance().getTime()) > 0) {
+                    ActiveMenus.add(menu);
+                }
+            }
+            if (vpoints != -1 && vpoints >= points && ActiveMenus.size() > 0) {
+                int position = 0;
+
+                int size = ActiveMenus.size();
+                if (!firstInserted) {
+                    for (int i = 0; i < size; ++i) pointList.add(vpoints);
+                    firstInserted = true;
+                } else {
+                    boolean found = false;
+                    while (position < pointList.size() && !found) {
+                        if (pointList.get(position) <= vpoints) {
+                            found = true;
+                            for (int i = 0; i < size; ++i) pointList.add(vpoints);
+                        } else ++position;
+                    }
+                    if (!found){
+                        for (int i = 0; i < size; ++i) pointList.add(vpoints);
+                    }
+                }
+                for (Menu menu : ActiveMenus) {
+                    result.add(position, menu);
+                }
+            }
+        }
+        return result;
     }
 
     public Menu getMenu(String menuId) {
