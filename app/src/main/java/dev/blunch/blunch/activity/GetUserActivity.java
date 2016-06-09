@@ -62,12 +62,7 @@ public class GetUserActivity extends BaseActivity {
         userName.setText(user.getName());
         setTitle(user.getName());
         userValoration.setRating((float) user.getValorationAverage());
-        userValoration.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+        userValoration.setIsIndicator(true);
         myValorations.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
