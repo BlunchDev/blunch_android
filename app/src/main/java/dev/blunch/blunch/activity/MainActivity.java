@@ -23,6 +23,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -233,7 +234,7 @@ public class MainActivity extends BaseActivity
     private void initializeSearchMenus() {
 
         setTitle("Buscar menús");
-
+        ((RelativeLayout) findViewById(R.id.filterScore)).setVisibility(View.VISIBLE);
         Spinner spinner = (Spinner) findViewById(R.id.menu_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.menu_types, R.layout.spinner_item);
@@ -245,6 +246,25 @@ public class MainActivity extends BaseActivity
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 init(parent.getItemAtPosition(position).toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        Spinner spinner2 = (Spinner) findViewById(R.id.menu_spinner_score);
+        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this,
+                R.array.menu_score, R.layout.spinner_item);
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinner2.setAdapter(adapter2);
+
+        spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //TODO FILTER
             }
 
             @Override
@@ -364,6 +384,7 @@ public class MainActivity extends BaseActivity
 
     private void initializeCollaboratingMenus() {
         setTitle("Menús en colaboración");
+        ((RelativeLayout) findViewById(R.id.filterScore)).setVisibility(View.GONE);
         Spinner spinner = (Spinner) findViewById(R.id.menu_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.collaborative_menu_types, R.layout.spinner_item);
@@ -396,7 +417,7 @@ public class MainActivity extends BaseActivity
     private void initializeOldMenus() {
 
         setTitle("Valoración de menus");
-
+        ((RelativeLayout) findViewById(R.id.filterScore)).setVisibility(View.GONE);
         Spinner spinner = (Spinner) findViewById(R.id.menu_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.old_menu_types, R.layout.spinner_item);
@@ -428,7 +449,7 @@ public class MainActivity extends BaseActivity
 
     private void initOldMenus(String filter) {
         List<dev.blunch.blunch.domain.Menu> menuList = new ArrayList<>();
-
+        ((RelativeLayout) findViewById(R.id.filterScore)).setVisibility(View.GONE);
         switch (filter) {
             case "No valorados":
                 menuList.addAll(menuService.getNonValuedCollaboratedMenusOf(email));
@@ -454,7 +475,7 @@ public class MainActivity extends BaseActivity
 
     private void initializeMyMenus() {
         setTitle("Mis menús");
-
+        ((RelativeLayout) findViewById(R.id.filterScore)).setVisibility(View.GONE);
         Spinner spinner = (Spinner) findViewById(R.id.menu_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.my_menu_types, R.layout.spinner_item);
@@ -487,7 +508,7 @@ public class MainActivity extends BaseActivity
 
     private void initializeValoration() {
         setTitle("Menús filtrados por nota");
-
+        ((RelativeLayout) findViewById(R.id.filterScore)).setVisibility(View.GONE);
         Spinner spinner = (Spinner) findViewById(R.id.menu_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.Valoration, R.layout.spinner_item);

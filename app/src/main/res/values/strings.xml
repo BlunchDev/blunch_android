@@ -23,6 +23,14 @@
         <item>Colaborativo</item>
         <item>De pago</item>
     </string-array>
+    <string-array name="menu_score">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
     <string-array name="my_menu_types">
         <item>Todos mis menús</item>
         <item>Mis menús antiguos</item>

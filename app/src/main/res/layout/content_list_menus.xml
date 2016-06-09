@@ -9,17 +9,18 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".activity.ListMenusActivity">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_alignParentTop="true"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
+        android:paddingLeft="8dp"
         android:background="#e6e6e6"
+        android:orientation="horizontal"
         android:id="@+id/filter">
 
         <TextView
-            android:layout_width="100dp"
+            android:layout_width="0dp"
+            android:layout_weight="0.9"
             android:layout_height="match_parent"
             android:id="@+id/filter_tag"
             android:text="Filtra por:"
@@ -27,12 +28,39 @@
 
         <Spinner
             android:id="@+id/menu_spinner"
-            android:layout_toRightOf="@+id/filter_tag"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1.6"
+            android:layout_marginLeft="6dp"
             android:layout_height="match_parent"
             android:gravity="right"/>
 
-    </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="2.5"
+            android:layout_height="40dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="8dp"
+            android:background="#e6e6e6"
+            android:id="@+id/filterScore">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/filter_score_tag"
+                android:text="Puntuación mín.:"
+                android:gravity="center_vertical"/>
+
+            <Spinner
+                android:id="@+id/menu_spinner_score"
+                android:layout_toRightOf="@+id/filter_score_tag"
+                android:layout_marginLeft="6dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="right"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
 
 
     <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
