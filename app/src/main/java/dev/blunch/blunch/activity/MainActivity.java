@@ -418,7 +418,7 @@ public class MainActivity extends BaseActivity
     private void initializeOldMenus() {
 
         setTitle("Valoración de menus");
-        ((RelativeLayout) findViewById(R.id.filterScore)).setVisibility(View.GONE);
+        //((RelativeLayout) findViewById(R.id.filterScore)).setVisibility(View.GONE);
         Spinner spinner = (Spinner) findViewById(R.id.menu_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.old_menu_types, R.layout.spinner_item);
