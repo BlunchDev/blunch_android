@@ -450,7 +450,7 @@ public class MainActivity extends BaseActivity
 
     private void initOldMenus(String filter) {
         List<dev.blunch.blunch.domain.Menu> menuList = new ArrayList<>();
-        ((RelativeLayout) findViewById(R.id.filterScore)).setVisibility(View.GONE);
+        //((RelativeLayout) findViewById(R.id.filterScore)).setVisibility(View.GONE);
         switch (filter) {
             case "No valorados":
                 menuList.addAll(menuService.getNonValuedCollaboratedMenusOf(email));
