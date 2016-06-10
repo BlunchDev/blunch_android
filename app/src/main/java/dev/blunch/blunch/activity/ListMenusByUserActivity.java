@@ -31,11 +31,11 @@ public class ListMenusByUserActivity extends BaseActivity {
         /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);*/
 
-        if (getIntent().getStringExtra(USER_ID_KEY) != null) this.userId = getIntent().getStringExtra(USER_ID_KEY);
+        if (getIntent().getStringExtra(USER_ID_KEY) != null) userId = getIntent().getStringExtra(USER_ID_KEY);
 
         menuService = ServiceFactory.getMenuService(getApplicationContext());
 
-        setTitle("Menús de " + menuService.findUserByEmail(this.userId).getName());
+        setTitle("Menús de " + menuService.findUserByEmail(userId).getName());
 
         init("Todos");
         setAdapter();

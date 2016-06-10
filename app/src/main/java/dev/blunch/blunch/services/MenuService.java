@@ -95,8 +95,9 @@ public class MenuService extends Service<CollaborativeMenu> {
         Set<String> myMenus = user.getMyMenus().keySet();
         for (String k : myMenus){
             Menu m = getMenu(k);
-            if (m instanceof CollaborativeMenu)
-                menuList.add(getMenu(k));
+            if (m instanceof CollaborativeMenu &&
+                    m.getDateEnd().compareTo(Calendar.getInstance().getTime()) > 0)
+                menuList.add(m);
         }
         Collections.sort(menuList, new MenuComparator());
         return menuList;
@@ -108,8 +109,9 @@ public class MenuService extends Service<CollaborativeMenu> {
         Set<String> myMenus = user.getMyMenus().keySet();
         for (String k : myMenus){
             Menu m = getMenu(k);
-            if (m instanceof PaymentMenu)
-                menuList.add(getMenu(k));
+            if (m instanceof PaymentMenu &&
+                    m.getDateEnd().compareTo(Calendar.getInstance().getTime()) > 0)
+                menuList.add(m);
         }
         Collections.sort(menuList, new MenuComparator());
         return menuList;
@@ -169,8 +171,9 @@ public class MenuService extends Service<CollaborativeMenu> {
         List<Menu> menus = getMenus();
         List<Menu> result = new ArrayList<>();
         for (Menu menu : menus) {
-            if (menu.getDateEnd().compareTo(Calendar.getInstance().getTime()) > 0
-                    && userRepository.get(menu.getAuthor()).getValorationAverage() >= score ) {
+            User userMenu = userRepository.get(menu.getAuthor());
+            double value = (userMenu != null ? userMenu.getValorationAverage() : 0.0);
+            if (menu.getDateEnd().compareTo(Calendar.getInstance().getTime()) > 0 && value >= score ) {
                 result.add(menu);
             }
         }
